@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager;
+package com.spinningnoodle.communitymanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
