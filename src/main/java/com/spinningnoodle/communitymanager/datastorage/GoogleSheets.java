@@ -34,7 +34,7 @@ public class GoogleSheets implements DataStorage {
     }
 
     @Override
-    public String getNeme() {
+    public String getName() {
         return null;
     }
 

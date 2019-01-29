@@ -14,7 +14,7 @@ public interface DataStorage {
     boolean update(String tableName, String primaryKey, String attribute, String newValue);
     boolean deleteEntry(String tableName, String primaryKey);
 
-    String getNeme();
+    String getName();
     void setName(String name);
     String getStorageID();
     void setStorageID(String storageID);

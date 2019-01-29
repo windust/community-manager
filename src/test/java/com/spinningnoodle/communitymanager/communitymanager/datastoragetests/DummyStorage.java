@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import java.net.ConnectException;
 
 public class DummyStorage implements DataStorage {
 
@@ -8,9 +9,10 @@ public class DummyStorage implements DataStorage {
     private String storageID;
     private String[] tableNames;
 
-    public DummyStorage(String storageID) {
+    public DummyStorage(String storageID) throws ConnectException {
         this.storageID = storageID;
         this.name = storageID;
+        if(storageID != "123") throw new ConnectException("Could not connect to data storage,");
     }
 
     @Override
@@ -20,7 +22,7 @@ public class DummyStorage implements DataStorage {
 
     @Override
     public String readAll(String tableName) {
-        return null;
+        return "{row1:{name:'joe'}}";
     }
 
     @Override
@@ -34,7 +36,7 @@ public class DummyStorage implements DataStorage {
     }
 
     @Override
-    public String getNeme() {
+    public String getName() {
         return name;
     }
 
