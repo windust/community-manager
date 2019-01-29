@@ -1,16 +1,16 @@
-package com.spinningnoodle.communitymanager.datastorage;
+package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
 
-public class GoogleSheets implements DataStorage {
+import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+
+public class DummyStorage implements DataStorage {
 
     private String name;
     private String storageID;
     private String[] tableNames;
 
-    public GoogleSheets(String storageID) {
+    public DummyStorage(String storageID) {
         this.storageID = storageID;
-        //open google sheets
-        //get name
-        //get table names (Might be doing too much!)
+        this.name = storageID;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public String getNeme() {
-        return null;
+        return name;
     }
 
     @Override
@@ -45,11 +45,12 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public String getStorageID() {
-        return null;
+        return storageID;
     }
 
     @Override
     public void setStorageID(String storageID) {
+
     }
 
     @Override
