@@ -18,4 +18,9 @@ public class GreetingController {
     public String login(){
         return "login";
     }
+
+    @GetMapping("/available_dates")
+    public String availableDates(){
+        return "available_dates";
+    }
 }
