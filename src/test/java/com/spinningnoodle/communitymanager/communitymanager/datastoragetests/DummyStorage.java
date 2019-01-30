@@ -37,6 +37,7 @@ public class DummyStorage implements DataStorage {
 
     @Override
     public String getName() {
+//        return null;
         return name;
     }
 
@@ -48,6 +49,7 @@ public class DummyStorage implements DataStorage {
     @Override
     public String getStorageID() {
         return storageID;
+//        return null;
     }
 
     @Override
