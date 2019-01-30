@@ -11,3 +11,13 @@ function openTab(evt, category) {
     document.getElementById(category).style.display = "block";
     evt.currentTarget.className += " active";
   }
+
+  var hidden = false;
+  function hider(){
+      !hidden
+      if(hidden){
+          document.getElementById("request-host").style.visibility("hidden");
+      }else{
+        document.getElementById("request-host").style.visibility("visible");
+      }
+  }
