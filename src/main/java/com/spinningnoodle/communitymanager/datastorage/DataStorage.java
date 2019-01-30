@@ -1,5 +1,8 @@
 package com.spinningnoodle.communitymanager.datastorage;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Data Storage
  *
@@ -10,7 +13,7 @@ package com.spinningnoodle.communitymanager.datastorage;
 public interface DataStorage {
 
     boolean createEntry();
-    String readAll(String tableName);
+    List<Map<String, String>> readAll(String tableName);
     boolean update(String tableName, String primaryKey, String attribute, String newValue);
     boolean deleteEntry(String tableName, String primaryKey);
 

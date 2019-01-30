@@ -1,5 +1,8 @@
 package com.spinningnoodle.communitymanager.datastorage;
 
+import java.util.List;
+import java.util.Map;
+
 public class GoogleSheets implements DataStorage {
 
     private String name;
@@ -19,7 +22,7 @@ public class GoogleSheets implements DataStorage {
     }
 
     @Override
-    public String readAll(String tableName) {
+    public List<Map<String, String>> readAll(String tableName) {
         return null;
     }
 
