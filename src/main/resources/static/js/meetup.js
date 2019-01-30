@@ -13,7 +13,14 @@ function openTab(evt, category) {
 }
 
 function hider() {
-    document.getElementById("request-host").style.display = 'none';
-    document.getElementById(
-        "generate-token").innerHTML = "<a href=\"http://www.google.com\">Click for your token</a>";
+    var hostingButtons = document.getElementsByClassName("request-host");
+    var tokenUrls = document.getElementsByClassName("generate-token");
+
+    for(var i = 0; i < hostingButtons.length; i++){
+      hostingButtons[i].style.display = 'none';
+    }
+
+    for(var i = 0; i < tokenUrls.length; i++) {
+      tokenUrls.item(i).innerHTML = "<a href=\"http://www.google.com\">Click for your token</a>";
+    }
 }
