@@ -6,7 +6,7 @@
     <title>Meetup</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/css/meetup.css">
+    <link rel="stylesheet" href="css/meetup.css">
   </head>
   <body>
     <ul>
@@ -18,19 +18,19 @@
 
     <div id="meetup-details">
     <table id="meetup-table"> 
-      <tr id="meetup-row">
+      <tr class="meetup-row">
         <td class="meetup-data">Date: 12/12/12</td>
         <td class="meetup-data">Topic: Deflating Balls</td>
       </tr>
-      <tr id="meetup-row">
+      <tr class="meetup-row">
         <td class="meetup-data">Venue: Foxborough Stadium</td>
         <td class="meetup-data">Speaker: Tom Brady</td>
       </tr>
-      <tr id="meetup-row">
+      <tr class="meetup-row">
         <td class="meetup-data">Food: Pig Skin</td>
         <td class="meetup-data">After Event: Apologizing Ceremony</td>
       </tr>
-      <tr id="meetup-row">
+      <tr class="meetup-row">
         <td class="meetup-data" id="description" colspan="2">Description: Sorry</td>
       </tr>
     </table>
@@ -48,7 +48,7 @@
         <tr>
           <td colspan="3"> Expedia</td>
           <td>
-            <button class="request-host">
+            <button id="request-host">
               Request Host
             </button>
           </td>
@@ -66,6 +66,6 @@
     <div id="After" class="tabcontent">
       <p>This is the after tab.</p>
     </div>
-    <script src="../static/js/meetup.js" async defer></script>
+    <script src="js/meetup.js" async defer></script>
   </body>
 </html>
