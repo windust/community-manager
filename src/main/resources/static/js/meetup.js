@@ -1,3 +1,10 @@
+var hostingButtons = document.getElementsByClassName("request-host");
+
+for(var i = 0; i < hostingButtons.length; i++){
+  hostingButtons[i].addEventListener("click", getTokenURL)
+}
+
+
 function openTab(evt, category) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -12,15 +19,16 @@ function openTab(evt, category) {
   evt.currentTarget.className += " active";
 }
 
-function hider() {
-    var hostingButtons = document.getElementsByClassName("request-host");
-    var tokenUrls = document.getElementsByClassName("generate-token");
-
-    for(var i = 0; i < hostingButtons.length; i++){
-      hostingButtons[i].style.display = 'none';
+function getTokenURL() {
+  var ajax = new XMLHttpRequest();
+  ajax.onreadystatechange = function() {
+    if (this.status == 200) {
+      this.parentElement.innerHTML = "<a href=\"/venue?token=something\">http://localhost:8080/venue?token=something</a>";
     }
-
-    for(var i = 0; i < tokenUrls.length; i++) {
-      tokenUrls.item(i).innerHTML = "<a href=\"http://www.google.com\">Click for your token</a>";
+    else{
+      alert(this.status)
     }
+  };
+  ajax.open("POST", "/getToken", true);
+  ajax.send();
 }

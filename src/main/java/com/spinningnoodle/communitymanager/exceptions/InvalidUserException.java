@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Not Logged In")
-public class NotLoggedInException extends Exception {
-    public NotLoggedInException(){
-        super("Please login in order to access this page");
+public class InvalidUserException extends Exception {
+    public InvalidUserException(){
+        super("Please login or provide a valid token");
     }
 }
