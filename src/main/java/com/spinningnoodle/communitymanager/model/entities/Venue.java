@@ -27,16 +27,15 @@ public class Venue implements IEntity {
     @Override
     public Venue build(Map<String, String> fields) {
         Venue venue = new Venue();
-        venue.setPrimaryKey(Integer.parseInt(fields.get("primaryKey")));
-        venue.setName(fields.get("name"));
-        venue.setAddress(fields.get("address"));
-        venue.setCapacity(Integer.parseInt(fields.get("capacity")));
-        venue.setContactPerson(fields.get("contactPerson"));
-        venue.setContactEmail(fields.get("contactEmail"));
-        venue.setContactPhone(fields.get("contactPhone"));
-        venue.setContactAltPhone(fields.get("contactAltPhone"));
-        venue.setRequestedHostingDate(fields.get("requestedHostingDate"));
-
+        venue.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", null)));
+        venue.setName(fields.getOrDefault("name", null));
+        venue.setAddress(fields.getOrDefault("address", null));
+        venue.setCapacity(Integer.parseInt(fields.getOrDefault("capacity", null)));
+        venue.setContactPerson(fields.getOrDefault("contactPerson", null));
+        venue.setContactEmail(fields.getOrDefault("contactEmail", null));
+        venue.setContactPhone(fields.getOrDefault("contactPhone", null));
+        venue.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
+        venue.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
 
         return venue;
     }
@@ -232,5 +231,9 @@ public class Venue implements IEntity {
 			", contactAltPhone='" + contactAltPhone + '\'' +
 			", requestedHostingDate='" + requestedHostingDate + '\'' +
 			'}';
+	}
+
+	private String getFieldValue(Map<String, String> fields, String key) {
+		return fields.getOrDefault(key, null);
 	}
 }
