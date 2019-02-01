@@ -2,6 +2,7 @@ package com.spinningnoodle.communitymanager.controller;
 
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ public class AdminController {
     @GetMapping("/logout")
     public String logout(){
         loggedIn = false;
-        return "redirect:/login";
+        return "redirect:/";
     }
     
     //TODO create dashboard page
@@ -45,9 +46,12 @@ public class AdminController {
     }
     
     @PostMapping("/getToken")
-    public void getToken() throws InvalidUserException {
+    public String getToken() throws InvalidUserException {
         if(!loggedIn){
             throw new InvalidUserException();
+        }
+        else{
+            return "meetup";
         }
     }
     
