@@ -1,7 +1,7 @@
 package com.spinningnoodle.communitymanager.controller;
 
 
-import com.spinningnoodle.communitymanager.exceptions.NotLoggedInException;
+import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,21 +24,36 @@ public class AdminController {
         return "redirect:/meetup";
     }
     
+    @GetMapping("/logout")
+    public String logout(){
+        loggedIn = false;
+        return "redirect:/login";
+    }
+    
+    //TODO create dashboard page
     @GetMapping("/dashboard")
     public String dashboard(){
-        return "";
+        return "login.html";
     }
     
     @GetMapping("/meetup")
-    public String meetup() throws NotLoggedInException{
+    public String meetup() throws InvalidUserException {
         if(!loggedIn) {
-            throw new NotLoggedInException();
+            throw new InvalidUserException();
         }
         return "meetup";
     }
     
+    @PostMapping("/getToken")
+    public void getToken() throws InvalidUserException {
+        if(!loggedIn){
+            throw new InvalidUserException();
+        }
+    }
+    
+    //TODO create google sheets page
     @GetMapping("/googleSheets")
     public String googleSheets(@RequestParam(name = "sheet", required = false, defaultValue = "all") String sheet){
-        return "";
+        return "login.html";
     }
 }
