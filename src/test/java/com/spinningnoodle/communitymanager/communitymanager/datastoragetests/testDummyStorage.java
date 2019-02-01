@@ -1,10 +1,8 @@
 package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
 //
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-//import org.junit.jupiter.params.ParameterizedTest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,13 +11,13 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.RepeatedTest;
 
 import java.net.ConnectException;
 
+
 class testDummyStorage {
 
-    DataStorage testStorage;
+    private DataStorage testStorage;
 
     @BeforeEach
     public void initializeDataBase()throws ConnectException{
@@ -35,24 +33,16 @@ class testDummyStorage {
 
     @Test
     public void whenIOpenDataStorageICanGetID() throws ConnectException{
-//        DataStorage testStorage = new DummyStorage("123");
         assertEquals("123", testStorage.getStorageID());
     }
 
     @Test
     public void whenIOpenDataStorageICanGetName() throws ConnectException{
-
-//        DataStorage testStorage = new DummyStorage("123");
         assertEquals("123", testStorage.getName());
     }
 
     @Test
-    public void whenIRequestTabaleOfSpeakersButTableDoesNotExist(){
-
-    }
-
-    @Test
-    public void whenIRequestTableOfSpeakersIGetJSONString() throws ConnectException{
+    public void whenIRequestTableOfSpeakersButTableDoesNotExist(){
         List<Map<String, String>> expected;
         List<Map<String, String>> list = new ArrayList<>();
         Map<String,String> row = new HashMap<>();
@@ -84,5 +74,10 @@ class testDummyStorage {
         assertEquals(expected, testStorage.readAll("speakers"));
     }
 
-
+    @Test
+    public void whenIRequestNonExistentTableIGetIllegalArgumentException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            testStorage.readAll("sprinklers");
+        });
+    }
 }
