@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Quentin Guenther
  * @version 1.0
  */
-public abstract class VenueCollection {
+public class VenueCollection {
 	private static Map<Integer, Venue> venues = new HashMap<>();
 
 	/**
