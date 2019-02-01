@@ -13,14 +13,4 @@ public class GreetingController {
         model.addAttribute("name", name);
         return "greeting";
     }
-    
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    @GetMapping("/available_dates")
-    public String availableDates(){
-        return "available_dates";
-    }
 }
