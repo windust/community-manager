@@ -20,29 +20,27 @@ class testDummyStorage {
     private DataStorage testStorage;
 
     @BeforeEach
-    public void initializeDataBase()throws ConnectException{
+    void initializeDataBase()throws ConnectException{
         testStorage = new DummyStorage("123");
     }
 
     @Test
-    public void throwsConnectExceptionWhenCantConnectToDataStorage() {
-        Assertions.assertThrows(ConnectException.class, () -> {
-            new DummyStorage("133");
-        });
+    void throwsConnectExceptionWhenCantConnectToDataStorage() {
+        Assertions.assertThrows(ConnectException.class, () -> new DummyStorage("133"));
     }
 
     @Test
-    public void whenIOpenDataStorageICanGetID() throws ConnectException{
+    void whenIOpenDataStorageICanGetID() {
         assertEquals("123", testStorage.getStorageID());
     }
 
     @Test
-    public void whenIOpenDataStorageICanGetName() throws ConnectException{
+    void whenIOpenDataStorageICanGetName(){
         assertEquals("123", testStorage.getName());
     }
 
     @Test
-    public void whenIRequestTableOfSpeakersButTableDoesNotExist(){
+    void whenIRequestTableOfVenuesIShouldGetBackResults(){
         List<Map<String, String>> expected;
         List<Map<String, String>> list = new ArrayList<>();
         Map<String,String> row = new HashMap<>();
@@ -75,9 +73,7 @@ class testDummyStorage {
     }
 
     @Test
-    public void whenIRequestNonExistentTableIGetIllegalArgumentException() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            testStorage.readAll("sprinklers");
-        });
+    void whenIRequestNonExistentTableIGetIllegalArgumentException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testStorage.readAll("sprinklers"));
     }
 }

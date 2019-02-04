@@ -4,6 +4,7 @@
 *.iml
 /out/
 /tokens/StoredCredential
+/config/SpreadSheetID
 
 # Ignore Gradle GUI config
 gradle-app.setting

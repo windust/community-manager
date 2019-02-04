@@ -45,19 +45,17 @@ public interface DataStorage {
     boolean update(String tableName, String primaryKey, String attribute, String newValue);
 
     /**
-     * readAll returns a list of all the data in the requested table.
-     * each row is represented as a hashmap in the list.
+     * deleteEntry deletes the row specified by the primaryKey in the table specified
      *
      * @param tableName string: name of table
-     * @param primaryKey
+     * @param primaryKey string: unique identifier of row.
      * @return boolean if deleted
      * @throws IllegalArgumentException if table does not exist
      */
     boolean deleteEntry(String tableName, String primaryKey);
 
     /**
-     * readAll returns a list of all the data in the requested table.
-     * each row is represented as a hashmap in the list.
+     * getName returns the name of the data storage
      *
      * @return String of data storage name
      */
@@ -81,7 +79,7 @@ public interface DataStorage {
     /**
      * sets the name of the storage ID
      *
-     * @param storageID
+     * @param storageID string: the identifier of the data storage
      */
     void setStorageID(String storageID);
 
