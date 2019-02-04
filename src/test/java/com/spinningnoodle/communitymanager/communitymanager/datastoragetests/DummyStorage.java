@@ -1,7 +1,8 @@
 package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import java.net.ConnectException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,8 +26,17 @@ public class DummyStorage implements DataStorage {
     private String[] tableNames;
     private List<Map<String, String>> data;
 
-    public DummyStorage(String storageID) throws ConnectException {
-        if(!storageID.equals("123")) throw new ConnectException("Could not connect to data storage,");
+    /**
+     * DummyStorage(String storageID) - opens existing DummyStorage;
+     *
+     * @param storageID String of the Data Storage id
+     * @throws GeneralSecurityException if cannot connect to data storage
+     * @throws IOException if Credentials are not found.
+     */
+    public DummyStorage(String storageID) throws GeneralSecurityException {
+        if(!storageID.equals("123")) {
+            throw new GeneralSecurityException("Could not connect to data storage,");
+        }
         this.storageID = storageID;
         this.name = storageID;
         this.tableNames = new String[]{"speakers","venues"};
@@ -112,5 +122,15 @@ public class DummyStorage implements DataStorage {
     @Override
     public String[] getTableNames() {
         return tableNames;
+    }
+
+    @Override
+    public String toString() {
+        return "DummyStorage{" +
+            "name='" + name + '\'' +
+            ", storageID='" + storageID + '\'' +
+            ", tableNames=" + Arrays.toString(tableNames) +
+            ", data=" + data +
+            '}';
     }
 }
