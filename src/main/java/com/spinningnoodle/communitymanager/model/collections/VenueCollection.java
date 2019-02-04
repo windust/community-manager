@@ -14,7 +14,7 @@ import java.util.Map;
  * @version 1.0
  */
 public class VenueCollection {
-	private static final String TABLE_NAME = "venue";
+	private static final String TABLE_NAME = "venues";
 	private static Map<Integer, Venue> venues = new HashMap<>();
 
 	/**
@@ -47,7 +47,7 @@ public class VenueCollection {
 
 		 */
 		// TODO: update DatStore with venue's token once Venue can hold a token
-		// dataStorage.update(TABLE_NAME, venue.getPrimaryKey(), "Token", venue.getToken);
+		//dataStorage.update(TABLE_NAME, venue.getPrimaryKey(), "Token", venue.getToken);
 	}
 
 	/**
@@ -55,8 +55,12 @@ public class VenueCollection {
 	 *
 	 * @param venueId The venueID of the venue to be retrieves.
 	 * @return A venue who's venueId matches the venueId passed in
+	 * @throws EntityNotFound When venue with the Id passed cannot be found
 	 */
-	public static Venue getById(int venueId) {
+	public static Venue getById(int venueId) throws EntityNotFound {
+		if(!venues.containsKey(venueId)) {
+			throw new EntityNotFound();
+		}
 		return venues.get(venueId);
 	}
 
@@ -66,8 +70,6 @@ public class VenueCollection {
 	 * @return A List of all venues.
 	 */
 	public static List<Venue> getAll() {
-
-		List<Venue> venueList = new ArrayList<>(venues.values());
-		return venueList;
+		return new ArrayList<>(venues.values());
 	}
 }

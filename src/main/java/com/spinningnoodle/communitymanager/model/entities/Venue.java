@@ -27,6 +27,7 @@ public class Venue implements IEntity {
     @Override
     public Venue build(Map<String, String> fields) {
         Venue venue = new Venue();
+
         venue.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         venue.setName(fields.getOrDefault("name", null));
         venue.setAddress(fields.getOrDefault("address", null));
