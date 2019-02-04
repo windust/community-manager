@@ -1,9 +1,10 @@
 package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
-//
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +16,12 @@ import org.junit.jupiter.api.Test;
 import java.net.ConnectException;
 
 
-class testDummyStorage {
+class DummyStorageTests {
 
     private DataStorage testStorage;
 
     @BeforeEach
-    void initializeDataBase()throws ConnectException{
+    void initializeDataBase()throws GeneralSecurityException {
         testStorage = new DummyStorage("123");
     }
 
