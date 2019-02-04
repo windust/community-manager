@@ -11,7 +11,7 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token) throws InvalidUserException {
         if(validToken(token)){
-            return "available_dates.html";
+            return "available_dates";
         }
         else{
             throw new InvalidUserException();

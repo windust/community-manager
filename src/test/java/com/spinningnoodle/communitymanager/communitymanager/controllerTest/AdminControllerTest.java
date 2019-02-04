@@ -1,10 +1,10 @@
-package com.spinningnoodle.communitymanager.communitymanager.controllerTests;
+package com.spinningnoodle.communitymanager.communitymanager.controllerTest;
 
 import com.spinningnoodle.communitymanager.controller.AdminController;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 
