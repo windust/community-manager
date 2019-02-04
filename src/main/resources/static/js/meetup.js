@@ -24,7 +24,7 @@ function getTokenURL(element) {
   var ajax = new XMLHttpRequest();
   //TODO find out why 0 is returned before actual content
   ajax.onreadystatechange = function() {
-    if (this.status == 200|| this.status == 0) {
+    if (this.status == 200) {
       element.parentElement.innerHTML = "<a href=\"/venue?token=something\">http://localhost:8080/venue?token=" + this.responseText + "something</a>";
     }
     else{
