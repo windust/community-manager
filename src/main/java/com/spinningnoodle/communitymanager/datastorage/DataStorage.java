@@ -32,8 +32,8 @@ public interface DataStorage {
     List<Map<String, String>> readAll(String tableName);
 
     /**
-     * readAll returns a list of all the data in the requested table.
-     * each row is represented as a hashmap in the list.
+     * update changes one entry based on the specified table name, primary key, and
+     * attribute. If the attribute does not exist
      *
      * @param tableName string: name of table
      * @param primaryKey string: unique key for row
@@ -45,21 +45,48 @@ public interface DataStorage {
     boolean update(String tableName, String primaryKey, String attribute, String newValue);
 
     /**
-     * readAll returns a list of all the data in the requested table.
-     * each row is represented as a hashmap in the list.
+     * deleteEntry deletes the row specified by the primaryKey in the table specified
      *
      * @param tableName string: name of table
-     * @param primaryKey
+     * @param primaryKey string: unique identifier of row.
      * @return boolean if deleted
      * @throws IllegalArgumentException if table does not exist
      */
     boolean deleteEntry(String tableName, String primaryKey);
 
+    /**
+     * getName returns the name of the data storage
+     *
+     * @return String of data storage name
+     */
     String getName();
+
+    /**
+     * setName sets the name of the data storage
+     *
+     * @param name string: name of data storage
+     * @return
+     */
     void setName(String name);
+
+    /**
+     * Gets the storage id.
+     *
+     * @return String with the storage id
+     */
     String getStorageID();
+
+    /**
+     * sets the name of the storage ID
+     *
+     * @param storageID string: the identifier of the data storage
+     */
     void setStorageID(String storageID);
 
+    /**
+     * getTableNames gets the names of all the tables in the data storage
+     * @return String array with the table names
+     */
     String[] getTableNames();
 
 }

@@ -1,8 +1,8 @@
 package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
 
-
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import java.net.ConnectException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,17 +10,33 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Dummy Storage implements Data Storage, the interface that all data storage implementations meet.
+ * It can be used for testing model functionality in the absence of another implementation.
  *
+ * All implementations should include the following constructors:
+ *      DataStorage(String storageID) - opens existing DataStorage;
+ * @author  Cream 4 UR Coffee
+ * @version 0.1
+ * @since   2019-02-01
  */
 public class DummyStorage implements DataStorage {
 
     private String name;
     private String storageID;
     private String[] tableNames;
-    List<Map<String, String>> data;
+    private List<Map<String, String>> data;
 
-    public DummyStorage(String storageID) throws ConnectException {
-        if(storageID != "123") throw new ConnectException("Could not connect to data storage,");
+    /**
+     * DummyStorage(String storageID) - opens existing DummyStorage;
+     *
+     * @param storageID String of the Data Storage id
+     * @throws GeneralSecurityException if cannot connect to data storage
+     * @throws IOException if Credentials are not found.
+     */
+    public DummyStorage(String storageID) throws GeneralSecurityException {
+        if(!storageID.equals("123")) {
+            throw new GeneralSecurityException("Could not connect to data storage,");
+        }
         this.storageID = storageID;
         this.name = storageID;
         this.tableNames = new String[]{"speakers","venues"};
@@ -61,7 +77,7 @@ public class DummyStorage implements DataStorage {
 
     @Override
     public List<Map<String, String>> readAll(String tableName) {
-        if(!Arrays.stream(tableNames).anyMatch(tableName.toLowerCase()::equals)){
+        if(Arrays.stream(tableNames).noneMatch(tableName.toLowerCase()::equals)){
             throw new IllegalArgumentException("Table Name: " + tableName + " does not exist.");
         }
         return data;
@@ -106,5 +122,15 @@ public class DummyStorage implements DataStorage {
     @Override
     public String[] getTableNames() {
         return tableNames;
+    }
+
+    @Override
+    public String toString() {
+        return "DummyStorage{" +
+            "name='" + name + '\'' +
+            ", storageID='" + storageID + '\'' +
+            ", tableNames=" + Arrays.toString(tableNames) +
+            ", data=" + data +
+            '}';
     }
 }
