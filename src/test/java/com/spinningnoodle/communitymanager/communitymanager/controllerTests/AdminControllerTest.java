@@ -5,17 +5,11 @@ import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(AdminController.class)
+
 public class AdminControllerTest {
     
-    @InjectMocks
     private AdminController adminController;
     
     @BeforeEach
