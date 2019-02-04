@@ -19,10 +19,15 @@ public class AdminController {
     }
     
     @PostMapping("/loginAttempt")
-    public String loginAttempt(@RequestParam(name = "username", required = false, defaultValue = "j") String username,
-                               @RequestParam(name = "password", required = false, defaultValue = "p") String password){
-        loggedIn = true;
-        return "redirect:/meetup";
+    public String loginAttempt(@RequestParam(name = "username", required = false, defaultValue = "username") String username,
+                               @RequestParam(name = "password", required = false, defaultValue = "password") String password){
+        if(username.equals("username") && password.equals("password")) {
+            loggedIn = true;
+            return "redirect:/meetup";
+        }
+        else{
+            return "redirect:/";
+        }
     }
     
     @GetMapping("/logout")
@@ -32,10 +37,10 @@ public class AdminController {
     }
     
     //TODO create dashboard page
-    @GetMapping("/dashboard")
-    public String dashboard(){
-        return "login.html";
-    }
+//    @GetMapping("/dashboard")
+//    public String dashboard(){
+//        return "login.html";
+//    }
     
     @GetMapping("/meetup")
     public String meetup() throws InvalidUserException {
@@ -45,6 +50,7 @@ public class AdminController {
         return "meetup";
     }
     
+    //TODO return token from DB when logged in
     @PostMapping("/getToken")
     public String getToken() throws InvalidUserException {
         if(!loggedIn){
@@ -56,8 +62,8 @@ public class AdminController {
     }
     
     //TODO create google sheets page
-    @GetMapping("/googleSheets")
-    public String googleSheets(@RequestParam(name = "sheet", required = false, defaultValue = "all") String sheet){
-        return "login.html";
-    }
+//    @GetMapping("/googleSheets")
+//    public String googleSheets(@RequestParam(name = "sheet", required = false, defaultValue = "all") String sheet){
+//        return "login.html";
+//    }
 }

@@ -26,11 +26,6 @@ public class SignUpController {
     }
     
     private boolean validToken(String token){
-        if(token.equals("something")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return token.equals("something");
     }
 }
