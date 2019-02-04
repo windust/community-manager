@@ -26,7 +26,7 @@ public class DummyStorage implements DataStorage {
     private List<Map<String, String>> data;
 
     public DummyStorage(String storageID) throws ConnectException {
-        if(storageID.equals("123")) throw new ConnectException("Could not connect to data storage,");
+        if(!storageID.equals("123")) throw new ConnectException("Could not connect to data storage,");
         this.storageID = storageID;
         this.name = storageID;
         this.tableNames = new String[]{"speakers","venues"};
