@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * All implementations should include the following constructors:
  *      DataStorage(String storageID) - opens existing DataStorage;
- *      
+ *
  * @author  Cream 4 UR Coffee
  * @version 0.1
  * @since   2019-02-04
