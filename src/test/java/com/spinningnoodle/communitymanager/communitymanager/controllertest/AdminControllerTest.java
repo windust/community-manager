@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.controllerTest;
+package com.spinningnoodle.communitymanager.communitymanager.controllertest;
 
 import com.spinningnoodle.communitymanager.controller.AdminController;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
