@@ -20,10 +20,10 @@ public class SignUpController {
     }
     
     //TODO create speakers sign up page
-    @GetMapping("/speaker")
-    public String speaker(){
-        return "login.html";
-    }
+//    @GetMapping("/speaker")
+//    public String speaker(){
+//        return "login.html";
+//    }
     
     private boolean validToken(String token){
         return token.equals("something");
