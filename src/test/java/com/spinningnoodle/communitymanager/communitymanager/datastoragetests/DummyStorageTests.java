@@ -27,7 +27,7 @@ class DummyStorageTests {
 
     @Test
     void throwsConnectExceptionWhenCantConnectToDataStorage() {
-        Assertions.assertThrows(ConnectException.class, () -> new DummyStorage("133"));
+        Assertions.assertThrows(GeneralSecurityException.class, () -> new DummyStorage("133"));
     }
 
     @Test
