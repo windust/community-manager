@@ -12,11 +12,14 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.ValueRange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,8 +92,60 @@ public class GoogleSheets implements DataStorage {
     }
 
     @Override
-    public List<Map<String, String>> readAll(String tableName) {
-        return null;
+    public List<Map<String, String>> readAll(String tableName) throws IOException {
+        String range = tableName;
+        List<Map<String, String>> data = new ArrayList<>();
+        if(!service.spreadsheets().get(storageID).isEmpty()) {
+            //System.out.println(service.spreadsheets().get(storageID).get("name"));
+            ValueRange response = service.spreadsheets().values()
+                .get(storageID, range)
+                .execute();
+            List<List<Object>> values = response.getValues();
+            if (values == null || values.isEmpty()) {
+//                System.out.println("No data found.");
+                return null;
+            } else {
+                //System.out.println("Name, Major");
+//                for (List row : values) {
+//                    if(row.size() >= 2) {
+//                        // Print columns A and E, which correspond to indices 0 and 4.
+//                        System.out.printf("%s, %s\n", row.get(0), row.get(1));
+//                    } else if(row.size() == 1){
+//                        System.out.printf("%s, %s\n", row.get(0), "blank");
+//                    } else {
+//                        System.out.printf("%s, %s\n", "blank", "blank");
+//                    }
+                List<Object> attributesNames = values.get(0);
+                List<String> attributes = new ArrayList<>();
+                for(Object attributeName: attributesNames){
+                    if(attributeName.getClass().toString().equals("class java.lang.String")){
+                        attributes.add(attributeName.toString());
+                    } else {
+                        System.out.println(attributeName.getClass().toString());
+                    }
+                }
+
+                for(int rowNum = 1; rowNum < values.size(); rowNum++){
+                    HashMap<String,String> row = new HashMap<>();
+                    List<Object> rawRow = values.get(rowNum);
+                    for(int columnNum = 0; columnNum < attributes.size(); columnNum++){
+                        Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
+                        if(value.getClass().toString().equals("class java.lang.String")){
+                            row.put(attributes.get(columnNum),value.toString());
+                        } else {
+                            //TBD what is the best way to handle this
+                            System.out.println(value.getClass().toString());
+                            row.put(attributes.get(columnNum),"Failed to Return Properly");
+                        }
+                    }
+                    data.add(row);
+
+                }
+            }
+        } else {
+            System.out.println("The requested spreadsheet was empty.");
+        }
+        return data;
     }
 
     @Override

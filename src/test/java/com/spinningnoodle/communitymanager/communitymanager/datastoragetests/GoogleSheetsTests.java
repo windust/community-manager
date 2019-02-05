@@ -83,7 +83,7 @@ public class GoogleSheetsTests {
     }
 
     @Test
-    public void whenIRequestTableOfVenuesIShouldGetTheseTwoRows() {
+    public void whenIRequestTableOfVenuesIShouldGetTheseTwoRows() throws IOException {
         assertEquals(expected, testStorage.readAll("venues"));
     }
 
@@ -106,7 +106,7 @@ public class GoogleSheetsTests {
     }
 
     @Test
-    void whenISetNameIGetNewName() {
+    void whenISetNameIGetNewName() throws IOException {
         String oldName = testStorage.getName();
 
         expected.get(0).put("name","NewName");
