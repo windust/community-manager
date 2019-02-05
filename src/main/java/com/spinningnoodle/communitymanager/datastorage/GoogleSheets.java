@@ -57,8 +57,30 @@ public class GoogleSheets implements DataStorage {
     public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
         //open google sheets
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+            .setApplicationName(APPLICATION_NAME)
+            .build();
         //get name
         //get table names (Might be doing too much!)
+    }
+
+    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        // Load client secrets.
+        //Not sure if I should run this off of GoogleSheets or the main community manager
+        //TBD working but still claims to be quickstart! Haven't found where or why!
+        InputStream in = GoogleSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+//        InputStream in = GoogleSheets.class.getResourceAsStream(/);
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets
+            .load(JSON_FACTORY, new InputStreamReader(in));
+        // Build flow and trigger user authorization request.
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+            HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, READ_WRITE_SCOPE)
+            .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+            .setAccessType("offline")
+            .build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
     @Override
@@ -93,7 +115,7 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public String getStorageID() {
-        return null;
+        return storageID;
     }
 
     @Override
@@ -102,6 +124,8 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public String[] getTableNames() {
-        return null;
+        //TBD get from actual data storage
+        String[] fakeNames = {"venues","speakers","meetups"};
+        return fakeNames;
     }
 }
