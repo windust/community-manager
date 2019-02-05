@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.communitymanager.model.entities;
 
 import java.util.Map;
 

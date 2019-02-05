@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.communitymanager.model.entities;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Quentin Guenther <qguenther@outlook.com>
  * @version 1.0
  */
-public class Venue implements IEntity {
+public class Venue extends TokenEntity {
     private static int nextId = 1;
 
     private int venueId;

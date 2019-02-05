@@ -1,14 +1,13 @@
-package com.spinningnoodle.communitymanager.model.collections;
+package com.spinningnoodle.communitymanager.communitymanager.model.collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.spinningnoodle.communitymanager.communitymanager.datastoragetests.DummyStorage;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
+import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 class VenueCollectionTest {
 

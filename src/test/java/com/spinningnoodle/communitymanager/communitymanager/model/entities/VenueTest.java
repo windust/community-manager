@@ -1,12 +1,14 @@
-package com.spinningnoodle.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class VenueTest {
 
@@ -37,18 +39,6 @@ class VenueTest {
         int newPrimaryKey = testPrimaryKey + 1;
         venue.setPrimaryKey(newPrimaryKey);
         assertEquals(newPrimaryKey, venue.getPrimaryKey());
-    }
-
-    @Test
-    void getName() {
-        assertEquals(testName, venue.getName());
-    }
-
-    @Test
-    void setName() {
-        String newName = "Testing Coorp.";
-        venue.setName(newName);
-        assertEquals(newName, venue.getName());
     }
 
     @Test

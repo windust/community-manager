@@ -1,7 +1,7 @@
-package com.spinningnoodle.communitymanager.model.collections;
+package com.spinningnoodle.communitymanager.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
+import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
