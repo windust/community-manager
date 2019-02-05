@@ -3,6 +3,10 @@
 .idea
 *.iml
 /out/
+/tokens/StoredCredential
+/config/SpreadSheetID
+/credentials.json
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
