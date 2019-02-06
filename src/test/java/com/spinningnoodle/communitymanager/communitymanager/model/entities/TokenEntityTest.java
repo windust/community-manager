@@ -25,7 +25,7 @@ class TokenEntityTest {
     }
     
     @Test
-    public void TokenSetWhenProvided(){
+    public void tokenSetWhenProvided(){
         fields.put("token", "something");
         tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
         
@@ -33,17 +33,17 @@ class TokenEntityTest {
     }
     
     @Test
-    public void TokenIsNullWhenNotProvided(){
+    public void tokenIsNullWhenNotProvided(){
         Assertions.assertNull(ReflectionTestUtils.getField(tokenGenerator, "token"));
     }
     
     @Test
-    public void TokenCreatedWhenCalledButIsNull(){
+    public void tokenCreatedWhenCalledButIsNull(){
         Assertions.assertNotNull(tokenGenerator.getToken());
     }
     
     @Test
-    public void TokenReturnsStoredValueWhenPresent(){
+    public void tokenReturnsStoredValueWhenPresent(){
         fields.put("token", "something");
         tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
 
@@ -52,7 +52,7 @@ class TokenEntityTest {
     }
     
     @Test
-    public void TokenEndsWithEntityName(){
+    public void tokenEndsWithEntityName(){
         String token = tokenGenerator.getToken();
         String name = token.substring(token.length() - 7);
 
