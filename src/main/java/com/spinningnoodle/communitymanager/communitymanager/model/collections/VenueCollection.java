@@ -25,6 +25,7 @@ public class VenueCollection {
 	 */
 	public static void fetchFromDataStorage(DataStorage dataStorage)
 		throws UnexpectedPrimaryKeyException {
+		venues.clear();
 		for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
 			Venue venue = new Venue().build(venueFields);
 			venues.put(venue.getVenueId(), venue);

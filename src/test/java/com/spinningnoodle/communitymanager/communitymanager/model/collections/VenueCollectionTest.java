@@ -26,20 +26,22 @@ class VenueCollectionTest {
 	}
 
 	@Test
-	void getById() throws EntityNotFoundException {
+	void whenVenueCollectionHasDataThenWhenAVenueId() throws EntityNotFoundException {
+		// Get a venue to test against
+		// Needs to be done because sequentially generated venueId affect equality
 		Venue testVenue = VenueCollection.getAll().get(1);
 
 		assertEquals(testVenue, VenueCollection.getById(testVenue.getVenueId()));
 	}
 
 	@Test
-	@DisplayName("Call getById() with a Id that does not exist should throw EntityNotFoundException exception")
-	void getByIdInvalid() {
+	void whenAIdIsPassedToGetByIdThatDoesNotExistThenEntityNotFoundExceptionShouldBeThrown() {
 		assertThrows(EntityNotFoundException.class, () -> VenueCollection.getById(-1));
 	}
 
 	@Test
-	void getAll() throws EntityNotFoundException {
-		assertTrue(VenueCollection.getAll().contains(VenueCollection.getById(2)));
+	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() throws GeneralSecurityException {
+		DummyStorage dummyStorage = new DummyStorage("123");
+		assertEquals(dummyStorage.readAll("venues").size(), VenueCollection.getAll().size());
 	}
 }
