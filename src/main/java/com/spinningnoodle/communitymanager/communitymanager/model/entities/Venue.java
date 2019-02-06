@@ -26,19 +26,17 @@ public class Venue extends TokenEntity {
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
-        Venue venue = new Venue();
+    	this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
+        this.setName(fields.getOrDefault("name", null));
+        this.setAddress(fields.getOrDefault("address", null));
+        this.setCapacity(Integer.parseInt(fields.getOrDefault("capacity", "0")));
+        this.setContactPerson(fields.getOrDefault("contactPerson", null));
+        this.setContactEmail(fields.getOrDefault("contactEmail", null));
+        this.setContactPhone(fields.getOrDefault("contactPhone", null));
+        this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
+        this.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
 
-        venue.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
-        venue.setName(fields.getOrDefault("name", null));
-        venue.setAddress(fields.getOrDefault("address", null));
-        venue.setCapacity(Integer.parseInt(fields.getOrDefault("capacity", "0")));
-        venue.setContactPerson(fields.getOrDefault("contactPerson", null));
-        venue.setContactEmail(fields.getOrDefault("contactEmail", null));
-        venue.setContactPhone(fields.getOrDefault("contactPhone", null));
-        venue.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        venue.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
-
-        return venue;
+        return this;
     }
 
 	/**
@@ -222,9 +220,5 @@ public class Venue extends TokenEntity {
 			", contactAltPhone='" + contactAltPhone + '\'' +
 			", requestedHostingDate='" + requestedHostingDate + '\'' +
 			'}';
-	}
-
-	private String getFieldValue(Map<String, String> fields, String key) {
-		return fields.getOrDefault(key, null);
 	}
 }
