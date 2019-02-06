@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class VenueCollectionTest {
+	private Venue testVenue = new Venue();
 
 	@BeforeEach
 	void setUp() {
@@ -19,14 +20,12 @@ class VenueCollectionTest {
 		} catch (GeneralSecurityException e) {
 			e.printStackTrace();
 		}
+
+		VenueCollection.addToCollection(testVenue);
 	}
 
 	@Test
 	void whenVenueCollectionHasDataThenWhenAVenueId() throws EntityNotFoundException {
-		// Get a venue to test against
-		// Needs to be done because sequentially generated venueId affect equality
-		Venue testVenue = VenueCollection.getAll().get(1);
-
 		assertEquals(testVenue, VenueCollection.getById(testVenue.getVenueId()));
 	}
 

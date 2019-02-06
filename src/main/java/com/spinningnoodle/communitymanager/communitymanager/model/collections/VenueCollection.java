@@ -37,6 +37,15 @@ public class VenueCollection {
 	}
 
 	/**
+	 * Add one venue to the collection.
+	 *
+	 * @param venue The Venue to be saved into the Collection .
+	 */
+	public static void addToCollection(Venue venue) {
+		venues.put(venue.getVenueId(), venue);
+	}
+
+	/**
 	 * Gets a venue from this collection based on it's Venue ID
 	 *
 	 * @param venueId The venueID of the venue to be retrieves.
