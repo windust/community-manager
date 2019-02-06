@@ -67,4 +67,20 @@ public class VenueCollection {
 	public static List<Venue> getAll() {
 		return new ArrayList<>(venues.values());
 	}
+
+	/**
+	 * Get the amount of Venues stored in the collection
+	 *
+	 * @return The amount of Venues stored in the collection
+	 */
+	public static int size() {
+		return venues.size();
+	}
+
+	/**
+	 * Removes all Venues from the collection
+	 */
+	public static void clear() {
+		venues.clear();
+	}
 }

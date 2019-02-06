@@ -1,31 +1,42 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.spinningnoodle.communitymanager.communitymanager.datastoragetests.DummyStorage;
-import com.spinningnoodle.communitymanager.communitymanager.model.entities.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class VenueCollectionTest {
-	private Venue testVenue = new Venue();
-
 	@BeforeEach
 	void setUp() {
-		try {
-			VenueCollection.fetchFromDataStorage(new DummyStorage("123"));
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
-		}
-
-		VenueCollection.addToCollection(testVenue);
+		VenueCollection.clear();
 	}
 
 	@Test
-	void whenVenueCollectionHasDataThenWhenAVenueId() throws EntityNotFoundException {
+	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
+		DummyStorage dummyStorage = new DummyStorage("123");
+		VenueCollection.fetchFromDataStorage(dummyStorage);
+
+		assertEquals(dummyStorage.readAll("venues").size(), VenueCollection.size());
+	}
+
+	@Test
+	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
+		Venue testVenue = new Venue();
+		VenueCollection.addToCollection(testVenue);
+
+		assertEquals(1, VenueCollection.size());
+	}
+
+	@Test
+	void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
+		Venue testVenue = new Venue();
+		VenueCollection.addToCollection(testVenue);
+
 		assertEquals(testVenue, VenueCollection.getById(testVenue.getVenueId()));
 	}
 
@@ -35,8 +46,12 @@ class VenueCollectionTest {
 	}
 
 	@Test
-	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() throws GeneralSecurityException {
-		DummyStorage dummyStorage = new DummyStorage("123");
-		assertEquals(dummyStorage.readAll("venues").size(), VenueCollection.getAll().size());
+	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() {
+		int collectionSize = 5;
+
+		IntStream.range(0, collectionSize).mapToObj(i -> new Venue())
+			.forEach(VenueCollection::addToCollection);
+
+		assertEquals(collectionSize, VenueCollection.getAll().size());
 	}
 }
