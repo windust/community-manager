@@ -25,6 +25,7 @@ repositories {
 dependencies {
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
 	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.11.RELEASE'
+	compile('org.apache.tomcat.embed:tomcat-embed-jasper:8.0.47')
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
