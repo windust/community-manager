@@ -5,10 +5,10 @@ import java.util.Map;
 /**
  * Venue Entity
  *
- * Venue stores all information associated with a venue in the application
+ * Venue stores all information associated with a venue in the application.
  *
- * @author Quentin Guenther <qguenther@outlook.com>
- * @version 1.0
+ * @author Cream 4 UR Coffee
+ * @version 0.1
  */
 public class Venue extends TokenEntity {
     private static int nextId = 1;
@@ -25,7 +25,7 @@ public class Venue extends TokenEntity {
     private String requestedHostingDate;
 
     @Override
-    public Venue build(Map<String, String> fields) {
+    public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
         Venue venue = new Venue();
 
         venue.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
@@ -162,14 +162,14 @@ public class Venue extends TokenEntity {
     }
 
 	/**
-	 * @return The date this venue has requested to host
+	 * @return The date that was this venue was requested to host by Java User Group
 	 */
     public String getRequestedHostingDate() {
         return requestedHostingDate;
     }
 
 	/**
-	 * @param requestedHostingDate The date this venue has requested to host
+	 * @param requestedHostingDate The date this venue was requested to host by Java User Group
 	 */
     public void setRequestedHostingDate(String requestedHostingDate) {
         this.requestedHostingDate = requestedHostingDate;
@@ -200,8 +200,12 @@ public class Venue extends TokenEntity {
 	/**
 	 * @param primaryKey he venue's primary key stored in DataStorage
 	 */
-    public void setPrimaryKey(int primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setPrimaryKey(int primaryKey) throws UnexpectedPrimaryKeyException {
+        if(primaryKey == 0 || primaryKey < -1) {
+        	throw new UnexpectedPrimaryKeyException();
+		}
+
+    	this.primaryKey = primaryKey;
     }
 
 	@Override

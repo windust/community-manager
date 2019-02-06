@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.collections;
 
+import com.spinningnoodle.communitymanager.communitymanager.model.entities.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.Map;
 /**
  * The VenueCollection stores a collection of venues and connect the list to a DataStorage.
  *
- * @author Quentin Guenther
- * @version 1.0
+ * @author Crean 4 UR Coffee
+ * @version 0.1
  */
 public class VenueCollection {
 	private static final String TABLE_NAME = "venues";
@@ -22,7 +23,8 @@ public class VenueCollection {
 	 *
 	 * @param dataStorage The DataStorage used to store venues.
 	 */
-	public static void fetchFromDataStorage(DataStorage dataStorage) {
+	public static void fetchFromDataStorage(DataStorage dataStorage)
+		throws UnexpectedPrimaryKeyException {
 		for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
 			Venue venue = new Venue().build(venueFields);
 			venues.put(venue.getVenueId(), venue);
@@ -43,9 +45,7 @@ public class VenueCollection {
 		if(venue.getToken ==  venues.get(venue.getVenueId()).getToken) {
 			// Todo: Throw error if venue token was unchanged
 		}
-		/*
-
-		 */
+		*/
 		// TODO: update DatStore with venue's token once Venue can hold a token
 		//dataStorage.update(TABLE_NAME, venue.getPrimaryKey(), "Token", venue.getToken);
 	}
@@ -55,11 +55,11 @@ public class VenueCollection {
 	 *
 	 * @param venueId The venueID of the venue to be retrieves.
 	 * @return A venue who's venueId matches the venueId passed in
-	 * @throws EntityNotFound When venue with the Id passed cannot be found
+	 * @throws EntityNotFoundException When venue with the Id passed cannot be found
 	 */
-	public static Venue getById(int venueId) throws EntityNotFound {
+	public static Venue getById(int venueId) throws EntityNotFoundException {
 		if(!venues.containsKey(venueId)) {
-			throw new EntityNotFound();
+			throw new EntityNotFoundException();
 		}
 		return venues.get(venueId);
 	}

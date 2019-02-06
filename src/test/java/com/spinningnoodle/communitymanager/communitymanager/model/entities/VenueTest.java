@@ -1,11 +1,13 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,114 +32,120 @@ class VenueTest {
     }
 
     @Test
-    void getPrimaryKey() {
+    void whenIHaveAVenueThenICanGetPrimaryKey() {
         assertEquals(testPrimaryKey, venue.getPrimaryKey());
     }
 
     @Test
-    void setPrimaryKey() {
+    void whenIHaveAVenueThenICanSetThePrimaryKey() throws UnexpectedPrimaryKeyException {
         int newPrimaryKey = testPrimaryKey + 1;
         venue.setPrimaryKey(newPrimaryKey);
         assertEquals(newPrimaryKey, venue.getPrimaryKey());
     }
 
     @Test
-    void getAddress() {
+    void whenIAttemptToSetThePrimaryKeyToAnUnexpectedNumberThenIGetUnexpectedPrimaryKeyException() {
+        int newPrimaryKey = -2;
+        assertThrows(UnexpectedPrimaryKeyException.class, () -> venue.setPrimaryKey(newPrimaryKey));
+    }
+
+    @Test
+    void whenIHaveAVenueThenICanGetAddress() {
         assertEquals(testAddress, venue.getAddress());
     }
 
     @Test
-    void setAddress() {
+    void whenIHaveAVenueThenICanSetTheAddress() {
         String newAddress = "123 New Ave.";
         venue.setAddress(newAddress);
         assertEquals(newAddress, venue.getAddress());
     }
 
     @Test
-    void getVenueId() {
+    void whenIHaveAVenueICanGetItsVenueId() {
         assertTrue(venue.getVenueId() >= 1);
     }
 
     @Test
-    void setVenueId() {
+    void whenIHaveAVenueICanSetItsVenueIdToTheNextId() {
         int originalId = venue.getVenueId();
         venue.setVenueId();
         assertEquals(originalId + 1, venue.getVenueId());
     }
 
     @Test
-    void eachVenueIncrementsId() {
+    void eachVenueIncrementsIdByOne() {
         Venue newVenue = new Venue();
         assertEquals(newVenue.getVenueId(), venue.getVenueId() + 1);
     }
 
     @Test
-    void getCapacity() {
+    void whenIHaveAVenueThenICanGetCapacity() {
         assertEquals(testCapacity, venue.getCapacity());
     }
 
     @Test
-    void setCapacity() {
+    void whenIHaveAVenueThenICanSetItsCapacity() {
         int newCapacity = testCapacity * 2;
         venue.setCapacity(newCapacity);
         assertEquals(newCapacity, venue.getCapacity());
     }
 
     @Test
-    void getContactPerson() {
+    void whenIHaveAVenueThenICanGetItsContactPerson() {
         assertEquals(testContactPerson, venue.getContactPerson());
     }
 
     @Test
-    void setContactPerson() {
+    void whenIHaveAVenueThenICanSetTheContactPerson () {
         String newContactPerson = "Jane Doe";
         venue.setContactPerson(newContactPerson);
         assertEquals(newContactPerson, venue.getContactPerson());
     }
 
     @Test
-    void getContactEmail() {
+    void whenIHaveAVenueThenICanGetTheContactEmail() {
         assertEquals(testContactEmail, venue.getContactEmail());
     }
 
     @Test
-    void setContactEmail() {
+    void whenIHaveAVenueThenICanSetTheContactEmail() {
         String newContactEmail = "hr@company.com";
         venue.setContactEmail(newContactEmail);
         assertEquals(newContactEmail, venue.getContactEmail());
     }
 
     @Test
-    void getContactPhone() {
+    void whenIHaveAVenueThenICanGetTheContactPhoneNumber() {
         assertEquals(testContactPhone, venue.getContactPhone());
     }
 
     @Test
-    void setContactPhone() {
+    void whenIHaveAVenueThenICanSetTheContactPhoneNumber() {
         String newPhone = "(555)444-3333";
         venue.setContactPhone(newPhone);
         assertEquals(newPhone, venue.getContactPhone());
     }
 
     @Test
-    void getContactAltPhone() {
+    void whenIHaveAVenueThenICanGetTheAltContactPhoneNumber() {
         assertEquals(testContactAltPhone, venue.getContactAltPhone());
     }
 
     @Test
-    void setContactAltPhone() {
+    void whenIHaveAVenueThenICanSetTheAltContactPhoneNumber() {
         String newAltPhone = "(555)444-3333";
         venue.setContactAltPhone(newAltPhone);
         assertEquals(newAltPhone, venue.getContactAltPhone());
     }
 
     @Test
-    void getRequestedHostingDate() {
+    void whenIHaveAVenueThenICanGetTheDateIRequestedTheVenueToHost() {
         assertEquals(testRequestedHostingDate, venue.getRequestedHostingDate());
     }
 
     @Test
-    void setRequestedHostingDate() {
+    void whenIHaveAVenueThenICanSetTheDateIRequestThisVenueToHost() {
         String newHostingDate = "1/2/1971";
         venue.setRequestedHostingDate(newHostingDate);
         assertEquals(newHostingDate, venue.getRequestedHostingDate());
@@ -161,81 +169,117 @@ class VenueTest {
             fields.put("contactAltPhone", testContactAltPhone);
             fields.put("requestedHostingDate", testRequestedHostingDate);
 
-            builtVenue = new Venue().build(fields);
+            try {
+                builtVenue = new Venue().build(fields);
+            } catch (UnexpectedPrimaryKeyException e) {
+                e.printStackTrace();
+            }
         }
 
         @Test
-        void primaryKeyIsSet() {
+        void whenIBuildAVenueThenPrimaryKeyIsSet() {
             assertEquals(Integer.parseInt(fields.get("primaryKey")), venue.getPrimaryKey());
         }
 
         @Test
-        void nameIsSet() {
+        void whenIBuildAVenueThenNameIsSet() {
             assertEquals(fields.get("name"), builtVenue.getName());
         }
 
         @Test
-        void addressIsSet() {
+        void whenIBuildAVenueThenAddressIsSet() {
             assertEquals(fields.get("address"), builtVenue.getAddress());
         }
 
         @Test
-        void capacityIsSet() {
+        void whenIBuildAVenueThenCapacityIsSet() {
             assertEquals(Integer.parseInt(fields.get("capacity")), builtVenue.getCapacity());
         }
 
         @Test
-        void contactPersonIsSet() {
+        void whenIBuildAVenueThenContactPersonIsSet() {
             assertEquals(fields.get("contactPerson"), builtVenue.getContactPerson());
         }
 
         @Test
-        void contactEmailIsSet() {
+        void whenIBuildAVenueThenContactEmailIsSet() {
             assertEquals(fields.get("contactEmail"), builtVenue.getContactEmail());
         }
 
         @Test
-        void contactPhoneIsSet() {
+        void whenIBuildAVenueThenContactPhoneIsSet() {
             assertEquals(fields.get("contactPhone"), builtVenue.getContactPhone());
         }
 
         @Test
-        void contactAltPhoneIsSet() {
+        void whenIBuildAVenueThenContactAltPhoneIsSet() {
             assertEquals(fields.get("contactAltPhone"), builtVenue.getContactAltPhone());
         }
 
         @Test
-        void requestedHostingDateIsSet() {
+        void whenIBuildAVenueThenRequestedHostingDateIsSet() {
             assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate());
         }
 
 
         @Nested
-        class emptyFieldCheck {
+        class BuildVenueWithNoFields {
 
-            private Map<String, String> field = new HashMap<>();
+            private Map<String, String> fields = new HashMap<>();
             private Venue venue;
-            private final String testingName = null;
 
             @BeforeEach
-            void fieldSetup() {
-
-                field.put("name", testingName);
-                venue = new Venue().build(field);
-
-            }
-
-            @Test
-            void emptyFieldCheck() {
+            void setUp() {
                 try {
-                    assertEquals(venue.getName(), null);
-                } catch (Exception e) {
-                    assertThrows(e.getClass(), () -> doesntThrowException());
+                    venue = new Venue().build(fields);
+                } catch (UnexpectedPrimaryKeyException e) {
+                    e.printStackTrace();
                 }
             }
 
-            private String doesntThrowException() {
-                return "Empty name";
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenPrimaryKeyShouldBeNegativeOne() {
+                assertEquals(-1, venue.getPrimaryKey());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenNameShouldBeNull() {
+                assertNull(venue.getName());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenAddressShouldBeNull() {
+                assertNull(venue.getAddress());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenCapacityShouldBeZero() {
+                assertEquals(0, venue.getCapacity());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenContactPersonShouldBeNull() {
+                assertNull(venue.getContactPerson());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenContactEmailShouldBeNull() {
+                assertNull(venue.getContactEmail());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenContactPhoneShouldBeNull() {
+                assertNull(venue.getContactPhone());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenContactAltPhoneShouldBeNull() {
+                assertNull(venue.getContactAltPhone());
+            }
+
+            @Test
+            void whenIBuildAVenueWithNoFieldsThenRequestedHostingDateShouldBeNull() {
+                assertNull(venue.getRequestedHostingDate());
             }
         }
     }
