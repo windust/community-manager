@@ -32,25 +32,6 @@ public class VenueCollection {
 	}
 
 	/**
-	 * Updates the DataStore with the updated venue.
-	 *
-	 * @param venue the venue which has been updated
-	 * @param dataStorage The DataStorage where the venue exists in memory.
-	 */
-	public static void updateToken(Venue venue, DataStorage dataStorage) {
-		/* TODO: Data integrity checks
-		if(!venues.containsKey(venue.getVenueId())) {
-			// TODO: Throw an error if venue does not exist in this hashmap
-		}
-		if(venue.getToken ==  venues.get(venue.getVenueId()).getToken) {
-			// Todo: Throw error if venue token was unchanged
-		}
-		*/
-		// TODO: update DatStore with venue's token once Venue can hold a token
-		//dataStorage.update(TABLE_NAME, venue.getPrimaryKey(), "Token", venue.getToken);
-	}
-
-	/**
 	 * Gets a venue from this collection based on it's Venue ID
 	 *
 	 * @param venueId The venueID of the venue to be retrieves.
