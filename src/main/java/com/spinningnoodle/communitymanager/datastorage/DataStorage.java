@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.datastorage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +29,9 @@ public interface DataStorage {
      * @param tableName string: name of table
      * @return List<Map<String,String>> of all data in specified table
      * @throws IllegalArgumentException if table does not exist
+     * @throws IOException if error getting data storage based on storageID
      */
-    List<Map<String, String>> readAll(String tableName);
+    List<Map<String, String>> readAll(String tableName) throws IOException;
 
     /**
      * update changes one entry based on the specified table name, primary key, and
