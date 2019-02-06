@@ -23,11 +23,15 @@ public class VenueCollection {
 	 *
 	 * @param dataStorage The DataStorage used to store venues.
 	 */
-	public static void fetchFromDataStorage(DataStorage dataStorage)
-		throws UnexpectedPrimaryKeyException {
+	public static void fetchFromDataStorage(DataStorage dataStorage) {
 		venues.clear();
 		for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
-			Venue venue = new Venue().build(venueFields);
+			Venue venue = new Venue();
+			try {
+				venue.build(venueFields);
+			} catch (UnexpectedPrimaryKeyException e) {
+				e.printStackTrace();
+			}
 			venues.put(venue.getVenueId(), venue);
 		}
 	}

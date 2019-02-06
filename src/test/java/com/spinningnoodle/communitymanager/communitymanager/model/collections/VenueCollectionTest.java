@@ -15,11 +15,7 @@ class VenueCollectionTest {
 	@BeforeEach
 	void setUp() {
 		try {
-			try {
-				VenueCollection.fetchFromDataStorage(new DummyStorage("123"));
-			} catch (UnexpectedPrimaryKeyException e) {
-				e.printStackTrace();
-			}
+			VenueCollection.fetchFromDataStorage(new DummyStorage("123"));
 		} catch (GeneralSecurityException e) {
 			e.printStackTrace();
 		}
