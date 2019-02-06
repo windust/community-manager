@@ -27,7 +27,7 @@ class DummyStorageTests {
     }
 
     @Test
-    void throwsConnectExceptionWhenCantConnectToDataStorage() {
+    void throwsGeneralSecurityExceptionWhenCantConnectToDataStorage() {
         Assertions.assertThrows(GeneralSecurityException.class, () -> new DummyStorage("133"));
     }
 
@@ -46,6 +46,7 @@ class DummyStorageTests {
         List<Map<String, String>> expected;
         List<Map<String, String>> list = new ArrayList<>();
         Map<String,String> row = new HashMap<>();
+        row.put("primaryKey", "1");
         row.put("name","Excellent");
         row.put("address","100 Nowhere St");
         row.put("capacity", "100");

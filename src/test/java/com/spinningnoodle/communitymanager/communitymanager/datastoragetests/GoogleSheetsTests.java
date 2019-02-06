@@ -31,7 +31,6 @@ public class GoogleSheetsTests {
     public void initializeDataBase() throws IOException, GeneralSecurityException {
         Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
         testID = testIDFile.next();
-        System.out.println(testID);
 
         testStorage = new GoogleSheets(testID);
 

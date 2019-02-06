@@ -96,25 +96,13 @@ public class GoogleSheets implements DataStorage {
         String range = tableName;
         List<Map<String, String>> data = new ArrayList<>();
         if(!service.spreadsheets().get(storageID).isEmpty()) {
-            //System.out.println(service.spreadsheets().get(storageID).get("name"));
             ValueRange response = service.spreadsheets().values()
                 .get(storageID, range)
                 .execute();
             List<List<Object>> values = response.getValues();
             if (values == null || values.isEmpty()) {
-//                System.out.println("No data found.");
                 return null;
             } else {
-                //System.out.println("Name, Major");
-//                for (List row : values) {
-//                    if(row.size() >= 2) {
-//                        // Print columns A and E, which correspond to indices 0 and 4.
-//                        System.out.printf("%s, %s\n", row.get(0), row.get(1));
-//                    } else if(row.size() == 1){
-//                        System.out.printf("%s, %s\n", row.get(0), "blank");
-//                    } else {
-//                        System.out.printf("%s, %s\n", "blank", "blank");
-//                    }
                 List<Object> attributesNames = values.get(0);
                 List<String> attributes = new ArrayList<>();
                 for(Object attributeName: attributesNames){
