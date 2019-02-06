@@ -4,6 +4,8 @@ import java.util.Map;
 
 /**
  * Class used strictly for testing TokenEntity abstract class
+ * @author Cream 4 UR Coffee
+ * @version 0.1
  */
 public class TokenTestingClass extends TokenEntity{
     @Override

@@ -5,6 +5,9 @@ import java.util.UUID;
 /**
  * Abstract class that implements token and name fields
  * as well as there setters and getters
+ *
+ * @author Cream 4 UR Coffee
+ * @version 0.1
  */
 public abstract class TokenEntity implements IEntity {
     private String name;
@@ -45,5 +48,13 @@ public abstract class TokenEntity implements IEntity {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenEntity{" +
+            "name='" + name + '\'' +
+            ", token='" + token + '\'' +
+            '}';
     }
 }

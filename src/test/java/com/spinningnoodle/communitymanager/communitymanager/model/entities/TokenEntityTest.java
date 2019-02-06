@@ -11,10 +11,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 class TokenEntityTest {
 
-    private final String testName = "expedia";
-    private final String tokenName = "Expedia";
-    private final String testToken = "something";
-    
+    private final String testName = "Expedia";
+
     private TokenTestingClass tokenGenerator;
     private Map<String, String> fields;
     
@@ -48,7 +46,8 @@ class TokenEntityTest {
     public void TokenReturnsStoredValueWhenPresent(){
         fields.put("token", "something");
         tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
-        
+
+        String testToken = "something";
         Assertions.assertEquals(tokenGenerator.getToken(), testToken);
     }
     
@@ -56,7 +55,8 @@ class TokenEntityTest {
     public void TokenEndsWithEntityName(){
         String token = tokenGenerator.getToken();
         String name = token.substring(token.length() - 7);
-        
+
+        String tokenName = "Expedia";
         Assertions.assertEquals(tokenName, name);
     }
     

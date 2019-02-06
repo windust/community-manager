@@ -197,6 +197,7 @@ public class Venue extends TokenEntity {
 
 	/**
 	 * @param primaryKey he venue's primary key stored in DataStorage
+	 * @throws UnexpectedPrimaryKeyException If Primary Key is 0 or < -1
 	 */
     public void setPrimaryKey(int primaryKey) throws UnexpectedPrimaryKeyException {
         if(primaryKey == 0 || primaryKey < -1) {

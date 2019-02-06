@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -152,7 +151,7 @@ class VenueTest {
     }
 
     @Nested
-    class buildNewVenueFromMapOfFields {
+    class BuildNewVenueFromMapOfFieldsTest {
 
         private Venue builtVenue;
         private Map<String, String> fields = new HashMap<>();
@@ -223,7 +222,7 @@ class VenueTest {
 
 
         @Nested
-        class BuildVenueWithNoFields {
+        class BuildVenueWithNoFieldsTest {
 
             private Map<String, String> fields = new HashMap<>();
             private Venue venue;
