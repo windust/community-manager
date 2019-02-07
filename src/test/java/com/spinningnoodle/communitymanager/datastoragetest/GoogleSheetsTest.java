@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
+package com.spinningnoodle.communitymanager.datastoragetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,7 +7,6 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.security.GeneralSecurityException;
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class GoogleSheetsTests {
+public class GoogleSheetsTest {
 
     private DataStorage testStorage;
     private String testID;

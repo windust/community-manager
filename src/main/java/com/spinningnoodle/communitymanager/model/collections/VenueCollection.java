@@ -1,8 +1,8 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.collections;
+package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;

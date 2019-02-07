@@ -1,7 +1,8 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.modeltest.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.spinningnoodle.communitymanager.modeltest.entities.fakes.DummyToken;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,21 +14,21 @@ class TokenEntityTest {
 
     private final String testName = "Expedia";
 
-    private TokenTestingClass tokenGenerator;
+    private DummyToken tokenGenerator;
     private Map<String, String> fields;
     
     @BeforeEach
     public void initializeTokenGenerator(){
-        tokenGenerator = new TokenTestingClass();
+        tokenGenerator = new DummyToken();
         fields = new HashMap<>();
         fields.put("name", testName);
-        tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
+        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
     }
     
     @Test
     public void tokenSetWhenProvided(){
         fields.put("token", "something");
-        tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
+        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
         
         Assertions.assertNotNull(ReflectionTestUtils.getField(tokenGenerator, "token"));
     }
@@ -45,7 +46,7 @@ class TokenEntityTest {
     @Test
     public void tokenReturnsStoredValueWhenPresent(){
         fields.put("token", "something");
-        tokenGenerator = (TokenTestingClass) tokenGenerator.build(fields);
+        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
 
         String testToken = "something";
         Assertions.assertEquals(tokenGenerator.getToken(), testToken);

@@ -1,10 +1,10 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.model.entities;
 
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import java.util.Map;
 
 /**
- * Represents a entity of the data-model
+ * Represents a entity of the data-modeltest
  *
  * @author Cream 4 UR Coffee
  * @version 0.1

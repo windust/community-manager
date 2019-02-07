@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
+package com.spinningnoodle.communitymanager.datastoragetest.fakes;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Dummy Storage implements Data Storage, the interface that all data storage implementations meet.
- * It can be used for testing model functionality in the absence of another implementation.
+ * It can be used for testing modeltest functionality in the absence of another implementation.
  *
  * All implementations should include the following constructors:
  *      DataStorage(String storageID) - opens existing DataStorage;

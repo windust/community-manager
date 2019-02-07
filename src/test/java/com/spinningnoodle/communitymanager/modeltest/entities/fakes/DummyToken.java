@@ -1,5 +1,7 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.modeltest.entities.fakes;
 
+import com.spinningnoodle.communitymanager.model.entities.IEntity;
+import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
 import java.util.Map;
 
 /**
@@ -7,10 +9,10 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class TokenTestingClass extends TokenEntity{
+public class DummyToken extends TokenEntity {
     @Override
     public IEntity build(Map<String, String> fields){
-        TokenTestingClass temp = new TokenTestingClass();
+        DummyToken temp = new DummyToken();
         
         temp.setName(fields.get("name"));
         temp.setToken(fields.get("token"));

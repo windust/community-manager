@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.controllertest;
+package com.spinningnoodle.communitymanager.controllertest;
 
 
 import com.spinningnoodle.communitymanager.controller.SignUpController;
