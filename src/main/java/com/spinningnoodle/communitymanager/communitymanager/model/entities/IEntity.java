@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.entities;
 
+import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import java.util.Map;
 
 /**

@@ -1,8 +1,10 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.collections;
 
-import com.spinningnoodle.communitymanager.communitymanager.model.entities.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +27,19 @@ public class VenueCollection {
 	 */
 	public static void fetchFromDataStorage(DataStorage dataStorage) {
 		venues.clear();
-		for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
-			Venue venue = new Venue();
-			try {
-				venue.build(venueFields);
-			} catch (UnexpectedPrimaryKeyException e) {
-				e.printStackTrace();
+		try {
+			for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
+				Venue venue = new Venue();
+				try {
+					venue.build(venueFields);
+				} catch (UnexpectedPrimaryKeyException e) {
+					e.printStackTrace();
+				}
+				venues.put(venue.getVenueId(), venue);
 			}
-			venues.put(venue.getVenueId(), venue);
+		} catch (IOException e) {
+			System.out.println("Error: Reading from non-existant table.");
+			e.printStackTrace();
 		}
 	}
 

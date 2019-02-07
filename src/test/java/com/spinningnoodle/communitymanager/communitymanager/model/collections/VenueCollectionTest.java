@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.spinningnoodle.communitymanager.communitymanager.datastoragetests.DummyStorage;
 import com.spinningnoodle.communitymanager.communitymanager.model.entities.Venue;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import java.security.GeneralSecurityException;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;

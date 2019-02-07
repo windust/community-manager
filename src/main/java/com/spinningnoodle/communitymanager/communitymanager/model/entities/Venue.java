@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.communitymanager.model.entities;
 
+import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.util.Map;
 
 /**

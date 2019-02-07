@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.exceptions;
 
 /**
  * Occurs when a model's attribute does not match the set of values or criteria which was expected

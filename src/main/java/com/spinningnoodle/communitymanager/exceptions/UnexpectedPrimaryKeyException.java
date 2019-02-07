@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.model.entities;
+package com.spinningnoodle.communitymanager.exceptions;
 
 /**
  * A primary key which does not meet the set of values or criteria expected
