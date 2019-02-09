@@ -91,54 +91,69 @@ public class GoogleSheets implements DataStorage {
         return false;
     }
 
-    @Override
-    public List<Map<String, String>> readAll(String tableName) throws IOException {
+    private List<List<Object>> getData(String tableName) throws IOException{
         String range = tableName;
-        List<Map<String, String>> data = new ArrayList<>();
         if(!service.spreadsheets().get(storageID).isEmpty()) {
             ValueRange response = service.spreadsheets().values()
                 .get(storageID, range)
                 .execute();
-            List<List<Object>> values = response.getValues();
-            if (values == null || values.isEmpty()) {
-                return null;
-            } else {
-                List<Object> attributesNames = values.get(0);
-                List<String> attributes = new ArrayList<>();
-                for(Object attributeName: attributesNames){
-                    if(attributeName.getClass().toString().equals("class java.lang.String")){
-                        attributes.add(attributeName.toString());
-                    } else {
-                        System.out.println(attributeName.getClass().toString());
-                    }
-                }
+            return response.getValues();
+        }
+        return null;
+    }
 
-                for(int rowNum = 1; rowNum < values.size(); rowNum++){
-                    HashMap<String,String> row = new HashMap<>();
-                    List<Object> rawRow = values.get(rowNum);
-                    for(int columnNum = 0; columnNum < attributes.size(); columnNum++){
-                        Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
-                        if(value.getClass().toString().equals("class java.lang.String")){
-                            row.put(attributes.get(columnNum),value.toString());
-                        } else {
-                            //TBD what is the best way to handle this
-                            System.out.println(value.getClass().toString());
-                            row.put(attributes.get(columnNum),"Failed to Return Properly");
-                        }
-                    }
-                    data.add(row);
-
+    @Override
+    public List<Map<String, String>> readAll(String tableName) throws IOException {
+        List<Map<String, String>> data = new ArrayList<>();
+        List<List<Object>> values = getData(tableName);
+        if (values == null || values.isEmpty()) {
+            return null;
+        } else {
+            List<Object> attributesNames = values.get(0);
+            List<String> attributes = new ArrayList<>();
+            for(Object attributeName: attributesNames){
+                if (attributeName.getClass().toString().equals("class java.lang.String")) {
+                    attributes.add(attributeName.toString());
+                } else {
+                    System.out.println(attributeName.getClass().toString());
                 }
             }
-        } else {
-            System.out.println("The requested spreadsheet was empty.");
+
+            for (int rowNum = 1; rowNum < values.size(); rowNum++) {
+                HashMap<String, String> row = new HashMap<>();
+                List<Object> rawRow = values.get(rowNum);
+                for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
+                    Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
+                    if (value.getClass().toString().equals("class java.lang.String")) {
+                        row.put(attributes.get(columnNum), value.toString());
+                    } else {
+                        //TBD what is the best way to handle this
+                        System.out.println(value.getClass().toString());
+                        row.put(attributes.get(columnNum), "Failed to Return Properly");
+                    }
+                }
+                data.add(row);
+
+            }
         }
         return data;
     }
 
     @Override
     public boolean update(String tableName, String primaryKey, String attribute, String newValue) {
+        int rowNumberToUpdate = getRowNumber(tableName, primaryKey);
+        String columnletterToUpdate = getColumnLetter(tableName, attribute);
+        System.out.println(columnletterToUpdate + rowNumberToUpdate);
         return false;
+    }
+
+    private int getRowNumber(String tableName, String primaryKey){
+
+        return 0;
+    }
+
+    private String getColumnLetter(String tableName, String primaryKey){
+        return "A";
     }
 
     @Override
