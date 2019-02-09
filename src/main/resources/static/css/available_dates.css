@@ -60,7 +60,7 @@ tr:nth-child(odd){
   clear: both;
 }
 
-button {
+.response {
   font-size: 1.1em;
   font-family: "Arial";
   margin: .2em;
