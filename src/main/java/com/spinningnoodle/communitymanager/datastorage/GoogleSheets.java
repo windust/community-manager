@@ -12,12 +12,14 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -93,11 +95,15 @@ public class GoogleSheets implements DataStorage {
 
     private List<List<Object>> getData(String tableName) throws IOException{
         String range = tableName;
-        if(!service.spreadsheets().get(storageID).isEmpty()) {
-            ValueRange response = service.spreadsheets().values()
-                .get(storageID, range)
-                .execute();
-            return response.getValues();
+        try {
+            if (!service.spreadsheets().get(storageID).isEmpty()) {
+                ValueRange response = service.spreadsheets().values()
+                    .get(storageID, range)
+                    .execute();
+                return response.getValues();
+            }
+        } catch (Exception e){
+            throw new IOException("Unable to access table "+tableName);
         }
         return null;
     }
@@ -141,19 +147,68 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public boolean update(String tableName, String primaryKey, String attribute, String newValue) {
-        int rowNumberToUpdate = getRowNumber(tableName, primaryKey);
-        String columnletterToUpdate = getColumnLetter(tableName, attribute);
-        System.out.println(columnletterToUpdate + rowNumberToUpdate);
-        return false;
+        List<List<Object>> values = null;
+        try {
+            values = getData(tableName);
+        } catch (IOException e) {
+            return false;
+        }
+
+        if (values.isEmpty()) {
+            return false;
+        }
+        int rowNumberToUpdate = getRowNumber(values, primaryKey);
+        String columnletterToUpdate = getColumnLetter(values.get(0), attribute);
+
+        String cell = tableName + "!" + columnletterToUpdate + rowNumberToUpdate;
+
+        return update(cell, newValue);
     }
 
-    private int getRowNumber(String tableName, String primaryKey){
+    private boolean update(String cell, String newValue){
 
-        return 0;
+        if(cell.contains("A") || cell.contains("1")) return false;
+        List<List<Object>> values = Arrays.asList(
+            Arrays.asList(
+                newValue
+            )
+        );
+        ValueRange body = new ValueRange().setValues(values);
+        try {
+            UpdateValuesResponse result =
+                service.spreadsheets().values().update(storageID, cell, body)
+                    .setValueInputOption("RAW")
+                    .execute();
+            return result.getUpdatedCells() > 0;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
-    private String getColumnLetter(String tableName, String primaryKey){
-        return "A";
+    private int getRowNumber(List<List<Object>> values, String primaryKey){
+
+        int rowNumber = 1;
+        for(int rowIndex = 1; rowIndex < values.size(); rowIndex++){
+            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
+                rowNumber = rowIndex+1;
+                break;
+            }
+        }
+
+        return rowNumber;
+    }
+
+    private String getColumnLetter(List<Object> attributes, String attribute){
+
+        int a = 65;
+        String columnLetter = "" + (char)a;
+        for(int i = 0; i < attributes.size(); i++){
+            if(attribute.equals(attributes.get(i).toString())){
+                return ""+ (char)(a + i);
+            }
+        }
+
+        return columnLetter;
     }
 
     @Override

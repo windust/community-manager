@@ -116,9 +116,16 @@ public class GoogleSheetsTest {
 
     @Test
     void whenIUpdateVenueNameIGetNewVenueNameBack() {
-        String oldName = "Excellent";
-        testStorage.update("venues", "1", "name", "NewName");
-        assertEquals("NewName", testStorage.getName());
-        testStorage.update("venues", "1", "name", "Excellent");
+        String oldName = "Amazing";
+        String nameAfterChange = "Amazing";
+        testStorage.update("venues", "2", "name", "NewName");
+        try {
+            nameAfterChange =  testStorage.readAll("venues").get(1).get("name");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        testStorage.update("venues", "2", "name", "Amazing");
+        assertEquals("NewName", nameAfterChange);
+
     }
 }
