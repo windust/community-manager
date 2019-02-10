@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.model.entities;
 
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
+import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.util.Map;
 
 public class Meetup implements IEntity {
@@ -13,6 +14,21 @@ public class Meetup implements IEntity {
 	private String topic;
 	private String description;
 	private Venue venue;
+
+	public Meetup() {
+		setMeetupId();
+	}
+
+	public Meetup(int primaryKey, String date, String speaker, String topic,
+		String description, Venue venue) {
+		this();
+		this.primaryKey = primaryKey;
+		this.date = date;
+		this.speaker = speaker;
+		this.topic = topic;
+		this.description = description;
+		this.venue = venue;
+	}
 
 	@Override
 	public IEntity build(Map<String, String> fields) throws AttributeException {
@@ -31,8 +47,9 @@ public class Meetup implements IEntity {
 		return meetupId;
 	}
 
-	public void setMeetupId(int meetupId) {
-		this.meetupId = meetupId;
+	public void setMeetupId() {
+		this.meetupId = nextId;
+		++nextId;
 	}
 
 	public int getPrimaryKey() {
@@ -40,6 +57,10 @@ public class Meetup implements IEntity {
 	}
 
 	public void setPrimaryKey(int primaryKey) {
+		if(primaryKey == 0 || primaryKey < -1) {
+			throw new UnexpectedPrimaryKeyException();
+		}
+
 		this.primaryKey = primaryKey;
 	}
 
