@@ -126,6 +126,11 @@ public class DummyStorage implements DataStorage {
     }
 
     @Override
+    public String getLastModifiedDate() throws IOException, GeneralSecurityException {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "DummyStorage{" +
             "name='" + name + '\'' +

@@ -10,9 +10,12 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.drive.model.File;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.api.services.drive.Drive;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,8 +48,8 @@ public class GoogleSheets implements DataStorage {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
-    private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.SPREADSHEETS);
-
+//    private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.SPREADSHEETS);
+    private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.DRIVE_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
 
@@ -84,6 +87,19 @@ public class GoogleSheets implements DataStorage {
             .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+    }
+
+    public String getLastModifiedDate() throws IOException, GeneralSecurityException {
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Drive driveService = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+            .setApplicationName("Community Manager")
+            .build();
+        Drive.Files.Get fileRequest = driveService.files().get(storageID).setFields("id, modifiedTime");
+        File file = fileRequest.execute();
+        if (file != null) {
+            return file.getModifiedTime().toString();
+        }
+        return null;
     }
 
     @Override

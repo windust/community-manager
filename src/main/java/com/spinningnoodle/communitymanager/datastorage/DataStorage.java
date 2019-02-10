@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.datastorage;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
@@ -91,4 +92,5 @@ public interface DataStorage {
      */
     String[] getTableNames();
 
+    String getLastModifiedDate() throws IOException, GeneralSecurityException;
 }

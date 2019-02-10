@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.datastoragetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
@@ -20,14 +21,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class GoogleSheetsTest {
+class GoogleSheetsTest {
 
     private DataStorage testStorage;
     private String testID;
     private List<Map<String, String>> expected;
 
     @BeforeEach
-    public void initializeDataBase() throws IOException, GeneralSecurityException {
+    void initializeDataBase() throws IOException, GeneralSecurityException {
         Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
         testID = testIDFile.next();
 
@@ -64,29 +65,46 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void throwsConnectExceptionWhenCantConnectToDataStorage() {
+    void throwsConnectExceptionWhenCantConnectToDataStorage() {
         Assertions.assertThrows(GeneralSecurityException.class, () -> {
             new GoogleSheets("133");
         });
     }
 
     @Test
-    public void whenIOpenDataStorageICanGetID() throws ConnectException {
+    void whenIOpenDataStorageICanGetID() throws ConnectException {
         assertEquals(testID, testStorage.getStorageID());
     }
 
     @Test
-    public void whenIOpenDataStorageICanGetName() throws ConnectException {
+    void whenNoChangesDataModifiedIsSame() throws IOException, GeneralSecurityException {
+        String oldData = testStorage.getLastModifiedDate();
+        assertEquals(oldData, testStorage.getLastModifiedDate());
+
+    }
+
+    @Test
+    void whenDataStorageIsModifiedDataModifiedChanges()
+        throws IOException, GeneralSecurityException {
+        String oldData = testStorage.getLastModifiedDate();
+        String oldName = "Excellent";
+        testStorage.update("venues", "1", "name", "NewName");
+        testStorage.update("venues", "1", "name", oldName);
+        assertNotEquals(oldData, testStorage.getLastModifiedDate());
+    }
+
+    @Test
+    void whenIOpenDataStorageICanGetName() throws ConnectException {
         assertEquals("SeaJUGSpreadSheet", testStorage.getName());
     }
 
     @Test
-    public void whenIRequestTableOfVenuesIShouldGetTheseTwoRows() throws IOException {
+    void whenIRequestTableOfVenuesIShouldGetTheseTwoRows() throws IOException {
         assertEquals(expected, testStorage.readAll("venues"));
     }
 
     @Test
-    public void whenIRequestNonExistentTableIGetIllegalArgumentException() {
+    void whenIRequestNonExistentTableIGetIllegalArgumentException() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             testStorage.readAll("sprinklers");
         });
