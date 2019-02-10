@@ -61,7 +61,7 @@ public class GoogleSheets implements DataStorage {
      */
     public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
-        //open google sheets
+
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
             .setApplicationName(APPLICATION_NAME)
@@ -71,20 +71,17 @@ public class GoogleSheets implements DataStorage {
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        // Load client secrets.
-        //Not sure if I should run this off of GoogleSheets or the main community manager
         //TBD working but still claims to be quickstart! Haven't found where or why!
         InputStream in = GoogleSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-//        InputStream in = GoogleSheets.class.getResourceAsStream(/);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets
             .load(JSON_FACTORY, new InputStreamReader(in));
-        // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
             HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, READ_WRITE_SCOPE)
             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
             .setAccessType("offline")
             .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
@@ -93,74 +90,70 @@ public class GoogleSheets implements DataStorage {
         return false;
     }
 
-    private List<List<Object>> getData(String tableName) throws IOException{
-        String range = tableName;
-        try {
-            if (!service.spreadsheets().get(storageID).isEmpty()) {
-                ValueRange response = service.spreadsheets().values()
-                    .get(storageID, range)
-                    .execute();
-                return response.getValues();
-            }
-        } catch (Exception e){
-            throw new IOException("Unable to access table "+tableName);
-        }
-        return null;
-    }
-
     @Override
     public List<Map<String, String>> readAll(String tableName) throws IOException {
-        List<Map<String, String>> data = new ArrayList<>();
         List<List<Object>> values = getData(tableName);
+
         if (values == null || values.isEmpty()) {
             return null;
         } else {
-            List<Object> attributesNames = values.get(0);
-            List<String> attributes = new ArrayList<>();
-            for(Object attributeName: attributesNames){
-                if (attributeName.getClass().toString().equals("class java.lang.String")) {
-                    attributes.add(attributeName.toString());
+            return convertTableDataToHashMap(values);
+        }
+    }
+
+    private List<Map<String, String>> convertTableDataToHashMap(List<List<Object>> values) {
+        List<Map<String, String>> data = new ArrayList<>();
+        List<String> attributes = getAttributesAsStrings(values);
+
+        for (int rowNum = 1; rowNum < values.size(); rowNum++) {
+            HashMap<String, String> row = new HashMap<>();
+            List<Object> rawRow = values.get(rowNum);
+            for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
+                Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
+                if (value.getClass().toString().equals("class java.lang.String")) {
+                    row.put(attributes.get(columnNum), value.toString());
                 } else {
-                    System.out.println(attributeName.getClass().toString());
+                    //TBD what is the best way to handle this
+                    System.out.println(value.getClass().toString());
+                    row.put(attributes.get(columnNum), "Failed to Return Properly");
                 }
             }
+            data.add(row);
 
-            for (int rowNum = 1; rowNum < values.size(); rowNum++) {
-                HashMap<String, String> row = new HashMap<>();
-                List<Object> rawRow = values.get(rowNum);
-                for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
-                    Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
-                    if (value.getClass().toString().equals("class java.lang.String")) {
-                        row.put(attributes.get(columnNum), value.toString());
-                    } else {
-                        //TBD what is the best way to handle this
-                        System.out.println(value.getClass().toString());
-                        row.put(attributes.get(columnNum), "Failed to Return Properly");
-                    }
-                }
-                data.add(row);
-
-            }
         }
         return data;
     }
 
+    private List<String> getAttributesAsStrings(List<List<Object>> values) {
+        List<Object> attributesNames = values.get(0);
+        List<String> attributes = new ArrayList<>();
+        for(Object attributeName: attributesNames){
+            if (attributeName.getClass().toString().equals("class java.lang.String")) {
+                attributes.add(attributeName.toString());
+            } else {
+                System.out.println(attributeName.getClass().toString());
+            }
+        }
+        return attributes;
+    }
+
     @Override
     public boolean update(String tableName, String primaryKey, String attribute, String newValue) {
-        List<List<Object>> values = null;
+        List<List<Object>> values;
         try {
             values = getData(tableName);
         } catch (IOException e) {
             return false;
         }
 
-        if (values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             return false;
         }
-        int rowNumberToUpdate = getRowNumber(values, primaryKey);
-        String columnletterToUpdate = getColumnLetter(values.get(0), attribute);
 
-        String cell = tableName + "!" + columnletterToUpdate + rowNumberToUpdate;
+        int rowNumberToUpdate = getRowNumber(values, primaryKey);
+        String columnLetterToUpdate = getColumnLetter(values.get(0), attribute);
+
+        String cell = tableName + "!" + columnLetterToUpdate + rowNumberToUpdate;
 
         return update(cell, newValue);
     }
@@ -168,6 +161,7 @@ public class GoogleSheets implements DataStorage {
     private boolean update(String cell, String newValue){
 
         if(cell.contains("A") || cell.contains("1")) return false;
+
         List<List<Object>> values = Arrays.asList(
             Arrays.asList(
                 newValue
@@ -183,32 +177,6 @@ public class GoogleSheets implements DataStorage {
         } catch (IOException e) {
             return false;
         }
-    }
-
-    private int getRowNumber(List<List<Object>> values, String primaryKey){
-
-        int rowNumber = 1;
-        for(int rowIndex = 1; rowIndex < values.size(); rowIndex++){
-            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
-                rowNumber = rowIndex+1;
-                break;
-            }
-        }
-
-        return rowNumber;
-    }
-
-    private String getColumnLetter(List<Object> attributes, String attribute){
-
-        int a = 65;
-        String columnLetter = "" + (char)a;
-        for(int i = 0; i < attributes.size(); i++){
-            if(attribute.equals(attributes.get(i).toString())){
-                return ""+ (char)(a + i);
-            }
-        }
-
-        return columnLetter;
     }
 
     @Override
@@ -240,5 +208,46 @@ public class GoogleSheets implements DataStorage {
         //TBD get from actual data storage
         String[] fakeNames = {"venues","speakers","meetups"};
         return fakeNames;
+    }
+
+    private List<List<Object>> getData(String tableName) throws IOException{
+        String range = tableName;
+        try {
+            if (!service.spreadsheets().get(storageID).isEmpty()) {
+                ValueRange response = service.spreadsheets().values()
+                    .get(storageID, range)
+                    .execute();
+                return response.getValues();
+            }
+        } catch (Exception e){
+            throw new IOException("Unable to access table "+tableName);
+        }
+        return null;
+    }
+
+    private int getRowNumber(List<List<Object>> values, String primaryKey){
+
+        int rowNumber = 1;
+        for(int rowIndex = 1; rowIndex < values.size(); rowIndex++){
+            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
+                rowNumber = rowIndex+1;
+                break;
+            }
+        }
+
+        return rowNumber;
+    }
+
+    private String getColumnLetter(List<Object> attributes, String attribute){
+
+        int a = 65;
+        String columnLetter = "" + (char)a;
+        for(int i = 0; i < attributes.size(); i++){
+            if(attribute.equals(attributes.get(i).toString())){
+                return ""+ (char)(a + i);
+            }
+        }
+
+        return columnLetter;
     }
 }
