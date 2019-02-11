@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.datastoragetest;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -94,13 +95,12 @@ public class GoogleSheetsTest {
 
     @Test
     void whenIRequestTableNamesIExpectToGetThreeAsAnArray() {
-        String[] tableNames = {"venues", "speakers", "meetups"};
-        Arrays.sort(tableNames);
+        Map<String, String> expected = new HashMap<>();
+        expected.put("venues", "0");
+        expected.put("meetups", "748055642");
+        expected.put("speakers", "2070966566");
 
-        String[] actualTableNames = testStorage.getTableNames();
-        Arrays.sort(actualTableNames);
-
-        assertTrue(Arrays.equals(tableNames, actualTableNames));
+        assertEquals(expected,testStorage.getTableNames() );
     }
 
     @Test

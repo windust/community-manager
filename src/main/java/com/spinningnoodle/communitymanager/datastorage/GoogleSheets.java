@@ -12,6 +12,8 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,9 +168,21 @@ public class GoogleSheets implements DataStorage {
     }
 
     @Override
-    public String[] getTableNames() {
-        //TBD get from actual data storage
-        String[] fakeNames = {"venues","speakers","meetups"};
-        return fakeNames;
+    public Map<String, String> getTableNames() {
+        Spreadsheet spreadsheet;
+        try {
+            spreadsheet = service.spreadsheets().get(storageID).execute();
+        } catch (IOException e) {
+            return null;
+        }
+        List<Sheet> sheets = spreadsheet.getSheets();
+
+        Map<String,String> sheetNames = new HashMap<>();
+        for(Sheet sheet: sheets){
+            sheetNames.put(sheet.getProperties().getTitle(),
+                sheet.getProperties().getSheetId().toString());
+        }
+
+        return sheetNames;
     }
 }
