@@ -13,38 +13,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class VenueCollectionTest {
+	private VenueCollection venueCollection = new VenueCollection();
 	@BeforeEach
 	void setUp() {
-		VenueCollection.clear();
+		venueCollection.clear();
 	}
 
 	@Test
 	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
 		DummyStorage dummyStorage = new DummyStorage("123");
-		VenueCollection.fetchFromDataStorage(dummyStorage);
+		venueCollection.fetchFromDataStorage(dummyStorage);
 
-		assertEquals(dummyStorage.readAll("venues").size(), VenueCollection.size());
+		assertEquals(dummyStorage.readAll("venues").size(), venueCollection.size());
 	}
 
 	@Test
 	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
 		Venue testVenue = new Venue();
-		VenueCollection.addToCollection(testVenue);
+		venueCollection.addToCollection(testVenue);
 
-		assertEquals(1, VenueCollection.size());
+		assertEquals(1, venueCollection.size());
 	}
 
 	@Test
 	void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
 		Venue testVenue = new Venue();
-		VenueCollection.addToCollection(testVenue);
+		venueCollection.addToCollection(testVenue);
 
-		assertEquals(testVenue, VenueCollection.getById(testVenue.getVenueId()));
+		assertEquals(testVenue, venueCollection.getById(testVenue.getVenueId()));
 	}
 
 	@Test
 	void whenAIdIsPassedToGetByIdThatDoesNotExistThenEntityNotFoundExceptionShouldBeThrown() {
-		assertThrows(EntityNotFoundException.class, () -> VenueCollection.getById(-1));
+		assertThrows(EntityNotFoundException.class, () -> venueCollection.getById(-1));
 	}
 
 	@Test
@@ -52,8 +53,8 @@ class VenueCollectionTest {
 		int collectionSize = 5;
 
 		IntStream.range(0, collectionSize).mapToObj(i -> new Venue())
-			.forEach(VenueCollection::addToCollection);
+			.forEach(venueCollection::addToCollection);
 
-		assertEquals(collectionSize, VenueCollection.getAll().size());
+		assertEquals(collectionSize, venueCollection.getAll().size());
 	}
 }
