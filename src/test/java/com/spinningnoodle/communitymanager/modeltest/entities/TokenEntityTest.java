@@ -14,47 +14,47 @@ class TokenEntityTest {
 
     private final String testName = "Expedia";
 
-    private DummyToken tokenGenerator;
+    private DummyToken tokenEntity;
     private Map<String, String> fields;
     
     @BeforeEach
     public void initializeTokenGenerator(){
-        tokenGenerator = new DummyToken();
+        tokenEntity = new DummyToken();
         fields = new HashMap<>();
         fields.put("name", testName);
-        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
+        tokenEntity = (DummyToken) tokenEntity.build(fields);
     }
     
     @Test
     public void tokenSetWhenProvided(){
-        fields.put("token", "something");
-        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
+        fields.put("token", "valid");
+        tokenEntity = (DummyToken) tokenEntity.build(fields);
         
-        Assertions.assertNotNull(ReflectionTestUtils.getField(tokenGenerator, "token"));
+        Assertions.assertNotNull(ReflectionTestUtils.getField(tokenEntity, "token"));
     }
     
     @Test
     public void tokenIsNullWhenNotProvided(){
-        Assertions.assertNull(ReflectionTestUtils.getField(tokenGenerator, "token"));
+        Assertions.assertNull(ReflectionTestUtils.getField(tokenEntity, "token"));
     }
     
     @Test
     public void tokenCreatedWhenCalledButIsNull(){
-        Assertions.assertNotNull(tokenGenerator.getToken());
+        Assertions.assertNotNull(tokenEntity.getToken());
     }
     
     @Test
     public void tokenReturnsStoredValueWhenPresent(){
-        fields.put("token", "something");
-        tokenGenerator = (DummyToken) tokenGenerator.build(fields);
+        fields.put("token", "valid");
+        tokenEntity = (DummyToken) tokenEntity.build(fields);
 
-        String testToken = "something";
-        Assertions.assertEquals(tokenGenerator.getToken(), testToken);
+        String testToken = "valid";
+        Assertions.assertEquals(tokenEntity.getToken(), testToken);
     }
     
     @Test
     public void tokenEndsWithEntityName(){
-        String token = tokenGenerator.getToken();
+        String token = tokenEntity.getToken();
         String name = token.substring(token.length() - 7);
 
         String tokenName = "Expedia";
@@ -63,13 +63,13 @@ class TokenEntityTest {
     
     @Test
     void getName() {
-        assertEquals(testName, tokenGenerator.getName());
+        assertEquals(testName, tokenEntity.getName());
     }
     
     @Test
     void setName() {
         String newName = "Testing Coorp.";
-        tokenGenerator.setName(newName);
-        assertEquals(newName, tokenGenerator.getName());
+        tokenEntity.setName(newName);
+        assertEquals(newName, tokenEntity.getName());
     }
 }

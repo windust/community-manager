@@ -42,6 +42,6 @@ public class SignUpController {
 //    }
     
     private boolean validToken(String token){
-        return token.equals("something");
+        return token.equals("valid");
     }
 }

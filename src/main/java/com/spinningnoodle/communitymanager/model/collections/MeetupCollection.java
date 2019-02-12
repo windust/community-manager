@@ -42,4 +42,8 @@ public class MeetupCollection implements ICollection<Meetup> {
 	public void clear() {
 
 	}
+	
+	public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
+	    return true;
+    }
 }
