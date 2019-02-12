@@ -1,36 +1,45 @@
 ul {
   list-style-type: none;
-  margin: 0;
+  margin: 5vw 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  float: right;
+  width: 73vw;
+  height: 2em;
 }
 
 li {
+  height: 1em;
   float: left;
+  padding: 0.5em;
 }
 
 li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 0;
   text-decoration: none;
+}
+
+#logo{
+  width: 15vw;
 }
 
 #logout {
   float: right;
 }
 
-#logoDiv {
-  float: left;
+.navbarDiv {
+  height: 15vw;
 }
 
 li a:hover {
   background-color: #111;
 }
 
-#meetup-details{
+.meetup-details{
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
@@ -93,8 +102,8 @@ table{
 }
 
 body{
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 5vw;
+  padding-right: 5vw;
 }
 
 .request-host{
