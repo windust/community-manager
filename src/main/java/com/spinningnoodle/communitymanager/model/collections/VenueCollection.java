@@ -2,6 +2,7 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.model.entities.IEntity;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import java.io.IOException;
@@ -16,16 +17,12 @@ import java.util.Map;
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
-public class VenueCollection {
+public class VenueCollection implements ICollection<Venue> {
 	private static final String TABLE_NAME = "venues";
 	private static Map<Integer, Venue> venues = new HashMap<>();
 
-	/**
-	 * Gets all venues from a DataStorage.
-	 *
-	 * @param dataStorage The DataStorage used to store venues.
-	 */
-	public static void fetchFromDataStorage(DataStorage dataStorage) {
+	@Override
+	public void fetchFromDataStorage(DataStorage dataStorage) {
 		venues.clear();
 		try {
 			for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
@@ -43,51 +40,32 @@ public class VenueCollection {
 		}
 	}
 
-	/**
-	 * Add one venue to the collection.
-	 *
-	 * @param venue The Venue to be saved into the Collection .
-	 */
-	public static void addToCollection(Venue venue) {
+	@Override
+	public void addToCollection(Venue venue) {
 		venues.put(venue.getVenueId(), venue);
 	}
 
-	/**
-	 * Gets a venue from this collection based on it's Venue ID
-	 *
-	 * @param venueId The venueID of the venue to be retrieves.
-	 * @return A venue who's venueId matches the venueId passed in
-	 * @throws EntityNotFoundException When venue with the Id passed cannot be found
-	 */
-	public static Venue getById(int venueId) throws EntityNotFoundException {
+	@Override
+	public Venue getById(int venueId) throws EntityNotFoundException {
 		if(!venues.containsKey(venueId)) {
 			throw new EntityNotFoundException();
 		}
 		return venues.get(venueId);
 	}
 
-	/**
-	 * Gets all Venues.
-	 *
-	 * @return A List of all venues.
-	 */
-	public static List<Venue> getAll() {
+	@Override
+	public List<Venue> getAll() {
 		return new ArrayList<>(venues.values());
 	}
 
-	/**
-	 * Get the amount of Venues stored in the collection
-	 *
-	 * @return The amount of Venues stored in the collection
-	 */
-	public static int size() {
+
+	@Override
+	public int size() {
 		return venues.size();
 	}
 
-	/**
-	 * Removes all Venues from the collection
-	 */
-	public static void clear() {
+	@Override
+	public void clear() {
 		venues.clear();
 	}
 }
