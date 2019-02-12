@@ -1,8 +1,8 @@
 body {
-  background: rgb(250, 250, 250);
+  /*background: rgb(250, 250, 250);*/
   margin: 1em;
-  font-size: 1.2em;
-  font-family: "Arial";
+  /*font-size: 1.2em;*/
+  /*font-family: "Arial";*/
 }
 
 table {
@@ -17,16 +17,16 @@ th, tr, td {
 }
 
 tr, th, td{
-  text-align: center;
+  /*text-align: center;*/
   padding: .3em;
 }
 
 tr:nth-child(even), th{
-  background: white;
+  /*background: white;*/
 }
 
 tr:nth-child(odd){
-  background: rgb(240,240,240);
+  /*background: rgb(240,240,240);*/
 }
 
 #hosting {
@@ -41,12 +41,12 @@ tr:nth-child(odd){
 
 #venue_greeting {
   width: 50%;
-  float: right;
+  /*float: right;*/
 }
 
 #logo_header {
   width: 50%;
-  float: left;
+  /*float: left;*/
 }
 
 #table_div {
@@ -61,8 +61,8 @@ tr:nth-child(odd){
 }
 
 .response {
-  font-size: 1.1em;
-  font-family: "Arial";
+  /*font-size: 1.1em;*/
+  /*font-family: "Arial";*/
   margin: .2em;
   border-radius: 1.1em;
 }
@@ -81,6 +81,6 @@ tr:nth-child(odd){
   border: 2px solid rgb(0, 0, 0);
   width: 77%;
   /*background-color: rgba(12, 119, 2, 0.51);*/
-  font-size: 1.6em;
-  text-align: center;
+  /*font-size: 1.6em;*/
+  /*text-align: center;*/
 }

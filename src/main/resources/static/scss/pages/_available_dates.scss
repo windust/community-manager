@@ -1,0 +1,55 @@
+@import "../abstracts/colors";
+@import "../base/typeography";
+
+body {
+  background: $body_color;
+  font-size: $font_size;
+  font-family: $font_family;
+}
+
+tr, th, td {
+  text-align: $text_center;
+}
+
+tr:nth-child(even), th {
+  background: $white;
+}
+
+tr:nth-child(odd) {
+  background: $nth_child_odd
+}
+
+#hosting {
+  color: $hosting;
+}
+
+#venue_greeting {
+  float: $float_right;
+}
+
+#logo_header {
+  float: $float_left;
+}
+
+.response {
+  font-size: $response_font_size;
+  font-family: $font_family
+}
+
+#response-yes {
+  @extend .response;
+  background-color: $response_yes;
+  color: $white;
+}
+
+#response-no {
+  @extend .response;
+  @extend #response-yes;
+  background-color: $response_no;
+}
+
+.date-request {
+  background-color: $date_request_box;
+  font-size: $date_request_font_size;
+  text-align: $text_center;
+}
