@@ -44,9 +44,8 @@ import java.util.Map;
 public class GoogleSheets implements DataStorage {
 
     private Sheets service;
-    private String name;
     private String storageID;
-    private String[] tableNames;
+    private Spreadsheet spreadsheet;
 
     private static final String APPLICATION_NAME = "Community Manager";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -71,8 +70,11 @@ public class GoogleSheets implements DataStorage {
         service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
             .setApplicationName(APPLICATION_NAME)
             .build();
-        //get name
-        //get table names (Might be doing too much!)
+        try {
+            spreadsheet = service.spreadsheets().get(storageID).execute();
+        } catch (IOException e) {
+            throw new IOException("Unable to connect to spreadsheet.");
+        }
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
@@ -172,12 +174,14 @@ public class GoogleSheets implements DataStorage {
                 newValue
             )
         );
+
         ValueRange body = new ValueRange().setValues(values);
         try {
             UpdateValuesResponse result =
                 service.spreadsheets().values().update(storageID, cell, body)
                     .setValueInputOption("RAW")
                     .execute();
+            System.out.println(cell);
             return result.getUpdatedCells() > 0;
         } catch (IOException e) {
             return false;
@@ -191,11 +195,12 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public String getName() {
-        return null;
+        return spreadsheet.getProperties().getTitle();
     }
 
     @Override
     public void setName(String name) {
+
 
     }
 
@@ -210,12 +215,6 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public Map<String, String> getTableNames() {
-        Spreadsheet spreadsheet;
-        try {
-            spreadsheet = service.spreadsheets().get(storageID).execute();
-        } catch (IOException e) {
-            return null;
-        }
         List<Sheet> sheets = spreadsheet.getSheets();
 
         Map<String,String> sheetNames = new HashMap<>();
@@ -230,7 +229,7 @@ public class GoogleSheets implements DataStorage {
     private List<List<Object>> getData(String tableName) throws IOException{
         String range = tableName;
         try {
-            if (!service.spreadsheets().get(storageID).isEmpty()) {
+            if (!spreadsheet.isEmpty()) {
                 ValueRange response = service.spreadsheets().values()
                     .get(storageID, range)
                     .execute();
@@ -245,13 +244,13 @@ public class GoogleSheets implements DataStorage {
     private int getRowNumber(List<List<Object>> values, String primaryKey){
 
         int rowNumber = 1;
-        for(int rowIndex = 1; rowIndex < values.size(); rowIndex++){
+        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
             if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
                 rowNumber = rowIndex+1;
                 break;
             }
         }
-
+        System.out.println(rowNumber);
         return rowNumber;
     }
 

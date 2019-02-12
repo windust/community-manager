@@ -77,7 +77,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void whenIOpenDataStorageICanGetName() throws ConnectException {
+    public void whenIOpenDataStorageICanGetName() {
         assertEquals("SeaJUGSpreadSheet", testStorage.getName());
     }
 
@@ -120,7 +120,10 @@ public class GoogleSheetsTest {
         String nameAfterChange = "Amazing";
         testStorage.update("venues", "2", "name", "NewName");
         try {
+            nameAfterChange =  testStorage.readAll("venues").get(0).get("name");
+            System.out.println(nameAfterChange);
             nameAfterChange =  testStorage.readAll("venues").get(1).get("name");
+            System.out.println(nameAfterChange);
         } catch (IOException e) {
             e.printStackTrace();
         }

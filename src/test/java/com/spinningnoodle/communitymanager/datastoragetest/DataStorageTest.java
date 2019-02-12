@@ -38,7 +38,7 @@ class DataStorageTest {
     }
 
     @Test
-    void whenIOpenDataStorageICanGetName(){
+    void whenIOpenDataStorageICanGetName() {
         assertEquals("123", testStorage.getName());
     }
 
