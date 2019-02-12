@@ -1,3 +1,83 @@
+body {
+  background: #fafafa;
+  margin: 1em;
+  font-size: 1.2em;
+  font-family: "Arial";
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 80%;
+  border-radius: 2em;
+}
+
+th, tr, td {
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 0.3em;
+}
+
+tr:nth-child(even), th {
+  background: white;
+}
+
+tr:nth-child(odd) {
+  background: #f0f0f0;
+}
+
+#hosting {
+  color: #056800;
+  margin: 0 5em 0 5em;
+}
+
+#venue_greeting {
+  float: right;
+  width: 50%;
+}
+
+#logo_header {
+  float: left;
+  width: 50%;
+}
+
+#table_div {
+  padding: 1em;
+  clear: both;
+  padding: 1em;
+  clear: both;
+}
+
+#header {
+  width: 100%;
+  display: block;
+  clear: both;
+}
+
+.response, #response-no, #response-yes {
+  font-size: 1.1em;
+  font-family: "Arial";
+  margin: 0.2em;
+  border-radius: 1.1em;
+}
+
+#response-yes, #response-no {
+  background-color: #005000;
+  color: white;
+}
+
+#response-no {
+  background-color: #00bc00;
+}
+
+.date-request {
+  background-color: rgba(12, 119, 2, 0.51);
+  font-size: 1.6em;
+  text-align: center;
+  border: 2px solid black;
+  width: 77%;
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
@@ -335,56 +415,6 @@ template {
  */
 [hidden] {
   display: none;
-}
-
-body {
-  background: #fafafa;
-  font-size: 1.2em;
-  font-family: "Arial";
-}
-
-tr, th, td {
-  text-align: center;
-}
-
-tr:nth-child(even), th {
-  background: white;
-}
-
-tr:nth-child(odd) {
-  background: #f0f0f0;
-}
-
-#hosting {
-  color: #056800;
-}
-
-#venue_greeting {
-  float: right;
-}
-
-#logo_header {
-  float: left;
-}
-
-.response, #response-no, #response-yes {
-  font-size: 1.1em;
-  font-family: "Arial";
-}
-
-#response-yes, #response-no {
-  background-color: #005000;
-  color: white;
-}
-
-#response-no {
-  background-color: #00bc00;
-}
-
-.date-request {
-  background-color: rgba(12, 119, 2, 0.51);
-  font-size: 1.6em;
-  text-align: center;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -6,19 +6,19 @@ body {
 }
 
 table {
-  margin: 0 auto;
-  border-collapse: collapse;
-  width: 80%;
-  border-radius: 2em;
+  /*margin: 0 auto;*/
+  /*border-collapse: collapse;*/
+  /*width: 80%;*/
+  /*border-radius: 2em;*/
 }
 
 th, tr, td {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.5);*/
 }
 
-tr, th, td{
+th, tr, td{
   /*text-align: center;*/
-  padding: .3em;
+  /*padding: .3em;*/
 }
 
 tr:nth-child(even), th{
@@ -32,7 +32,7 @@ tr:nth-child(odd){
 #hosting {
   /*background-image: radial-gradient(rgba(255,255,255,1),rgba(255,255,255,1), rgba(255,255,255, 0));*/
   /*color: rgb(5, 104, 0);*/
-  margin: 0 5em 0 5em;
+  /*margin: 0 5em 0 5em;*/
 }
 
 /*#needs_host {*/
@@ -40,31 +40,31 @@ tr:nth-child(odd){
 /*}*/
 
 #venue_greeting {
-  width: 50%;
+  /*width: 50%;*/
   /*float: right;*/
 }
 
 #logo_header {
-  width: 50%;
+  /*width: 50%;*/
   /*float: left;*/
 }
 
 #table_div {
-  padding: 1em;
-  clear: both;
+  /*padding: 1em;*/
+  /*clear: both;*/
 }
 
 #header {
-  width: 100%;
-  display: block;
-  clear: both;
+  /*width: 100%;*/
+  /*display: block;*/
+  /*clear: both;*/
 }
 
 .response {
   /*font-size: 1.1em;*/
   /*font-family: "Arial";*/
-  margin: .2em;
-  border-radius: 1.1em;
+  /*margin: .2em;*/
+  /*border-radius: 1.1em;*/
 }
 
 #response-yes{
@@ -78,8 +78,8 @@ tr:nth-child(odd){
 }
 
 .date-request{
-  border: 2px solid rgb(0, 0, 0);
-  width: 77%;
+  /*border: 2px solid rgb(0, 0, 0);*/
+  /*width: 77%;*/
   /*background-color: rgba(12, 119, 2, 0.51);*/
   /*font-size: 1.6em;*/
   /*text-align: center;*/
