@@ -67,7 +67,6 @@ public interface DataStorage {
      * setName sets the name of the data storage
      *
      * @param name string: name of data storage
-     * @return
      */
     void setName(String name);
 

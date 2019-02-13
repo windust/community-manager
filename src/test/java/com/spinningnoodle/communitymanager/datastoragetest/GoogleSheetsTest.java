@@ -65,8 +65,8 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void throwsConnectExceptionWhenCantConnectToDataStorage() {
-        Assertions.assertThrows(GeneralSecurityException.class, () -> {
+    public void throwsGeneralSecurityExceptionWhenCantConnectToDataStorage() {
+        Assertions.assertThrows(IOException.class, () -> {
             new GoogleSheets("133");
         });
     }
@@ -87,8 +87,8 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void whenIRequestNonExistentTableIGetIllegalArgumentException() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void whenIRequestNonExistentTableIGetIOException() {
+        Assertions.assertThrows(IOException.class, () -> {
             testStorage.readAll("sprinklers");
         });
     }
@@ -106,12 +106,9 @@ public class GoogleSheetsTest {
     @Test
     void whenISetNameIGetNewName() throws IOException {
         String oldName = testStorage.getName();
-
-        expected.get(0).put("name","NewName");
         testStorage.setName("NewName");
-        assertEquals(expected, testStorage.readAll("venues"));
+        assertEquals("NewName", testStorage.getName());
         testStorage.setName(oldName);
-        expected.get(0).put("name",oldName);
     }
 
     @Test
@@ -121,9 +118,7 @@ public class GoogleSheetsTest {
         testStorage.update("venues", "2", "name", "NewName");
         try {
             nameAfterChange =  testStorage.readAll("venues").get(0).get("name");
-            System.out.println(nameAfterChange);
             nameAfterChange =  testStorage.readAll("venues").get(1).get("name");
-            System.out.println(nameAfterChange);
         } catch (IOException e) {
             e.printStackTrace();
         }

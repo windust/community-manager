@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +59,7 @@ public class GoogleSheets implements DataStorage {
      * DataStorage(String storageID) - opens existing DataStorage;
      *
      * @param storageID String of the Data Storage id
-     * @throws GeneralSecurityException
+     * @throws GeneralSecurityException if security violations existed
      * @throws IOException if Credentials are not found.
      */
     public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
@@ -169,8 +168,8 @@ public class GoogleSheets implements DataStorage {
 
         if(cell.contains("A") || cell.contains("1")) return false;
 
-        List<List<Object>> values = Arrays.asList(
-            Arrays.asList(
+        List<List<Object>> values = Collections.singletonList(
+            Collections.singletonList(
                 newValue
             )
         );
@@ -181,7 +180,6 @@ public class GoogleSheets implements DataStorage {
                 service.spreadsheets().values().update(storageID, cell, body)
                     .setValueInputOption("RAW")
                     .execute();
-            System.out.println(cell);
             return result.getUpdatedCells() > 0;
         } catch (IOException e) {
             return false;
@@ -200,7 +198,7 @@ public class GoogleSheets implements DataStorage {
 
     @Override
     public void setName(String name) {
-
+        spreadsheet.getProperties().setTitle(name);
 
     }
 
@@ -250,7 +248,6 @@ public class GoogleSheets implements DataStorage {
                 break;
             }
         }
-        System.out.println(rowNumber);
         return rowNumber;
     }
 
