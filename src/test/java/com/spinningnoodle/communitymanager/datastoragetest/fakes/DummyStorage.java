@@ -121,7 +121,11 @@ public class DummyStorage implements DataStorage {
     }
 
     @Override
-    public String[] getTableNames() {
+    public Map<String, String> getTableNames() {
+        Map<String, String> tableNames = new HashMap<>();
+        tableNames.put("venues", "0");
+        tableNames.put("speakers", "1");
+        tableNames.put("meetups", "2");
         return tableNames;
     }
 

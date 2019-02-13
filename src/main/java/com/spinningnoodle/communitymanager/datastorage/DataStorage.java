@@ -67,7 +67,6 @@ public interface DataStorage {
      * setName sets the name of the data storage
      *
      * @param name string: name of data storage
-     * @return
      */
     void setName(String name);
 
@@ -89,6 +88,6 @@ public interface DataStorage {
      * getTableNames gets the names of all the tables in the data storage
      * @return String array with the table names
      */
-    String[] getTableNames();
+    Map<String,String> getTableNames();
 
 }

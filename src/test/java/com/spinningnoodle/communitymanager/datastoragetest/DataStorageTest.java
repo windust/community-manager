@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.datastoragetest;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
@@ -8,6 +9,7 @@ import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,7 @@ class DataStorageTest {
     }
 
     @Test
-    void whenIOpenDataStorageICanGetName(){
+    void whenIOpenDataStorageICanGetName() {
         assertEquals("123", testStorage.getName());
     }
 
@@ -77,5 +79,15 @@ class DataStorageTest {
     @Test
     void whenIRequestNonExistentTableIGetIllegalArgumentException() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> testStorage.readAll("sprinklers"));
+    }
+
+    @Test
+    void whenIRequestTableNamesIExpectToGetThreeAsAnArray() {
+        Map<String, String> expected = new HashMap<>();
+        expected.put("venues", "0");
+        expected.put("meetups", "2");
+        expected.put("speakers", "1");
+
+        assertEquals(expected,testStorage.getTableNames() );
     }
 }
