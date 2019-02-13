@@ -2,11 +2,17 @@ package com.spinningnoodle.communitymanager.modeltest.collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +26,15 @@ class MeetupCollectionTest {
 	}
 
 	@Test
-	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
-		DummyStorage dummyStorage = new DummyStorage("123");
-		meetupCollection.fetchFromDataStorage(dummyStorage);
+	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase()
+		throws GeneralSecurityException, IOException {
+		Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
+		String testID = testIDFile.next();
 
-		assertEquals(dummyStorage.readAll("meetups").size(), meetupCollection.size());
+		DataStorage dataStorage = new GoogleSheets(testID);
+		meetupCollection.fetchFromDataStorage(dataStorage);
+
+		assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.size());
 	}
 
 	@Test
