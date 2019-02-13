@@ -1,0 +1,89 @@
+@import "../abstracts/colors";
+@import "../base/typography";
+@import "../components/header";
+@import "../layout/forms";
+@import "../layout/tables";
+@import "../layout/page_structure";
+
+body {
+  background: $body_color;
+  margin: $body_margin;
+  font-size: $font_size;
+  font-family: $font_family;
+}
+
+table {
+  margin: $table_margin;
+  border-collapse: $table_border_collapse;
+  width: $table_width;
+  border-radius: $table_border_radius;
+}
+
+th, tr, td {
+  text-align: $text_center;
+  border-bottom: $th_tr_td_border_bottom;
+  padding: $th_tr_td_padding;
+}
+
+tr:nth-child(even), th {
+  background: $white;
+}
+
+tr:nth-child(odd) {
+  background: $nth_child_odd
+}
+
+#hosting {
+  color: $hosting;
+  margin: $hosting_margin;
+}
+
+#venue_greeting {
+  float: $float_right;
+  width: $venue_greeting_width;
+}
+
+#logo_header {
+  float: $float_left;
+  width: $logo_width;
+}
+
+#table_div {
+  padding: $table_div_padding;
+  clear: $table_div_clear;
+  padding: $table_div_padding;
+  clear: $table_div_clear;
+}
+
+#header {
+  width: $header_width;
+  display: $header_display;
+  clear: $header_clear;
+}
+
+.response {
+  font-size: $response_font_size;
+  font-family: $font_family;
+  margin: $response_margin;
+  border-radius: $response_border_radius;
+}
+
+#response-yes {
+  @extend .response;
+  background-color: $response_yes;
+  color: $white;
+}
+
+#response-no {
+  @extend .response;
+  @extend #response-yes;
+  background-color: $response_no;
+}
+
+.date-request {
+  background-color: $date_request_box;
+  font-size: $date_request_font_size;
+  text-align: $text_center;
+  border: $date_request_border;
+  width: $date_request_width;
+}
