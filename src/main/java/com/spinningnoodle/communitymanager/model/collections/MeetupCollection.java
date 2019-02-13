@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MeetupCollection implements ICollection<Meetup> {
-	private static final String TABLE_NAME = "meetups";
+	private static final String TABLE_NAME = "venues";
 	private static Map<Integer, Meetup> meetups = new HashMap<>();
 
 
