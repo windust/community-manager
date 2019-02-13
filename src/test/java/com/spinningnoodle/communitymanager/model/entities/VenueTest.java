@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.modeltest.entities;
+package com.spinningnoodle.communitymanager.model.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;

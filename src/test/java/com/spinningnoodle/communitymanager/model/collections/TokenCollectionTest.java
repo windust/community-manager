@@ -1,6 +1,6 @@
-package com.spinningnoodle.communitymanager.modeltest.collections;
+package com.spinningnoodle.communitymanager.model.collections;
 
-import com.spinningnoodle.communitymanager.modeltest.collections.fakes.DummyTokenCollection;
+import com.spinningnoodle.communitymanager.model.collections.fakes.DummyTokenCollection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

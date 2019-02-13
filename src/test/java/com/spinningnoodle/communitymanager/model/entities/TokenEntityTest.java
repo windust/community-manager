@@ -1,8 +1,8 @@
-package com.spinningnoodle.communitymanager.modeltest.entities;
+package com.spinningnoodle.communitymanager.model.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.spinningnoodle.communitymanager.modeltest.entities.fakes.DummyToken;
+import com.spinningnoodle.communitymanager.model.entities.fakes.DummyToken;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;

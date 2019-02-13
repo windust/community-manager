@@ -1,12 +1,9 @@
-package com.spinningnoodle.communitymanager.modeltest.entities;
+package com.spinningnoodle.communitymanager.model.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
-import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class MeetupTest {

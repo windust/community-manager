@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.modeltest.entities.fakes;
+package com.spinningnoodle.communitymanager.model.entities.fakes;
 
 import com.spinningnoodle.communitymanager.model.entities.IEntity;
 import com.spinningnoodle.communitymanager.model.entities.TokenEntity;

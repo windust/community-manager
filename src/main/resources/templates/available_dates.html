@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Available Dates</title>
@@ -14,16 +14,14 @@
   <div id="venue_greeting">
     <p>Welcome, Expedia.</p>
     <p>
-      <form:form method="POST"
-                           action="#" modelAttribute="venue">
+      <form method="POST" action="/venueSignUp" modelAttribute="venue">
         <div class="date-request">
-          Can you host 2/14?
-          <input type="button" class="response" id="response-yes" name="submit"
-          value="Yes" onClick="window.location.reload();"
-          path="requestedHostingDate">
-          <button type="submit" class="response" id="response-no" name="submit">No</button>
+          <p th:text="${hostingMessage}">Can you host 2/14?</p>
+          <!-- Value of yes button & needs host buttons needs to be meetup id -->
+          <button type="submit" class="response" id="response-yes" name="meetup" value="1">Yes</button>
+          <button type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
         </div>
-      </form:form>
+      </form>
     </p>
   </div>
 </div>
@@ -49,7 +47,8 @@
       <td>2/14</td>
       <td>TBD</td>
       <td>
-        <button class="response" type="submit" id="needs_host" name="submit">Needs Host</button>
+        <!-- Can't use an that id name here like that because there will be multiple of these buttons --> <!-- id="needs_host" -->
+        <button class="response" type="submit" name="meetup" value="1">Needs Host</button>
       </td>
     </tr>
     <tr>

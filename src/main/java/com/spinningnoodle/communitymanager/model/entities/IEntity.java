@@ -4,7 +4,7 @@ import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import java.util.Map;
 
 /**
- * Represents a entity of the data-modeltest
+ * Represents a entity of the data-model
  *
  * @author Cream 4 UR Coffee
  * @version 0.1

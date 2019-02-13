@@ -27,10 +27,7 @@ public abstract class TokenEntity implements IEntity {
     }
     
     private void generateToken() {
-        String entityName = Character.toString(name.charAt(0)).toUpperCase() +
-                            name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
-        
-        token = UUID.randomUUID().toString() + entityName;
+        token = name + "-" + UUID.randomUUID().toString();
     }
     
     /**

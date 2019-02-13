@@ -1,10 +1,9 @@
 package com.spinningnoodle.communitymanager.model.collections;
 
-import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.entities.IEntity;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ import java.util.Map;
  */
 public class VenueCollection implements ICollection<Venue> {
 	private static final String TABLE_NAME = "venues";
-	private static Map<Integer, Venue> venues = new HashMap<>();
+	static Map<Integer, Venue> venues = new HashMap<>();
 
 	@Override
 	public void fetchFromDataStorage(DataStorage dataStorage) {

@@ -3,14 +3,13 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MeetupCollection implements ICollection<Meetup> {
 	private static final String TABLE_NAME = "venues";
-	private static Map<Integer, Venue> meetup = new HashMap<>();
+	static Map<Integer, Meetup> meetup = new HashMap<>();
 
 
 	@Override
@@ -42,8 +41,4 @@ public class MeetupCollection implements ICollection<Meetup> {
 	public void clear() {
 
 	}
-	
-	public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
-	    return true;
-    }
 }
