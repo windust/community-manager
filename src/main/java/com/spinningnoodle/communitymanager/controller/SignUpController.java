@@ -50,9 +50,7 @@ public class SignUpController {
         if(validToken(token)){
             this.currentToken = token;
             
-            session.removeAttribute("hostingMessage");
             session.setAttribute("hostingMessage", this.hostingMessage);
-            session.removeAttribute("dateAvailable");
             session.setAttribute("dateAvailable", this.dateAvailable);
             return "available_dates";
         }
