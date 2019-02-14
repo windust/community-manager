@@ -1,34 +1,45 @@
-body {
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+.available_dates {
   background: #fafafa;
   margin: 1em;
   font-size: 1.2em;
   font-family: "Arial";
 }
 
-table {
+.available_dates_table {
   margin: 0 auto;
   border-collapse: collapse;
   width: 80%;
   border-radius: 2em;
 }
 
-th, tr, td {
+.available_dates_table th, .available_dates_table tr, .available_dates_table td {
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   padding: 0.3em;
 }
-
-tr:nth-child(even), th {
+.available_dates_table tr:nth-child(even), .available_dates_table th {
   background: white;
 }
-
-tr:nth-child(odd) {
+.available_dates_table tr:nth-child(odd) {
   background: #f0f0f0;
 }
 
 #hosting {
+  background-image: radial-gradient(white, white, rgba(255, 255, 255, 0));
   color: #056800;
   margin: 0 5em 0 5em;
+}
+
+#needs_host {
+  color: red;
 }
 
 #venue_greeting {
@@ -42,8 +53,6 @@ tr:nth-child(odd) {
 }
 
 #table_div {
-  padding: 1em;
-  clear: both;
   padding: 1em;
   clear: both;
 }
@@ -76,6 +85,127 @@ tr:nth-child(odd) {
   text-align: center;
   border: 2px solid black;
   width: 77%;
+}
+
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+/*Meetup CSS*/
+.meetup {
+  font-family: "Arial";
+  font-size: 1.2em;
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+
+ul {
+  list-style-type: none;
+  margin: 5vw 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  float: right;
+  width: 73vw;
+  height: 2em;
+}
+
+li {
+  height: 1em;
+  float: left;
+  padding: 0.5em;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 0;
+  text-decoration: none;
+}
+
+#logo {
+  width: 15vw;
+}
+
+#logout {
+  float: right;
+}
+
+.navbarDiv {
+  height: 15vw;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
+.meetup-details {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.meetup-data {
+  padding: 0.5em;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #f1f1f1;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+.meetup-table td, .meetup-table th {
+  text-align: left;
+  padding: 12px;
+  border-color: #fafafa;
+}
+
+.meetup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.venue-tab {
+  width: 100%;
+}
+
+.venue-tab .request-host {
+  float: right;
+}
+
+.venue-tab tr:nth-child(odd) {
+  background: #f0f0f0;
 }
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */

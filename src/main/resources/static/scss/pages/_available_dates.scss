@@ -5,37 +5,44 @@
 @import "../layout/tables";
 @import "../layout/page_structure";
 
-body {
+.available_dates {
   background: $body_color;
   margin: $body_margin;
   font-size: $font_size;
   font-family: $font_family;
 }
 
-table {
+.available_dates_table {
   margin: $table_margin;
   border-collapse: $table_border_collapse;
   width: $table_width;
   border-radius: $table_border_radius;
 }
 
-th, tr, td {
-  text-align: $text_center;
-  border-bottom: $th_tr_td_border_bottom;
-  padding: $th_tr_td_padding;
-}
+.available_dates_table {
+  th, tr, td {
+    text-align: $text_center;
+    border-bottom: $th_tr_td_border_bottom;
+    padding: $th_tr_td_padding;
+  }
 
-tr:nth-child(even), th {
-  background: $white;
-}
+  tr:nth-child(even), th {
+    background: $white;
+  }
 
-tr:nth-child(odd) {
-  background: $nth_child_odd
+  tr:nth-child(odd) {
+    background: $nth_child_odd
+  }
 }
 
 #hosting {
+  background-image: radial-gradient(rgba(255,255,255,1),rgba(255,255,255,1), rgba(255,255,255, 0));
   color: $hosting;
   margin: $hosting_margin;
+}
+
+#needs_host {
+  color: $red;
 }
 
 #venue_greeting {
@@ -49,8 +56,6 @@ tr:nth-child(odd) {
 }
 
 #table_div {
-  padding: $table_div_padding;
-  clear: $table_div_clear;
   padding: $table_div_padding;
   clear: $table_div_clear;
 }
