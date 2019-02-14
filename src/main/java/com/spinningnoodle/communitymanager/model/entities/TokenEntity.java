@@ -10,7 +10,7 @@ import java.util.UUID;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class TokenEntity extends Observable implements IEntity {
+public abstract class TokenEntity extends IEntity {
     private String name;
     private String token;
     

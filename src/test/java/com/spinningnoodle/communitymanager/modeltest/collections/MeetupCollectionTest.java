@@ -12,7 +12,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MeetupCollectionTest {
-	private MeetupCollection meetupCollection = new MeetupCollection();
+	private DummyStorage dummyStorage = new DummyStorage("123");
+	private MeetupCollection meetupCollection = new MeetupCollection(dummyStorage);
+
+	MeetupCollectionTest() throws GeneralSecurityException {
+	}
 
 	@BeforeEach
 	void setUp() {
@@ -21,8 +25,7 @@ class MeetupCollectionTest {
 
 	@Test
 	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
-		DummyStorage dummyStorage = new DummyStorage("123");
-		meetupCollection.fetchFromDataStorage(dummyStorage);
+		meetupCollection.fetchFromDataStorage();
 
 		assertEquals(dummyStorage.readAll("meetups").size(), meetupCollection.size());
 	}

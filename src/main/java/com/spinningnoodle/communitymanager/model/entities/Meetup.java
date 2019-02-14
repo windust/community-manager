@@ -5,7 +5,7 @@ import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyExcept
 import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.Map;
 
-public class Meetup extends Observable implements IEntity {
+public class Meetup extends IEntity {
 	private static int nextId = 1;
 
 	private int meetupId;

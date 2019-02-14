@@ -4,9 +4,15 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.TokenCollection;
 import com.spinningnoodle.communitymanager.model.entities.IEntity;
+import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
 import java.util.List;
 
 public class DummyTokenCollection extends TokenCollection {
+
+    public DummyTokenCollection(DataStorage dataStorage) {
+        super(dataStorage);
+    }
+
     @Override
     public boolean validToken(String token) {
         if(token.equals("valid")){
@@ -18,17 +24,17 @@ public class DummyTokenCollection extends TokenCollection {
     }
     
     @Override
-    public void fetchFromDataStorage(DataStorage dataStorage) {
+    public void fetchFromDataStorage() {
     
     }
     
     @Override
-    public void addToCollection(IEntity entity) {
+    public void addToCollection(TokenEntity entity) {
     
     }
-    
+
     @Override
-    public IEntity getById(int venueId) throws EntityNotFoundException {
+    public TokenEntity getById(int venueId) throws EntityNotFoundException {
         return null;
     }
     
@@ -45,5 +51,10 @@ public class DummyTokenCollection extends TokenCollection {
     @Override
     public void clear() {
     
+    }
+
+    @Override
+    public String getTableName() {
+        return null;
     }
 }

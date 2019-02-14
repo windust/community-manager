@@ -10,13 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeetupCollection implements ICollection<Meetup> {
+public class MeetupCollection extends ICollection<Meetup> {
 	private static final String TABLE_NAME = "venues";
 	private static Map<Integer, Meetup> meetups = new HashMap<>();
 
+	public MeetupCollection(DataStorage dataStorage) {
+		super(dataStorage);
+	}
 
 	@Override
-	public void fetchFromDataStorage(DataStorage dataStorage) {
+	public void fetchFromDataStorage() {
 		meetups.clear();
 		try {
 			for(Map<String, String> meetupFields : dataStorage.readAll(TABLE_NAME)) {
@@ -57,8 +60,18 @@ public class MeetupCollection implements ICollection<Meetup> {
 	public void clear() {
 		meetups.clear();
 	}
-	
+
+	@Override
+	public String getTableName() {
+		return TABLE_NAME;
+	}
+
 	public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
 	    return true;
     }
+
+	@Override
+	public void update(Meetup observable) {
+
+	}
 }

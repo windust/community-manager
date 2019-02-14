@@ -1,6 +1,8 @@
 package com.spinningnoodle.communitymanager.modeltest.collections;
 
+import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
 import com.spinningnoodle.communitymanager.modeltest.collections.fakes.DummyTokenCollection;
+import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +14,9 @@ public class TokenCollectionTest {
     private final String invalidToken = "invalid";
     
     @BeforeEach
-    public void initializeTokenCollection(){
-        tokenCollection = new DummyTokenCollection();
+    public void initializeTokenCollection() throws GeneralSecurityException {
+        DummyStorage dummyStorage = new DummyStorage("123");
+        tokenCollection = new DummyTokenCollection(dummyStorage);
     }
     
     @Test
