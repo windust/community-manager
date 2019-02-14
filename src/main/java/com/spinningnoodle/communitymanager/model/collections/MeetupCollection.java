@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class MeetupCollection extends ICollection<Meetup> {
 	private static final String TABLE_NAME = "venues";
-	private static Map<Integer, Meetup> meetups = new HashMap<>();
 
 	public MeetupCollection(DataStorage dataStorage) {
 		super(dataStorage);
@@ -20,45 +19,17 @@ public class MeetupCollection extends ICollection<Meetup> {
 
 	@Override
 	public void fetchFromDataStorage() {
-		meetups.clear();
+		this.clear();
 		try {
 			for(Map<String, String> meetupFields : dataStorage.readAll(TABLE_NAME)) {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				meetups.put(meetup.getMeetupId(), meetup);
+				this.entities.put(meetup.getMeetupId(), meetup);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void addToCollection(Meetup meetup) {
-		meetups.put(meetup.getMeetupId(), meetup);
-	}
-
-	@Override
-	public Meetup getById(int meetupId) throws EntityNotFoundException {
-		if(!meetups.containsKey(meetupId)) {
-			throw new EntityNotFoundException();
-		}
-		return meetups.get(meetupId);
-	}
-
-	@Override
-	public List<Meetup> getAll() {
-		return new ArrayList<>(meetups.values());
-	}
-
-	@Override
-	public int size() {
-		return meetups.size();
-	}
-
-	@Override
-	public void clear() {
-		meetups.clear();
 	}
 
 	@Override
@@ -73,5 +44,27 @@ public class MeetupCollection extends ICollection<Meetup> {
 	@Override
 	public void update(Meetup observable) {
 
+	}
+
+	public List<Map<String, String>> getMeetupsByVenueToken(String token) {
+		List<Map<String, String>> meetupInfo = new ArrayList<>();
+		for(Meetup meetup : this.entities.values()) {
+			if(meetup.getVenue().getToken().equals(token)) {
+				Map<String, String> venue = new HashMap<>();
+				venue.put("name", meetup.getVenue().getName());
+				venue.put("requested_date", meetup.getVenue().getRequestedHostingDate());
+
+				meetupInfo.add(venue);
+
+				Map<String, String> meetups = new HashMap<>();
+				meetups.put("date", meetup.getDate());
+				meetups.put("speaker", meetup.getSpeaker());
+				meetups.put("venue", meetup.getVenue().getName());
+
+				meetupInfo.add(meetups);
+			}
+		}
+
+		return meetupInfo;
 	}
 }

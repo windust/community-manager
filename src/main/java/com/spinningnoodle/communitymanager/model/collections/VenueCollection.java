@@ -54,4 +54,14 @@ public class VenueCollection extends ICollection<Venue> {
 	public void update(Venue observable) {
 
 	}
+
+	public boolean setVenueRequestedHostingDateByVenueName(String venueName, String requestedHostingDate) {
+		for(Venue venue : this.entities.values()) {
+			if(venue.getName().equals(venueName)) {
+				return dataStorage.update(TABLE_NAME, Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", requestedHostingDate);
+			}
+		}
+
+		return false;
+	}
 }
