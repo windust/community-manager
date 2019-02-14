@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
+package com.spinningnoodle.communitymanager.datastoragetests;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import java.io.IOException;

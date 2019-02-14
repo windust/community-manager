@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.communitymanager.datastoragetests;
+package com.spinningnoodle.communitymanager.datastoragetests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,8 +12,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.net.ConnectException;
 
 
 class DummyStorageTests {

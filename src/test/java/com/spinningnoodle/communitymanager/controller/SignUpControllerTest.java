@@ -1,7 +1,6 @@
-package com.spinningnoodle.communitymanager.communitymanager.controllertest;
+package com.spinningnoodle.communitymanager.controller;
 
 
-import com.spinningnoodle.communitymanager.controller.SignUpController;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

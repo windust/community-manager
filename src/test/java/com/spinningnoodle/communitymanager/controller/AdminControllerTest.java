@@ -1,6 +1,5 @@
-package com.spinningnoodle.communitymanager.communitymanager.controllertest;
+package com.spinningnoodle.communitymanager.controller;
 
-import com.spinningnoodle.communitymanager.controller.AdminController;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,7 @@ public class AdminControllerTest {
     
     @Test
     public void loggedInStartsAsFalse(){
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
@@ -41,13 +40,13 @@ public class AdminControllerTest {
     @Test
     public void loginAttemptSuccessful(){
         adminController.loginAttempt("username", "password");
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), true);
+        Assertions.assertTrue(adminController.loggedIn);
     }
     
     @Test
     public void loginAttemptFailed(){
         adminController.loginAttempt("incorrect", "wrong");
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
@@ -59,7 +58,7 @@ public class AdminControllerTest {
     public void logoutSetsLoggedInToFalse() {
         ReflectionTestUtils.setField(adminController, "loggedIn", true);
         adminController.logout();
-        Assertions.assertEquals(false, ReflectionTestUtils.getField(adminController, "loggedIn"));
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     //TODO create dashboard tests
@@ -69,19 +68,19 @@ public class AdminControllerTest {
     
     @Test
     public void meetupReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
-        ReflectionTestUtils.setField(adminController, "loggedIn", true);
+        adminController.loggedIn = true;
         Assertions.assertEquals("meetup", adminController.meetup());
     }
     
     @Test
     public void meetupThrowsExceptionIfNotLoggedIn(){
-        ReflectionTestUtils.setField(adminController, "loggedIn", false);
+        adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup());
     }
     
     @Test
     public void getTokenThrowsExceptionIfNotLoggedIn(){
-        ReflectionTestUtils.setField(adminController, "loggedIn", false);
+        adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken());
     }
     
