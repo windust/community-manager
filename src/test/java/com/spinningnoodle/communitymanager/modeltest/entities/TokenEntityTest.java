@@ -2,7 +2,9 @@ package com.spinningnoodle.communitymanager.modeltest.entities;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.modeltest.entities.fakes.DummyToken;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
