@@ -14,8 +14,6 @@ import java.util.Map;
 public class Venue extends TokenEntity {
     private static int nextId = 1;
 
-    private int venueId;
-    private int primaryKey;
     private String name;
     private String address;
     private int capacity;
@@ -44,7 +42,7 @@ public class Venue extends TokenEntity {
 	 * Create a new Venue with a unique generated object ID
 	 */
     public Venue() {
-        setVenueId();
+        super();
     }
 
 	/**
@@ -63,8 +61,7 @@ public class Venue extends TokenEntity {
     public Venue(int primaryKey, String name, String address, int capacity, String contactPerson,
         String contactEmail, String contactPhone, String contactAltPhone,
         String requestedHostingDate) {
-        this();
-        this.primaryKey = primaryKey;
+        this.setPrimaryKey(primaryKey);
         this.name = name;
         this.address = address;
         this.capacity = capacity;
@@ -174,45 +171,11 @@ public class Venue extends TokenEntity {
         this.requestedHostingDate = requestedHostingDate;
     }
 
-	/**
-	 * @return This venues unique ID. NOT ASSOCIATED WITH PRIMARY KEY
-	 */
-    public int getVenueId() {
-        return venueId;
-    }
-
-	/**
-	 * This venues unique ID. NOT ASSOCIATED WITH PRIMARY KEY
-	 */
-    public void setVenueId() {
-        this.venueId = nextId;
-        ++nextId;
-    }
-
-	/**
-	 * @return The venue's primary key stored in DataStorage
-	 */
-    public int getPrimaryKey() {
-        return primaryKey;
-    }
-
-	/**
-	 * @param primaryKey he venue's primary key stored in DataStorage
-	 * @throws UnexpectedPrimaryKeyException If Primary Key is 0 or < -1
-	 */
-    public void setPrimaryKey(int primaryKey) throws UnexpectedPrimaryKeyException {
-        if(primaryKey == 0 || primaryKey < -1) {
-        	throw new UnexpectedPrimaryKeyException();
-		}
-
-    	this.primaryKey = primaryKey;
-    }
-
 	@Override
 	public String toString() {
 		return "Venue{" +
-			"venueId=" + venueId +
-			", primaryKey=" + primaryKey +
+			"venueId=" + this.getEntityId() +
+			", primaryKey=" + this.getPrimaryKey() +
 			", name='" + name + '\'' +
 			", address='" + address + '\'' +
 			", capacity=" + capacity +

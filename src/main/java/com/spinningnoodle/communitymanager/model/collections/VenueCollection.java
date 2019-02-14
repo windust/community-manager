@@ -2,8 +2,13 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+
+import com.spinningnoodle.communitymanager.model.observer.IObserver;
+import com.spinningnoodle.communitymanager.model.observer.Observable;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,13 +21,16 @@ import java.util.Map;
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
-public class VenueCollection implements ICollection<Venue> {
+public class VenueCollection extends ICollection<Venue> {
 	private static final String TABLE_NAME = "venues";
-	static Map<Integer, Venue> venues = new HashMap<>();
+
+	public VenueCollection(DataStorage dataStorage) {
+		super(dataStorage);
+	}
 
 	@Override
-	public void fetchFromDataStorage(DataStorage dataStorage) {
-		venues.clear();
+	public void fetchFromDataStorage() {
+		this.clear();
 		try {
 			for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
 				Venue venue = new Venue();
@@ -31,7 +39,7 @@ public class VenueCollection implements ICollection<Venue> {
 				} catch (UnexpectedPrimaryKeyException e) {
 					e.printStackTrace();
 				}
-				venues.put(venue.getVenueId(), venue);
+				this.entities.put(venue.getEntityId(), venue);
 			}
 		} catch (IOException e) {
 			System.out.println("Error: Reading from non-existant table.");
@@ -40,31 +48,22 @@ public class VenueCollection implements ICollection<Venue> {
 	}
 
 	@Override
-	public void addToCollection(Venue venue) {
-		venues.put(venue.getVenueId(), venue);
+	public String getTableName() {
+		return TABLE_NAME;
 	}
 
 	@Override
-	public Venue getById(int venueId) throws EntityNotFoundException {
-		if(!venues.containsKey(venueId)) {
-			throw new EntityNotFoundException();
+	public void update(Venue observable) {
+
+	}
+
+	public boolean setVenueRequestedHostingDateByVenueName(String venueName, String requestedHostingDate) {
+		for(Venue venue : this.entities.values()) {
+			if(venue.getName().equals(venueName)) {
+				return dataStorage.update(TABLE_NAME, Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", requestedHostingDate);
+			}
 		}
-		return venues.get(venueId);
-	}
 
-	@Override
-	public List<Venue> getAll() {
-		return new ArrayList<>(venues.values());
-	}
-
-
-	@Override
-	public int size() {
-		return venues.size();
-	}
-
-	@Override
-	public void clear() {
-		venues.clear();
+		return false;
 	}
 }

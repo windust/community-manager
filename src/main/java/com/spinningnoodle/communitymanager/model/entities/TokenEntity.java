@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.model.entities;
 
+import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.UUID;
 
 /**
@@ -9,7 +10,7 @@ import java.util.UUID;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class TokenEntity implements IEntity {
+public abstract class TokenEntity extends IEntity {
     private String name;
     private String token;
     
@@ -27,7 +28,12 @@ public abstract class TokenEntity implements IEntity {
     }
     
     private void generateToken() {
-        token = name + "-" + UUID.randomUUID().toString();
+
+        String entityName = Character.toString(name.charAt(0)).toUpperCase() +
+                            name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+        
+        setToken(UUID.randomUUID().toString() + entityName);
+
     }
     
     /**
@@ -35,6 +41,8 @@ public abstract class TokenEntity implements IEntity {
      */
     public void setToken(String token){
         this.token = token;
+
+        this.notifyObservers();
     }
     
     /**

@@ -2,9 +2,10 @@ package com.spinningnoodle.communitymanager.model.entities;
 
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.Map;
 
-public class Meetup implements IEntity {
+public class Meetup extends IEntity {
 	private static int nextId = 1;
 
 	private int meetupId;

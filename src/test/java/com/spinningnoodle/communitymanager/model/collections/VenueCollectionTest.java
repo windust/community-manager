@@ -12,7 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class VenueCollectionTest {
-	private VenueCollection venueCollection = new VenueCollection();
+	private DummyStorage dummyStorage = new DummyStorage("123");
+	private VenueCollection venueCollection = new VenueCollection(dummyStorage);
+
+	VenueCollectionTest() throws GeneralSecurityException {
+	}
+
 	@BeforeEach
 	void setUp() {
 		venueCollection.clear();
@@ -20,8 +25,7 @@ class VenueCollectionTest {
 
 	@Test
 	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
-		DummyStorage dummyStorage = new DummyStorage("123");
-		venueCollection.fetchFromDataStorage(dummyStorage);
+		venueCollection.fetchFromDataStorage();
 
 		assertEquals(dummyStorage.readAll("venues").size(), venueCollection.size());
 	}
@@ -39,7 +43,7 @@ class VenueCollectionTest {
 		Venue testVenue = new Venue();
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(testVenue, venueCollection.getById(testVenue.getVenueId()));
+		assertEquals(testVenue, venueCollection.getById(testVenue.getEntityId()));
 	}
 
 	@Test
