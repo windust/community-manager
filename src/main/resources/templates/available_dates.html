@@ -12,14 +12,14 @@
     <h1>Seattle Java User's Group</h1>
   </div>
   <div id="venue_greeting">
-    <p>Welcome, Expedia.</p>
+    <p th:text="${greeting}"></p>
     <p>
       <form method="POST" action="/venueSignUp" modelAttribute="venue">
         <div class="date-request">
-          <p th:text="${hostingMessage}">Can you host 2/14?</p>
+          <p th:text="${hostingMessage}"></p>
           <!-- Value of yes button & needs host buttons needs to be meetup id -->
-          <button type="submit" class="response" id="response-yes" name="meetup" value="1">Yes</button>
-          <button type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
+          <button th:if="${dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" value="${requestedDate}">Yes</button>
+          <button th:if="${dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
         </div>
       </form>
     </p>
@@ -36,6 +36,17 @@
     </tr>
     </thead>
     <tbody>
+    <th:block th:each="meetup : ${meetups}">
+      <tr>
+        <td th:text="${meetup.value['date']}"></td>
+        <td th:text="${meetup.value['speaker']}"></td>
+        <td th:text="${meetup.value['venue']}?">
+          <button class="response" type="submit" name="meetup" th:value="${meetup.value['date']}">
+            Needs Host
+          </button>
+        </td>
+      </tr>
+    </th:block>
     <tr>
       <td>1/15</td>
       <td>Freddy</td>

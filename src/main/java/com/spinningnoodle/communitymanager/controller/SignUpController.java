@@ -3,10 +3,11 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
-import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
-import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class SignUpController {
-    MeetupCollection meetupCollection;
-    VenueCollection venueCollection;
+    GoogleSheetsManager model;
     
     String currentToken;
+    String venueName;
+    String requestedDate;
     String hostingMessage;
     boolean dateAvailable;
     
     public SignUpController(){
-        this.meetupCollection = new MeetupCollection();
-        this.venueCollection = new VenueCollection();
-        this.dateAvailable = true;
-        this.hostingMessage = "Can you host 2/14?";
+        model = new GoogleSheetsManager();
+        dateAvailable = true;
     }
     
     //TODO update javadocs
@@ -47,14 +47,27 @@ public class SignUpController {
      */
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) throws InvalidUserException {
-        if(validToken(token)){
-            this.currentToken = token;
+        try{
+            List<Map<String, String>> meetups;
+            meetups = model.getMeetupsByToken(token);
+            currentToken = token;
+            venueName = meetups.get(0).get("venue");
+            requestedDate = meetups.get(0).get("requestedDate");
+            meetups.remove(0);
             
-            session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("dateAvailable", this.dateAvailable);
+            if(requestedDate == null){
+                dateAvailable = false;
+            }
+            
+            session.setAttribute("meetups", meetups);
+            session.setAttribute("greeting", "Welcome, " + venueName);
+            session.setAttribute("hostingMessage", hostingMessage);
+            session.setAttribute("requestedDate", requestedDate);
+            session.setAttribute("dateAvailable", dateAvailable);
+            
             return "available_dates";
         }
-        else{
+        catch (IllegalArgumentException e){
             throw new InvalidUserException();
         }
         
@@ -62,26 +75,23 @@ public class SignUpController {
     
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetup){
-        String message = "";
+        String message;
+        boolean success;
         
         if(meetup.equals("notHosting")){
             message = "Thank you for your consideration.";
         }
         else {
-            try {
-                Meetup meetupToUpdate = meetupCollection.getById(Integer.parseInt(meetup));
-                
-                if(meetupToUpdate.getVenue() != null){
-                    message = "Thank you for volunteering but this date already has a host";
+            success = model.setVenueByName(venueName, meetup);
+            
+            if(success){
+                message = "Thank you for hosting on " + meetupToUpdate.getDate() + ". \nContact Freddy to cancel.";
+            }
+            else{
+                message = "Thank you for volunteering but this date already has a host";
+                if(meetup.equals(requestedDate)){
                     this.dateAvailable = false;
                 }
-                else{
-                    Venue venueHosting = getVenueByName(getVenueFromToken(currentToken));
-                    meetupToUpdate.setVenue(venueHosting);
-                    message = "Thank you for hosting on " + meetupToUpdate.getDate() + ". \nContact Freddy to cancel.";
-                }
-            } catch (EntityNotFoundException e) {
-                e.printStackTrace();
             }
         }
         
@@ -89,29 +99,9 @@ public class SignUpController {
         return "redirect:/venue?token=" + this.currentToken;
     }
     
-    private String getVenueFromToken(String token){
-        String[] pieces = token.split("-");
-        String venueName = pieces[0];
-        return venueName;
-    }
-    
-    private Venue getVenueByName(String name) throws EntityNotFoundException {
-        for(Venue venue : venueCollection.getAll()){
-            if (venue.getName().equals(name)){
-                return venue;
-            }
-        }
-        
-        throw new EntityNotFoundException();
-    }
-    
     //TODO create speakers sign up page
 //    @GetMapping("/speaker")
 //    public String speaker(){
 //        return "login.html";
 //    }
-    
-    private boolean validToken(String token){
-        return token.equals("Expedia-valid");
-    }
 }
