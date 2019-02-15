@@ -33,7 +33,13 @@ public class Meetup extends IEntity {
 
 	@Override
 	public IEntity build(Map<String, String> fields) throws AttributeException {
-		return null;
+		this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
+		this.setDate(fields.getOrDefault("date", null));
+		this.setSpeaker(fields.getOrDefault("speaker", null));
+		this.setTopic(fields.getOrDefault("topic", null));
+		this.setDescription(fields.getOrDefault("description", null));
+
+		return this;
 	}
 
 	public static int getNextId() {
