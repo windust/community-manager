@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MeetupCollection extends ICollection<Meetup> {
-	private static final String TABLE_NAME = "venues";
+	private static final String TABLE_NAME = "meetups";
 
 	public MeetupCollection(DataStorage dataStorage) {
 		super(dataStorage);
@@ -68,7 +68,8 @@ public class MeetupCollection extends ICollection<Meetup> {
 			Map<String, String> meetupInfo = new HashMap<>();
 			meetupInfo.put("date", meetup.getDate());
 			meetupInfo.put("speaker", meetup.getSpeaker());
-			meetupInfo.put("venue", meetup.getVenue().getName());
+			meetupInfo.put("venue", meetup.getVenue());
+			meetups.add(meetupInfo);
 		}
 
 		return meetups;
@@ -89,7 +90,7 @@ public class MeetupCollection extends ICollection<Meetup> {
 				stuff += " - " + venue.getToken();
 				Map<String, String> venueInfo = new HashMap<>();
 				venueInfo.put("name", venue.getName());
-				venueInfo.put("requested_date", venue.getRequestedHostingDate());
+				venueInfo.put("requestedDate", venue.getRequestedHostingDate());
 
 				return venueInfo;
 			}
