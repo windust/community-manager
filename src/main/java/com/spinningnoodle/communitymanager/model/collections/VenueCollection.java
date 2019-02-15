@@ -57,6 +57,7 @@ public class VenueCollection extends ICollection<Venue> {
 
 	}
 
+	/*
 	public boolean setVenueRequestedHostingDateByVenueName(String venueName, String requestedHostingDate) {
 		for(Venue venue : this.entities.values()) {
 			if(venue.getName().equals(venueName)) {
@@ -66,4 +67,5 @@ public class VenueCollection extends ICollection<Venue> {
 
 		return false;
 	}
+	*/
 }
