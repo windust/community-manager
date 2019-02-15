@@ -107,13 +107,9 @@ li a:hover {
   }
 }
 
-.meetup-table{
+.meetup-table, .venue-tab{
   width: $meetup_table_width;
   border-collapse: $table_border_collapse;
-}
-
-.venue-tab{
-  width: $meetup_table_width;
 }
 
 .venue-tab {

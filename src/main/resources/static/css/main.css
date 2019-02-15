@@ -43,13 +43,14 @@
 }
 
 #venue_greeting {
-  float: right;
-  width: 50%;
+  clear: both;
+  font-size: 1.3em;
+  width: 100%;
 }
 
 #logo_header {
-  float: left;
-  width: 50%;
+  width: 100%;
+  text-align: center;
 }
 
 #table_div {
@@ -64,27 +65,54 @@
 }
 
 .response, #response-no, #response-yes {
-  font-size: 1.1em;
+  font-size: 1.2em;
   font-family: "Arial";
   margin: 0.2em;
-  border-radius: 1.1em;
+  border-radius: 0.5em;
+  padding: 0.2em;
 }
 
-#response-yes, #response-no {
-  background-color: #005000;
-  color: white;
+#response-yes {
+  background-color: #e3c383;
+  color: black;
 }
 
 #response-no {
-  background-color: #00bc00;
+  background-color: black;
+  color: white;
 }
 
 .date-request {
-  background-color: rgba(12, 119, 2, 0.51);
-  font-size: 1.6em;
+  background-color: #1b3c35;
   text-align: center;
   border: 2px solid black;
-  width: 77%;
+  width: 100%;
+  color: white;
+  padding-top: 1.5em;
+  padding-bottom: 1.25em;
+}
+
+#welcome {
+  margin: 0;
+}
+
+#message {
+  margin-bottom: 0.5em;
+}
+
+#more_below {
+  width: 100%;
+  text-align: center;
+}
+
+#register {
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+#host_more {
+  color: #006600;
+  margin-bottom: 0;
 }
 
 /*Meetup CSS*/
@@ -191,13 +219,9 @@ li a:hover {
   border-color: #fafafa;
 }
 
-.meetup-table {
+.meetup-table, .venue-tab {
   width: 100%;
   border-collapse: collapse;
-}
-
-.venue-tab {
-  width: 100%;
 }
 
 .venue-tab .request-host {

@@ -10,25 +10,30 @@
 <body class="available_dates">
 <div id="header">
   <div id="logo_header">
-    <h1>Seattle Java User's Group</h1>
-  </div>
-  <div id="venue_greeting">
-    <p>Welcome, Expedia.</p>
-    <p>
-      <form:form method="POST"
-                           action="#" modelAttribute="venue">
-        <div class="date-request">
-          Can you host 2/14?
-          <input type="button" class="response" id="response-yes" name="submit"
-          value="Yes" onClick="window.location.reload();"
-          path="requestedHostingDate">
-          <button type="submit" class="response" id="response-no" name="submit">No</button>
-        </div>
-      </form:form>
-    </p>
+    <img src="images/logo_draft_1.png" id="logo">
   </div>
 </div>
-<br>
+<div id="venue_greeting">
+  <p>
+    <form:form method="POST"
+                         action="#" modelAttribute="venue">
+      <div class="date-request">
+        <div id="message">
+          <h2 id="welcome">Welcome, Expedia!</h2>
+          Can you host the meetup on 2/14/2019?
+        </div>
+        <input type="button" class="response" id="response-yes" name="submit"
+               value="Yes, I can!" onClick="window.location.reload();"
+               path="requestedHostingDate">
+        <button type="submit" class="response" id="response-no" name="submit">No</button>
+      </div>
+    </form:form>
+  </p>
+</div>
+<div id="more_below">
+  <h2 id="host_more">Do you want to host more meetups?</h2>
+  <p id="register">Register to host more meetups below:</p>
+</div>
 <div id="table_div">
   <table class="available_dates_table">
     <thead>

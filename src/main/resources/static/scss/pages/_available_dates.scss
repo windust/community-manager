@@ -46,13 +46,16 @@
 }
 
 #venue_greeting {
-  float: $float_right;
-  width: $venue_greeting_width;
+  clear: both;
+  font-size: $response_font_size;
+  //float: $float_right;
+  width: 100%;
 }
 
 #logo_header {
-  float: $float_left;
-  width: $logo_width;
+  //float: $float_left;
+  width: 100%;
+  text-align: $text_center;
 }
 
 #table_div {
@@ -67,28 +70,54 @@
 }
 
 .response {
-  font-size: $response_font_size;
+  font-size: $font_size;
   font-family: $font_family;
   margin: $response_margin;
   border-radius: $response_border_radius;
+  padding: $response_padding;
 }
 
 #response-yes {
   @extend .response;
   background-color: $response_yes;
-  color: $white;
+  color: $black;
 }
 
 #response-no {
   @extend .response;
-  @extend #response-yes;
-  background-color: $response_no;
+  background-color: $black;
+  color: $white;
 }
 
 .date-request {
   background-color: $date_request_box;
-  font-size: $date_request_font_size;
   text-align: $text_center;
   border: $date_request_border;
   width: $date_request_width;
+  color: $white;
+  padding-top: 1.5em;
+  padding-bottom: 1.25em;
+}
+
+#welcome {
+  margin: 0;
+}
+
+#message {
+  margin-bottom: .5em;
+}
+
+#more_below {
+  width: 100%;
+  text-align: $text_center;
+}
+
+#register{
+  margin-top: 0;
+  font-size: $font_size;
+}
+
+#host_more{
+  color: $logo_color;
+  margin-bottom: 0;
 }
