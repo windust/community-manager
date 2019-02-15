@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Meetup</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/meetup.css">
+  </head>
+  <body>
+    <ul>
+      <li><a href="#home">Homes</a></li>
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#google">Google Sheets</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+
+    <div id="meetup-details">
+    <table id="meetup-table"> 
+      <tr class="meetup-row">
+        <td class="meetup-data">Date: 12/12/12</td>
+        <td class="meetup-data">Topic: Deflating Balls</td>
+      </tr>
+      <tr class="meetup-row">
+        <td class="meetup-data">Venue: Foxborough Stadium</td>
+        <td class="meetup-data">Speaker: Tom Brady</td>
+      </tr>
+      <tr class="meetup-row">
+        <td class="meetup-data">Food: Pig Skin</td>
+        <td class="meetup-data">After Event: Apologizing Ceremony</td>
+      </tr>
+      <tr class="meetup-row">
+        <td class="meetup-data" id="description" colspan="2">Description: Sorry</td>
+      </tr>
+    </table>
+  </div>
+
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'Venue')" selected>Venue</button>
+      <button class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</button>
+      <button class="tablinks" onclick="openTab(event, 'Food')">Food</button>
+      <button class="tablinks" onclick="openTab(event, 'After')">After</button>
+    </div>
+
+    <div id="Venue" class="tabcontent">
+      <table id="venue-tab">
+        <tr>
+          <td colspan="3"> Expedia</td>
+          <td>
+            <input type="button" value="Request Host" class="request-host">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3"> Code Fellows</td>
+          <td>
+            <input type="button" value="Request Host" class="request-host">
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="Speaker" class="tabcontent">
+      <p>This is the speaker tab.</p>
+    </div>
+
+    <div id="Food" class="tabcontent">
+      <p>This is the food tab.</p>
+    </div>
+    <div id="After" class="tabcontent">
+      <p>This is the after tab.</p>
+    </div>
+    <script src="js/meetup.js" async defer></script>
+  </body>
+</html>
