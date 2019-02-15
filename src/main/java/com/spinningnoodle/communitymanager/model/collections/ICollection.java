@@ -4,7 +4,6 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.IEntity;
 import com.spinningnoodle.communitymanager.model.observer.IObserver;
-import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 
 	public ICollection(DataStorage dataStorage) {
 		this.dataStorage = dataStorage;
+		fetchFromDataStorage();
 	}
 
 	/**
@@ -54,6 +54,7 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 	 * @return A List of all <T>.
 	 */
 	public List<T> getAll() {
+		fetchFromDataStorage();
 		return new ArrayList<>(entities.values());
 	}
 

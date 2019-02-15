@@ -1,11 +1,8 @@
 package com.spinningnoodle.communitymanager.controller;
 
 
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
-import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
-import java.security.GeneralSecurityException;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -23,18 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class SignUpController {
-    GoogleSheetsManager model;
+    GoogleSheetsManager model = new GoogleSheetsManager();
     
     String currentToken;
     String venueName;
     String requestedDate;
     String hostingMessage;
-    boolean dateAvailable;
+    boolean dateAvailable = true;
     
-    public SignUpController(){
-        model = new GoogleSheetsManager();
-        dateAvailable = true;
-    }
+//    public SignUpController(){
+//        model = new GoogleSheetsManager();
+//        dateAvailable = true;
+//    }
     
     //TODO update javadocs
     /**
@@ -46,10 +43,10 @@ public class SignUpController {
      * invalid token
      */
     @GetMapping("/venue")
-    public String venue(@RequestParam(name = "token") String token, HttpSession session) throws InvalidUserException {
+    public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
             List<Map<String, String>> meetups;
-            meetups = model.getMeetupsByToken(token);
+            meetups = model.getMeetupByVenueToken(token);
             currentToken = token;
             venueName = meetups.get(0).get("venue");
             requestedDate = meetups.get(0).get("requestedDate");
@@ -68,7 +65,7 @@ public class SignUpController {
             return "available_dates";
         }
         catch (IllegalArgumentException e){
-            throw new InvalidUserException();
+            throw new IllegalArgumentException(e.getMessage());
         }
         
     }
@@ -82,10 +79,10 @@ public class SignUpController {
             message = "Thank you for your consideration.";
         }
         else {
-            success = model.setVenueByName(venueName, meetup);
+            success = model.setVenueForMeetup(venueName, meetup);
             
             if(success){
-                message = "Thank you for hosting on " + meetupToUpdate.getDate() + ". \nContact Freddy to cancel.";
+                message = "Thank you for hosting on " + meetup + ". \nContact Freddy to cancel.";
             }
             else{
                 message = "Thank you for volunteering but this date already has a host";

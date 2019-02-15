@@ -77,15 +77,16 @@ public class MeetupCollection extends ICollection<Meetup> {
 	// is valid token, get name of venue & requested date
 	// is value 'excellent' not valid
 	private Map<String, String> isTokenValid(String token) {
-
+		String stuff = "";
 		// create venue collection with this datastorage
 		VenueCollection venueCollection = new VenueCollection(this.dataStorage);
-		venueCollection.fetchFromDataStorage();
+//		venueCollection.fetchFromDataStorage();
 
 		// Loop through venue collection until a venue is found to have the token
 		for(Venue venue : venueCollection.getAll()) {
 			// If the venue is found to have the token return the venue info as a map
 			if(venue.getToken().equals(token)) {
+				stuff += " - " + venue.getToken();
 				Map<String, String> venueInfo = new HashMap<>();
 				venueInfo.put("name", venue.getName());
 				venueInfo.put("requested_date", venue.getRequestedHostingDate());
@@ -95,6 +96,6 @@ public class MeetupCollection extends ICollection<Meetup> {
 		}
 
 		// If the for loop didnt find a the venue by token
-		throw new IllegalArgumentException("Token: " + token + " does not exist for any venue.");
+		throw new IllegalArgumentException("Token: " + token + " does not exist for any venue." + stuff);
 	}
 }
