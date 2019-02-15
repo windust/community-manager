@@ -1,7 +1,6 @@
 package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
@@ -46,25 +45,54 @@ public class MeetupCollection extends ICollection<Meetup> {
 
 	}
 
-	public List<Map<String, String>> getMeetupsByVenueToken(String token) {
-		List<Map<String, String>> meetupInfo = new ArrayList<>();
-		for(Meetup meetup : this.entities.values()) {
-			if(meetup.getVenue().getToken().equals(token)) {
-				Map<String, String> venue = new HashMap<>();
-				venue.put("name", meetup.getVenue().getName());
-				venue.put("requested_date", meetup.getVenue().getRequestedHostingDate());
+	// set the venue for a hosting date
+	public boolean setVenueForMeetup(String venueName, String hostingDate) {
+		for(Meetup meetup : entities.values()) {
+			if(meetup.getDate().equals(hostingDate)) {
+				return dataStorage.update(TABLE_NAME, Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
+			}
+		}
+		return false;
+	}
 
-				meetupInfo.add(venue);
+	// get all meetups with date, speaker, and venue
+	public List<Map<String, String>> getAllMeetupsForToken(String token) {
+		// list to store the meetups
+		List<Map<String, String>> meetups = new ArrayList<>();
+		// add the venue with the token to [0] index of list
+		meetups.add(isTokenValid(token));
 
-				Map<String, String> meetups = new HashMap<>();
-				meetups.put("date", meetup.getDate());
-				meetups.put("speaker", meetup.getSpeaker());
-				meetups.put("venue", meetup.getVenue().getName());
+		for(Meetup meetup : entities.values()) {
+			Map<String, String> meetupInfo = new HashMap<>();
+			meetupInfo.put("date", meetup.getDate());
+			meetupInfo.put("speaker", meetup.getSpeaker());
+			meetupInfo.put("venue", meetup.getVenue().getName());
+		}
 
-				meetupInfo.add(meetups);
+		return meetups;
+	}
+
+	// is valid token, get name of venue & requested date
+	// is value 'excellent' not valid
+	private Map<String, String> isTokenValid(String token) {
+
+		// create venue collection with this datastorage
+		VenueCollection venueCollection = new VenueCollection(this.dataStorage);
+		venueCollection.fetchFromDataStorage();
+
+		// Loop through venue collection until a venue is found to have the token
+		for(Venue venue : venueCollection.getAll()) {
+			// If the venue is found to have the token return the venue info as a map
+			if(venue.getToken().equals(token)) {
+				Map<String, String> venueInfo = new HashMap<>();
+				venueInfo.put("name", venue.getName());
+				venueInfo.put("requested_date", venue.getRequestedHostingDate());
+
+				return venueInfo;
 			}
 		}
 
-		return meetupInfo;
+		// If the for loop didnt find a the venue by token
+		throw new IllegalArgumentException("Token: " + token + " does not exist for any venue.");
 	}
 }
