@@ -16,7 +16,7 @@ public class GoogleSheetsManager {
     private DataStorage dataStorage;
     private MeetupCollection meetupCollection;
 
-    GoogleSheetsManager(){
+    public GoogleSheetsManager(){
         try {
             Map<String,String> config = new HashMap<>();
             config.put("storage","google");
