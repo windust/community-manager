@@ -62,7 +62,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void throwsIOExceptionWhenGivenBadStorageID() {
+    void throwsIOExceptionWhenGivenBadStorageID() {
         Assertions.assertThrows(IOException.class, () -> {
             new GoogleSheets("133");
         });
