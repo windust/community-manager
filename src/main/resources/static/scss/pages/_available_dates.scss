@@ -48,12 +48,10 @@
 #venue_greeting {
   clear: both;
   font-size: $response_font_size;
-  //float: $float_right;
   width: 100%;
 }
 
 #logo_header {
-  //float: $float_left;
   width: 100%;
   text-align: $text_center;
 }
@@ -95,8 +93,8 @@
   border: $date_request_border;
   width: $date_request_width;
   color: $white;
-  padding-top: 1.5em;
-  padding-bottom: 1.25em;
+  padding-top: 1em;
+  padding-bottom: .7em;
 }
 
 #welcome {
@@ -119,5 +117,10 @@
 
 #host_more{
   color: $logo_color;
+  margin-bottom: 0;
+}
+
+#available_dates_page_name {
+  text-align: $text_center;
   margin-bottom: 0;
 }

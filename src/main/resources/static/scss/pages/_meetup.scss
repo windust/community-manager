@@ -121,3 +121,7 @@ li a:hover {
 .venue-tab tr:nth-child(odd){
   background: $nth_child_odd;
 }
+
+#meetup_page_name {
+  text-align: $text_center;
+}
