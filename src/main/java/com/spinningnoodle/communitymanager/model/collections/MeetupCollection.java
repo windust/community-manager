@@ -59,6 +59,7 @@ public class MeetupCollection extends ICollection<Meetup> {
 
 	// get all meetups with date, speaker, and venue
 	public List<Map<String, String>> getAllMeetupsForToken(String token) {
+		this.fetchFromDataStorage();
 		// list to store the meetups
 		List<Map<String, String>> meetups = new ArrayList<>();
 		// add the venue with the token to [0] index of list
