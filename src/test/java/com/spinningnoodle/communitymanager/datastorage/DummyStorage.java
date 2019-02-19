@@ -1,6 +1,5 @@
 package com.spinningnoodle.communitymanager.datastorage;
 
-import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class DummyStorage implements DataStorage {
 
     private String name;
     private String storageID;
-    private String[] tableNames;
+    private Map<String,String> tableNames;
     private List<Map<String, String>> data;
 
     /**
@@ -39,7 +38,10 @@ public class DummyStorage implements DataStorage {
         }
         this.storageID = storageID;
         this.name = storageID;
-        this.tableNames = new String[]{"speakers","venues"};
+        this.tableNames = new HashMap<>();
+        tableNames.put("speakers", "1");
+        tableNames.put("venues", "2");
+        tableNames.put("meetups", "3");
         List<Map<String, String>> list = new ArrayList<>();
         Map<String,String> row = new HashMap<>();
         row.put("primaryKey", "1");
@@ -78,7 +80,7 @@ public class DummyStorage implements DataStorage {
 
     @Override
     public List<Map<String, String>> readAll(String tableName) {
-        if(Arrays.stream(tableNames).noneMatch(tableName.toLowerCase()::equals)){
+        if(Arrays.stream(tableNames.keySet().toArray()).noneMatch(tableName.toLowerCase()::equals)){
             throw new IllegalArgumentException("Table Name: " + tableName + " does not exist.");
         }
         return data;
@@ -121,7 +123,7 @@ public class DummyStorage implements DataStorage {
     }
 
     @Override
-    public String[] getTableNames() {
+    public Map<String, String> getTableNames() {
         return tableNames;
     }
 
@@ -130,7 +132,7 @@ public class DummyStorage implements DataStorage {
         return "DummyStorage{" +
             "name='" + name + '\'' +
             ", storageID='" + storageID + '\'' +
-            ", tableNames=" + Arrays.toString(tableNames) +
+            ", tableNames=" + Arrays.toString(tableNames.keySet().toArray()) +
             ", data=" + data +
             '}';
     }

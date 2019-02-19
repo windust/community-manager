@@ -89,6 +89,6 @@ public interface DataStorage {
      * getTableNames gets the names of all the tables in the data storage
      * @return String array with the table names
      */
-    String[] getTableNames();
+    Map<String, String> getTableNames();
 
 }
