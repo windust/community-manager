@@ -2,8 +2,6 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
-import com.spinningnoodle.communitymanager.model.collections.TokenCollection;
-import com.spinningnoodle.communitymanager.model.entities.IEntity;
 import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
 import java.util.List;
 

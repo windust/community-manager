@@ -11,13 +11,13 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class IEntity extends Observable {
+public abstract class Entity extends Observable {
 	private static int nextId = 0;
 
 	private int entityId;
 	private int primaryKey;
 
-	public IEntity() {
+	public Entity() {
 		setEntityId();
 	}
 
@@ -29,7 +29,7 @@ public abstract class IEntity extends Observable {
 	 * @return A new entity with the values associated identified by the map
 	 * @throws AttributeException An exception raised by invalid values for the specified key
 	 */
-	public abstract IEntity build(Map<String, String> fields) throws AttributeException;
+	public abstract Entity build(Map<String, String> fields) throws AttributeException;
 
 	public int getEntityId() {
 		return entityId;

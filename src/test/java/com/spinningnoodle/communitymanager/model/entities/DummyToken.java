@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class DummyToken extends TokenEntity {
     @Override
-    public IEntity build(Map<String, String> fields){
+    public Entity build(Map<String, String> fields){
         DummyToken temp = new DummyToken();
         
         temp.setName(fields.get("name"));
