@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class GoogleSheetsManager {
-    private DataStorage dataStorage;
-    private MeetupCollection meetupCollection;
+    DataStorage dataStorage;
+    MeetupCollection meetupCollection;
 
     public GoogleSheetsManager(){
         try {

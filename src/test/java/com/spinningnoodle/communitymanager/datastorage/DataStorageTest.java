@@ -68,7 +68,7 @@ class DataStorageTest {
         list.add(row);
 
         expected = list;
-        assertEquals(expected, testStorage.readAll("speakers"));
+        assertEquals(expected, testStorage.readAll("venues"));
     }
 
     @Test
