@@ -3,7 +3,7 @@ package com.spinningnoodle.communitymanager.model.collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
+import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import java.security.GeneralSecurityException;

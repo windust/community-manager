@@ -1,11 +1,8 @@
-package com.spinningnoodle.communitymanager.datastoragetest;
+package com.spinningnoodle.communitymanager.datastorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-
-import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;

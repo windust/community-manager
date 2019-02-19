@@ -1,10 +1,7 @@
-package com.spinningnoodle.communitymanager.datastoragetest;
+package com.spinningnoodle.communitymanager.datastorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-
-import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;

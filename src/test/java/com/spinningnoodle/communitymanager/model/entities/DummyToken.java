@@ -1,7 +1,5 @@
-package com.spinningnoodle.communitymanager.model.entities.fakes;
+package com.spinningnoodle.communitymanager.model.entities;
 
-import com.spinningnoodle.communitymanager.model.entities.IEntity;
-import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
 import java.util.Map;
 
 /**

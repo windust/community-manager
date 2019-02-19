@@ -1,7 +1,6 @@
 package com.spinningnoodle.communitymanager.model.collections;
 
-import com.spinningnoodle.communitymanager.model.collections.fakes.DummyTokenCollection;
-import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
+import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,10 +1,9 @@
-package com.spinningnoodle.communitymanager.modeltest.collections;
+package com.spinningnoodle.communitymanager.model.collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.spinningnoodle.communitymanager.datastoragetest.fakes.DummyStorage;
+import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
-import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.security.GeneralSecurityException;
 import java.util.stream.IntStream;
