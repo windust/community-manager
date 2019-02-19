@@ -62,8 +62,8 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void throwsConnectExceptionWhenCantConnectToDataStorage() {
-        Assertions.assertThrows(GeneralSecurityException.class, () -> {
+    public void throwsIOExceptionWhenGivenBadStorageID() {
+        Assertions.assertThrows(IOException.class, () -> {
             new GoogleSheets("133");
         });
     }
@@ -84,39 +84,42 @@ public class GoogleSheetsTest {
     }
 
     @Test
-    public void whenIRequestNonExistentTableIGetGoogleJsonResponseException() {
-        Assertions.assertThrows(GoogleJsonResponseException.class, () -> {
+    public void whenIRequestNonExistentTableIGetIOException() {
+        Assertions.assertThrows(IOException.class, () -> {
             testStorage.readAll("sprinklers");
         });
     }
 
     @Test
-    void whenIRequestTableNamesIExpectToGetThreeAsAnArray() {
-//        String[] tableNames = {"venues", "speakers", "meetups"};
-//        Arrays.sort(tableNames);
-//
-//        Map<String,String> actualTableNames = testStorage.getTableNames();
-//        Arrays.sort(actualTableNames);
-//
-//        assertTrue(Arrays.equals(tableNames, actualTableNames));
+    void whenIRequestTableNamesIExpectToGetThreeInAHashMap() {
+        HashMap<String,String> tableNames = new HashMap<>();
+        tableNames.put("speakers", "2070966566");
+        tableNames.put("venues", "0");
+        tableNames.put("meetups", "748055642");
+
+        assertEquals(tableNames, testStorage.getTableNames());
     }
 
     @Test
     void whenISetNameIGetNewName() throws IOException {
         String oldName = testStorage.getName();
-
-        expected.get(0).put("name","NewName");
         testStorage.setName("NewName");
-        assertEquals(expected, testStorage.readAll("venues"));
+        assertEquals("NewName", testStorage.getName());
         testStorage.setName(oldName);
-        expected.get(0).put("name",oldName);
     }
 
     @Test
     void whenIUpdateVenueNameIGetNewVenueNameBack() {
-        String oldName = "Excellent";
-        testStorage.update("venues", "1", "name", "NewName");
-        assertEquals("NewName", testStorage.getName());
-        testStorage.update("venues", "1", "name", "Excellent");
+        String oldName = "Amazing";
+        String nameAfterChange = "Amazing";
+        testStorage.update("venues", "2", "name", "NewName");
+        try {
+            nameAfterChange =  testStorage.readAll("venues").get(0).get("name");
+            nameAfterChange =  testStorage.readAll("venues").get(1).get("name");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        testStorage.update("venues", "2", "name", "Amazing");
+        assertEquals("NewName", nameAfterChange);
     }
 }
