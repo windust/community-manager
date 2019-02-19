@@ -21,6 +21,6 @@ public abstract class TokenCollection extends ICollection<TokenEntity> {
 
     @Override
     public void update(TokenEntity observable) {
-        updateToken(this.dataStorage, observable.getPrimaryKey(),observable.getToken());
+        updateToken(getDataStorage(), observable.getPrimaryKey(),observable.getToken());
     }
 }
