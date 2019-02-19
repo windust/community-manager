@@ -6,7 +6,7 @@ package com.spinningnoodle.communitymanager.model.observer;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public interface IObserver<T extends Observable> {
+public interface Observer<T extends Observable> {
 
 	/**
 	 * Notifies this class a Observable it isa watching has an update

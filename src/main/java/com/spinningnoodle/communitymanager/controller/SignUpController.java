@@ -48,12 +48,15 @@ public class SignUpController {
             List<Map<String, String>> meetups;
             meetups = model.getMeetupByVenueToken(token);
             currentToken = token;
-            venueName = meetups.get(0).get("venue");
+            venueName = meetups.get(0).get("name");
             requestedDate = meetups.get(0).get("requestedDate");
             meetups.remove(0);
             
             if(requestedDate == null){
                 dateAvailable = false;
+            }
+            if(hostingMessage == null){
+                hostingMessage = "Can you host the meetup on " + requestedDate;
             }
             
             session.setAttribute("meetups", meetups);

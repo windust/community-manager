@@ -1,6 +1,5 @@
 package com.spinningnoodle.communitymanager.model.entities;
 
-import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.UUID;
 
 /**
@@ -10,7 +9,7 @@ import java.util.UUID;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class TokenEntity extends IEntity {
+public abstract class TokenEntity extends Entity {
     private String name;
     private String token;
     

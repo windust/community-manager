@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class MeetupCollection extends ICollection<Meetup> {
+public class MeetupCollection extends Collection<Meetup> {
 	private static final String TABLE_NAME = "meetups";
 
     /**

@@ -2,10 +2,9 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
-import com.spinningnoodle.communitymanager.model.entities.IEntity;
-import com.spinningnoodle.communitymanager.model.observer.IObserver;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.observer.Observer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,7 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class ICollection<T extends IEntity> implements IObserver<T> {
+public abstract class Collection<T extends Entity> implements Observer<T> {
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 
@@ -27,7 +26,7 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 		return dataStorage.update(tableName, primaryKey, attribute, newValue);
 	}
 
-	protected Collection<T> getEntitiesValues() {
+	protected java.util.Collection<T> getEntitiesValues() {
 		return this.entities.values();
 	}
 
@@ -41,7 +40,7 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 	/**
 	 * @param dataStorage the data storage to use as a database
 	 */
-	public ICollection(DataStorage dataStorage) {
+	public Collection(DataStorage dataStorage) {
 		this.dataStorage = dataStorage;
 		fetchFromDataStorage();
 	}
@@ -108,7 +107,7 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 
 	@Override
 	public String toString() {
-		return "ICollection{" +
+		return "Collection{" +
 			"dataStorage=" + dataStorage +
 			", entities=" + entities +
 			'}';

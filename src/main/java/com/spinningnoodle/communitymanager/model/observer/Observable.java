@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * defines an abstract interface with the callback operation IObserver objects use to notify observers.
+ * defines an abstract interface with the callback operation Observer objects use to notify observers.
  *
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
 public abstract class Observable {
-	private List<IObserver> observers = new ArrayList<>();
+	private List<Observer> observers = new ArrayList<>();
 
 	/**
 	 * Attach a observer to this object
 	 *
 	 * @param observer A class which listens to updates in this class
 	 */
-	public void atachObserver(IObserver observer) {
+	public void atachObserver(Observer observer) {
 		observers.add(observer);
 	}
 
@@ -26,7 +26,7 @@ public abstract class Observable {
 	 *
 	 * @param observer A class which listens to updates in this class
 	 */
-	public void detachObserver(IObserver observer) {
+	public void detachObserver(Observer observer) {
 		observers.remove(observer);
 	}
 
@@ -34,7 +34,7 @@ public abstract class Observable {
 	 * Call update method on all observers to let them know a change in state has been made.
 	 */
 	protected void notifyObservers() {
-		for(IObserver observer : observers) {
+		for(Observer observer : observers) {
 			observer.update(this);
 		}
 	}
