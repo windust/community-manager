@@ -21,7 +21,6 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 	/**
 	 * Gets all <T> from a DataStorage.
 	 *
-	 * @param dataStorage The DataStorage used to store venues.
 	 */
 	public abstract void fetchFromDataStorage();
 
