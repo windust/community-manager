@@ -32,14 +32,14 @@ public class VenueCollection extends ICollection<Venue> {
 	public void fetchFromDataStorage() {
 		this.clear();
 		try {
-			for(Map<String, String> venueFields : dataStorage.readAll(TABLE_NAME)) {
+			for(Map<String, String> venueFields : getDataStorage().readAll(TABLE_NAME)) {
 				Venue venue = new Venue();
 				try {
 					venue.build(venueFields);
 				} catch (UnexpectedPrimaryKeyException e) {
 					e.printStackTrace();
 				}
-				this.entities.put(venue.getEntityId(), venue);
+				addToEntities(venue);
 			}
 		} catch (IOException e) {
 			System.out.println("Error: Reading from non-existant table.");
