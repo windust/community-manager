@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.model.collections;
+package com.spinningnoodle.communitymanager.model.collections.fakes;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;

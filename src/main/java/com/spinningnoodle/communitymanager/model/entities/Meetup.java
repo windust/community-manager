@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class Meetup extends IEntity {
+public class Meetup extends Entity {
 	private static int nextId = 1;
 
 	private int meetupId;
@@ -52,7 +52,7 @@ public class Meetup extends IEntity {
 	}
 
 	@Override
-	public IEntity build(Map<String, String> fields) throws AttributeException {
+	public Entity build(Map<String, String> fields) throws AttributeException {
 		this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
 		this.setDate(fields.getOrDefault("date", null));
 		this.setSpeaker(fields.getOrDefault("speaker", null));

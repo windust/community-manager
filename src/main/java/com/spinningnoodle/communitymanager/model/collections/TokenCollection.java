@@ -2,10 +2,8 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
-import com.spinningnoodle.communitymanager.model.observer.IObserver;
-import com.spinningnoodle.communitymanager.model.observer.Observable;
 
-public abstract class TokenCollection extends ICollection<TokenEntity> {
+public abstract class TokenCollection extends Collection<TokenEntity> {
 
     public TokenCollection(DataStorage dataStorage) {
         super(dataStorage);
@@ -21,6 +19,6 @@ public abstract class TokenCollection extends ICollection<TokenEntity> {
 
     @Override
     public void update(TokenEntity observable) {
-        updateToken(this.dataStorage, observable.getPrimaryKey(),observable.getToken());
+        updateToken(getDataStorage(), observable.getPrimaryKey(),observable.getToken());
     }
 }

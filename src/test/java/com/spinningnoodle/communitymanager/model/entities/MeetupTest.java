@@ -13,8 +13,7 @@ class MeetupTest {
 	private final String testSpeaker = "Jane Doe";
 	private final String testTopic = "Java programming";
 	private final String testDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec quidem liberius ab eo dicuntur et saepius.";
-	private final String testVenue = "Test Venue";
-	//private final Venue testVenue = new Venue();
+	private final Venue testVenue = new Venue();
 
 	@BeforeEach
 	void setUp() {
@@ -104,91 +103,4 @@ class MeetupTest {
 		meetup.setDescription(newDescription);
 		assertEquals(newDescription, meetup.getDescription());
 	}
-
-	@Test
-	void canGetVenue() {
-		assertEquals(testVenue, meetup.getVenue());
-	}
-
-//	@Test
-//	void canSetVenue() {
-//		Venue newVenue = new Venue();
-//		meetup.setVenue(newVenue);
-//		assertEquals(newVenue, meetup.getVenue());
-//	}
-
-//	@Nested
-//	class BuildNewMeetupFromMapOfFieldsTest {
-//		private Meetup builtMeetup;
-//		private Map<String, String> fields = new HashMap<>();
-//
-//		@BeforeEach
-//		void setUp() {
-//			fields.put("primaryKey", Integer.toString(testPrimaryKey));
-//			fields.put("date", testDate);
-//			fields.put("speaker", testSpeaker);
-//			fields.put("topic", testTopic);
-//			fields.put("description", testDescription);
-//
-//			builtMeetup = new Meetup().build(fields);
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsPrimaryKey() {
-//			assertEquals(Integer.parseInt(fields.get("primaryKey")), builtMeetup.getPrimaryKey());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsDate() {
-//			assertEquals(testDate, builtMeetup.getDate());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsSpeaker() {
-//			assertEquals(testSpeaker, builtMeetup.getSpeaker());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsTopic() {
-//			assertEquals(testTopic, builtMeetup.getTopic());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsDescription() {
-//			assertEquals(testDescription, builtMeetup.getDescription());
-//		}
-//
-//		@Nested
-//		class BuildMeetupWithNoFieldsTest {
-//			@BeforeEach
-//			void setUp() {
-//				builtMeetup = new Meetup().build(new HashMap<>());
-//			}
-//
-//			@Test
-//			void whenIBuildAVenueWithNoFieldsThenPrimaryKeyShouldBeNegativeOne() {
-//				assertEquals(-1, builtMeetup.getPrimaryKey());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenDateShouldBeNull() {
-//				assertNull(builtMeetup.getDate());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenSpeakerShouldBeNull() {
-//				assertNull(builtMeetup.getSpeaker());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenTopicShouldBeNull() {
-//				assertNull(builtMeetup.getTopic());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenDescriptionShouldBeNull() {
-//				assertNull(builtMeetup.getDescription());
-//			}
-//		}
-//	}
 }

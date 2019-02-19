@@ -1,17 +1,22 @@
 package com.spinningnoodle.communitymanager.model.collections;
 
-import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 
 public class DummyMeetupCollection extends MeetupCollection {
-
-    public DummyMeetupCollection(DataStorage dataStorage) {
-        super(dataStorage);
+    public DummyMeetupCollection(){
+        Venue venue = new Venue();
+        venue.setName("Expedia");
+        Meetup unavailableMeetup = new Meetup();
+        unavailableMeetup.setVenue(venue);
+        Meetup availableMeetup = new Meetup();
+        availableMeetup.setDate("2/14/2019");
+        
+        this.meetup.put(1, unavailableMeetup);
+        this.meetup.put(2, availableMeetup);
     }
-
-    @Override
-    public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
-        return true;
+    
+    public Meetup getById(int meetupId) {
+        return this.meetup.get(meetupId);
     }
 }

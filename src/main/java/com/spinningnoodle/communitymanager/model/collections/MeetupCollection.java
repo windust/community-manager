@@ -11,9 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeetupCollection extends ICollection<Meetup> {
+/**
+ *
+ * @author Cream 4 UR Coffee
+ * @version 0.1
+ */
+public class MeetupCollection extends Collection<Meetup> {
 	private static final String TABLE_NAME = "meetups";
 
+    /**
+     * @param dataStorage the data storage this object should use as a database
+     */
 	public MeetupCollection(DataStorage dataStorage) {
 		super(dataStorage);
 	}
@@ -22,11 +30,11 @@ public class MeetupCollection extends ICollection<Meetup> {
 	public void fetchFromDataStorage() {
 		this.clear();
 		try {
-			for(Map<String, String> meetupFields : dataStorage.readAll(TABLE_NAME)) {
+			for(Map<String, String> meetupFields : getDataStorage().readAll(TABLE_NAME)) {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				this.entities.put(meetup.getMeetupId(), meetup);
+				addToEntities(meetup);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -47,17 +55,26 @@ public class MeetupCollection extends ICollection<Meetup> {
 
 	}
 
-	// set the venue for a hosting date
+    /**
+     * set the venue for a hosting date
+     *
+     * @param venueName The venue name
+     * @param hostingDate The date to be hosted
+     * @return true or false if the DataStore updated
+     */
 	public boolean setVenueForMeetup(String venueName, String hostingDate) {
-		for(Meetup meetup : entities.values()) {
+		for(Meetup meetup : getEntitiesValues()) {
 			if(meetup.getDate().equals(hostingDate)) {
-				return dataStorage.update(TABLE_NAME, Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
+				return dataStorageUpdate(TABLE_NAME, Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
 			}
 		}
 		return false;
 	}
 
-	// get all meetups with date, speaker, and venue
+    /**
+     * @param token the token to search
+     * @return a lost of meetups
+     */
 	public List<Map<String, String>> getAllMeetupsForToken(String token) {
 		this.fetchFromDataStorage();
 		// list to store the meetups
@@ -65,7 +82,7 @@ public class MeetupCollection extends ICollection<Meetup> {
 		// add the venue with the token to [0] index of list
 		meetups.add(isTokenValid(token));
 
-		for(Meetup meetup : entities.values()) {
+		for(Meetup meetup : getEntitiesValues()) {
 			Map<String, String> meetupInfo = new HashMap<>();
 			meetupInfo.put("date", meetup.getDate());
 			meetupInfo.put("speaker", meetup.getSpeaker());
@@ -81,7 +98,7 @@ public class MeetupCollection extends ICollection<Meetup> {
 	private Map<String, String> isTokenValid(String token) {
 		String stuff = "";
 		// create venue collection with this datastorage
-		VenueCollection venueCollection = new VenueCollection(this.dataStorage);
+		VenueCollection venueCollection = new VenueCollection(getDataStorage());
 //		venueCollection.fetchFromDataStorage();
 
 		// Loop through venue collection until a venue is found to have the token

@@ -1,4 +1,4 @@
-package com.spinningnoodle.communitymanager.datastorage;
+package com.spinningnoodle.communitymanager.datastoragetest.fakes;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

@@ -2,18 +2,45 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
-import com.spinningnoodle.communitymanager.model.entities.IEntity;
-import com.spinningnoodle.communitymanager.model.observer.IObserver;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.observer.Observer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ICollection<T extends IEntity> implements IObserver<T> {
-	DataStorage dataStorage;
-	Map<Integer, T> entities = new HashMap<>();
+/**
+ * @param <T> Entity type
+ * @author Cream 4 UR Coffee
+ * @version 0.1
+ */
+public abstract class Collection<T extends Entity> implements Observer<T> {
+	private DataStorage dataStorage;
+	private Map<Integer, T> entities = new HashMap<>();
 
-	public ICollection(DataStorage dataStorage) {
+	protected DataStorage getDataStorage() {
+		return dataStorage;
+	}
+
+	protected boolean dataStorageUpdate(String tableName, String primaryKey, String attribute, String newValue) {
+		return dataStorage.update(tableName, primaryKey, attribute, newValue);
+	}
+
+	protected java.util.Collection<T> getEntitiesValues() {
+		return this.entities.values();
+	}
+
+	/**
+	 * @param entity The entity to store in the collection
+	 */
+	protected void addToEntities(T entity) {
+		entities.put(entity.getEntityId(), entity);
+	}
+
+	/**
+	 * @param dataStorage the data storage to use as a database
+	 */
+	public Collection(DataStorage dataStorage) {
 		this.dataStorage = dataStorage;
 		fetchFromDataStorage();
 	}
@@ -73,5 +100,16 @@ public abstract class ICollection<T extends IEntity> implements IObserver<T> {
 		entities.clear();
 	}
 
+	/**
+	 * @return the table this collection uses
+	 */
 	public abstract String getTableName();
+
+	@Override
+	public String toString() {
+		return "Collection{" +
+			"dataStorage=" + dataStorage +
+			", entities=" + entities +
+			'}';
+	}
 }
