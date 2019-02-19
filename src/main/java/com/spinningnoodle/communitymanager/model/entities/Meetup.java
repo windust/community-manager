@@ -2,7 +2,6 @@ package com.spinningnoodle.communitymanager.model.entities;
 
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
-import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.util.Map;
 
 public class Meetup extends IEntity {
@@ -14,14 +13,14 @@ public class Meetup extends IEntity {
 	private String speaker;
 	private String topic;
 	private String description;
-	private Venue venue;
+	private String venue;
 
 	public Meetup() {
 		setMeetupId();
 	}
 
 	public Meetup(int primaryKey, String date, String speaker, String topic,
-		String description, Venue venue) {
+		String description, String venue) {
 		this();
 		this.primaryKey = primaryKey;
 		this.date = date;
@@ -38,6 +37,7 @@ public class Meetup extends IEntity {
 		this.setSpeaker(fields.getOrDefault("speaker", null));
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
+		this.setVenue(fields.getOrDefault("venue", null));
 
 		return this;
 	}
@@ -103,11 +103,11 @@ public class Meetup extends IEntity {
 		this.description = description;
 	}
 
-	public Venue getVenue() {
+	public String getVenue() {
 		return venue;
 	}
 
-	public void setVenue(Venue venue) {
+	public void setVenue(String venue) {
 		this.venue = venue;
 	}
 }

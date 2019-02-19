@@ -12,14 +12,14 @@
     <h1>Seattle Java User's Group</h1>
   </div>
   <div id="venue_greeting">
-    <p th:text="${greeting}"></p>
+    <p th:text="${session.greeting}"></p>
     <p>
       <form method="POST" action="/venueSignUp" modelAttribute="venue">
         <div class="date-request">
-          <p th:text="${hostingMessage}"></p>
+          <p th:text="${session.hostingMessage}"></p>
           <!-- Value of yes button & needs host buttons needs to be meetup id -->
-          <button th:if="${dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" value="${requestedDate}">Yes</button>
-          <button th:if="${dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
+          <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" value="${session.requestedDate}">Yes</button>
+          <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
         </div>
       </form>
     </p>
@@ -36,42 +36,18 @@
     </tr>
     </thead>
     <tbody>
-    <th:block th:each="meetup : ${meetups}">
-      <tr>
-        <td th:text="${meetup.value['date']}"></td>
-        <td th:text="${meetup.value['speaker']}"></td>
-        <td th:text="${meetup.value['venue']}?">
-          <button class="response" type="submit" name="meetup" th:value="${meetup.value['date']}">
-            Needs Host
-          </button>
-        </td>
-      </tr>
-    </th:block>
-    <tr>
-      <td>1/15</td>
-      <td>Freddy</td>
-      <td>
-        <div id="hosting">Expedia</div>
-      </td>
-    </tr>
-    <tr>
-      <td>2/14</td>
-      <td>TBD</td>
-      <td>
-        <!-- Can't use an that id name here like that because there will be multiple of these buttons --> <!-- id="needs_host" -->
-        <button class="response" type="submit" name="meetup" value="1">Needs Host</button>
-      </td>
-    </tr>
-    <tr>
-      <td>3/20</td>
-      <td>Nimret</td>
-      <td>Reserved</td>
-    </tr>
-    <tr>
-      <td>4/21</td>
-      <td>TBD</td>
-      <td>Reserved</td>
-    </tr>
+      <th:block th:each="meetup : ${session.meetups}">
+        <tr>
+          <td th:text="${meetup['date']}"></td>
+          <td th:text="${meetup['speaker']}"></td>
+          <td th:if="${meetup['venue'] == null}">
+            <button class="response" type="submit" name="meetup" th:value="${meetup.value['date']}">
+              Needs Host
+            </button>
+          </td>
+          <td th:unless="${meetup['venue'] == null}">Reserved</td>
+        </tr>
+      </th:block>
     </tbody>
   </table>
 </div>
