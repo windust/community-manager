@@ -13,7 +13,8 @@ class MeetupTest {
 	private final String testSpeaker = "Jane Doe";
 	private final String testTopic = "Java programming";
 	private final String testDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec quidem liberius ab eo dicuntur et saepius.";
-	private final Venue testVenue = new Venue();
+	private final String testVenue = "Test Venue";
+	//private final Venue testVenue = new Venue();
 
 	@BeforeEach
 	void setUp() {
