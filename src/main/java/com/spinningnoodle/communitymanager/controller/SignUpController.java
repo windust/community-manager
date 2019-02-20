@@ -74,22 +74,22 @@ public class SignUpController {
     }
     
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetup){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate){
         String message;
         boolean success;
         
-        if(meetup.equals("notHosting")){
+        if(meetupDate.equals("notHosting")){
             message = "Thank you for your consideration.";
         }
         else {
-            success = model.setVenueForMeetup(venueName, meetup);
+            success = model.setVenueForMeetup(venueName, meetupDate);
             
             if(success){
-                message = "Thank you for hosting on " + meetup + ". \nContact Freddy to cancel.";
+                message = "Thank you for hosting on " + meetupDate + ". \nContact Freddy to cancel.";
             }
             else{
                 message = "Thank you for volunteering but this date already has a host";
-                if(meetup.equals(requestedDate)){
+                if(meetupDate.equals(requestedDate)){
                     this.dateAvailable = false;
                 }
             }

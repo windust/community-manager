@@ -20,7 +20,7 @@
           <form method="POST" action="/venueSignUp" modelAttribute="venue">
               <div class="date-request">
                   <p th:text="${session.hostingMessage}"></p>
-                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" value="${session.requestedDate}">Yes</button>
+                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" th:value="${session.requestedDate}">Yes</button>
                   <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
               </div>
           </form>
