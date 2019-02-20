@@ -1,6 +1,8 @@
 package com.spinningnoodle.communitymanager.model;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
+import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -25,6 +27,8 @@ public class GoogleSheetsManagerTest {
         testID = testIDFile.next();
 
         testManager = new GoogleSheetsManager();
+        testManager.dataStorage = new DummyStorage("123");
+        testManager.meetupCollection = new DummyMeetupCollection(testManager.dataStorage);
 
         availableDatesMeetups = new ArrayList<>();
 
