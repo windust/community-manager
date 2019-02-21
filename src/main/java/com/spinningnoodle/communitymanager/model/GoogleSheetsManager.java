@@ -25,12 +25,13 @@ import java.util.Scanner;
 public class GoogleSheetsManager {
     DataStorage dataStorage;
     MeetupCollection meetupCollection;
+    String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager(){
         try {
             Map<String,String> config = new HashMap<>();
             config.put("storage","google");
-            Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
+            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
             config.put("storageID",testIDFile.next());
             if(config.get("storage").equals("google")) {
                 dataStorage = new GoogleSheets(config.get("storageID"));

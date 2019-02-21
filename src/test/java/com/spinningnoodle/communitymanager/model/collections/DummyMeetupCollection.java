@@ -13,8 +13,15 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DummyMeetupCollection extends MeetupCollection {
+
+    int timesSetVenueCalled = 0;
+    public int timesGetAllMeetupsForTokenIsCalled = 0;
 
     public DummyMeetupCollection(DataStorage dataStorage) {
         super(dataStorage);
@@ -23,5 +30,22 @@ public class DummyMeetupCollection extends MeetupCollection {
     @Override
     public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
         return true;
+    }
+
+    @Override
+    public boolean setVenueForMeetup(String venueName, String requestedDate){
+        timesSetVenueCalled++;
+        return true;
+    }
+
+    @Override
+    public List<Map<String, String>> getAllMeetupsForToken(String venueToken){
+        List<Map<String,String>> list = new ArrayList<>();
+        timesGetAllMeetupsForTokenIsCalled++;
+        return list;
+    }
+
+    public int getTimesSetVenueCalled(){
+        return timesSetVenueCalled;
     }
 }

@@ -10,6 +10,11 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
@@ -22,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GoogleSheetsManagerTest {
 
@@ -61,11 +67,43 @@ public class GoogleSheetsManagerTest {
     }
 
     //TODO test needs to be rewritten, currently causes other tests to fail
-//    @Test
-//    void whenIUpdateVenueHostIGetANewVenueHostBack() {
-//        String oldName = "Excellent";
-//        testManager.setVenueForMeetup("NewName", "01/14/2019");
-//        assertEquals(availableDatesMeetups, testManager.getMeetupByVenueToken("123N"));
-//        testManager.setVenueForMeetup(oldName, "01/14/2019");
-//    }
+    @Test
+    void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
+        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
+        int previousCount = dummy.getTimesSetVenueCalled();
+        testManager.setVenueForMeetup("NewName", "01/14/2019");
+
+        int newCount = dummy.getTimesSetVenueCalled();
+        System.out.println(previousCount + ":" + newCount);
+        assertFalse(previousCount == newCount );
+    }
+
+    @Test
+    void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
+        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
+        boolean expected = true;
+        assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019"));
+    }
+
+    @Test
+    void whenIGetMeetupsByVenueGetAllMeetupsForTokenIsCalled() {
+        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
+        int previousCount = dummy.timesGetAllMeetupsForTokenIsCalled;
+        testManager.getMeetupByVenueToken("123N");
+
+        int newCount = dummy.timesGetAllMeetupsForTokenIsCalled;
+        assertFalse(previousCount == newCount );
+    }
+
+    @Test
+    void whenIGetMeetupsByVenueIReturnWhatIReceived() {
+        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
+        List<Map<String,String>> expected = new ArrayList<>();
+        assertEquals(expected, testManager.getMeetupByVenueToken("123N") );
+    }
+
+    @Test
+    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFildIGetFileException(){
+
+    }
 }
