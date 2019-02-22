@@ -13,6 +13,8 @@ package com.spinningnoodle.communitymanager.model;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
 import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.Map;
 
 public class DummyGoogleSheetsManager extends GoogleSheetsManager {
     public DummyGoogleSheetsManager(){

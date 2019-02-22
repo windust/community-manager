@@ -10,8 +10,10 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
@@ -98,6 +100,51 @@ public class GoogleSheetsManagerTest {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         List<Map<String,String>> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
         assertEquals(expected, testManager.getMeetupByVenueToken("123N") );
+    }
+
+    @Test
+    void whenGetAllMeetupsIsCalledAllMeetupsAreReturned() throws GeneralSecurityException {
+        DummyStorage dummyStorage = new DummyStorage("123");
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+        assertEquals(dummyStorage.readAll("meetups").size(), dummyGoogleSheetsManager.getAllMeetups().size());
+    }
+
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+
+        Map<String, String> meetup = dummyGoogleSheetsManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertTrue(meetup.containsKey("date"));
+            assertTrue(meetup.containsKey("topic"));
+            assertTrue(meetup.containsKey("speaker"));
+            assertTrue(meetup.containsKey("venue"));
+            assertTrue(meetup.containsKey("primaryKey"));
+        });
+    }
+
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedValues() throws GeneralSecurityException {
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+
+        Map<String, String> row = new HashMap<>();
+        row.put("primaryKey", "1");
+        row.put("date","01/14/2019");
+        row.put("speaker","Purple");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Excellent");
+
+        Map<String, String> meetup = dummyGoogleSheetsManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertEquals(row.get("date"), meetup.get("date"));
+            assertEquals(row.get("topic"), meetup.get("topic"));
+            assertEquals(row.get("speaker"), meetup.get("speaker"));
+            assertEquals(row.get("venue"), meetup.get("venue"));
+            assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
+        });
     }
 
     @Test

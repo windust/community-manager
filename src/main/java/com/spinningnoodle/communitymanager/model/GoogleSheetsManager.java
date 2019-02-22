@@ -13,10 +13,12 @@ package com.spinningnoodle.communitymanager.model;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,26 @@ public class GoogleSheetsManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Map<String, String>> getAllMeetups() {
+        List<Meetup> meetups = meetupCollection.getAll();
+
+        List<Map<String, String>> meetupList = new ArrayList<>();
+
+        for(Meetup meetup : meetups) {
+            Map<String, String> attributes = new HashMap<>();
+
+            attributes.put("date", meetup.getDate());
+            attributes.put("topic", meetup.getTopic());
+            attributes.put("speaker", meetup.getSpeaker());
+            attributes.put("venue", meetup.getVenue());
+            attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
+
+            meetupList.add(attributes);
+        }
+
+        return meetupList;
     }
 
     public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
