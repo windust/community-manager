@@ -23,4 +23,9 @@ public class DummyGoogleSheetsManager extends GoogleSheetsManager {
         }
         meetupCollection = new DummyMeetupCollection(dataStorage);
     }
+    
+//    @Override
+//    public boolean setVenueForMeetup(String venueName, String meetupDate){
+//
+//    }
 }

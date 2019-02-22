@@ -27,20 +27,19 @@ import java.util.Map;
  * @version 0.1
  */
 public class MeetupCollection extends EntityCollection<Meetup> {
-	private static final String TABLE_NAME = "meetups";
 
 	/**
 	 * @param dataStorage the data storage this object should use as a database
 	 */
 	public MeetupCollection(DataStorage dataStorage) {
-		super(dataStorage);
+		super(dataStorage, "meetups");
 	}
 
 	@Override
 	public void fetchFromDataStorage() {
 		this.clear();
 		try {
-			for(Map<String, String> meetupFields : getDataStorage().readAll(TABLE_NAME)) {
+			for(Map<String, String> meetupFields : getDataStorage().readAll(getTableName())) {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
@@ -49,11 +48,6 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public String getTableName() {
-		return TABLE_NAME;
 	}
 
 	public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
@@ -75,7 +69,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	public boolean setVenueForMeetup(String venueName, String hostingDate) {
 		for(Meetup meetup : getEntitiesValues()) {
 			if(meetup.getDate().equals(hostingDate)) {
-				return dataStorageUpdate(TABLE_NAME, Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
+				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
 			}
 		}
 		return false;
@@ -106,25 +100,15 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	// is valid token, get name of venue & requested date
 	// is value 'excellent' not valid
 	private Map<String, String> isTokenValid(String token) {
-		String stuff = "";
 		// create venue collection with this datastorage
 		VenueCollection venueCollection = new VenueCollection(getDataStorage());
 //		venueCollection.fetchFromDataStorage();
 
-		// Loop through venue collection until a venue is found to have the token
-		for(Venue venue : venueCollection.getAll()) {
-			// If the venue is found to have the token return the venue info as a map
-			if(venue.getToken().equals(token)) {
-				stuff += " - " + venue.getToken();
-				Map<String, String> venueInfo = new HashMap<>();
-				venueInfo.put("name", venue.getName());
-				venueInfo.put("requestedDate", venue.getRequestedHostingDate());
+		Venue venue = venueCollection.getEntityByToken(token);
+		Map<String, String> venueInfo = new HashMap<>();
+		venueInfo.put("name", venue.getName());
+		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
 
-				return venueInfo;
-			}
-		}
-
-		// If the for loop didnt find a the venue by token
-		throw new IllegalArgumentException("Token: " + token + " does not exist for any venue." + stuff);
+		return venueInfo;
 	}
 }

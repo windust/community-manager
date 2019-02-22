@@ -10,6 +10,7 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.Assertions;
@@ -29,20 +30,14 @@ public class TokenCollectionTest {
     }
     
     @Test
-    @DisplayName("validToken() return true when token is valid")
-    public void validTokenReturnsTrueWhenValid(){
-        Assertions.assertTrue(tokenCollection.validToken(validToken));
+    @DisplayName("getEntityByToken() returns entity when token is valid")
+    public void returnsEntityWhenTokenIsValid(){
+        Assertions.assertNotNull(tokenCollection.getEntityByToken(validToken));
     }
     
     @Test
-    @DisplayName("validToken() return false when token is invalid")
-    public void validTokenReturnsFalseWhenInvalid(){
-        Assertions.assertFalse(tokenCollection.validToken(invalidToken));
-    }
-    
-    @Test
-    @DisplayName("validToken() return false when token is empty")
-    public void validTokenReturnsFalseWhenEmpty(){
-        Assertions.assertFalse(tokenCollection.validToken(""));
+    @DisplayName("getEntityByToken() throws IllegalArgumentException when token isn't valid")
+    public void throwsExceptionWhenTokenIsInvalid(){
+        Assertions.assertThrows(IllegalArgumentException.class, () -> tokenCollection.getEntityByToken(invalidToken));
     }
 }

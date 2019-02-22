@@ -35,6 +35,7 @@ public class DummyStorage implements DataStorage {
     private Map<String,String> tableNames;
     private List<Map<String, String>> venueData;
     private List<Map<String, String>> meetupData;
+    private List<Map<String, String>> tokenData;
     
     /**
      * DummyStorage(String storageID) - opens existing DummyStorage;
@@ -53,11 +54,14 @@ public class DummyStorage implements DataStorage {
         tableNames.put("speakers", "1");
         tableNames.put("venues", "2");
         tableNames.put("meetups", "3");
+        tableNames.put("tokenTest", "4");
         venueData = new ArrayList<>();
         meetupData = new ArrayList<>();
+        tokenData = new ArrayList<>();
         
         createVenues();
         createMeetups();
+        createTokens();
     }
     
     private void createVenues(){
@@ -120,6 +124,18 @@ public class DummyStorage implements DataStorage {
         meetupData.add(row);
     }
     
+    private void createTokens(){
+        Map<String, String> row = new HashMap<>();
+        row.put("name", "validEntity");
+        row.put("token","valid");
+        tokenData.add(row);
+    
+        row = new HashMap<>();
+        row.put("name", "anotherValidEntity");
+        row.put("token","moreValid");
+        tokenData.add(row);
+    }
+    
     @Override
     public boolean createEntry() {
         return false;
@@ -127,14 +143,17 @@ public class DummyStorage implements DataStorage {
     
     @Override
     public List<Map<String, String>> readAll(String tableName) {
-        if(Arrays.stream(tableNames.keySet().toArray()).noneMatch(tableName.toLowerCase()::equals)){
+        if(Arrays.stream(tableNames.keySet().toArray()).noneMatch(tableName::equals)){
             throw new IllegalArgumentException("Table Name: " + tableName + " does not exist.");
         }
         if(tableName.equals("venues")){
             return venueData;
         }
-        else{
+        else if(tableName.equals("meetups")){
             return meetupData;
+        }
+        else {
+            return tokenData;
         }
     }
     
@@ -149,7 +168,7 @@ public class DummyStorage implements DataStorage {
             }
             return false;
         }
-        else{
+        else if(tableName.equals("meetups")) {
             for (Map<String, String> row : meetupData) {
                 if (row.get("primaryKey").equals(primaryKey)) {
                     if(row.get(attribute) == null) {
@@ -159,6 +178,9 @@ public class DummyStorage implements DataStorage {
                 }
             }
             return false;
+        }
+        else {
+            return true;
         }
     }
     

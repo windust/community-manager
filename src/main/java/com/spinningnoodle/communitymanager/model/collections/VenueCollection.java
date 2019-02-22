@@ -10,11 +10,10 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
-import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 
+import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -24,18 +23,17 @@ import java.util.Map;
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
-public class VenueCollection extends EntityCollection<Venue> {
-	private static final String TABLE_NAME = "venues";
+public class VenueCollection extends TokenCollection<Venue> {
 
 	public VenueCollection(DataStorage dataStorage) {
-		super(dataStorage);
+		super(dataStorage, "venues");
 	}
 
 	@Override
 	public void fetchFromDataStorage() {
 		this.clear();
 		try {
-			for(Map<String, String> venueFields : getDataStorage().readAll(TABLE_NAME)) {
+			for(Map<String, String> venueFields : getDataStorage().readAll(getTableName())) {
 				Venue venue = new Venue();
 				try {
 					venue.build(venueFields);
@@ -51,13 +49,8 @@ public class VenueCollection extends EntityCollection<Venue> {
 	}
 
 	@Override
-	public String getTableName() {
-		return TABLE_NAME;
-	}
-
-	@Override
 	public void update(Venue observable) {
-
+		//TODO update token
 	}
 
 	/*

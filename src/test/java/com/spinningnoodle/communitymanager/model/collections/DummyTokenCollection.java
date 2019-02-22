@@ -11,58 +11,31 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.model.entities.DummyToken;
 import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
-import java.util.List;
+import com.spinningnoodle.communitymanager.model.observer.Observable;
+import java.io.IOException;
+import java.util.Map;
 
-public class DummyTokenCollection extends TokenCollection {
+public class DummyTokenCollection<T extends TokenEntity> extends TokenCollection {
 
     public DummyTokenCollection(DataStorage dataStorage) {
-        super(dataStorage);
-    }
-
-    @Override
-    public boolean validToken(String token) {
-        if(token.equals("valid")){
-            return true;
-        }
-        else {
-            return false;
-        }
+        super(dataStorage, "tokenTest");
     }
     
     @Override
     public void fetchFromDataStorage() {
-    
+        try{
+            for(Map<String, String> entity : getDataStorage().readAll("tokenTest")){
+                addToEntities(new DummyToken().build(entity));
+            }
+        } catch (IOException e){
+            System.out.println("datastorage error");
+        }
     }
     
     @Override
-    public void addToCollection(TokenEntity entity) {
+    public void update(Observable observable) {
     
-    }
-
-    @Override
-    public TokenEntity getById(int venueId) throws EntityNotFoundException {
-        return null;
-    }
-    
-    @Override
-    public List getAll() {
-        return null;
-    }
-    
-    @Override
-    public int size() {
-        return 0;
-    }
-    
-    @Override
-    public void clear() {
-    
-    }
-
-    @Override
-    public String getTableName() {
-        return null;
     }
 }

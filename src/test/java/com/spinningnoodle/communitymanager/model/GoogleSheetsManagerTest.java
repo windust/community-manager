@@ -12,8 +12,6 @@ package com.spinningnoodle.communitymanager.model;
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
@@ -81,7 +79,7 @@ public class GoogleSheetsManagerTest {
     @Test
     void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
-        boolean expected = true;
+        boolean expected = testManager.meetupCollection.setVenueForMeetup("NewName", "01/14/2019");
         assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019"));
     }
 
@@ -98,7 +96,7 @@ public class GoogleSheetsManagerTest {
     @Test
     void whenIGetMeetupsByVenueIReturnWhatIReceived() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
-        List<Map<String,String>> expected = new ArrayList<>();
+        List<Map<String,String>> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
         assertEquals(expected, testManager.getMeetupByVenueToken("123N") );
     }
 

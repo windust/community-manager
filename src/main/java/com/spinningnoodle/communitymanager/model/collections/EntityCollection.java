@@ -27,9 +27,23 @@ import java.util.Map;
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
+	private final String TABLE_NAME;
+	
+	/**
+	 * @param dataStorage the data storage to use as a database
+	 */
+	public EntityCollection(DataStorage dataStorage, String tableName) {
+		this.dataStorage = dataStorage;
+		this.TABLE_NAME = tableName;
+		fetchFromDataStorage();
+	}
 
 	protected DataStorage getDataStorage() {
 		return dataStorage;
+	}
+	
+	protected String getTableName(){
+		return TABLE_NAME;
 	}
 
 	protected boolean dataStorageUpdate(String tableName, String primaryKey, String attribute, String newValue) {
@@ -45,14 +59,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 */
 	protected void addToEntities(T entity) {
 		entities.put(entity.getEntityId(), entity);
-	}
-
-	/**
-	 * @param dataStorage the data storage to use as a database
-	 */
-	public EntityCollection(DataStorage dataStorage) {
-		this.dataStorage = dataStorage;
-		fetchFromDataStorage();
 	}
 
 	/**
@@ -109,11 +115,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	public void clear() {
 		entities.clear();
 	}
-
-	/**
-	 * @return the table this collection uses
-	 */
-	public abstract String getTableName();
 
 	@Override
 	public String toString() {

@@ -10,17 +10,24 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
 
-public abstract class TokenCollection extends EntityCollection<TokenEntity> {
-
-    public TokenCollection(DataStorage dataStorage) {
-        super(dataStorage);
+public abstract class TokenCollection<T extends TokenEntity> extends EntityCollection<T> {
+    
+    public TokenCollection(DataStorage dataStorage, String tableName){
+        super(dataStorage, tableName);
     }
 
-    public boolean validToken(String token) {
-        return false;
+    public T getEntityByToken(String token) {
+        for(T tokenEntity : getEntitiesValues()) {
+            if(tokenEntity.getToken().equals(token)) {
+                return tokenEntity;
+            }
+        }
+        
+        throw new IllegalArgumentException("Invalid Token: " + token);
     }
 
     private void updateToken(DataStorage dataStorage, int primaryKey, String newToken) {

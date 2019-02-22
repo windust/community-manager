@@ -11,10 +11,8 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +23,7 @@ public class DummyMeetupCollection extends MeetupCollection {
 
     public DummyMeetupCollection(DataStorage dataStorage) {
         super(dataStorage);
+        fetchFromDataStorage();
     }
 
     @Override
@@ -35,14 +34,14 @@ public class DummyMeetupCollection extends MeetupCollection {
     @Override
     public boolean setVenueForMeetup(String venueName, String requestedDate){
         timesSetVenueCalled++;
-        return true;
+        return super.setVenueForMeetup(venueName, requestedDate);
     }
 
     @Override
     public List<Map<String, String>> getAllMeetupsForToken(String venueToken){
         List<Map<String,String>> list = new ArrayList<>();
         timesGetAllMeetupsForTokenIsCalled++;
-        return list;
+        return super.getAllMeetupsForToken(venueToken);
     }
 
     public int getTimesSetVenueCalled(){
