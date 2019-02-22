@@ -98,8 +98,8 @@ public class GoogleSheetsManagerTest {
     @Test
     void whenIGetMeetupsByVenueIReturnWhatIReceived() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
-        List<Map<String,String>> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
-        assertEquals(expected, testManager.getMeetupByVenueToken("123N") );
+        Map<String,String> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
+        assertEquals(expected, testManager.getMeetupByVenueToken("123N").get(0) );
     }
 
     @Test

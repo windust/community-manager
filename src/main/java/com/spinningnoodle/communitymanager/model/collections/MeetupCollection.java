@@ -79,22 +79,10 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 * @param token the token to search
 	 * @return a lost of meetups
 	 */
-	public List<Map<String, String>> getAllMeetupsForToken(String token) {
+	public Map<String, String> getAllMeetupsForToken(String token) {
 		this.fetchFromDataStorage();
-		// list to store the meetups
-		List<Map<String, String>> meetups = new ArrayList<>();
-		// add the venue with the token to [0] index of list
-		meetups.add(isTokenValid(token));
 
-		for(Meetup meetup : getEntitiesValues()) {
-			Map<String, String> meetupInfo = new HashMap<>();
-			meetupInfo.put("date", meetup.getDate());
-			meetupInfo.put("speaker", meetup.getSpeaker());
-			meetupInfo.put("venue", meetup.getVenue());
-			meetups.add(meetupInfo);
-		}
-
-		return meetups;
+		return isTokenValid(token);
 	}
 
 	// is valid token, get name of venue & requested date
