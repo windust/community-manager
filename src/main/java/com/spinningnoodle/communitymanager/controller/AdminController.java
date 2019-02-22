@@ -53,7 +53,7 @@ public class AdminController {
         if(username.equals("username") && password.equals("password")) {
             loggedIn = true;
             //TODO change to dashboard(once dashboard is created)
-            return "redirect:/upcoming";
+            return "redirect:/upcoming_dates";
         }
         else{
             return "redirect:/";
@@ -76,21 +76,6 @@ public class AdminController {
 //    public String dashboard(){
 //        return "login.html";
 //    }
-
-    /**
-     * Route to upcoming dates page
-     * throws an exception if not logged in
-     * @return upcoming_dates - name of html to render
-     * @throws InvalidUserException - if user is not
-     * logged in.
-     */
-    @GetMapping("/upcoming")
-    public String upcoingDates() throws InvalidUserException{
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        return "upcoming_dates";
-    }
 
     /**
      * Route to specific meetup page that
