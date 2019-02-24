@@ -18,6 +18,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class modelIntegrationTest {
@@ -41,8 +42,8 @@ public class modelIntegrationTest {
                 in.close();
             }
         } else {
-            testStorage = new GoogleSheets(fileName,spreadsheetName);
-            testID = testStorage.getStorageID();
+//            testStorage = new GoogleSheets(fileName,spreadsheetName);
+//            testID = testStorage.getStorageID();
         }
 
         List<Map<String, String>> list = new ArrayList<>();
@@ -107,15 +108,16 @@ public class modelIntegrationTest {
 
     //We need to figure out what should happen here. Should it throw or ???
     @Test
+    @Disabled
     void whenIgetMeetupByVenueTokenWithInvalidTokenThrowsError(){
         Assertions.assertThrows(IOException.class, () -> {
             testManager.getMeetupByVenueToken("455");
         });
-//        assertThrows(IOException.class, testManager.getMeetupByVenueToken("455"));
     }
 
     //Expect these two tests to change when we update the available dates page to accept more than true or false.
     @Test
+    @Disabled
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
        assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019"));
     }
@@ -123,6 +125,51 @@ public class modelIntegrationTest {
     @Test
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
         assertEquals(true,testManager.setVenueForMeetup("NewName", "01/15/2019"));
+    }
+
+    @Test
+    @Disabled
+    void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
+        Assertions.assertThrows(IOException.class, () -> {
+            testManager.setVenueForMeetup("NeverExisted", "01/14/2019");
+        });
+    }
+
+    @Test
+    @Disabled
+    void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
+        Assertions.assertThrows(IOException.class, () -> {
+            testManager.setVenueForMeetup("Excellent", "01/24/2019");
+        });
+    }
+
+    /*
+    The following are tests related to the Upcoming Dates Page.
+     */
+    @Test
+    void whenIGetAllMeetupsIGetTheExpectedListOfMeetups(){
+//        assertEquals(expected,testManager.getAllMeetups());
+    }
+
+    @Test
+    void whenIGetMeetupDetailsIGetAMapOfAllMeetupAttributes(){
+        Map<String,String> expectedMeetupDetailsForPK2 = new HashMap<>();
+        expectedMeetupDetailsForPK2.put("primaryKey", "2");
+        expectedMeetupDetailsForPK2.put("date","01/15/2019");
+        expectedMeetupDetailsForPK2.put("venue","");
+        expectedMeetupDetailsForPK2.put("speaker", "Nimret");
+        expectedMeetupDetailsForPK2.put("topic", "150");
+        expectedMeetupDetailsForPK2.put("description","Nimret");
+        expectedMeetupDetailsForPK2.put("food","");
+        expectedMeetupDetailsForPK2.put("after","");
+//        assertEquals(expectedMeetupDetailsForPK2,testManager.getMeetupDetails("2"));
+    }
+
+    @Test
+    void whenIGetMeetupDetailForAnEventWithInvalidPrimaryKeyThrowsError(){
+//        Assertions.assertThrows(IOException.class, () -> {
+//            testManager.getMeetupDetails("300");
+//        });
     }
 
     @AfterEach

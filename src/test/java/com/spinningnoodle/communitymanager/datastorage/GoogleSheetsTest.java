@@ -50,8 +50,8 @@ public class GoogleSheetsTest {
                     in.close();
                 }
         } else {
-            testStorage = new GoogleSheets(gsFileName,spreadsheetName);
-            testID = testStorage.getStorageID();
+//            testStorage = new GoogleSheets(gsFileName,spreadsheetName);
+//            testID = testStorage.getStorageID();
         }
 
         List<Map<String, String>> list = new ArrayList<>();
@@ -82,23 +82,6 @@ public class GoogleSheetsTest {
         list.add(row);
 
         expected = list;
-
-        File f = new File("testGSStorageID.txt");
-        if (f.isFile() && f.canRead()) {
-            try {
-                // Open the stream.
-                FileInputStream in = new FileInputStream(f);
-                // To read chars from it, use new InputStreamReader
-                // and specify the encoding.
-                try {
-                    // Do something with in.
-                } finally {
-                    in.close();
-                }
-            } catch (IOException ex) {
-                // Appropriate error handling here.
-            }
-        }
     }
 
     @Test
