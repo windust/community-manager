@@ -13,7 +13,9 @@ package com.spinningnoodle.communitymanager.model;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.Scanner;
 public class GoogleSheetsManager {
     DataStorage dataStorage;
     MeetupCollection meetupCollection;
+    VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager(){
@@ -42,6 +45,7 @@ public class GoogleSheetsManager {
                 dataStorage = new GoogleSheets(config.get("storageID"));
             }
             meetupCollection = new MeetupCollection(dataStorage);
+            venueCollection = new VenueCollection(dataStorage);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (GeneralSecurityException e) {
@@ -80,6 +84,21 @@ public class GoogleSheetsManager {
 
     public boolean setVenueForMeetup(String venueName, String requestedDate ){
         return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+    }
+
+    public List<Map<String, String>> getAllVenues() {
+        List<Venue> venues = venueCollection.getAll();
+        List<Map<String, String>> returnValue  = new ArrayList<>();
+
+        for(Venue venue : venues) {
+            Map<String, String> venueAttributes = new HashMap<>();
+
+            // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
+
+            returnValue.add(venueAttributes);
+        }
+
+        return returnValue;
     }
 
 

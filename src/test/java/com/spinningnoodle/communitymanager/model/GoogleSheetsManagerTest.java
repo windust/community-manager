@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GoogleSheetsManagerTest {
@@ -145,6 +146,31 @@ public class GoogleSheetsManagerTest {
             assertEquals(row.get("venue"), meetup.get("venue"));
             assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
         });
+    }
+
+    @Test
+    void whenGetAllVenuesIsCalledAllVenuesAreReturned() throws GeneralSecurityException {
+        DummyStorage dummyStorage = new DummyStorage("123");
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+        assertEquals(dummyStorage.readAll("venues").size(), dummyGoogleSheetsManager.getAllVenues().size());
+    }
+
+    @Test
+    @Disabled
+    void getAllVenuesReturnsVenuesWithExpectedAttributes() {
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+
+        Map<String, String> venue = dummyGoogleSheetsManager.getAllVenues().get(0);
+
+        assertAll(() -> {
+            // TODO: add attribute assertions
+        });
+    }
+
+    @Test
+    @Disabled
+    void getAllVenuesReturnsVenuesWithExpectedValues() {
+        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
     }
 
     @Test
