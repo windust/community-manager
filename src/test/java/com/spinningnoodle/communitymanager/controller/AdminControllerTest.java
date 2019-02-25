@@ -62,7 +62,7 @@ public class AdminControllerTest {
     }
     
     @Test
-    public void loginAttemptFailed(){
+    public void loginAttemptWithBadCredentials(){
         adminController.loginAttempt("incorrect", "wrong");
         Assertions.assertFalse(adminController.loggedIn);
     }
@@ -80,19 +80,19 @@ public class AdminControllerTest {
     }
     
     @Test
-    public void meetupReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
+    public void meetupRouteReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
         adminController.loggedIn = true;
         Assertions.assertEquals("meetup", adminController.meetup("1"));
     }
     
     @Test
-    public void meetupThrowsExceptionIfNotLoggedIn(){
+    public void meetupRouteThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1"));
     }
     
     @Test
-    public void getTokenThrowsExceptionIfNotLoggedIn(){
+    public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken());
     }
@@ -104,7 +104,7 @@ public class AdminControllerTest {
     }
     
     @Test
-    public void upcomingThrowsExceptionIfNotLoggedIn(){
+    public void upcomingThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.upcomingDates(session));
     }
