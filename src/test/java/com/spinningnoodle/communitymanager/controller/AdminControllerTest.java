@@ -10,25 +10,33 @@ package com.spinningnoodle.communitymanager.controller;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
+import com.spinningnoodle.communitymanager.model.DummyGoogleSheetsManager;
+import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 
 
 public class AdminControllerTest {
     
     private AdminController adminController;
+    private HttpSession session;
     
     @BeforeEach
     public void initializeController(){
         adminController = new AdminController();
+        adminController.model = new DummyGoogleSheetsManager();
+        session = new MockHttpSession();
     }
     
     @Test
     public void loggedInStartsAsFalse(){
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
@@ -50,13 +58,13 @@ public class AdminControllerTest {
     @Test
     public void loginAttemptSuccessful(){
         adminController.loginAttempt("username", "password");
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), true);
+        Assertions.assertTrue(adminController.loggedIn);
     }
     
     @Test
-    public void loginAttemptFailed(){
+    public void loginAttemptWithBadCredentials(){
         adminController.loginAttempt("incorrect", "wrong");
-        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
@@ -68,30 +76,44 @@ public class AdminControllerTest {
     public void logoutSetsLoggedInToFalse() {
         ReflectionTestUtils.setField(adminController, "loggedIn", true);
         adminController.logout();
-        Assertions.assertEquals(false, ReflectionTestUtils.getField(adminController, "loggedIn"));
-    }
-    
-    //TODO create dashboard tests
-//    @Test
-//    public void dashboard() {
-//    }
-    
-    @Test
-    public void meetupReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
-        ReflectionTestUtils.setField(adminController, "loggedIn", true);
-        Assertions.assertEquals("meetup", adminController.meetup());
+        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
-    public void meetupThrowsExceptionIfNotLoggedIn(){
-        ReflectionTestUtils.setField(adminController, "loggedIn", false);
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup());
+    public void meetupRouteReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
+        adminController.loggedIn = true;
+        Assertions.assertEquals("meetup", adminController.meetup("1"));
     }
     
     @Test
-    public void getTokenThrowsExceptionIfNotLoggedIn(){
-        ReflectionTestUtils.setField(adminController, "loggedIn", false);
+    public void meetupRouteThrowsInvalidUserExceptionIfNotLoggedIn(){
+        adminController.loggedIn = false;
+        Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1"));
+    }
+    
+    @Test
+    public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
+        adminController.loggedIn = false;
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken());
+    }
+    
+    @Test
+    public void upcomingReturnsUpcomingPageIfLoggedIn() throws InvalidUserException {
+        adminController.loggedIn = true;
+        Assertions.assertEquals("upcoming_dates", adminController.upcomingDates(session));
+    }
+    
+    @Test
+    public void upcomingThrowsInvalidUserExceptionIfNotLoggedIn(){
+        adminController.loggedIn = false;
+        Assertions.assertThrows(InvalidUserException.class, () -> adminController.upcomingDates(session));
+    }
+    
+    @Test
+    @Disabled("necessary model method not yet implemented, code commented out due to compiler error")
+    public void upcomingGivesViewMeetupsFromModel(){
+        //List<Map<String, String>> meeutups = adminController.model.getAllMeetups();
+        //Assertions.assertEquals(meeutups, session.getAttribute("meetups"));
     }
     
     //TODO create token to retrieve from DB
