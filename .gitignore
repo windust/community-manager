@@ -5,6 +5,8 @@
 /out/
 /tokens/StoredCredential
 /config/SpreadSheetID.txt
+/config/testGSStorageID.txt
+/config/testModelStorageID.txt
 /credentials.json
 
 # Ignore Gradle GUI config
