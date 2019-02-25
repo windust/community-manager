@@ -9,15 +9,28 @@
  *
  *  END OF LICENSE INFORMATION
  */
-@import 'abstracts/colors';
-@import 'base/typography';
-@import 'components/buttons';
-@import 'components/header';
-@import 'layout/forms',
-'layout/navigation',
-'layout/tables';
-@import 'pages/available_dates',
-'pages/login',
-'pages/meetup',
-'pages/upcoming_dates';
-@import 'vendors/normalize';
+
+@import "../abstracts/colors";
+@import "../base/typography";
+@import "../components/header";
+@import "../layout/forms";
+@import "../layout/tables";
+@import "../layout/page_structure";
+@import "../layout/navigation";
+
+.upcoming {
+  @extend .meetup;
+}
+
+i {
+  border: solid $black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
