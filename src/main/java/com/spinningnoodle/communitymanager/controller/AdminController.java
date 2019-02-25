@@ -13,6 +13,8 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,9 +88,9 @@ public class AdminController {
             throw new InvalidUserException();
         }
         
-        //List<Map<String, String>> meetups = model.getAllMeetups();
+        List<Map<String, String>> meetups = model.getAllMeetups();
         
-        //session.setAttribute("meetups", meetups);
+        session.setAttribute("meetups", meetups);
         
         return "upcoming_dates";
     }

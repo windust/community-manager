@@ -13,10 +13,12 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DummyGoogleSheetsManager;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -110,10 +112,19 @@ public class AdminControllerTest {
     }
     
     @Test
-    @Disabled("necessary model method not yet implemented, code commented out due to compiler error")
-    public void upcomingGivesViewMeetupsFromModel(){
-        //List<Map<String, String>> meeutups = adminController.model.getAllMeetups();
-        //Assertions.assertEquals(meeutups, session.getAttribute("meetups"));
+//    @Disabled("necessary model method not yet implemented, code commented out due to compiler error")
+    public void upcomingGivesViewMeetupsFromModel() throws InvalidUserException {
+        adminController.loggedIn = true;
+        List<Map<String, String>> meeutups = adminController.model.getAllMeetups();
+        meeutups.sort(
+            new Comparator<Map<String, String>>() {
+                @Override
+                public int compare(Map<String, String> o1, Map<String, String> o2) {
+                        return o1.get("primaryKey").compareTo(o2.get("primaryKey"));
+                }
+            });
+        adminController.upcomingDates(session);
+        Assertions.assertEquals(meeutups, session.getAttribute("meetups"));
     }
     
     //TODO create token to retrieve from DB
