@@ -12,6 +12,8 @@ package com.spinningnoodle.communitymanager.controller;
  */
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminController {
     private boolean loggedIn = false;
+    GoogleSheetsManager model = new GoogleSheetsManager();
     
     /**
      * Route to basic login screen
@@ -71,6 +74,16 @@ public class AdminController {
         return "redirect:/";
     }
     
+    //TODO uncomment lines of code once merged with necessary branches
+    @GetMapping("/upcoming")
+    public String upcomingDates(HttpSession session){
+        //List<Map<String, String>> meetups = model.getAllMeetups();
+        
+        //session.setAttribute("meetups", meetups);
+        
+        return "upcoming_dates";
+    }
+    
     //TODO create dashboard page
 //    @GetMapping("/dashboard")
 //    public String dashboard(){
@@ -84,11 +97,14 @@ public class AdminController {
      * @throws InvalidUserException - if user is not
      * logged in.
      */
-    @GetMapping("/meetup")
-    public String meetup() throws InvalidUserException {
+    @PostMapping("/meetup")
+    public String meetup(@RequestParam(name = "meetupKey") String meetupKey) throws InvalidUserException {
         if(!loggedIn) {
             throw new InvalidUserException();
         }
+        
+        //TODO use key to retrieve details for specific meetup
+        
         return "meetup";
     }
     
