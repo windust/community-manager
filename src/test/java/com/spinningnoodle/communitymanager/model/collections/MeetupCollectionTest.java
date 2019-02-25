@@ -14,15 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,16 +28,8 @@ class MeetupCollectionTest {
     private MeetupCollection meetupCollection;
 
     @BeforeEach
-    void setUp() throws IOException, GeneralSecurityException {
-        Map<String, String> config = new HashMap<>();
-        config.put("storage", "google");
-
-        Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
-        config.put("storageID", testIDFile.next());
-
-        if (config.get("storage").equals("google")) {
-            dataStorage = new GoogleSheets(config.get("storageID"));
-        }
+    void setUp() throws GeneralSecurityException {
+        dataStorage = new DummyStorage("123");
         meetupCollection = new MeetupCollection(dataStorage);
 
         meetupCollection.clear();

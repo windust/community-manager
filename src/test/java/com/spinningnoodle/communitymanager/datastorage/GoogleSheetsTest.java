@@ -11,15 +11,12 @@ package com.spinningnoodle.communitymanager.datastorage;
  *  END OF LICENSE INFORMATION
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,9 +70,8 @@ public class GoogleSheetsTest {
 
     @Test
     public void throwsIOExceptionWhenGivenBadStorageID() {
-        Assertions.assertThrows(IOException.class, () -> {
-            new GoogleSheets("133");
-        });
+        Assertions.assertThrows(IOException.class, () ->
+            new GoogleSheets("133"));
     }
 
     @Test
