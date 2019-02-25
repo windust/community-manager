@@ -58,7 +58,7 @@ public class AdminController {
         if(username.equals("username") && password.equals("password")) {
             loggedIn = true;
             //TODO change to dashboard(once dashboard is created)
-            return "redirect:/upcoming_dates";
+            return "redirect:/upcoming";
         }
         else{
             return "redirect:/";

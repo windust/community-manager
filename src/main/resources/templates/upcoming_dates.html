@@ -26,16 +26,18 @@
     </ul>
   </div>
   <h1>Upcoming Dates</h1>
-  <form>
+  <form method="post" action="/meetup">
     <i class="arrow right"></i>
-    <th:block th:each="">
-      <div th:text="">Date</div>
-      <div th:text="">Speaker</div>
-      <div th:text="">Venue</div>
+    <th:block th:each="meetup : ${session.meetups}">
+      <div>
+        <span th:text="${meetup['date']}">Date</span>
+        <span th:text="${meetup['speaker']}">Speaker</span>
+        <span th:text="${meetup['venue']}">Venue</span>
+        <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
+          Details
+        </button>
+      </div>
     </th:block>
-    <button th:value="primary key" type="submit" name="meetup">
-      Details
-    </button>
   </form>
 </body>
 </html>

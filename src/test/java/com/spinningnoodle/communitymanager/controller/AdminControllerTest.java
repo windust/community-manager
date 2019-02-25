@@ -48,8 +48,8 @@ public class AdminControllerTest {
     
     //TODO change from meetup to dashboard once dashboard page is complete
     @Test
-    public void loginAttemptRedirectsToMeetupWhenSuccessful() {
-        Assertions.assertEquals("redirect:/meetup", adminController.loginAttempt("username", "password"));
+    public void loginAttemptRedirectsToUpcomingWhenSuccessful() {
+        Assertions.assertEquals("redirect:/upcoming", adminController.loginAttempt("username", "password"));
     }
     
     @Test
