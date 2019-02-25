@@ -1,5 +1,15 @@
 package com.spinningnoodle.communitymanager.datastorage;
-
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+ */
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -19,28 +29,45 @@ import java.util.Map;
  * @since   2019-02-01
  */
 public class DummyStorage implements DataStorage {
-
+    
     private String name;
     private String storageID;
-    private String[] tableNames;
-    private List<Map<String, String>> data;
-
+    private Map<String,String> tableNames;
+    private List<Map<String, String>> venueData;
+    private List<Map<String, String>> meetupData;
+    private List<Map<String, String>> tokenData;
+    
     /**
      * DummyStorage(String storageID) - opens existing DummyStorage;
      *
      * @param storageID String of the Data Storage id
-     * @throws GeneralSecurityException if cannot connect to data storage
+     * @throws GeneralSecurityException if cannot connect to venueData storage
      * @throws IOException if Credentials are not found.
      */
     public DummyStorage(String storageID) throws GeneralSecurityException {
         if(!storageID.equals("123")) {
-            throw new GeneralSecurityException("Could not connect to data storage,");
+            throw new GeneralSecurityException("Could not connect to venueData storage,");
         }
         this.storageID = storageID;
         this.name = storageID;
-        this.tableNames = new String[]{"speakers","venues"};
-        List<Map<String, String>> list = new ArrayList<>();
-        Map<String,String> row = new HashMap<>();
+        this.tableNames = new HashMap<>();
+        tableNames.put("speakers", "1");
+        tableNames.put("venues", "2");
+        tableNames.put("meetups", "3");
+        tableNames.put("tokenTest", "4");
+        venueData = new ArrayList<>();
+        meetupData = new ArrayList<>();
+        tokenData = new ArrayList<>();
+        
+        createVenues();
+        createMeetups();
+        createTokens();
+    }
+    
+    private void createVenues(){
+        Map<String, String> row = new HashMap<>();
+        
+        row.put("primaryKey", "1");
         row.put("name","Excellent");
         row.put("address","100 Nowhere St");
         row.put("capacity", "100");
@@ -50,8 +77,8 @@ public class DummyStorage implements DataStorage {
         row.put("altContactPhone", "");
         row.put("token","123N");
         row.put("requestedHostingDate", "01/14/2019");
-        list.add(row);
-
+        venueData.add(row);
+        
         row = new HashMap<>();
         row.put("primaryKey", "2");
         row.put("name","Amazing");
@@ -63,73 +90,134 @@ public class DummyStorage implements DataStorage {
         row.put("altContactPhone", "");
         row.put("token","143N");
         row.put("requestedHostingDate", "01/14/2019");
-        list.add(row);
-
-        data = list;
-
+        venueData.add(row);
     }
-
+    
+    private void createMeetups(){
+        Map<String, String> row = new HashMap<>();
+        
+        row = new HashMap<>();
+        row.put("primaryKey", "1");
+        row.put("date","01/14/2019");
+        row.put("speaker","Purple");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Excellent");
+        meetupData.add(row);
+        
+        row = new HashMap<>();
+        row.put("primaryKey", "2");
+        row.put("date","02/19/2019");
+        row.put("speaker","Yellow");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Amazing");
+        meetupData.add(row);
+        
+        row = new HashMap<>();
+        row.put("primaryKey", "3");
+        row.put("date","03/22/2019");
+        row.put("speaker","John Doe");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", null);
+        meetupData.add(row);
+    }
+    
+    private void createTokens(){
+        Map<String, String> row = new HashMap<>();
+        row.put("name", "validEntity");
+        row.put("token","valid");
+        tokenData.add(row);
+    
+        row = new HashMap<>();
+        row.put("name", "anotherValidEntity");
+        row.put("token","moreValid");
+        tokenData.add(row);
+    }
+    
     @Override
     public boolean createEntry() {
         return false;
     }
-
+    
     @Override
     public List<Map<String, String>> readAll(String tableName) {
-        if(Arrays.stream(tableNames).noneMatch(tableName.toLowerCase()::equals)){
+        if(Arrays.stream(tableNames.keySet().toArray()).noneMatch(tableName::equals)){
             throw new IllegalArgumentException("Table Name: " + tableName + " does not exist.");
         }
-        return data;
+        if(tableName.equals("venues")){
+            return venueData;
+        }
+        else if(tableName.equals("meetups")){
+            return meetupData;
+        }
+        else {
+            return tokenData;
+        }
     }
-
+    
     @Override
     public boolean update(String tableName, String primaryKey, String attribute, String newValue) {
-        for(Map<String,String> row : data){
-            if(row.get("primaryKey").equals(primaryKey)){
-                row.put(attribute,newValue);
-                return true;
+        if(tableName.equals("venues")) {
+            for (Map<String, String> row : venueData) {
+                if (row.get("primaryKey").equals(primaryKey)) {
+                    row.put(attribute, newValue);
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        else if(tableName.equals("meetups")) {
+            for (Map<String, String> row : meetupData) {
+                if (row.get("primaryKey").equals(primaryKey)) {
+                    if(row.get(attribute) == null) {
+                        row.put(attribute, newValue);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        else {
+            return true;
+        }
     }
+    
 
     @Override
     public boolean deleteEntry(String tableName, String primaryKey) {
         return false;
     }
-
     @Override
     public String getName() {
         return name;
     }
-
     @Override
     public void setName(String name) {
         this.name = name;
     }
-
     @Override
     public String getStorageID() {
         return storageID;
     }
-
     @Override
     public void setStorageID(String storageID) {
         this.storageID = storageID;
     }
-
+    
     @Override
-    public String[] getTableNames() {
+    public Map<String, String> getTableNames() {
         return tableNames;
     }
-
+    
     @Override
     public String toString() {
         return "DummyStorage{" +
             "name='" + name + '\'' +
             ", storageID='" + storageID + '\'' +
-            ", tableNames=" + Arrays.toString(tableNames) +
-            ", data=" + data +
+            ", tableNames=" + Arrays.toString(tableNames.keySet().toArray()) +
+            ", venueData=" + venueData +
             '}';
     }
 }

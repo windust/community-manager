@@ -1,5 +1,15 @@
 package com.spinningnoodle.communitymanager.controller;
-
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+ */
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +28,7 @@ public class AdminControllerTest {
     
     @Test
     public void loggedInStartsAsFalse(){
-        Assertions.assertFalse(adminController.loggedIn);
+        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
     }
     
     @Test
@@ -40,13 +50,13 @@ public class AdminControllerTest {
     @Test
     public void loginAttemptSuccessful(){
         adminController.loginAttempt("username", "password");
-        Assertions.assertTrue(adminController.loggedIn);
+        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), true);
     }
     
     @Test
     public void loginAttemptFailed(){
         adminController.loginAttempt("incorrect", "wrong");
-        Assertions.assertFalse(adminController.loggedIn);
+        Assertions.assertEquals(ReflectionTestUtils.getField(adminController, "loggedIn"), false);
     }
     
     @Test
@@ -58,7 +68,7 @@ public class AdminControllerTest {
     public void logoutSetsLoggedInToFalse() {
         ReflectionTestUtils.setField(adminController, "loggedIn", true);
         adminController.logout();
-        Assertions.assertFalse(adminController.loggedIn);
+        Assertions.assertEquals(false, ReflectionTestUtils.getField(adminController, "loggedIn"));
     }
     
     //TODO create dashboard tests
@@ -68,19 +78,19 @@ public class AdminControllerTest {
     
     @Test
     public void meetupReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
-        adminController.loggedIn = true;
+        ReflectionTestUtils.setField(adminController, "loggedIn", true);
         Assertions.assertEquals("meetup", adminController.meetup());
     }
     
     @Test
     public void meetupThrowsExceptionIfNotLoggedIn(){
-        adminController.loggedIn = false;
+        ReflectionTestUtils.setField(adminController, "loggedIn", false);
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup());
     }
     
     @Test
     public void getTokenThrowsExceptionIfNotLoggedIn(){
-        adminController.loggedIn = false;
+        ReflectionTestUtils.setField(adminController, "loggedIn", false);
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken());
     }
     

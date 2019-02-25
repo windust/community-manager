@@ -1,0 +1,138 @@
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+ */
+@import "../abstracts/colors";
+@import "../base/typography";
+@import "../components/header";
+@import "../layout/forms";
+@import "../layout/tables";
+@import "../layout/page_structure";
+@import "../layout/navigation";
+
+.meetup {
+  font-family: $font_family;
+  font-size: $font_size;
+  padding-left: $meetup_body_padding;
+  padding-right: $meetup_body_padding;
+}
+
+ul{
+  list-style-type: none;
+  margin: $nav_margin;
+  padding: $nav_padding;
+  overflow: $overflow;
+  background-color: $nav_background_color;
+  float: $float_right;
+  width: $nav_width;
+  height: $nav_height;
+}
+
+li{
+  height: 1em;
+  float: $float_left;
+  padding: 0.5em;
+}
+
+li a {
+  display: $display_block;
+  color: $white;
+  text-align: $text_center;
+  padding: 0;
+  text-decoration: none;
+}
+
+#logo {
+  width: $meetup_logo_width;
+}
+
+#logout {
+  float: $float_right;
+}
+
+.navbarDiv {
+  height: $navbar_div_height;
+}
+
+li a:hover {
+  background-color: $hover_background-color;
+}
+
+.meetup-details{
+  padding-top: $meetup_details_padding;
+  padding-bottom: $meetup_details_padding;
+}
+
+.meetup-data{
+  padding: $meetup_data_padding;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid $tab_background-color;
+  background-color: $tab_background-color;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: $float_left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: $tab_hover_background-color;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: $tab_active_background-color;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+.meetup-table {
+  td, th {
+    text-align: $text-align;
+    padding: $td_th_padding;
+    border-color: $body_color;
+  }
+}
+
+.meetup-table, .venue-tab{
+  width: $meetup_table_width;
+  border-collapse: $table_border_collapse;
+}
+
+.venue-tab {
+  .request-host{
+    float: $float_right;
+  }
+}
+
+.venue-tab tr:nth-child(odd){
+  background: $nth_child_odd;
+}
+
+#meetup_page_name {
+  text-align: $text_center;
+}

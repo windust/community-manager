@@ -1,9 +1,24 @@
 package com.spinningnoodle.communitymanager.controller;
-
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+ */
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -15,7 +30,20 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class SignUpController {
+    GoogleSheetsManager model = new GoogleSheetsManager();
     
+    String currentToken;
+    String venueName;
+    String requestedDate;
+    String hostingMessage;
+    boolean dateAvailable = true;
+    
+//    public SignUpController(){
+//        model = new GoogleSheetsManager();
+//        dateAvailable = true;
+//    }
+    
+    //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
      * if they have a valid token
@@ -25,14 +53,60 @@ public class SignUpController {
      * invalid token
      */
     @GetMapping("/venue")
-    public String venue(@RequestParam(name = "token") String token) throws InvalidUserException {
-        if(validToken(token)){
+    public String venue(@RequestParam(name = "token") String token, HttpSession session) {
+        try{
+            List<Map<String, String>> meetups;
+            meetups = model.getMeetupByVenueToken(token);
+            currentToken = token;
+            venueName = meetups.get(0).get("name");
+            requestedDate = meetups.get(0).get("requestedDate");
+            meetups.remove(0);
+            
+            if(requestedDate == null){
+                dateAvailable = false;
+            }
+            if(hostingMessage == null){
+                hostingMessage = "Can you host the meetup on " + requestedDate;
+            }
+            
+            session.setAttribute("meetups", meetups);
+            session.setAttribute("greeting", "Welcome, " + venueName);
+            session.setAttribute("hostingMessage", hostingMessage);
+            session.setAttribute("requestedDate", requestedDate);
+            session.setAttribute("dateAvailable", dateAvailable);
+            
             return "available_dates";
         }
-        else{
-            throw new InvalidUserException();
+        catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(e.getMessage());
         }
         
+    }
+    
+    @PostMapping("/venueSignUp")
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate){
+        String message;
+        boolean success;
+        
+        if(meetupDate.equals("notHosting")){
+            message = "Thank you for your consideration.";
+        }
+        else {
+            success = model.setVenueForMeetup(venueName, meetupDate);
+            
+            if(success){
+                message = "Thank you for hosting on " + meetupDate + ". \nContact Freddy to cancel.";
+            }
+            else{
+                message = "Thank you for volunteering but this date already has a host";
+                if(meetupDate.equals(requestedDate)){
+                    this.dateAvailable = false;
+                }
+            }
+        }
+        
+        this.hostingMessage = message;
+        return "redirect:/venue?token=" + this.currentToken;
     }
     
     //TODO create speakers sign up page
@@ -40,8 +114,4 @@ public class SignUpController {
 //    public String speaker(){
 //        return "login.html";
 //    }
-    
-    private boolean validToken(String token){
-        return token.equals("something");
-    }
 }

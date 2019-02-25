@@ -1,5 +1,16 @@
 package com.spinningnoodle.communitymanager.datastorage;
-
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+*/
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +39,9 @@ public interface DataStorage {
      * @param tableName string: name of table
      * @return List<Map<String,String>> of all data in specified table
      * @throws IllegalArgumentException if table does not exist
+     * @throws IOException if error getting data storage based on storageID
      */
-    List<Map<String, String>> readAll(String tableName);
+    List<Map<String, String>> readAll(String tableName) throws IOException;
 
     /**
      * update changes one entry based on the specified table name, primary key, and
@@ -87,6 +99,6 @@ public interface DataStorage {
      * getTableNames gets the names of all the tables in the data storage
      * @return String array with the table names
      */
-    String[] getTableNames();
+    Map<String, String> getTableNames();
 
 }
