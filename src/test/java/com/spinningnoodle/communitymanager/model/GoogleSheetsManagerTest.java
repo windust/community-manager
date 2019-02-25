@@ -149,18 +149,14 @@ public class GoogleSheetsManagerTest {
     }
 
     @Test
-    void whenGetAllVenuesIsCalledAllVenuesAreReturned() throws GeneralSecurityException {
-        DummyStorage dummyStorage = new DummyStorage("123");
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-        assertEquals(dummyStorage.readAll("venues").size(), dummyGoogleSheetsManager.getAllVenues().size());
+    void whenGetAllVenuesIsCalledAllVenuesAreReturned() throws IOException {
+        assertEquals(testManager.dataStorage.readAll("venues").size(), testManager.getAllVenues().size());
     }
 
     @Test
     @Disabled
     void getAllVenuesReturnsVenuesWithExpectedAttributes() {
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-
-        Map<String, String> venue = dummyGoogleSheetsManager.getAllVenues().get(0);
+        Map<String, String> venue = testManager.getAllVenues().get(0);
 
         assertAll(() -> {
             // TODO: add attribute assertions
@@ -170,7 +166,6 @@ public class GoogleSheetsManagerTest {
     @Test
     @Disabled
     void getAllVenuesReturnsVenuesWithExpectedValues() {
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
     }
 
     @Test
