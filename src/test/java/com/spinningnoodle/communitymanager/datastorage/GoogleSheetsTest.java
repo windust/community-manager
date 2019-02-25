@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.datastorage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.security.GeneralSecurityException;
@@ -33,10 +34,22 @@ public class GoogleSheetsTest {
 
     @BeforeEach
     public void initializeDataBase() throws IOException, GeneralSecurityException {
-        Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
-        testID = testIDFile.next();
-
-        testStorage = new GoogleSheets(testID);
+        String gsFileName = "config/testGSStorageID.txt";
+        String spreadsheetName = "Test Google Sheets";
+        File file = new File(gsFileName);
+        if (file.isFile() && file.canRead()) {
+                FileInputStream in = new FileInputStream(file);
+                Scanner testIDFile = new Scanner(in);
+                try {
+                    testID = testIDFile.next();
+                    testStorage = new GoogleSheets(testID);
+                } finally {
+                    in.close();
+                }
+        } else {
+//            testStorage = new GoogleSheets(gsFileName,spreadsheetName);
+//            testID = testStorage.getStorageID();
+        }
 
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
@@ -81,7 +94,7 @@ public class GoogleSheetsTest {
 
     @Test
     public void whenIOpenDataStorageICanGetName() throws ConnectException {
-        assertEquals("SeaJUGSpreadSheet", testStorage.getName());
+        assertEquals("Test Google Sheets", testStorage.getName());
     }
 
     @Test
@@ -99,9 +112,9 @@ public class GoogleSheetsTest {
     @Test
     void whenIRequestTableNamesIExpectToGetThreeInAHashMap() {
         HashMap<String,String> tableNames = new HashMap<>();
-        tableNames.put("speakers", "2070966566");
+        tableNames.put("speakers", "1428639487");
         tableNames.put("venues", "0");
-        tableNames.put("meetups", "748055642");
+        tableNames.put("meetups", "355336406");
 
         assertEquals(tableNames, testStorage.getTableNames());
     }
