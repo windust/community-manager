@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class AdminController {
-    private boolean loggedIn = false;
+    boolean loggedIn = false;
     
     /**
      * Route to basic login screen

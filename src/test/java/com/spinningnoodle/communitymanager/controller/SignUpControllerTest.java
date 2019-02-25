@@ -24,6 +24,7 @@ public class SignUpControllerTest {
     
     private SignUpController signUpController;
     private HttpSession session;
+
     
     @BeforeEach
     public void initializeController(){
