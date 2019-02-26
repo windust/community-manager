@@ -48,28 +48,22 @@ public class modelIntegrationTest {
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
         row.put("primaryKey", "1");
-        row.put("name", "Excellent");
-        row.put("address", "100 Nowhere St");
-        row.put("capacity", "100");
-        row.put("contactPerson", "Freddy");
-        row.put("contactEmail", "freddy@excellent.com");
-        row.put("contactPhone", "");
-        row.put("altContactPhone", "");
-        row.put("token", "123N");
-        row.put("requestedHostingDate", "01/14/2019");
+        row.put("venue", "Excellent");
+        row.put("topic", "100");
+        row.put("speaker", "Freddy");
+        row.put("food", "");
+        row.put("after", "");
+        row.put("date", "01/14/2019");
         list.add(row);
 
         row = new HashMap<>();
         row.put("primaryKey", "2");
-        row.put("name", "Amazing");
-        row.put("address", "200 Nowhere St");
-        row.put("capacity", "150");
-        row.put("contactPerson", "Nimret");
-        row.put("contactEmail", "nimret@amazing.com");
-        row.put("contactPhone", "");
-        row.put("altContactPhone", "");
-        row.put("token", "143N");
-        row.put("requestedHostingDate", "01/14/2019");
+        row.put("venue", "");
+        row.put("topic", "150");
+        row.put("speaker", "Nimret");
+        row.put("food", "");
+        row.put("after", "");
+        row.put("date", "01/15/2019");
         list.add(row);
 
         expected = list;
@@ -95,12 +89,16 @@ public class modelIntegrationTest {
         row.put("venue", "Excellent");
         row.put("speaker", "Freddy ");
         row.put("date", "01/14/2019");
+        row.put("topic","100");
+        row.put("primaryKey","1");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
         row.put("venue", "");
         row.put("speaker", "Nimret ");
         row.put("date", "01/15/2019");
+        row.put("topic","150");
+        row.put("primaryKey","2");
         expectedAvailableDatesMeetups.add(row);
 
         assertEquals(expectedAvailableDatesMeetups,testManager.getMeetupByVenueToken("123N"));
@@ -154,10 +152,11 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Model return list of meetups, when I get All Meetups.")
     void whenIGetAllMeetupsIGetTheExpectedListOfMeetups(){
-//        assertEquals(expected,testManager.getAllMeetups());
+        assertEquals(expected,testManager.getAllMeetups());
     }
 
     @Test
+    @Disabled
     @DisplayName("Model returns Map of meetup attributes, When I get Meetup Details.")
     void whenIGetMeetupDetailsIGetAMapOfAllMeetupAttributes(){
         Map<String,String> expectedMeetupDetailsForPK2 = new HashMap<>();
@@ -173,6 +172,7 @@ public class modelIntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Model throws error, When I get meetup detail for an event with an invalid primary key.")
     void whenIGetMeetupDetailForAnEventWithInvalidPrimaryKeyThrowsError(){
 //        Assertions.assertThrows(IOException.class, () -> {
