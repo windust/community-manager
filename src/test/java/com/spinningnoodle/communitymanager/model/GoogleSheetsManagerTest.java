@@ -29,6 +29,7 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
 
 public class GoogleSheetsManagerTest {
 
@@ -44,6 +45,7 @@ public class GoogleSheetsManagerTest {
         testID = testIDFile.next();
 
         testManager = new GoogleSheetsManager();
+        testStorage = new DummyStorage("123");
         testManager.dataStorage = new DummyStorage("123");
         testManager.meetupCollection = new DummyMeetupCollection(testManager.dataStorage);
 
@@ -103,18 +105,24 @@ public class GoogleSheetsManagerTest {
         assertEquals(expected, testManager.getMeetupByVenueToken("123N").get(0) );
     }
 
+    //TODO
     @Test
-    void whenGetAllMeetupsIsCalledAllMeetupsAreReturned() throws GeneralSecurityException {
-        DummyStorage dummyStorage = new DummyStorage("123");
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-        assertEquals(dummyStorage.readAll("meetups").size(), dummyGoogleSheetsManager.getAllMeetups().size());
+    void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned()
+        throws GeneralSecurityException, IOException {
+//        DummyStorage dummyStorage = new DummyStorage("123");
+//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+//        assertEquals(dummyStorage.readAll("meetups").size(), dummyGoogleSheetsManager.getAllMeetups().size());
+//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+        assertEquals(testStorage.readAll("meetups").size(), testManager.getAllMeetups().size());
+        assertEquals(testStorage.readAll("meetups"), testManager.getAllMeetups());
     }
 
+    //TODO
     @Test
     void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
 
-        Map<String, String> meetup = dummyGoogleSheetsManager.getAllMeetups().get(0);
+        Map<String, String> meetup = testManager.getAllMeetups().get(0);
 
         assertAll(() -> {
             assertTrue(meetup.containsKey("date"));
@@ -125,9 +133,11 @@ public class GoogleSheetsManagerTest {
         });
     }
 
+
+    //TODO
     @Test
     void getAllMeetupsReturnsMeetupsWithExpectedValues() throws GeneralSecurityException {
-        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
 
         Map<String, String> row = new HashMap<>();
         row.put("primaryKey", "1");
@@ -137,7 +147,7 @@ public class GoogleSheetsManagerTest {
         row.put("description", "nailing stuff");
         row.put("venue", "Excellent");
 
-        Map<String, String> meetup = dummyGoogleSheetsManager.getAllMeetups().get(0);
+        Map<String, String> meetup = testManager.getAllMeetups().get(0);
 
         assertAll(() -> {
             assertEquals(row.get("date"), meetup.get("date"));
@@ -149,7 +159,7 @@ public class GoogleSheetsManagerTest {
     }
 
     @Test
-    void whenGetAllVenuesIsCalledAllVenuesAreReturned() throws IOException {
+    void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() throws IOException {
         assertEquals(testManager.dataStorage.readAll("venues").size(), testManager.getAllVenues().size());
     }
 
@@ -168,8 +178,10 @@ public class GoogleSheetsManagerTest {
     void getAllVenuesReturnsVenuesWithExpectedValues() {
     }
 
+    //TODO
     @Test
-    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFildIGetFileException(){
+    @Disabled
+    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFileIGetFileException(){
 
     }
 }
