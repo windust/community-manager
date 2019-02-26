@@ -51,8 +51,8 @@ public class modelIntegrationTest {
         row.put("venue", "Excellent");
         row.put("topic", "100");
         row.put("speaker", "Freddy");
-        row.put("food", "");
-        row.put("after", "");
+//        row.put("food", "");
+//        row.put("after", "");
         row.put("date", "01/14/2019");
         list.add(row);
 
@@ -61,8 +61,8 @@ public class modelIntegrationTest {
         row.put("venue", "");
         row.put("topic", "150");
         row.put("speaker", "Nimret");
-        row.put("food", "");
-        row.put("after", "");
+//        row.put("food", "");
+//        row.put("after", "");
         row.put("date", "01/15/2019");
         list.add(row);
 
@@ -87,7 +87,7 @@ public class modelIntegrationTest {
 
         row = new HashMap<>();
         row.put("venue", "Excellent");
-        row.put("speaker", "Freddy ");
+        row.put("speaker", "Freddy");
         row.put("date", "01/14/2019");
         row.put("topic","100");
         row.put("primaryKey","1");
@@ -95,7 +95,7 @@ public class modelIntegrationTest {
 
         row = new HashMap<>();
         row.put("venue", "");
-        row.put("speaker", "Nimret ");
+        row.put("speaker", "Nimret");
         row.put("date", "01/15/2019");
         row.put("topic","150");
         row.put("primaryKey","2");

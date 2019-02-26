@@ -10,6 +10,7 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -29,7 +30,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties.Storage;
 
 public class GoogleSheetsManagerTest {
 
@@ -83,7 +83,6 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
-        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         boolean expected = testManager.meetupCollection.setVenueForMeetup("NewName", "01/14/2019");
         assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019"));
     }
@@ -100,28 +99,19 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void whenIGetMeetupsByVenueIReturnWhatIReceived() {
-        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         Map<String,String> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
         assertEquals(expected, testManager.getMeetupByVenueToken("123N").get(0) );
     }
-
-    //TODO
+    
     @Test
     void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned()
-        throws GeneralSecurityException, IOException {
-//        DummyStorage dummyStorage = new DummyStorage("123");
-//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-//        assertEquals(dummyStorage.readAll("meetups").size(), dummyGoogleSheetsManager.getAllMeetups().size());
-//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
+        throws IOException {
         assertEquals(testStorage.readAll("meetups").size(), testManager.getAllMeetups().size());
-        assertEquals(testStorage.readAll("meetups"), testManager.getAllMeetups());
     }
 
     //TODO
     @Test
     void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
-//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-
         Map<String, String> meetup = testManager.getAllMeetups().get(0);
 
         assertAll(() -> {
@@ -133,12 +123,9 @@ public class GoogleSheetsManagerTest {
         });
     }
 
-
-    //TODO
+    
     @Test
-    void getAllMeetupsReturnsMeetupsWithExpectedValues() throws GeneralSecurityException {
-//        DummyGoogleSheetsManager dummyGoogleSheetsManager = new DummyGoogleSheetsManager();
-
+    void getAllMeetupsReturnsMeetupsWithExpectedValues() {
         Map<String, String> row = new HashMap<>();
         row.put("primaryKey", "1");
         row.put("date","01/14/2019");

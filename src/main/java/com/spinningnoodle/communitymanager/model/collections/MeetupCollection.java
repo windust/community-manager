@@ -1,5 +1,5 @@
 package com.spinningnoodle.communitymanager.model.collections;
-/**
+/*
  *  LICENSE
  *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
  *
@@ -12,13 +12,9 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

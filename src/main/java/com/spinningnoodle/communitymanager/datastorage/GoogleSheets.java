@@ -156,11 +156,11 @@ public class GoogleSheets implements DataStorage {
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
-                    row.put(attributes.get(columnNum), value.toString());
+                    row.put(attributes.get(columnNum).trim(), value.toString().trim());
                 } else {
                     //TBD what is the best way to handle this
                     System.out.println(value.getClass().toString());
-                    row.put(attributes.get(columnNum), "Failed to Return Properly");
+                    row.put(attributes.get(columnNum).trim(), "Failed to Return Properly");
                 }
             }
             data.add(row);

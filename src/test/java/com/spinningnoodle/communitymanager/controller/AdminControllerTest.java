@@ -115,16 +115,16 @@ public class AdminControllerTest {
 //    @Disabled("necessary model method not yet implemented, code commented out due to compiler error")
     public void upcomingGivesViewMeetupsFromModel() throws InvalidUserException {
         adminController.loggedIn = true;
-        List<Map<String, String>> meeutups = adminController.model.getAllMeetups();
-        meeutups.sort(
-            new Comparator<Map<String, String>>() {
-                @Override
-                public int compare(Map<String, String> o1, Map<String, String> o2) {
-                        return o1.get("primaryKey").compareTo(o2.get("primaryKey"));
-                }
-            });
+        Comparator<Map<String, String>> compareMeetups = Comparator.comparing(o -> o.get("primaryKey"));
+        
+        List<Map<String, String>> expected = adminController.model.getAllMeetups();
         adminController.upcomingDates(session);
-        Assertions.assertEquals(meeutups, session.getAttribute("meetups"));
+        List<Map<String, String>> actual = (List<Map<String, String>>) session.getAttribute("meetups");
+        
+        expected.sort(compareMeetups);
+        actual.sort(compareMeetups);
+        
+        Assertions.assertEquals(expected, actual);
     }
     
     //TODO create token to retrieve from DB
