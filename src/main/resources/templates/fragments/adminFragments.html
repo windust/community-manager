@@ -21,11 +21,11 @@
   </head>
   <body class="meetup">
     <header class="navbarDiv" th:fragment="navbar (pageName)">
-      <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
+      <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
         <ul>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#upcoming">Upcoming Dates</a></li>
-          <li><a href="#google">Google Sheets</a></li>
+          <li><a href="/upcoming">Dashboard</a></li>
+          <li><a href="/upcoming">Upcoming Dates</a></li>
+          <li><a href="/upcoming">Google Sheets</a></li>
           <li id="logout"><a href="/logout">Logout</a></li>
         </ul>
         <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
