@@ -14,59 +14,57 @@
 <head>
   <meta charset="UTF-8">
   <title>Available Dates</title>
-  <meta http-equiv="refresh" content="30"/>
+  <!--<meta http-equiv="refresh" content="30"/>-->
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-  <div id="header">
-      <div id="logo_header">
-          <img src="images/logo_draft_1.png" id="logo">
+
+<header>
+  <div id="logo_header">
+      <img src="images/logo_draft_1.png" id="logo">
+  </div>
+</header>
+<main>
+  <article id="venue_greeting"  class="date-request">
+    <h2 th:text="${session.greeting}"></h2>
+    <form method="POST" action="/venueSignUp" modelAttribute="venue">
+      <div>
+        <p><span th:text="${session.hostingMessage}"></span>?</p>
+        <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
+        <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No, I can't host</button>
       </div>
-  </div>
-      <h2 id="available_dates_page_name">Available Dates</h2>
-
-  <div id="venue_greeting">
-      <p th:text="${session.greeting}"></p>
-      <p>
-          <form method="POST" action="/venueSignUp" modelAttribute="venue">
-              <div class="date-request">
-                  <p th:text="${session.hostingMessage}"></p>
-                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" th:value="${session.requestedDate}">Yes</button>
-                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
-              </div>
-          </form>
-      </p>
-  </div>
-
-  <div id="more_below">
-      <h2 id="host_more">Do you want to host more meetups?</h2>
-      <p id="register">Register to host more meetups below:</p>
-  </div>
-
-  <div id="table_div">
+    </form>
+  </article>
+  <article id="more_below">
+    <section>
+      <h2 id="host_more">Register to host additional dates below:</h2>
+    </section>
+    <section>
       <table class="available_dates_table">
-          <thead>
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Speaker</th>
+          <th>Venue</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="meetup : ${session.meetups}">
           <tr>
-              <th>Date</th>
-              <th>Speaker</th>
-              <th>Venue</th>
+            <td th:text="${meetup['date']}"></td>
+            <td th:text="${meetup['speaker']}"></td>
+            <td th:if="${meetup['venue'] == null}">
+              <button class="response" type="submit" name="meetup" th:value="${meetup.value['date']}">
+                Needs Host
+              </button>
+            </td>
+            <td th:unless="${meetup['venue'] == null}">Reserved</td>
           </tr>
-          </thead>
-          <tbody>
-          <th:block th:each="meetup : ${session.meetups}">
-              <tr>
-                  <td th:text="${meetup['date']}"></td>
-                  <td th:text="${meetup['speaker']}"></td>
-                  <td th:if="${meetup['venue'] == null}">
-                      <button class="response" type="submit" name="meetup" th:value="${meetup.value['date']}">
-                          Needs Host
-                      </button>
-                  </td>
-                  <td th:unless="${meetup['venue'] == null}">Reserved</td>
-              </tr>
-          </th:block>
-          </tbody>
+        </th:block>
+        </tbody>
       </table>
-  </div>
+    </section>
+  </article>
+</main>
 </body>
 </html>
