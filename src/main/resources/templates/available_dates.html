@@ -23,16 +23,13 @@
   <div id="logo_header">
       <img src="images/logo_draft_1.png" id="logo">
   </div>
-
-  <h1 class="available_dates_page_name">Can you help us connect with the community?</h1>
-  <p class="available_dates_page_name">Help by hosting one of our meetups!</p>
 </header>
 <main>
   <article id="venue_greeting"  class="date-request">
     <h2 th:text="${session.greeting}"></h2>
     <form method="POST" action="/venueSignUp" modelAttribute="venue">
       <div>
-        <p th:text="${session.hostingMessage}"></p>
+        <p><span th:text="${session.hostingMessage}"></span>?</p>
         <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
         <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No, I can't host</button>
       </div>
@@ -40,8 +37,7 @@
   </article>
   <article id="more_below">
     <section>
-      <h2 id="host_more">Do you want to host more meetups?</h2>
-      <p id="register">Register to host more meetups below:</p>
+      <h2 id="host_more">Register to host additional dates below:</h2>
     </section>
     <section>
       <table class="available_dates_table">
