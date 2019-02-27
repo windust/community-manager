@@ -21,12 +21,14 @@
       <i class="arrow right"></i>
       <th:block th:each="meetup : ${session.meetups}">
         <div>
-          <span th:text="${meetup['date']}">Date</span>
-          <span th:text="${meetup['speaker']}">Speaker</span>
-          <span th:text="${meetup['venue']}">Venue</span>
-          <span th:text="${meetup['topic']}">Topic</span>
-          <span th:text="${meetup['after']}">Topic</span>
-          <span th:text="${meetup['food']}">Topic</span>
+          <p>
+            Date: <span th:text="${meetup['date']}">Date</span>
+            Speaker: <span th:text="${meetup['speaker']}">Speaker</span>
+            Venue: <span th:text="${meetup['venue']}">Venue</span>
+            Topic: <span th:text="${meetup['topic']}">Topic</span>
+            After: <span th:text="${meetup['after']}">After</span>
+            Food: <span th:text="${meetup['food']}">Food</span>
+          </p>
           <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
             Details
           </button>
