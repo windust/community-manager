@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Dummy Storage implements Data Storage, the interface that all venueData storage implementations meet.
+ * Dummy Storage implements Data Storage, the interface that all data storage implementations meet.
  * It can be used for testing model functionality in the absence of another implementation.
  *
  * All implementations should include the following constructors:
@@ -184,26 +184,23 @@ public class DummyStorage implements DataStorage {
         }
     }
     
+
     @Override
     public boolean deleteEntry(String tableName, String primaryKey) {
         return false;
     }
-    
     @Override
     public String getName() {
         return name;
     }
-    
     @Override
     public void setName(String name) {
         this.name = name;
     }
-    
     @Override
     public String getStorageID() {
         return storageID;
     }
-    
     @Override
     public void setStorageID(String storageID) {
         this.storageID = storageID;
