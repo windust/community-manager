@@ -24,11 +24,14 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +64,36 @@ public class GoogleSheets implements DataStorage {
 
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
+    /**
+     * DataStorage(String storageID) - opens existing DataStorage;
+     *
+     * @throws GeneralSecurityException
+     * @throws IOException if Credentials are not found.
+     */
+    public GoogleSheets(String idFileName, String spreadsheetName) throws GeneralSecurityException, IOException {
+
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+            .setApplicationName(APPLICATION_NAME)
+            .build();
+        try {
+            spreadsheet = new Spreadsheet()
+                .setProperties(new SpreadsheetProperties()
+                    .setTitle(spreadsheetName));
+            spreadsheet = service.spreadsheets().create(spreadsheet)
+                .setFields("spreadsheetId")
+                .execute();
+            storageID = spreadsheet.getSpreadsheetId();
+            System.out.println(storageID);
+            FileWriter fileWriter = new FileWriter(idFileName);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.print(storageID);
+            printWriter.close();
+        } catch (IOException e) {
+            throw new IOException("Unable to connect to spreadsheet.");
+        }
+
+    }
 
     /**
      * DataStorage(String storageID) - opens existing DataStorage;
@@ -123,11 +156,11 @@ public class GoogleSheets implements DataStorage {
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
-                    row.put(attributes.get(columnNum), value.toString());
+                    row.put(attributes.get(columnNum).trim(), value.toString().trim());
                 } else {
                     //TBD what is the best way to handle this
                     System.out.println(value.getClass().toString());
-                    row.put(attributes.get(columnNum), "Failed to Return Properly");
+                    row.put(attributes.get(columnNum).trim(), "Failed to Return Properly");
                 }
             }
             data.add(row);

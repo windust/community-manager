@@ -38,7 +38,7 @@ public class DummyMeetupCollection extends MeetupCollection {
     }
 
     @Override
-    public List<Map<String, String>> getAllMeetupsForToken(String venueToken){
+    public Map<String, String> getAllMeetupsForToken(String venueToken){
         List<Map<String,String>> list = new ArrayList<>();
         timesGetAllMeetupsForTokenIsCalled++;
         return super.getAllMeetupsForToken(venueToken);

@@ -10,8 +10,11 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GoogleSheetsManagerTest {
@@ -41,6 +45,7 @@ public class GoogleSheetsManagerTest {
         testID = testIDFile.next();
 
         testManager = new GoogleSheetsManager();
+        testStorage = new DummyStorage("123");
         testManager.dataStorage = new DummyStorage("123");
         testManager.meetupCollection = new DummyMeetupCollection(testManager.dataStorage);
 
@@ -78,7 +83,6 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
-        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         boolean expected = testManager.meetupCollection.setVenueForMeetup("NewName", "01/14/2019");
         assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019"));
     }
@@ -95,13 +99,76 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void whenIGetMeetupsByVenueIReturnWhatIReceived() {
-        DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
-        List<Map<String,String>> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
-        assertEquals(expected, testManager.getMeetupByVenueToken("123N") );
+        Map<String,String> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
+        assertEquals(expected, testManager.getMeetupByVenueToken("123N").get(0) );
+    }
+    
+    @Test
+    void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned()
+        throws IOException {
+        assertEquals(testStorage.readAll("meetups").size(), testManager.getAllMeetups().size());
+    }
+
+    //TODO
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
+        Map<String, String> meetup = testManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertTrue(meetup.containsKey("date"));
+            assertTrue(meetup.containsKey("topic"));
+            assertTrue(meetup.containsKey("speaker"));
+            assertTrue(meetup.containsKey("venue"));
+            assertTrue(meetup.containsKey("primaryKey"));
+        });
+    }
+
+    
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedValues() {
+        Map<String, String> row = new HashMap<>();
+        row.put("primaryKey", "1");
+        row.put("date","01/14/2019");
+        row.put("speaker","Purple");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Excellent");
+
+        Map<String, String> meetup = testManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertEquals(row.get("date"), meetup.get("date"));
+            assertEquals(row.get("topic"), meetup.get("topic"));
+            assertEquals(row.get("speaker"), meetup.get("speaker"));
+            assertEquals(row.get("venue"), meetup.get("venue"));
+            assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
+        });
     }
 
     @Test
-    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFildIGetFileException(){
+    void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() throws IOException {
+        assertEquals(testManager.dataStorage.readAll("venues").size(), testManager.getAllVenues().size());
+    }
+
+    @Test
+    @Disabled
+    void getAllVenuesReturnsVenuesWithExpectedAttributes() {
+        Map<String, String> venue = testManager.getAllVenues().get(0);
+
+        assertAll(() -> {
+            // TODO: add attribute assertions
+        });
+    }
+
+    @Test
+    @Disabled
+    void getAllVenuesReturnsVenuesWithExpectedValues() {
+    }
+
+    //TODO
+    @Test
+    @Disabled
+    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFileIGetFileException(){
 
     }
 }

@@ -57,9 +57,9 @@ li a {
   float: $float_right;
 }
 
-.navbarDiv {
-  height: $navbar_div_height;
-}
+//.navbarDiv {
+//  height: auto;
+//}
 
 li a:hover {
   background-color: $hover_background-color;
@@ -133,6 +133,6 @@ li a:hover {
   background: $nth_child_odd;
 }
 
-#meetup_page_name {
+.page_name {
   text-align: $text_center;
 }

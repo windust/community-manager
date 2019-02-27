@@ -20,15 +20,7 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body class="meetup">
-    <div class="navbarDiv">
-      <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
-      <ul>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#google">Google Sheets</a></li>
-        <li id="logout"><a href="/logout">Logout</a></li>
-      </ul>
-    </div>
-    <h1 id="meetup_page_name">Meetup Details</h1>
+    <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
     <div class="meetup-details">
     <table class="meetup-table">
       <tr class="meetup-row">
@@ -83,6 +75,7 @@
     <div id="After" class="tabcontent">
       <p>This is the after tab.</p>
     </div>
+    <footer th:insert="fragments/adminFragments.html :: footer"></footer>
     <script src="js/meetup.js" async defer></script>
   </body>
 </html>

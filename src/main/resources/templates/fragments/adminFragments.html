@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+-->
+<html class="no-js">
+  <head th:fragment="head (title)">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Meetup</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body class="meetup">
+    <header class="navbarDiv" th:fragment="navbar (pageName)">
+      <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
+        <ul>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#google">Google Sheets</a></li>
+          <li id="logout"><a href="/logout">Logout</a></li>
+        </ul>
+        <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
+    </header>
+
+    <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>
+  </body>
+</html>

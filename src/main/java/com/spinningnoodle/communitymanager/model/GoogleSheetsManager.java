@@ -13,18 +13,26 @@ package com.spinningnoodle.communitymanager.model;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Scanner;
 
 public class GoogleSheetsManager {
     DataStorage dataStorage;
     MeetupCollection meetupCollection;
+    VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager(){
@@ -37,6 +45,7 @@ public class GoogleSheetsManager {
                 dataStorage = new GoogleSheets(config.get("storageID"));
             }
             meetupCollection = new MeetupCollection(dataStorage);
+            venueCollection = new VenueCollection(dataStorage);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (GeneralSecurityException e) {
@@ -46,12 +55,50 @@ public class GoogleSheetsManager {
         }
     }
 
+    public List<Map<String, String>> getAllMeetups() {
+        List<Meetup> meetups = meetupCollection.getAll();
+
+        List<Map<String, String>> meetupList = new ArrayList<>();
+
+        for(Meetup meetup : meetups) {
+            Map<String, String> attributes = new HashMap<>();
+
+            attributes.put("date", meetup.getDate());
+            attributes.put("topic", meetup.getTopic());
+            attributes.put("speaker", meetup.getSpeaker());
+            attributes.put("venue", meetup.getVenue());
+            attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
+
+            meetupList.add(attributes);
+        }
+
+        return meetupList;
+    }
+
     public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
-        return meetupCollection.getAllMeetupsForToken(venueToken);
+        List<Map<String, String>> meetups;
+        meetups = getAllMeetups();
+        meetups.add(0, meetupCollection.getAllMeetupsForToken(venueToken));
+        return meetups;
     }
 
     public boolean setVenueForMeetup(String venueName, String requestedDate ){
         return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+    }
+
+    public List<Map<String, String>> getAllVenues() {
+        List<Venue> venues = venueCollection.getAll();
+        List<Map<String, String>> returnValue  = new ArrayList<>();
+
+        for(Venue venue : venues) {
+            Map<String, String> venueAttributes = new HashMap<>();
+
+            // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
+
+            returnValue.add(venueAttributes);
+        }
+
+        return returnValue;
     }
 
 

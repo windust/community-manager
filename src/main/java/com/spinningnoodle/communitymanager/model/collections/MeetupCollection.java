@@ -1,5 +1,5 @@
 package com.spinningnoodle.communitymanager.model.collections;
-/**
+/*
  *  LICENSE
  *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
  *
@@ -12,13 +12,9 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -79,22 +75,10 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 * @param token the token to search
 	 * @return a lost of meetups
 	 */
-	public List<Map<String, String>> getAllMeetupsForToken(String token) {
+	public Map<String, String> getAllMeetupsForToken(String token) {
 		this.fetchFromDataStorage();
-		// list to store the meetups
-		List<Map<String, String>> meetups = new ArrayList<>();
-		// add the venue with the token to [0] index of list
-		meetups.add(isTokenValid(token));
 
-		for(Meetup meetup : getEntitiesValues()) {
-			Map<String, String> meetupInfo = new HashMap<>();
-			meetupInfo.put("date", meetup.getDate());
-			meetupInfo.put("speaker", meetup.getSpeaker());
-			meetupInfo.put("venue", meetup.getVenue());
-			meetups.add(meetupInfo);
-		}
-
-		return meetups;
+		return isTokenValid(token);
 	}
 
 	// is valid token, get name of venue & requested date
