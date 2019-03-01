@@ -1,0 +1,17 @@
+@import '../abstracts/colors';
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: theme-color('base', 'light');
+
+  tr {
+    padding: 0.3em;
+    text-align: center;
+    border-bottom: 1px solid lighten(theme-color('base','dark'));
+  }
+
+  tr:nth-child(2n + 1) {
+    background-color: darken(theme-color('base', 'light'), 10%);
+  }
+}
