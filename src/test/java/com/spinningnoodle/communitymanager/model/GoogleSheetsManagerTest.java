@@ -27,20 +27,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GoogleSheetsManagerTest {
 
-    private GoogleSheetsManager testManager;
+    private static GoogleSheetsManager testManager;
+    private static DataStorage testStorage;
+    private static String testID;
+    private static List<Map<String, String>> availableDatesMeetups;
 
-    private DataStorage testStorage;
-    private String testID;
-    private List<Map<String, String>> availableDatesMeetups;
-
-    @BeforeEach
-    public void initializeDataBase() throws IOException, GeneralSecurityException {
+    @BeforeAll
+    public static void initializeDataBase() throws IOException, GeneralSecurityException {
         Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
         testID = testIDFile.next();
 
