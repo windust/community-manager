@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab');
+
+$font-sizes: (
+        'small': 0.75rem,
+        'regular': 1rem,
+        'large': 1.5rem,
+        'x-large': 2rem,
+        'xx-large': 3rem,
+);
+
+$font-weights: (
+        'light': 300,
+        'regular': 400,
+        'bold': 600,
+);
+
+$font-families: (
+        'text': "'Roboto', 'source-sans-pro', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        'display': "'Roboto Slab', 'source-serif-pro', Georgia, 'Times New Roman', Times, serif",
+);
+
+@mixin font-size($font-size) {
+  $raw-query: map-get($map: $font-sizes, $key: $font-size);
+
+  @if $raw-query {
+    $query: if(
+                    type-of($raw-query) == 'string',
+                    unquote($raw-query),
+                    inspect($raw-query)
+    );
+
+    font-size: $query;
+  } @else {
+    @error 'No value found for `#{$font-size}`. '
+        + 'Please make sure it is defined in `$font-sizes` map.';
+  }
+}
+
+@mixin font-weight($font-weight) {
+  $raw-query: map-get($map: $font-weights, $key: $font-weight);
+
+  @if $raw-query {
+    $query: if(
+                    type-of($raw-query) == 'string',
+                    unquote($raw-query),
+                    inspect($raw-query)
+    );
+
+    font-weight: $query;
+  } @else {
+    @error 'No value found for `#{$font-weight}`. '
+        + 'Please make sure it is defined in `$font-weights` map.';
+  }
+}
+
+@mixin font-family($font-family) {
+  $raw-query: map-get($map: $font-families, $key: $font-family);
+
+  @if $raw-query {
+    $query: if(
+                    type-of($raw-query) == 'string',
+                    unquote($raw-query),
+                    inspect($raw-query)
+    );
+
+    font-family: $query;
+  } @else {
+    @error 'No value found for `#{$font-family}`. '
+        + 'Please make sure it is defined in `$font-families` map.';
+  }
+}

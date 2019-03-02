@@ -14,37 +14,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Available Dates</title>
-  <meta http-equiv="refresh" content="30"/>
+  <!-- <meta http-equiv="refresh" content="30"/> -->
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
-  <div id="header">
-      <div id="logo_header">
-          <img src="images/logo_draft_1.png" id="logo">
-      </div>
-  </div>
-      <h2 id="available_dates_page_name">Available Dates</h2>
+<body id="avalible_dates">
 
-  <div id="venue_greeting">
-      <p th:text="${session.greeting}"></p>
-      <p>
-          <form method="POST" action="/venueSignUp" modelAttribute="venue">
-              <div class="date-request">
-                  <p th:text="${session.hostingMessage}"></p>
-                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-yes" name="meetup" th:value="${session.requestedDate}">Yes</button>
-                  <button th:if="${session.dateAvailable}" type="submit" class="response" id="response-no" name="meetup" value="notHosting">No</button>
-              </div>
-          </form>
-      </p>
-  </div>
+  <article class="banner">
+      <img src="images/logo_draft_1.png" id="logo">
+      <h1 th:text="${session.greeting}"></h1>
+      <form method="POST" action="/venueSignUp" modelAttribute="venue">
+              <p class="h4" th:text="${session.hostingMessage}"></p>
+              <button th:if="${session.dateAvailable}" type="submit" class="btn_primary" name="meetup" th:value="${session.requestedDate}">Yes, I can host this meetup</button>
+              <button th:if="${session.dateAvailable}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I am not available to host that meetup</button>
+      </form>
+  </article>
 
-  <div id="more_below">
-      <h2 id="host_more">Do you want to host more meetups?</h2>
-      <p id="register">Register to host more meetups below:</p>
-  </div>
-
-  <div id="table_div">
-      <table class="available_dates_table">
+  <article id="more-meetups" class="text-center">
+      <h2>Help us host more of our meetups below</h2>
+      <table>
           <thead>
           <tr>
               <th>Date</th>
@@ -67,6 +54,6 @@
           </th:block>
           </tbody>
       </table>
-  </div>
+  </article>
 </body>
 </html>
