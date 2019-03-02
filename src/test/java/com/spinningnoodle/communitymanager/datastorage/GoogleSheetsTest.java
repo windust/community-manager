@@ -10,6 +10,7 @@ package com.spinningnoodle.communitymanager.datastorage;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
@@ -23,17 +24,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class GoogleSheetsTest {
 
-    private DataStorage testStorage;
-    private String testID;
-    private List<Map<String, String>> expected;
+    private static DataStorage testStorage;
+    private static String testID;
+    private static List<Map<String, String>> expected;
 
-    @BeforeEach
-    public void initializeDataBase() throws IOException, GeneralSecurityException {
+    @BeforeAll
+    public static void initializeDataBase() throws IOException, GeneralSecurityException {
         String gsFileName = "config/testGSStorageID.txt";
         String spreadsheetName = "Test Google Sheets";
         File file = new File(gsFileName);

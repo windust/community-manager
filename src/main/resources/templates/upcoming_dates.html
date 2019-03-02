@@ -11,33 +11,29 @@
  *  END OF LICENSE INFORMATION
 -->
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>Upcoming Dates</title>
-  <link rel="stylesheet" href="css/main.css">
-</head>
-<body class="upcoming">
-  <div class="navbarDiv">
-    <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
-    <ul>
-      <li><a href="#dashboard">Dashboard</a></li>
-      <li><a href="#google">Google Sheets</a></li>
-      <li id="logout"><a href="/logout">Logout</a></li>
-    </ul>
-  </div>
-  <h1>Upcoming Dates</h1>
-  <form method="post" action="/meetup">
-    <i class="arrow right"></i>
-    <th:block th:each="meetup : ${session.meetups}">
-      <div>
-        <span th:text="${meetup['date']}">Date</span>
-        <span th:text="${meetup['speaker']}">Speaker</span>
-        <span th:text="${meetup['venue']}">Venue</span>
-        <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
-          Details
-        </button>
-      </div>
-    </th:block>
-  </form>
-</body>
+<head th:replace="fragments/adminFragments.html :: head (title='Upcoming Dates')"></head>
+
+<!--Needs to be able to be upcoming without breaking css-->
+<body class="meetup">
+    <div th:replace="fragments/adminFragments.html :: navbar(pageName='Upcoming Dates')"></div>
+    
+    <form method="post" action="/meetup">
+      <i class="arrow right"></i>
+      <th:block th:each="meetup : ${session.meetups}">
+        <div>
+          <p>
+            Date: <span th:text="${meetup['date']}">Date</span>
+            Speaker: <span th:text="${meetup['speaker']}">Speaker</span>
+            Venue: <span th:text="${meetup['venue']}">Venue</span>
+            Topic: <span th:text="${meetup['topic']}">Topic</span>
+            After: <span th:text="${meetup['after']}">After</span>
+            Food: <span th:text="${meetup['food']}">Food</span>
+          </p>
+          <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
+            Details
+          </button>
+        </div>
+      </th:block>
+    </form>
+  </body>
 </html>

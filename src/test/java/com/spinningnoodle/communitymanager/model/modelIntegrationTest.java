@@ -15,19 +15,20 @@ import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class modelIntegrationTest {
-    private GoogleSheetsManager testManager;
-    private DataStorage testStorage;
-    private String testID;
-    private List<Map<String, String>> expected;
+    private static GoogleSheetsManager testManager;
+    private static DataStorage testStorage;
+    private static String testID;
+    private static List<Map<String, String>> expected;
 
-    @BeforeEach
-    public void initializeDataBase() throws IOException, GeneralSecurityException {
+    @BeforeAll
+    public static void initializeDataBase() throws IOException, GeneralSecurityException {
         String fileName = "config/testModelStorageID.txt";
         String spreadsheetName = "Integration Test CM Model";
         File file = new File(fileName);
@@ -72,8 +73,13 @@ public class modelIntegrationTest {
         testManager.dataStorage = testStorage;
         testManager.spreadsheetIDLocation = fileName;
 
-        resetDatastorage();
+//        resetDatastorage();
     }
+    
+//    @BeforeEach
+//    public void resetDataStorage(){
+//
+//    }
 
     @Test
     @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, and requested date.")
@@ -180,6 +186,7 @@ public class modelIntegrationTest {
 //        });
     }
 
+    @BeforeEach
     @AfterEach
     void resetDatastorage(){
         testManager.setVenueForMeetup("", "01/15/2019");
