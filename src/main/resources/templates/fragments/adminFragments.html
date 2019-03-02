@@ -20,14 +20,16 @@
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body class="meetup">
-    <header class="navbarDiv" th:fragment="navbar (pageName)">
-      <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
-        <ul>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#google">Google Sheets</a></li>
-          <li id="logout"><a href="/logout">Logout</a></li>
-        </ul>
-        <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
+    <header class="navbar" th:fragment="navbar (pageName)">
+      <nav>
+        <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
+          <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#google">Google Sheets</a></li>
+            <li id="logout"><a href="/logout">Logout</a></li>
+          </ul>
+      </nav>
+      <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
     </header>
 
     <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>
