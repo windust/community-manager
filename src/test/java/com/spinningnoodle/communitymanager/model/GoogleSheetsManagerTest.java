@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
-import java.io.File;
+import com.spinningnoodle.communitymanager.model.collections.DummyVenueCollection;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -35,18 +35,15 @@ public class GoogleSheetsManagerTest {
 
     private static GoogleSheetsManager testManager;
     private static DataStorage testStorage;
-    private static String testID;
     private static List<Map<String, String>> availableDatesMeetups;
 
     @BeforeAll
-    public static void initializeDataBase() throws IOException, GeneralSecurityException {
-        Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
-        testID = testIDFile.next();
-
+    public static void initializeDataBase() throws GeneralSecurityException {
         testManager = new GoogleSheetsManager();
         testStorage = new DummyStorage("123");
-        testManager.dataStorage = new DummyStorage("123");
-        testManager.meetupCollection = new DummyMeetupCollection(testManager.dataStorage);
+        testManager.dataStorage = testStorage;
+        testManager.meetupCollection = new DummyMeetupCollection(testStorage);
+        testManager.venueCollection = new DummyVenueCollection(testStorage);
 
         availableDatesMeetups = new ArrayList<>();
 
@@ -68,7 +65,6 @@ public class GoogleSheetsManagerTest {
         availableDatesMeetups.add(row);
     }
 
-    //TODO test needs to be rewritten, currently causes other tests to fail
     @Test
     void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
@@ -97,9 +93,40 @@ public class GoogleSheetsManagerTest {
     }
 
     @Test
-    void whenIGetMeetupsByVenueIReturnWhatIReceived() {
-        Map<String,String> expected = testManager.meetupCollection.getAllMeetupsForToken("123N");
-        assertEquals(expected, testManager.getMeetupByVenueToken("123N").get(0) );
+    void whenIGetMeetupsByVenueTokenIReceiveVenueAndMeetups() {
+        List<Map<String,String>> expected = new ArrayList<>();
+        Map<String, String> venue = new HashMap<>();
+        Map<String, String> meetup = new HashMap<>();
+    
+        venue.put("name", "Excellent");
+        venue.put("requestedDate", "01/14/2019");
+        expected.add(venue);
+    
+        meetup.put("primaryKey", "1");
+        meetup.put("date","01/14/2019");
+        meetup.put("speaker","Purple");
+        meetup.put("topic", "How to do Stuff");
+        meetup.put("venue", "Excellent");
+        expected.add(meetup);
+    
+        meetup = new HashMap<>();
+        meetup.put("primaryKey", "2");
+        meetup.put("date","02/19/2019");
+        meetup.put("speaker","Yellow");
+        meetup.put("topic", "How to do Stuff");
+        meetup.put("venue", "Amazing");
+        expected.add(meetup);
+    
+        meetup = new HashMap<>();
+        meetup.put("primaryKey", "3");
+        meetup.put("date","03/22/2019");
+        meetup.put("speaker","John Doe");
+        meetup.put("topic", "How to do Stuff");
+        meetup.put("venue", null);
+        expected.add(meetup);
+        
+        
+        assertEquals(expected, testManager.getMeetupByVenueToken("123N"));
     }
     
     @Test
@@ -107,8 +134,7 @@ public class GoogleSheetsManagerTest {
         throws IOException {
         assertEquals(testStorage.readAll("meetups").size(), testManager.getAllMeetups().size());
     }
-
-    //TODO
+    
     @Test
     void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
         Map<String, String> meetup = testManager.getAllMeetups().get(0);
@@ -133,18 +159,24 @@ public class GoogleSheetsManagerTest {
         row.put("description", "nailing stuff");
         row.put("venue", "Excellent");
 
-        Map<String, String> meetup = testManager.getAllMeetups().get(0);
+        for(Map<String, String> meetup : testManager.getAllMeetups()){
+            if(meetup.get("primaryKey").equals("1")){
+                assertAll(() -> {
+                    assertEquals(row.get("date"), meetup.get("date"));
+                    assertEquals(row.get("topic"), meetup.get("topic"));
+                    assertEquals(row.get("speaker"), meetup.get("speaker"));
+                    assertEquals(row.get("venue"), meetup.get("venue"));
+                    assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
+                });
+                return;
+            }
+        }
 
-        assertAll(() -> {
-            assertEquals(row.get("date"), meetup.get("date"));
-            assertEquals(row.get("topic"), meetup.get("topic"));
-            assertEquals(row.get("speaker"), meetup.get("speaker"));
-            assertEquals(row.get("venue"), meetup.get("venue"));
-            assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
-        });
+        fail("getAllMeetups didn't retrieve proper meetups");
     }
 
     @Test
+    @Disabled("getAllVenues() is not yet implemented")
     void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() throws IOException {
         assertEquals(testManager.dataStorage.readAll("venues").size(), testManager.getAllVenues().size());
     }

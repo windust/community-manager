@@ -75,7 +75,7 @@ class MeetupCollectionTest {
 	}
 	@Test
 	void getAllMeetupsForTokenGetsAllMeetups() {
-		List<Map<String, String>> meetupList =  meetupCollection.getAllMeetupsForToken("");
+		List<Map<String, String>> meetupList =  meetupCollection.getVenueForToken("");
 		try {
 			assertEquals(new GoogleSheets());
 		} catch (GeneralSecurityException e) {

@@ -75,7 +75,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 * @param token the token to search
 	 * @return a lost of meetups
 	 */
-	public Map<String, String> getAllMeetupsForToken(String token) {
+	public Map<String, String> getVenueForToken(String token) {
 		this.fetchFromDataStorage();
 
 		return isTokenValid(token);

@@ -21,11 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -78,7 +75,7 @@ public class GoogleSheetsManager {
     public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
-        meetups.add(0, meetupCollection.getAllMeetupsForToken(venueToken));
+        meetups.add(0, meetupCollection.getVenueForToken(venueToken));
         return meetups;
     }
 
