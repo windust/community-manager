@@ -11,15 +11,16 @@
  */
 
 @import './abstracts/colors',
-        'abstracts/typography';
+        './abstracts/typography';
 @import './vendors/normalize';
 @import './base/typography',
-        'base/reset';
+        './base/reset';
 @import './components/buttons',
         './components/header',
         './components/navbar',
         './components/tables';
-@import './pages/available_dates';
+@import './pages/available_dates',
+        './pages/meetup';
 //@import 'abstracts/colors';
 //@import 'base/typography';
 //@import 'components/buttons';

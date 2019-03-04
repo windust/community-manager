@@ -17,14 +17,8 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="upcoming">
-  <div class="navbarDiv">
-    <a href="#dashboard"><img src="images/logo_draft_1.png" id="logo"></a>
-    <ul>
-      <li><a href="#dashboard">Dashboard</a></li>
-      <li><a href="#google">Google Sheets</a></li>
-      <li id="logout"><a href="/logout">Logout</a></li>
-    </ul>
-  </div>
+  <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
+
   <h1>Upcoming Dates</h1>
   <form method="post" action="/meetup">
     <i class="arrow right"></i>

@@ -19,8 +19,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
   </head>
-  <body class="meetup">
+  <body id="meetup">
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
+
+    <article class="meetup-details">
+      <p class="meetup-data">Date: 12/12/12</p>
+      <p class="meetup-data">Topic: Deflating Ball</p>
+      <p class="meetup-data">Venue: Foxborough Stadium</p>
+      <p class="meetup-data">Speaker: Tom Brady</p>
+      <p class="meetup-data">Food: Pig Skin</p>
+      <p class="meetup-data">After Event: Apologizing Ceremony</p>
+      <p class="meetup-data">Description: Sorry</p>
+    </article>
+    <!--
     <div class="meetup-details">
     <table class="meetup-table">
       <tr class="meetup-row">
@@ -40,16 +51,16 @@
       </tr>
     </table>
   </div>
+  -->
+    <menu class="tab">
+      <li class="tablinks active" onclick="openTab(event, 'Venue')" selected>Venue</li>
+      <li class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</li>
+      <li class="tablinks" onclick="openTab(event, 'Food')">Food</li>
+      <li class="tablinks" onclick="openTab(event, 'After')">After</li>
+    </menu>
 
-    <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'Venue')" selected>Venue</button>
-      <button class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</button>
-      <button class="tablinks" onclick="openTab(event, 'Food')">Food</button>
-      <button class="tablinks" onclick="openTab(event, 'After')">After</button>
-    </div>
-
-    <div id="Venue" class="tabcontent">
-      <table class="venue-tab">
+    <div id="Venue" class="tabcontent" style="display: block;">
+      <table>
         <tr>
           <td colspan="3"> Expedia</td>
           <td>
