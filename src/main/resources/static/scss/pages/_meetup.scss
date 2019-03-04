@@ -26,7 +26,7 @@
   height: 2em;
   list-style-type: none;
 
-  border-radius: 2em;
+  //border-radius: 2em;
 
   background-color: theme-color('primary', 'dark');
 
@@ -53,9 +53,8 @@
 }
 
 .tabcontent {
-  width: 75%;
+  width: calc(75% + 2em);
   margin: 0 auto;
-  padding: 0 1em;
 
   display: none;
 

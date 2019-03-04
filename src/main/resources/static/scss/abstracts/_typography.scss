@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab');
-
 $font-sizes: (
         'small': 0.75rem,
         'regular': 1rem,
+        'medium': 1.2rem,
         'large': 1.5rem,
         'x-large': 2rem,
         'xx-large': 3rem,
@@ -15,8 +14,8 @@ $font-weights: (
 );
 
 $font-families: (
-        'text': "'Roboto', 'source-sans-pro', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-        'display': "'Roboto Slab', 'source-serif-pro', Georgia, 'Times New Roman', Times, serif",
+        'text': "Arial, Helvetica, sans-serif",
+        'display': "Arial, Helvetica, sans-serif",
 );
 
 @mixin font-size($font-size) {

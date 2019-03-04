@@ -9,17 +9,19 @@
  *
  *  END OF LICENSE INFORMATION
  */
+@import '../abstracts/typography';
 
 $logo-size: 250px;
 
-#avalible_dates {
+#available_dates {
   .banner {
     display: grid;
     grid-template-areas:
       "logo welcome_message"
       "logo host_request";
     grid-template-columns: $logo-size 1fr;
-    align-content: center;
+    column-gap: 5em;
+    width: 72em;
 
     padding: 2em 10vw;
 
@@ -34,14 +36,27 @@ $logo-size: 250px;
     }
 
     form {
-      grid-area: host_request;
-      align-self: end;
-      height: auto;
+
+      p {
+        margin-top: 0;
+      }
+
+      button {
+        @include font-size('medium');
+      }
     }
   }
 
   #more-meetups {
     padding: 2em 10vw;
+    h2 {
+      color: #006600;
+    }
+
+    td,
+    th {
+      padding: 0.25em;
+    }
   }
 }
 

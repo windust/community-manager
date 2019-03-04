@@ -24,16 +24,17 @@
       width: calc(80vw - 150px);
       margin: 0;
       padding: 0;
-      background-color: theme-color('primary', 'light');
-      border-bottom-right-radius: 2em;
-      border-top-right-radius: 2em;
+      background-color: theme-color('primary', 'dark');
+      color: theme-color('base','light');
+      //border-bottom-right-radius: 2em;
+      //border-top-right-radius: 2em;
       &::before {
         position: absolute;
         content: '';
         height: 100%;
         left: -1em;
         width: 1.5em;
-        background-color: theme-color('primary', 'light');
+        background-color: theme-color('primary', 'dark');
         z-index: -1;
       }
 
