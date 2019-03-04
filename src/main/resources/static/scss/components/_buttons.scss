@@ -16,7 +16,7 @@ $btn_margin: .2em;
 $btn_padding: .2em;
 $btn_border_radius: .5em;
 
-.btn {
+@mixin btn($btn_margin, $btn_padding, $btn_border_radius) {
   margin: $btn_margin;
   padding: $btn_border_radius;
 
@@ -32,7 +32,7 @@ $btn_border_radius: .5em;
 }
 
 .btn_primary {
-  @extend .btn;
+  @include btn(.2em, .2em, .5em);
 
   background-color: theme-color('accent', 'light');
   color: theme-color('base', 'dark');
@@ -43,7 +43,7 @@ $btn_border_radius: .5em;
 }
 
 .btn_secondary {
-  @extend .btn;
+  @include btn(.2em, .2em, .5em);
 
   background-color: transparent;
   border: 2px solid theme-color('base', 'light');

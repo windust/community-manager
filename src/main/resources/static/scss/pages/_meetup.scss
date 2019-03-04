@@ -15,7 +15,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 
-  padding: 1.25em 15%;
+  width: 50em;
+  margin: 0 auto;
 }
 
 .tab {
@@ -57,6 +58,21 @@
   padding: 0 1em;
 
   display: none;
+
+  .tr {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-items: center;
+
+    .btn_container {
+      margin: 0.5em;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
 }
 
 //.meetup {

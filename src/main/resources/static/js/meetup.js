@@ -9,7 +9,7 @@
  *
  *  END OF LICENSE INFORMATION
  */
-var hostingButtons = document.getElementsByClassName("request-host");
+var hostingButtons = document.querySelectorAll("[rel='request-host']");
 
 for(var i = 0; i < hostingButtons.length; i++){
   const thisButton = hostingButtons[i];

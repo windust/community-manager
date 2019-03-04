@@ -59,22 +59,20 @@
       <li class="tablinks" onclick="openTab(event, 'After')">After</li>
     </menu>
 
-    <div id="Venue" class="tabcontent" style="display: block;">
-      <table>
-        <tr>
-          <td colspan="3"> Expedia</td>
-          <td>
-            <input type="button" value="Request Host" class="request-host">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3"> Code Fellows</td>
-          <td>
-            <input type="button" value="Request Host" class="request-host">
-          </td>
-        </tr>
-      </table>
-    </div>
+    <article id="Venue" class="tabcontent table" style="display: block;">
+        <section class="tr">
+          <p>Expedia</p>
+          <div class="btn_container">
+            <a rel="request-host" class="btn_primary">Request Host</a>
+          </div>
+        </section>
+      <section class="tr">
+        <p>Code Fellows</p>
+        <div class="btn_container">
+          <a rel="request-host" class="btn_primary">Request Host</a>
+        </div>
+      </section>
+    </article>
 
     <div id="Speaker" class="tabcontent">
       <p>This is the speaker tab.</p>
