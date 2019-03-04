@@ -17,9 +17,8 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="upcoming">
-  <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
+  <div th:replace="fragments/adminFragments.html :: navbar(pageName='Upcoming Dates')"></div>
 
-  <h1>Upcoming Dates</h1>
   <form method="post" action="/meetup">
     <i class="arrow right"></i>
     <th:block th:each="meetup : ${session.meetups}">
