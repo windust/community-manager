@@ -26,8 +26,6 @@
       padding: 0;
       background-color: theme-color('primary', 'dark');
       color: theme-color('base','light');
-      //border-bottom-right-radius: 2em;
-      //border-top-right-radius: 2em;
       &::before {
         position: absolute;
         content: '';
