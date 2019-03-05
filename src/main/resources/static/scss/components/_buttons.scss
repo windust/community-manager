@@ -9,6 +9,61 @@
  *
  *  END OF LICENSE INFORMATION
  */
-$response_margin: .2em;
-$response_border_radius: .5em;
-$response_padding: .2em;
+
+@import "../abstracts/colors";
+
+$btn_margin: .2em;
+$btn_padding: .2em;
+$btn_border_radius: .5em;
+
+@mixin btn($btn_margin, $btn_padding, $btn_border_radius) {
+  margin: $btn_margin;
+  padding: $btn_padding;
+
+  border-radius: $btn_border_radius;
+
+  transition: color 500ms,
+              background-color 500ms;
+
+  cursor: pointer;
+
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.btn_primary {
+  @include btn(.2em, .5em, .2em);
+
+  background-color: theme-color('accent', 'light');
+  color: theme-color('base', 'dark');
+
+  &:hover {
+    background-color: darken(theme-color('accent', 'light'), 20%);
+  }
+}
+
+.btn_secondary {
+  @include btn(.2em, .5em, .2em);
+
+  background-color: transparent;
+  border: 2px solid theme-color('base', 'light');
+  color: theme-color('base', 'light');
+
+  &:hover {
+    background-color: theme-color('base', 'light');
+    color: theme-color('base', 'dark');
+  }
+}
+
+.btn_red {
+  @include btn(.1em, .1em, .2em);
+
+  border: 2px solid darkred;
+  color: darkred;
+
+  &:hover {
+    border-color: theme-color('primary', 'light');
+    color: theme-color('primary', 'light');
+  }
+}
+

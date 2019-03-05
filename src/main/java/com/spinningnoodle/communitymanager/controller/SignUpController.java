@@ -70,7 +70,7 @@ public class SignUpController {
             }
             
             session.setAttribute("meetups", meetups);
-            session.setAttribute("greeting", "Welcome, " + venueName);
+            session.setAttribute("venueName", venueName);
             session.setAttribute("hostingMessage", hostingMessage);
             session.setAttribute("requestedDate", requestedDate);
             session.setAttribute("dateAvailable", dateAvailable);

@@ -9,13 +9,14 @@
  *
  *  END OF LICENSE INFORMATION
  */
-$logo_width: 50%;
-$header_width: 100%;
-$header_display: block;
-$header_clear: both;
 
-header {
-  display: $header_display;
-  width: $header_width;
-  clear: $header_clear;
+@import "../abstracts/colors";
+
+.banner {
+  width: 100%;
+  padding: 1em;
+  text-align: center;
+  background-color: theme-color('primary', 'dark');
+  border: 2px solid theme-color('base', 'dark');
+  color: theme-color('base', 'light');
 }
