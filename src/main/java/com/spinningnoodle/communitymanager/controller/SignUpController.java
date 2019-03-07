@@ -61,22 +61,18 @@ public class SignUpController {
             List<Map<String, String>> meetups;
             meetups = model.getMeetupByVenueToken(token);
             currentToken = token;
-            venueName = meetups.get(0).get("name");
-            requestedDate = meetups.get(0).get("requestedDate");
+            this.venueName = meetups.get(0).get("name");
+            this.requestedDate = meetups.get(0).get("requestedDate");
             meetups.remove(0);
             
-            if(requestedDate == null){
-                dateAvailable = false;
-            }
-            if(hostingMessage == null){
-                hostingMessage = "Can you host the meetup on " + requestedDate;
-            }
+            this.dateAvailable = isDateAvailable(meetups);
+            this.hostingMessage = determineHostingMessage();
             
             session.setAttribute("meetups", meetups);
-            session.setAttribute("venueName", venueName);
-            session.setAttribute("hostingMessage", hostingMessage);
-            session.setAttribute("requestedDate", requestedDate);
-            session.setAttribute("dateAvailable", dateAvailable);
+            session.setAttribute("venueName", this.venueName);
+            session.setAttribute("hostingMessage", this.hostingMessage);
+            session.setAttribute("requestedDate", this.requestedDate);
+            session.setAttribute("dateAvailable", this.dateAvailable);
             
             return "available_dates";
         }
@@ -84,6 +80,20 @@ public class SignUpController {
             throw new IllegalArgumentException(e.getMessage());
         }
         
+    }
+    
+    private String determineHostingMessage(){
+        return "Can you host the meetup on " + requestedDate + "?";
+    }
+    
+    public boolean isDateAvailable(List<Map<String, String>> meetups) {
+        for(Map<String, String> meetup : meetups){
+            if(!meetup.get("venue").isEmpty()){
+                return false;
+            }
+        }
+        
+        return true;
     }
     
     @PostMapping("/venueSignUp")
