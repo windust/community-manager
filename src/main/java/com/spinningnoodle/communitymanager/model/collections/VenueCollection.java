@@ -15,6 +15,7 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,6 +47,16 @@ public class VenueCollection extends TokenCollection<Venue> {
 			System.out.println("Error: Reading from non-existant table.");
 			e.printStackTrace();
 		}
+	}
+	
+	public Map<String, String> getVenueFromToken(String venueToken){
+		Venue venue = this.getEntityByToken(venueToken);
+		Map<String, String> venueInfo = new HashMap<>();
+		venueInfo.put("name", venue.getName());
+		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
+		venueInfo.put("response", venue.getResponse());
+		
+		return venueInfo;
 	}
 
 	@Override

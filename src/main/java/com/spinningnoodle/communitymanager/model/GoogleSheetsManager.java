@@ -61,6 +61,7 @@ public class GoogleSheetsManager implements DataManager {
             attributes.put("topic", meetup.getTopic());
             attributes.put("speaker", meetup.getSpeaker());
             attributes.put("venue", meetup.getVenue());
+            attributes.put("description", meetup.getDescription());
             attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
 
             meetupList.add(attributes);
@@ -73,7 +74,7 @@ public class GoogleSheetsManager implements DataManager {
     public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
-        meetups.add(0, meetupCollection.getAllMeetupsForToken(venueToken));
+        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
         return meetups;
     }
 

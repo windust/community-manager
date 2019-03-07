@@ -32,6 +32,7 @@ public class Venue extends TokenEntity {
     private String contactPhone;
     private String contactAltPhone;
     private String requestedHostingDate;
+    private String response;
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
@@ -44,6 +45,7 @@ public class Venue extends TokenEntity {
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
         this.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
+        this.setResponse(fields.getOrDefault("response", ""));
         this.setToken(fields.get("token"));
 
         return this;
@@ -180,6 +182,14 @@ public class Venue extends TokenEntity {
 	 */
     public void setRequestedHostingDate(String requestedHostingDate) {
         this.requestedHostingDate = requestedHostingDate;
+    }
+    
+    public String getResponse(){
+        return response;
+    }
+    
+    public void setResponse(String response){
+        this.response = response;
     }
 
 	@Override
