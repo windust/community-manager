@@ -29,6 +29,9 @@ public class GoogleSheetsManager implements DataManager {
     VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
+    //TODO rework to remove defualt constructor, currently used for dummy test class
+    public GoogleSheetsManager(){}
+    
     public GoogleSheetsManager(String storageID){
         try {
 //            Map<String,String> config = new HashMap<>();
