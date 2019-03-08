@@ -50,6 +50,8 @@ public class VenueCollection extends TokenCollection<Venue> {
 	}
 	
 	public Map<String, String> getVenueFromToken(String venueToken){
+		//TODO move this call into getEntityValues in EntityCollection class
+		fetchFromDataStorage();
 		Venue venue = this.getEntityByToken(venueToken);
 		Map<String, String> venueInfo = new HashMap<>();
 		venueInfo.put("name", venue.getName());
@@ -57,6 +59,16 @@ public class VenueCollection extends TokenCollection<Venue> {
 		venueInfo.put("response", venue.getResponse());
 		
 		return venueInfo;
+	}
+	
+	public boolean updateResponse(String venueName, String response){
+		for(Venue venue : getAll()){
+			if(venue.getName().equals(venueName)){
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", response);
+			}
+		}
+		
+		return false;
 	}
 
 	@Override

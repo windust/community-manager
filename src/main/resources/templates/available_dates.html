@@ -14,7 +14,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Available Dates</title>
-  <!-- <meta http-equiv="refresh" content="30"/> -->
+   <meta http-equiv="refresh" content="900"/>
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body id="available_dates">
@@ -24,8 +24,8 @@
       <h1>Welcome<span th:if="${session.venueName}">, <span th:text="${session.venueName}"></span></span></h1>
       <form method="POST" action="/venueSignUp" modelAttribute="venue">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
-        <button th:if="${session.dateAvailable}" type="submit" class="btn_primary" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
-        <button th:if="${session.dateAvailable}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
+        <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
+        <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
 
       </form>
   </header>

@@ -80,7 +80,13 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public boolean setVenueForMeetup(String venueName, String requestedDate){
-        return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+        if(requestedDate.equals("notHosting")){
+            return venueCollection.updateResponse(venueName, "no");
+        }
+        else{
+            return venueCollection.updateResponse(venueName, "yes") &&
+                meetupCollection.setVenueForMeetup(venueName, requestedDate);
+        }
     }
 
     @Override
@@ -98,7 +104,4 @@ public class GoogleSheetsManager implements DataManager {
 
         return returnValue;
     }
-
-
-
 }
