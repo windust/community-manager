@@ -23,7 +23,7 @@
       <img src="images/logo_draft_1.png" id="logo">
       <h1>Welcome<span th:if="${session.venueName}">, <span th:text="${session.venueName}"></span></span></h1>
       <form method="POST" action="/venueSignUp" modelAttribute="venue">
-        <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span>?</p>
+        <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
         <button th:if="${session.dateAvailable}" type="submit" class="btn_primary" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
         <button th:if="${session.dateAvailable}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
 
@@ -32,6 +32,8 @@
 
   <article id="more-meetups" class="text-center">
       <h2 class="h3">Register to host additional dates below:</h2>
+      <form method="POST" action="/venueSignUp" modelAttribute="venue">
+
       <table>
           <thead>
           <tr>
@@ -57,6 +59,7 @@
           </th:block>
           </tbody>
       </table>
+      </form>
   </article>
 </body>
 </html>

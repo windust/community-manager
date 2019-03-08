@@ -38,7 +38,7 @@ public class SignUpController {
     String currentToken;
     String venueName;
     String requestedDate;
-    String hostingMessage;
+    String hostingMessage = "";
     boolean dateAvailable = true;
     
 //    public SignUpController(){
@@ -83,17 +83,21 @@ public class SignUpController {
     }
     
     private String determineHostingMessage(){
-        return "Can you host the meetup on " + requestedDate + "?";
+        //needs to be if(this.dateAvailable && this.response.equals(""))
+        if(this.hostingMessage.equals("")) {
+            return "Can you host the meetup on " + requestedDate + "?";
+        }
+        return this.hostingMessage;
     }
     
     public boolean isDateAvailable(List<Map<String, String>> meetups) {
         for(Map<String, String> meetup : meetups){
-            if(!meetup.get("venue").isEmpty()){
-                return false;
+            if(meetup.get("date").equals(this.requestedDate) && meetup.get("venue").equals("")){
+                return true;
             }
         }
         
-        return true;
+        return false;
     }
     
     @PostMapping("/venueSignUp")
