@@ -105,12 +105,22 @@ public class AdminController {
      * logged in.
      */
     @PostMapping("/meetup")
-    public String meetup(@RequestParam(name = "meetupKey") String meetupKey) throws InvalidUserException {
+    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
+        throws InvalidUserException {
         if(!loggedIn) {
             throw new InvalidUserException();
         }
-        
+
         //TODO use key to retrieve details for specific meetup
+        //TODO consider having this done in the model somewhere
+        List<Map<String, String>> meetups = model.getAllMeetups();
+        for (Map<String, String> meetup: meetups) {
+            if(meetup.get("primaryKey").equals(meetupKey)){
+                session.setAttribute("meetup", meetup);
+            }
+        }
+
+        //TODO retrieve all venues for tab.
         
         return "meetup";
     }

@@ -23,7 +23,7 @@
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
 
     <article class="meetup-details">
-      <p class="meetup-data">Date: 12/12/12</p>
+      <p class="meetup-data">Date: <span th:text="${session.meetup['date']}">Error</span></p>
       <p class="meetup-data">Topic: Deflating Ball</p>
       <p class="meetup-data">Venue: Foxborough Stadium</p>
       <p class="meetup-data">Speaker: Tom Brady</p>
