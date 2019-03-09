@@ -121,6 +121,8 @@ public class AdminController {
         }
 
         //TODO retrieve all venues for tab.
+        List<Map<String, String>> venues = model.getAllVenues();
+        session.setAttribute("venues", venues);
         
         return "meetup";
     }

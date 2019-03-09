@@ -98,7 +98,10 @@ public class GoogleSheetsManager implements DataManager {
             Map<String, String> venueAttributes = new HashMap<>();
 
             // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
-
+            venueAttributes.put("requestedDate", venue.getRequestedHostingDate());
+            venueAttributes.put("response", venue.getResponse());
+            venueAttributes.put("venueName", venue.getName());
+            venueAttributes.put("primaryKey", Integer.toString(venue.getPrimaryKey()));
             returnValue.add(venueAttributes);
         }
 

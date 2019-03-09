@@ -40,18 +40,23 @@
     </menu>
 
     <article id="Venue" class="tabcontent table" style="display: block;">
-        <section class="tr">
-          <p>Expedia</p>
-          <div class="btn_container">
-            <a rel="request-host" class="btn_primary">Request Host</a>
-          </div>
-        </section>
       <section class="tr">
-        <p>Code Fellows</p>
+        <p ><span>Venue Name</span>||<span>Response</span></p>
         <div class="btn_container">
           <a rel="request-host" class="btn_primary">Request Host</a>
         </div>
       </section>
+      <th:block th:each="venue : ${session.venues}">
+        <section class="tr">
+          <p>
+            <span th:text="${venue['venueName']}">No Venue Name</span>||
+            <span th:if="${session.meetup['date'].equals(venue['requestedDate'])}"
+                  th:text="${venue['response']}">Response</span></p>
+          <div class="btn_container">
+            <a rel="request-host" class="btn_primary">Request Host</a>
+          </div>
+        </section>
+      </th:block>
     </article>
 
     <div id="Speaker" class="tabcontent">
