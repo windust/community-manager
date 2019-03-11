@@ -29,8 +29,8 @@
 
       </form>
   </header>
-  <aside th:if="${session.hostingMessage}" class="primary text-center">
-      <h2 class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
+  <aside th:if="${session.alert}" class="primary text-center">
+      <h2 class="h3"><span th:text="${session.alertMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
   </aside>
 
   <article id="more-meetups" class="text-center">

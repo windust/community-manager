@@ -40,12 +40,14 @@ public class SignUpController {
     String requestedDate;
     String response;
     String hostingMessage = "";
-    boolean dateAvailable = true;
+    String alertMessage = "";
+    boolean requestedDateAvailable = true;
+    boolean alert = false;
     boolean hostingRequestedDate = false;
     
 //    public SignUpController(){
 //        model = new GoogleSheetsManager();
-//        dateAvailable = true;
+//        requestedDateAvailable = true;
 //    }
     
     //TODO update javadocs
@@ -68,9 +70,9 @@ public class SignUpController {
             this.response = meetups.get(0).get("response").toLowerCase();
             meetups.remove(0);
             
-            this.dateAvailable = isDateAvailable(meetups);
+            this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
             
-            if(!dateAvailable){
+            if(!requestedDateAvailable){
                 setHostingRequestedDate(meetups);
             }
             
@@ -80,7 +82,9 @@ public class SignUpController {
             session.setAttribute("venueName", this.venueName);
             session.setAttribute("hostingMessage", this.hostingMessage);
             session.setAttribute("requestedDate", this.requestedDate);
-            session.setAttribute("ask", this.dateAvailable && response.equals(""));
+            session.setAttribute("ask", this.requestedDateAvailable && response.equals(""));
+            session.setAttribute("alert", alert);
+            session.setAttribute("alertMessage", alertMessage);
             
             return "available_dates";
         }
@@ -91,27 +95,39 @@ public class SignUpController {
     }
     
     private String getHostingMessage(){
-        if(dateAvailable && response.equals("")){
+        if(requestedDateAvailable && response.equals("")){
             return "Can you host on " + requestedDate + "?";
         }
         else if(response.equals("no")){
             return "Thank you for your consideration.";
         }
-        else if(!dateAvailable && response.equals("yes") && !hostingRequestedDate){
-            return "Thank you for hosting but this date is already being hosted by another venue.";
+        else if(!requestedDateAvailable && response.equals("yes") && !hostingRequestedDate){
+            return "Thank you for volunteering but " + requestedDate + " is already being hosted by another venue.";
         }
         else if(hostingRequestedDate && response.equals("yes")){
             return "Thank you for hosting on " + requestedDate + ", Contact your SeaJUG contact to cancel.";
         }
+        else if(!hostingRequestedDate && response.equals("yes")){
+            //assumes venue cancelled and SeaJUG volunteer removed them
+            //from meetup and then changes venue.response to reflect this
+            boolean success = model.setVenueForMeetup(venueName, "notHosting");
+            if(success){
+                response = "no";
+                return getHostingMessage();
+            }
+            else{
+                throw new IllegalArgumentException("Unable to update response");
+            }
+        }
         else{
             return "Unable to generate proper response given: "
-                + requestedDate + ", " + dateAvailable + ", " + response;
+                + requestedDate + ", " + requestedDateAvailable + ", " + response;
         }
     }
     
-    private boolean isDateAvailable(List<Map<String, String>> meetups) {
+    private boolean isDateAvailable(List<Map<String, String>> meetups, String date) {
         for(Map<String, String> meetup : meetups){
-            if(meetup.get("date").equals(this.requestedDate) && meetup.get("venue").equals("")){
+            if(meetup.get("date").equals(date) && meetup.get("venue").equals("")){
                 return true;
             }
         }
@@ -131,21 +147,22 @@ public class SignUpController {
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate){
         boolean success;
         
-        if(!meetupDate.equals(venueName)){
-            //still set as hosting meetup
-            
-            //set alert message
-        }
-        
         success = model.setVenueForMeetup(venueName, meetupDate);
         
+        if(!meetupDate.equals(requestedDate)){
+            alert = true;
+            alertMessage = getAlertMessage(success, meetupDate);
+        }
         
         return "redirect:/venue?token=" + this.currentToken;
     }
     
-    //TODO create speakers sign up page
-//    @GetMapping("/speaker")
-//    public String speaker(){
-//        return "login.html";
-//    }
+    private String getAlertMessage(boolean successful, String date){
+        if(successful){
+            return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";
+        }
+        else{
+            return "Thank you for volunteering but " + date + " is already being hosted by another venue.";
+        }
+    }
 }

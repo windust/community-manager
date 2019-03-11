@@ -60,7 +60,7 @@ public class SignUpControllerTest {
     public void venueSetsDateAvailableInSession(){
         signUpController.venue(validToken, session);
         
-        Assertions.assertEquals(signUpController.dateAvailable, session.getAttribute("dateAvailable"));
+        Assertions.assertEquals(signUpController.requestedDateAvailable, session.getAttribute("requestedDateAvailable"));
     }
     
     @Test
