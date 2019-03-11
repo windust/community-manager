@@ -101,10 +101,10 @@ public class SignUpController {
         else if(response.equals("no")){
             return "Thank you for your consideration.";
         }
-        else if(!requestedDateAvailable && response.equals("yes") && !hostingRequestedDate){
+        else if(!requestedDateAvailable && !hostingRequestedDate){
             return "Thank you for volunteering but " + requestedDate + " is already being hosted by another venue.";
         }
-        else if(hostingRequestedDate && response.equals("yes")){
+        else if(hostingRequestedDate){
             return "Thank you for hosting on " + requestedDate + ", Contact your SeaJUG contact to cancel.";
         }
         else if(!hostingRequestedDate && response.equals("yes")){
