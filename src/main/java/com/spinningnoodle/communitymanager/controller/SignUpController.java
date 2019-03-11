@@ -63,7 +63,7 @@ public class SignUpController {
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
             List<Map<String, String>> meetups;
-            meetups = model.getMeetupByVenueToken(token);
+            meetups = model.getMeetupsByVenueToken(token);
             currentToken = token;
             this.venueName = meetups.get(0).get("name");
             this.requestedDate = meetups.get(0).get("requestedDate");

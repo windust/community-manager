@@ -36,7 +36,7 @@ function getTokenURL(element) {
   //TODO find out why 0 is returned before actual content
   ajax.onreadystatechange = function() {
     if (this.status == 200) {
-      element.parentElement.innerHTML = "<a href=\"/venue?token=123N\">http://localhost:8080/venue?token=" + this.responseText + "Expedia-valid</a>";
+      element.parentElement.innerHTML = "<a href=\"/venue?token=123N"+ this.responseText + "\">http://localhost:8080/venue?token=" + this.responseText + "</a>";
     }
     else{
       alert(this.status)

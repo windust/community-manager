@@ -113,7 +113,6 @@ public class AdminController {
             throw new InvalidUserException();
         }
 
-        //TODO use key to retrieve details for specific meetup
         //TODO consider having this done in the model somewhere
         List<Map<String, String>> meetups = model.getAllMeetups();
         for (Map<String, String> meetup: meetups) {
@@ -122,7 +121,6 @@ public class AdminController {
             }
         }
 
-        //TODO retrieve all venues for tab.
         List<Map<String, String>> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
         
@@ -139,12 +137,13 @@ public class AdminController {
     //TODO return token from DB when logged in
     @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8")
     @ResponseBody
-    public String getToken() throws InvalidUserException {
+    public String getToken(@RequestParam(name = "venueKey") String venueKey) throws InvalidUserException {
         if(!loggedIn){
             throw new InvalidUserException();
         }
         else{
             //TODO get propper token and return it
+            //send venueKey to model and get token back
             return "meetup";
         }
     }

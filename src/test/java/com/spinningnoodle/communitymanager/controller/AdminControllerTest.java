@@ -84,19 +84,19 @@ public class AdminControllerTest {
     @Test
     public void meetupRouteReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
         adminController.loggedIn = true;
-        Assertions.assertEquals("meetup", adminController.meetup("1"));
+        Assertions.assertEquals("meetup", adminController.meetup("1", session));
     }
     
     @Test
     public void meetupRouteThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1"));
+        Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1", session));
     }
     
     @Test
     public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken());
+        Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken("1"));
     }
     
     @Test
@@ -112,7 +112,6 @@ public class AdminControllerTest {
     }
     
     @Test
-//    @Disabled("necessary model method not yet implemented, code commented out due to compiler error")
     public void upcomingGivesViewMeetupsFromModel() throws InvalidUserException {
         adminController.loggedIn = true;
         Comparator<Map<String, String>> compareMeetups = Comparator.comparing(o -> o.get("primaryKey"));

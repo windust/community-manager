@@ -71,7 +71,7 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
+    public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
         meetups.add(0, venueCollection.getVenueFromToken(venueToken));

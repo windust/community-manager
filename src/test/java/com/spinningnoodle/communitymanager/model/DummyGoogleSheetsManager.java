@@ -10,9 +10,12 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +27,29 @@ public class DummyGoogleSheetsManager extends GoogleSheetsManager {
             System.out.println("Data Storage Error");
         }
         meetupCollection = new DummyMeetupCollection(dataStorage);
+    }
+    
+    @Override
+    public List<Map<String, String>> getAllVenues(){
+        return null;
+    }
+    
+    @Override
+    public List<Map<String, String>> getMeetupsByVenueToken(String token){
+        List<Map<String, String>> expected = new ArrayList<>();
+        Map<String, String> temp = new HashMap<>();
+    
+        temp.put("name", "Expedia");
+        temp.put("requestedDate", "1/12/2019");
+        temp.put("response", "no");
+        expected.add(temp);
+    
+        return expected;
+    }
+    
+    @Override
+    public boolean setVenueForMeetup(String venueName, String date){
+        return true;
     }
     
 //    @Override
