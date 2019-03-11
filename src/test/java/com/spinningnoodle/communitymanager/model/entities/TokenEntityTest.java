@@ -10,12 +10,17 @@ package com.spinningnoodle.communitymanager.model.entities;
  *
  *  END OF LICENSE INFORMATION
  */
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -27,47 +32,63 @@ class TokenEntityTest {
     private Map<String, String> fields;
     
     @BeforeEach
-    public void initializeTokenGenerator(){
+    void initializeTokenGenerator(){
         tokenEntity = new DummyToken();
         fields = new HashMap<>();
         fields.put("name", testName);
+        fields.put("token", tokenEntity.generateNewToken());
         tokenEntity = (DummyToken) tokenEntity.build(fields);
+        tokenEntity.setToken(tokenEntity.generateNewToken());
     }
     
     @Test
-    public void tokenSetWhenProvided(){
-        fields.put("token", "valid");
+    void tokenSetWhenProvided(){
+        fields.put("token", tokenEntity.getOrGenerateToken());
         tokenEntity = (DummyToken) tokenEntity.build(fields);
         
         Assertions.assertNotNull(ReflectionTestUtils.getField(tokenEntity, "token"));
     }
     
     @Test
-    public void tokenIsNullWhenNotProvided(){
-        Assertions.assertNull(ReflectionTestUtils.getField(tokenEntity, "token"));
+    void tokenIsEmptyStringWhenNotProvided() {
+        TokenEntity newTokenEntity = new DummyToken();
+        Assertions.assertEquals("", ReflectionTestUtils.getField(newTokenEntity, "token"));
     }
     
     @Test
-    public void tokenCreatedWhenCalledButIsNull(){
+    void tokenCreatedWhenCalledButIsNull(){
         Assertions.assertNotNull(tokenEntity.getToken());
     }
     
     @Test
-    public void tokenReturnsStoredValueWhenPresent(){
-        fields.put("token", "valid");
-        tokenEntity = (DummyToken) tokenEntity.build(fields);
-
-        String testToken = "valid";
-        Assertions.assertEquals(tokenEntity.getToken(), testToken);
+    void tokenReturnsStoredValueWhenPresent(){
+        Assertions.assertTrue(tokenEntity.getToken().length() >= 1);
     }
     
     @Test
-    public void tokenEndsWithEntityName(){
+    void tokenStartsWithEntityName(){
         String token = tokenEntity.getToken();
-        String name = token.substring(token.length() - 7);
+        String name = token.substring(0, testName.length());
 
         String tokenName = "Expedia";
         Assertions.assertEquals(tokenName, name);
+    }
+
+    @Test
+    void invalidTokenIsIllegalArgument() {
+        assertThrows(IllegalArgumentException.class,  () -> tokenEntity.setToken("invalid token"));
+    }
+
+    @Test
+    void whitespaceInNameIsRemovedInToken() {
+        tokenEntity.setName("two words");
+        tokenEntity.setToken(tokenEntity.generateNewToken());
+
+        assertAll(() -> {
+            assertTrue(tokenEntity.getToken().toLowerCase().contains("two"));
+            assertTrue(tokenEntity.getToken().toLowerCase().contains("words"));
+            assertFalse(tokenEntity.getToken().contains(" "));
+        });
     }
     
     @Test

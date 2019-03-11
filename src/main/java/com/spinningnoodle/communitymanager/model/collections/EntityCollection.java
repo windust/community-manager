@@ -28,7 +28,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 	private final String TABLE_NAME;
-	
+
 	/**
 	 * @param dataStorage the data storage to use as a database
 	 */
@@ -47,10 +47,12 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	}
 
 	protected boolean dataStorageUpdate(String tableName, String primaryKey, String attribute, String newValue) {
+		fetchFromDataStorage();
 		return dataStorage.update(tableName, primaryKey, attribute, newValue);
 	}
 
 	protected java.util.Collection<T> getEntitiesValues() {
+		fetchFromDataStorage();
 		return this.entities.values();
 	}
 
@@ -58,7 +60,8 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The entity to store in the collection
 	 */
 	protected void addToEntities(T entity) {
-		entities.put(entity.getEntityId(), entity);
+	  entity.atachObserver(this);
+	  entities.put(entity.getEntityId(), entity);
 	}
 
 	/**
@@ -73,7 +76,8 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The <T> to be saved into the EntityCollection .
 	 */
 	public void addToCollection(T entity) {
-		entities.put(entity.getEntityId(), entity);
+		fetchFromDataStorage();
+		addToEntities(entity);
 	}
 
 	/**
@@ -84,6 +88,8 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @throws EntityNotFoundException When <T> with the Id passed cannot be found
 	 */
 	public T getById(int entityId) throws EntityNotFoundException {
+		fetchFromDataStorage();
+
 		if(!entities.containsKey(entityId)) {
 			throw new EntityNotFoundException();
 		}
@@ -106,6 +112,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return The amount of Venues stored in the collection
 	 */
 	public int size() {
+		fetchFromDataStorage();
 		return entities.size();
 	}
 
