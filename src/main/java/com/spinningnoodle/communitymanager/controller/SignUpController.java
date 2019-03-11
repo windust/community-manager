@@ -149,7 +149,7 @@ public class SignUpController {
         
         success = model.setVenueForMeetup(venueName, meetupDate);
         
-        if(!meetupDate.equals(requestedDate)){
+        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
