@@ -78,8 +78,13 @@ public abstract class TokenEntity extends Entity {
      * @return The token generated
      */
     protected String generateNewToken() {
-        String entityName = Character.toString(name.charAt(0)).toUpperCase() +
-                            name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+
+      String entityName = "";
+        if(name != null) {
+          entityName = Character.toString(name.charAt(0)).toUpperCase() +
+                      name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+          entityName += '-';
+        }
 
         return entityName + UUID.randomUUID().toString();
     }

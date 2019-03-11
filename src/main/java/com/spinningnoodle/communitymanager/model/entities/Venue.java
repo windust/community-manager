@@ -46,7 +46,7 @@ public class Venue extends TokenEntity {
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
         this.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
         this.setResponse(fields.getOrDefault("response", ""));
-        this.setToken(fields.get("token"));
+        this.setToken(fields.getOrDefault("token", this.generateNewToken()));
 
         return this;
     }
