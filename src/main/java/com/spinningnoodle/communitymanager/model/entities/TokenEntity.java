@@ -53,10 +53,6 @@ public abstract class TokenEntity extends Entity {
      * @param token The token of this entity
      */
     protected void setToken(String token) throws IllegalArgumentException {
-        if(isTokenNotValid(token)) {
-            throw new IllegalArgumentException("Make sure token: \"" + token + "\" is a valid format.");
-        }
-
         this.token = token;
 
         this.notifyObservers();

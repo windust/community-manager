@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller that handles login features and
@@ -135,12 +137,14 @@ public class AdminController {
      * logged in.
      */
     //TODO return token from DB when logged in
-    @PostMapping("/getToken")
+    @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8")
+    @ResponseBody
     public String getToken() throws InvalidUserException {
         if(!loggedIn){
             throw new InvalidUserException();
         }
         else{
+            //TODO get propper token and return it
             return "meetup";
         }
     }

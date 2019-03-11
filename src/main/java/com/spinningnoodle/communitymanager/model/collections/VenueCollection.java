@@ -71,11 +71,6 @@ public class VenueCollection extends TokenCollection<Venue> {
 		return false;
 	}
 
-	@Override
-	public void update(Venue observable) {
-		//TODO update token
-	}
-
 	/*
 	public boolean setVenueRequestedHostingDateByVenueName(String venueName, String requestedHostingDate) {
 		for(Venue venue : this.entities.values()) {

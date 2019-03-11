@@ -26,7 +26,6 @@ public class DummyMeetupCollection extends MeetupCollection {
         fetchFromDataStorage();
     }
 
-    @Override
     public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
         return true;
     }
@@ -37,12 +36,11 @@ public class DummyMeetupCollection extends MeetupCollection {
         return super.setVenueForMeetup(venueName, requestedDate);
     }
 
-    @Override
-    public Map<String, String> getAllMeetupsForToken(String venueToken){
-        List<Map<String,String>> list = new ArrayList<>();
-        timesGetAllMeetupsForTokenIsCalled++;
-        return super.getAllMeetupsForToken(venueToken);
-    }
+//    public Map<String, String> getAllMeetupsForToken(String venueToken){
+//        List<Map<String,String>> list = new ArrayList<>();
+//        timesGetAllMeetupsForTokenIsCalled++;
+//        return super.getAllMeetupsForToken(venueToken);
+//    }
 
     public int getTimesSetVenueCalled(){
         return timesSetVenueCalled;
