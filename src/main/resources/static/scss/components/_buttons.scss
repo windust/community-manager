@@ -11,6 +11,7 @@
  */
 
 @import "../abstracts/colors";
+@import "../base/schemes";
 
 $btn_margin: .2em;
 $btn_padding: .2em;
@@ -33,9 +34,7 @@ $btn_border_radius: .5em;
 
 .btn_primary {
   @include btn(.2em, .5em, .2em);
-
-  background-color: theme-color('accent', 'light');
-  color: theme-color('base', 'dark');
+  @extend .primary;
 
   &:hover {
     background-color: darken(theme-color('accent', 'light'), 20%);
