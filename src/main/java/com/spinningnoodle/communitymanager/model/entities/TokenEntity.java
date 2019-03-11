@@ -21,7 +21,7 @@ import java.util.UUID;
  */
 public abstract class TokenEntity extends Entity {
     private String name;
-    private String token;
+    private String token = "";
     
     /**
      * Returns the token if it currently has one otherwise
