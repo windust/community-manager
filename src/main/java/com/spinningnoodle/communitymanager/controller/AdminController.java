@@ -109,9 +109,9 @@ public class AdminController {
     @PostMapping("/meetup")
     public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
         throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
+//        if(!loggedIn) {
+//            throw new InvalidUserException();
+//        }
 
         //TODO consider having this done in the model somewhere
         List<Map<String, String>> meetups = model.getAllMeetups();
@@ -137,15 +137,17 @@ public class AdminController {
     //TODO return token from DB when logged in
     @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8")
     @ResponseBody
-    public String getToken(@RequestParam(name = "venueKey") String venueKey) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
-            //TODO get propper token and return it
-            //send venueKey to model and get token back
-            return "meetup";
-        }
+//    public String getToken(@RequestParam(name = "venueKey") String venueKey) throws InvalidUserException {
+    public String getToken() throws InvalidUserException {
+//        if(!loggedIn){
+//            throw new InvalidUserException();
+//        }
+//        else{
+//            //TODO get propper token and return it
+//            //send venueKey to model and get token back
+//            return "meetup";
+//        }
+        return "resopnse";
     }
     
     //TODO create google sheets page
