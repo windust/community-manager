@@ -24,12 +24,12 @@
 
     <article class="meetup-details">
       <p class="meetup-data">Date: <span th:text="${session.meetup['date']}">Error</span></p>
-      <p class="meetup-data">Topic: Deflating Ball</p>
-      <p class="meetup-data">Venue: Foxborough Stadium</p>
-      <p class="meetup-data">Speaker: Tom Brady</p>
-      <p class="meetup-data">Food: Pig Skin</p>
-      <p class="meetup-data">After Event: Apologizing Ceremony</p>
-      <p class="meetup-data">Description: Sorry</p>
+      <p class="meetup-data">Topic: <span th:text="${session.meetup['topic']}">Error</span></p>
+      <p class="meetup-data">Venue: <span th:text="${session.meetup['venue']}">Error</span></p>
+      <p class="meetup-data">Speaker: <span th:text="${session.meetup['speaker']}">Error</span></p>
+      <p class="meetup-data">Food: <span th:text="${session.meetup['food']}">Error</span></p>
+      <p class="meetup-data">After Event: <span th:text="${session.meetup['after']}">Error</span></p>
+      <p class="meetup-data">Description: <span th:text="${session.meetup['description']}">Error</span></p>
     </article>
 
     <menu class="tab">
@@ -41,15 +41,15 @@
 
     <article id="Venue" class="tabcontent table" style="display: block;">
       <section class="tr">
-        <p ><span>Venue Name</span>||<span>Response</span></p>
+        <p class="meetup-venue"><span >Venue Name</span><span >Response</span></p>
         <div class="btn_container">
-          <a rel="request-host" class="btn_primary">Request Host</a>
+          
         </div>
       </section>
       <th:block th:each="venue : ${session.venues}">
         <section class="tr">
-          <p>
-            <span th:text="${venue['venueName']}">No Venue Name</span>||
+          <p class="meetup-venue">
+            <span th:text="${venue['venueName']}">No Venue Name</span>
             <span th:if="${session.meetup['date'].equals(venue['requestedDate'])}"
                   th:text="${venue['response']}">Response</span></p>
           <div class="btn_container">
