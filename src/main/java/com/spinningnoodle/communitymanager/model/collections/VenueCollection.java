@@ -51,8 +51,6 @@ public class VenueCollection extends TokenCollection<Venue> {
 	}
 	
 	public Map<String, String> getVenueFromToken(String venueToken){
-		//TODO move this call into getEntityValues in EntityCollection class
-		fetchFromDataStorage();
 		Venue venue = this.getEntityByToken(venueToken);
 		Map<String, String> venueInfo = new HashMap<>();
 		venueInfo.put("name", venue.getName());

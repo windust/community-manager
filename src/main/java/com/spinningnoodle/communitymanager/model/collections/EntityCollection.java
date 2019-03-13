@@ -47,12 +47,10 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	}
 
 	protected boolean dataStorageUpdate(String tableName, String primaryKey, String attribute, String newValue) {
-		fetchFromDataStorage();
 		return dataStorage.update(tableName, primaryKey, attribute, newValue);
 	}
 
 	protected java.util.Collection<T> getEntitiesValues() {
-		fetchFromDataStorage();
 		return this.entities.values();
 	}
 
@@ -76,7 +74,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The <T> to be saved into the EntityCollection .
 	 */
 	public void addToCollection(T entity) {
-		fetchFromDataStorage();
 		addToEntities(entity);
 	}
 
@@ -88,8 +85,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @throws EntityNotFoundException When <T> with the Id passed cannot be found
 	 */
 	public T getById(int entityId) throws EntityNotFoundException {
-		fetchFromDataStorage();
-
 		if(!entities.containsKey(entityId)) {
 			throw new EntityNotFoundException();
 		}
@@ -102,7 +97,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return A List of all <T>.
 	 */
 	public List<T> getAll() {
-		fetchFromDataStorage();
 		return new ArrayList<>(entities.values());
 	}
 
@@ -112,7 +106,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return The amount of Venues stored in the collection
 	 */
 	public int size() {
-		fetchFromDataStorage();
 		return entities.size();
 	}
 
