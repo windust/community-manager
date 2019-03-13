@@ -23,27 +23,27 @@
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
 
     <article class="meetup-details">
-      <p class="meetup-data">Date: <span th:text="${session.meetup['date']}">Error</span></p>
-      <p class="meetup-data">Topic: <span th:text="${session.meetup['topic']}">Error</span></p>
-      <p class="meetup-data">Venue: <span th:text="${session.meetup['venue']}">Error</span></p>
-      <p class="meetup-data">Speaker: <span th:text="${session.meetup['speaker']}">Error</span></p>
-      <p class="meetup-data">Food: <span th:text="${session.meetup['food']}">Error</span></p>
-      <p class="meetup-data">After Event: <span th:text="${session.meetup['after']}">Error</span></p>
-      <p class="meetup-data">Description: <span th:text="${session.meetup['description']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Date: </span><span th:text="${session.meetup['date']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Topic: </span><span th:text="${session.meetup['topic']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Venue: </span><span th:text="${session.meetup['venue']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Speaker: </span><span th:text="${session.meetup['speaker']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Food: </span><span th:text="${session.meetup['food']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">After Event: </span><span th:text="${session.meetup['after']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Description: </span><span th:text="${session.meetup['description']}">Error</span></p>
     </article>
 
     <menu class="tab">
-      <li class="tablinks active" onclick="openTab(event, 'Venue')" selected>Venue</li>
-      <li class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</li>
-      <li class="tablinks" onclick="openTab(event, 'Food')">Food</li>
-      <li class="tablinks" onclick="openTab(event, 'After')">After</li>
+      <li class="tablinks active h6" onclick="openTab(event, 'Venue')" selected>Venue</li>
+      <li class="tablinks h6" onclick="openTab(event, 'Speaker')">Speaker</li>
+      <li class="tablinks h6" onclick="openTab(event, 'Food')">Food</li>
+      <li class="tablinks h6" onclick="openTab(event, 'After')">After</li>
     </menu>
 
     <article id="Venue" class="tabcontent table" style="display: block;">
       <section class="tr">
-        <p class="meetup-venue"><span >Venue Name</span><span >Response</span></p>
+        <p class="meetup-venue h6"><span >Venue Name</span><span >Response</span></p>
         <div class="btn_container">
-          
+
         </div>
       </section>
       <th:block th:each="venue : ${session.venues}">
