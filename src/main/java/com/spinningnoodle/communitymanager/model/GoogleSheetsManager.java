@@ -51,6 +51,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Map<String, String>> getAllMeetups() {
+        meetupCollection.fetchFromDataStorage();
         List<Meetup> meetups = meetupCollection.getAll();
 
         List<Map<String, String>> meetupList = new ArrayList<>();
@@ -73,6 +74,8 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
+        meetupCollection.fetchFromDataStorage();
+        venueCollection.fetchFromDataStorage();
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
         meetups.add(0, venueCollection.getVenueFromToken(venueToken));
@@ -81,6 +84,8 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public boolean setVenueForMeetup(String venueName, String requestedDate){
+        meetupCollection.fetchFromDataStorage();
+        
         if(requestedDate.equals("notHosting")){
             return venueCollection.updateResponse(venueName, "no");
         }
@@ -92,6 +97,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Map<String, String>> getAllVenues() {
+        venueCollection.fetchFromDataStorage();
         List<Venue> venues = venueCollection.getAll();
         List<Map<String, String>> returnValue  = new ArrayList<>();
 
@@ -110,6 +116,7 @@ public class GoogleSheetsManager implements DataManager {
     }
     
     public String requestHost(String primaryKey, String date){
+        venueCollection.fetchFromDataStorage();
         try {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
