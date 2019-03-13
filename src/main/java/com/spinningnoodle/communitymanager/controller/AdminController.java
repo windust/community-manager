@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -109,9 +112,9 @@ public class AdminController {
     @PostMapping("/meetup")
     public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
         throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
+//        if(!loggedIn) {
+//            throw new InvalidUserException();
+//        }
 
         //TODO consider having this done in the model somewhere
         List<Map<String, String>> meetups = model.getAllMeetups();
@@ -135,17 +138,18 @@ public class AdminController {
      * logged in.
      */
     //TODO return token from DB when logged in
-    @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8")
+    @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getToken(@RequestParam(name = "venueKey") String venueKey) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
-            //TODO get propper token and return it
-            //send venueKey to model and get token back
-            return "meetup";
-        }
+    public String getToken(@RequestBody String params) throws InvalidUserException {
+//        if(!loggedIn){
+//            throw new InvalidUserException();
+//        }
+//        else{
+            String[] args = params.split("&");
+            String venueKey = args[0].split("=")[1];
+            String date = args[1].split("=")[1];
+            return ((GoogleSheetsManager) model).requestHost(venueKey, date);
+//        }
     }
     
     //TODO create google sheets page

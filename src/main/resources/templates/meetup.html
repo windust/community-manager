@@ -10,7 +10,7 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js">
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +23,7 @@
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
 
     <article class="meetup-details">
-      <p class="meetup-data"><span class="h6">Date: </span><span th:text="${session.meetup['date']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Date: </span><span id="date" th:text="${session.meetup['date']}">Error</span></p>
       <p class="meetup-data"><span class="h6">Topic: </span><span th:text="${session.meetup['topic']}">Error</span></p>
       <p class="meetup-data"><span class="h6">Venue: </span><span th:text="${session.meetup['venue']}">Error</span></p>
       <p class="meetup-data"><span class="h6">Speaker: </span><span th:text="${session.meetup['speaker']}">Error</span></p>
@@ -43,7 +43,6 @@
       <section class="tr">
         <p class="meetup-venue h6"><span >Venue Name</span><span >Response</span></p>
         <div class="btn_container">
-
         </div>
       </section>
       <th:block th:each="venue : ${session.venues}">
@@ -53,7 +52,7 @@
             <span th:if="${session.meetup['date'].equals(venue['requestedDate'])}"
                   th:text="${venue['response']}">Response</span></p>
           <div class="btn_container">
-            <a rel="request-host" class="btn_primary">Request Host</a>
+            <a rel="request-host" class="btn_primary" th:data-venueIndentifier="${venue['primaryKey']}">Request Host</a>
           </div>
         </section>
       </th:block>

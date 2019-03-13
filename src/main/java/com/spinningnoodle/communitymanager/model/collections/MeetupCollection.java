@@ -58,7 +58,6 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 * @return true or false if the DataStore updated
 	 */
 	public boolean setVenueForMeetup(String venueName, String hostingDate) {
-		fetchFromDataStorage();
 		for(Meetup meetup : getEntitiesValues()) {
 			//TODO write tests to confirm that venue won't be set if meetup already has a venue
 			if(meetup.getDate().equals(hostingDate) && meetup.getVenue().isEmpty()) {
@@ -67,30 +66,4 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 		}
 		return false;
 	}
-
-	/**
-	 * @param token the token to search
-	 * @return a lost of meetups
-	 */
-//	public Map<String, String> getAllMeetupsForToken(String token) {
-//		this.fetchFromDataStorage();
-//
-//		return isTokenValid(token);
-//	}
-//
-//	// is valid token, get name of venue & requested date
-//	// is value 'excellent' not valid
-//	private Map<String, String> isTokenValid(String token) {
-//		// create venue collection with this datastorage
-//		VenueCollection venueCollection = new VenueCollection(getDataStorage());
-////		venueCollection.fetchFromDataStorage();
-//
-//		Venue venue = venueCollection.getEntityByToken(token);
-//		Map<String, String> venueInfo = new HashMap<>();
-//		venueInfo.put("name", venue.getName());
-//		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
-//		venueInfo.put("response", venue.getResponse());
-//
-//		return venueInfo;
-//	}
 }
