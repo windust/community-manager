@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model;
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
@@ -106,5 +107,26 @@ public class GoogleSheetsManager implements DataManager {
         }
 
         return returnValue;
+    }
+    
+    public String requestHost(String primaryKey, String date){
+        try {
+            int key = Integer.parseInt(primaryKey);
+            Venue venue = venueCollection.getByPrimaryKey(key);
+            setRequestedDate(venue.getName(), date);
+            return retrieveToken(primaryKey);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    private void setRequestedDate(String venueName, String date){
+        venueCollection.updateResponse(venueName, "");
+        venueCollection.updateRequestedDate(venueName, date);
+    }
+    
+    private String retrieveToken(String primaryKey){
+        return venueCollection.getOrGenerateToken(Integer.parseInt(primaryKey));
     }
 }

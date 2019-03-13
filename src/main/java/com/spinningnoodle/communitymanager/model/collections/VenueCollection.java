@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
@@ -69,6 +70,36 @@ public class VenueCollection extends TokenCollection<Venue> {
 		}
 		
 		return false;
+	}
+	
+	public boolean updateRequestedDate(String venueName, String date){
+		for(Venue venue : getAll()){
+			if(venue.getName().equals(venueName)){
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", date);
+			}
+		}
+		
+		return false;
+	}
+	
+	public String getOrGenerateToken(int primaryKey){
+		try {
+			Venue venue = this.getByPrimaryKey(primaryKey);
+			return venue.getOrGenerateToken();
+		} catch (EntityNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Venue getByPrimaryKey(int key) throws EntityNotFoundException{
+		for(Venue venue : getEntitiesValues()){
+			if(venue.getPrimaryKey() == key){
+				return venue;
+			}
+		}
+		
+		throw new EntityNotFoundException();
 	}
 
 	/*
