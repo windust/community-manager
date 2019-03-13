@@ -13,11 +13,9 @@
 @import "../abstracts/colors";
 
 footer {
-  width: 79%;
   margin: 1% 10%;
   padding: 0.1em;
   text-align: center;
   background-color: theme-color('primary', 'dark');
-  //border: 2px solid theme-color('base', 'dark');
   color: theme-color('base', 'light');
 }

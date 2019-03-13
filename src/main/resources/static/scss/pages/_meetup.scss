@@ -14,9 +14,7 @@
 .meetup-details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-
-  width: 50em;
-  margin: 0 auto;
+  margin: 0 15vw;
 }
 
 .meetup-venue {
