@@ -9,12 +9,103 @@
  *
  *  END OF LICENSE INFORMATION
  */
-$font_size: 1.2em;
-$response_font_size: 1.3em;
-$font_family: "Arial";
-$text_center: center;
-$float_right: right;
-$float_left: left;
 
-/*Meetup CSS*/
-$text-align: left;
+@import '../abstracts/typography';
+@import '../abstracts/colors';
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  @include font-family('display');
+  @include font-weight('bold');
+  letter-spacing: 1px;
+}
+
+.h1,
+.h2 {
+  text-transform: capitalize;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.h3,
+.h4 {
+  line-height: 1.3;
+}
+
+.h1 {
+  @include font-size('xx-large');
+  letter-spacing: 1px;
+}
+
+.h2 {
+  @include font-size('x-large');
+  letter-spacing: 1px;
+}
+
+.h3 {
+  @include font-size('large');
+}
+
+.h4,
+.h5,
+.h6 {
+  @include font-size('regular');
+}
+
+.text {
+  @include font-family('text');
+  @include font-weight('regular');
+}
+
+.muted-header {
+  @extend .h1;
+
+  @include font-size('large');
+
+  display: block;
+  margin-bottom: map-get($map: $font-sizes, $key: 'large');
+
+  color: lighten(theme-color('base', 'dark'), 30%);
+}
+
+html {
+  @include font-family('text');
+  @include font-weight('regular');
+  @include font-size('regular');
+}
+
+h1 {
+  @extend .h1;
+}
+h2 {
+  @extend .h2;
+}
+h3 {
+  @extend .h3;
+}
+h4 {
+  @extend .h4;
+}
+h5 {
+  @extend .h5;
+}
+h6 {
+  @extend .h6;
+}
+
+.display {
+  @extend h1;
+  font-size: 4em;
+}
+.text-center {
+  text-align: center;
+}
+
+.accent-text {
+  color: theme-color('primary', 'light');
+  @include font-weight('bold');
+}

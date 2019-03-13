@@ -10,53 +10,49 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head th:replace="fragments/adminFragments.html :: head (title='Meetup')"></head>
-  <body class="meetup">
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Meetup</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body id="meetup">
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
-    <div class="meetup-details">
-    <table class="meetup-table">
-      <tr class="meetup-row">
-        <td class="meetup-data">Date: 12/12/12</td>
-        <td class="meetup-data">Topic: Deflating Balls</td>
-      </tr>
-      <tr class="meetup-row">
-        <td class="meetup-data">Venue: Foxborough Stadium</td>
-        <td class="meetup-data">Speaker: Tom Brady</td>
-      </tr>
-      <tr class="meetup-row">
-        <td class="meetup-data">Food: Pig Skin</td>
-        <td class="meetup-data">After Event: Apologizing Ceremony</td>
-      </tr>
-      <tr class="meetup-row">
-        <td class="meetup-data" id="description" colspan="2">Description: Sorry</td>
-      </tr>
-    </table>
-  </div>
 
-    <div class="tab">
-      <button class="tablinks" onclick="openTab(event, 'Venue')" selected>Venue</button>
-      <button class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</button>
-      <button class="tablinks" onclick="openTab(event, 'Food')">Food</button>
-      <button class="tablinks" onclick="openTab(event, 'After')">After</button>
-    </div>
+    <article class="meetup-details">
+      <p class="meetup-data">Date: 12/12/12</p>
+      <p class="meetup-data">Topic: Deflating Ball</p>
+      <p class="meetup-data">Venue: Foxborough Stadium</p>
+      <p class="meetup-data">Speaker: Tom Brady</p>
+      <p class="meetup-data">Food: Pig Skin</p>
+      <p class="meetup-data">After Event: Apologizing Ceremony</p>
+      <p class="meetup-data">Description: Sorry</p>
+    </article>
 
-    <div id="Venue" class="tabcontent">
-      <table class="venue-tab">
-        <tr>
-          <td colspan="3"> Expedia</td>
-          <td>
-            <input type="button" value="Request Host" class="request-host">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3"> Code Fellows</td>
-          <td>
-            <input type="button" value="Request Host" class="request-host">
-          </td>
-        </tr>
-      </table>
-    </div>
+    <menu class="tab">
+      <li class="tablinks active" onclick="openTab(event, 'Venue')" selected>Venue</li>
+      <li class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</li>
+      <li class="tablinks" onclick="openTab(event, 'Food')">Food</li>
+      <li class="tablinks" onclick="openTab(event, 'After')">After</li>
+    </menu>
+
+    <article id="Venue" class="tabcontent table" style="display: block;">
+        <section class="tr">
+          <p>Expedia</p>
+          <div class="btn_container">
+            <a rel="request-host" class="btn_primary">Request Host</a>
+          </div>
+        </section>
+      <section class="tr">
+        <p>Code Fellows</p>
+        <div class="btn_container">
+          <a rel="request-host" class="btn_primary">Request Host</a>
+        </div>
+      </section>
+    </article>
 
     <div id="Speaker" class="tabcontent">
       <p>This is the speaker tab.</p>

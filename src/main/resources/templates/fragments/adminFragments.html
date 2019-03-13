@@ -10,25 +10,29 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
+<html class="no-js">
   <head th:fragment="head (title)">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title th:text="${title}">SeaJUG</title>
+    <title>Meetup</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body class="meetup">
-    <header class="navbarDiv" th:fragment="navbar (pageName)">
-      <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
-        <ul>
-          <li><a href="/upcoming">Dashboard</a></li>
-          <li><a href="/upcoming">Upcoming Dates</a></li>
-          <li><a href="/upcoming">Google Sheets</a></li>
-          <li id="logout"><a href="/logout">Logout</a></li>
-        </ul>
-        <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
+    <header class="navbar" th:fragment="navbar (pageName)">
+      <nav>
+        <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
+          <ul>
+            <ul>
+              <li><a href="/upcoming">Dashboard</a></li>
+              <li><a href="/upcoming">Upcoming Dates</a></li>
+              <li><a href="/upcoming">Google Sheets</a></li>
+            </ul>
+            <li id="logout"><a href="/logout">Logout</a></li>
+          </ul>
+      </nav>
+      <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
     </header>
 
     <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>

@@ -12,10 +12,11 @@ package com.spinningnoodle.communitymanager.controller;
  */
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
-import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import com.spinningnoodle.communitymanager.model.DataManager;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +32,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminController {
     boolean loggedIn = false;
-    GoogleSheetsManager model = new GoogleSheetsManager();
     
+    @Autowired
+    DataManager model;
     /**
      * Route to basic login screen
      * @return login - name of html page to render

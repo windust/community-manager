@@ -16,45 +16,39 @@ import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.Scanner;
 
-public class GoogleSheetsManager {
+public class GoogleSheetsManager implements DataManager {
     DataStorage dataStorage;
     MeetupCollection meetupCollection;
     VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
-    public GoogleSheetsManager(){
+    //TODO rework to remove defualt constructor, currently used for dummy test class
+    public GoogleSheetsManager(){}
+    
+    public GoogleSheetsManager(String storageID){
         try {
-            Map<String,String> config = new HashMap<>();
-            config.put("storage","google");
-            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
-            config.put("storageID",testIDFile.next());
-            if(config.get("storage").equals("google")) {
-                dataStorage = new GoogleSheets(config.get("storageID"));
-            }
+//            Map<String,String> config = new HashMap<>();
+//            config.put("storage","google");
+//            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
+//            config.put("storageID",testIDFile.next());
+//            if(config.get("storage").equals("google")) {
+                dataStorage = new GoogleSheets(storageID);
+//            }
             meetupCollection = new MeetupCollection(dataStorage);
             venueCollection = new VenueCollection(dataStorage);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public List<Map<String, String>> getAllMeetups() {
         List<Meetup> meetups = meetupCollection.getAll();
 
@@ -75,6 +69,7 @@ public class GoogleSheetsManager {
         return meetupList;
     }
 
+    @Override
     public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
@@ -82,10 +77,12 @@ public class GoogleSheetsManager {
         return meetups;
     }
 
-    public boolean setVenueForMeetup(String venueName, String requestedDate ){
+    @Override
+    public boolean setVenueForMeetup(String venueName, String requestedDate){
         return meetupCollection.setVenueForMeetup(venueName, requestedDate);
     }
 
+    @Override
     public List<Map<String, String>> getAllVenues() {
         List<Venue> venues = venueCollection.getAll();
         List<Map<String, String>> returnValue  = new ArrayList<>();

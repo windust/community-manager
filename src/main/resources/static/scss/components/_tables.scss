@@ -1,0 +1,21 @@
+@import '../abstracts/colors';
+
+table,
+.table {
+  margin-top: 0.5em;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: theme-color('base', 'light');
+
+  tr,
+  .tr {
+    padding: 0.3em;
+    text-align: center;
+    border-bottom: 1px solid theme-color('base','dark');
+  }
+
+  :not(thead) > tr:nth-child(2n + 1),
+  :not(thead) > .tr:nth-child(2n + 1) {
+    background-color: darken(theme-color('base', 'light'), 10%);
+  }
+}

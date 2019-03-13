@@ -9,20 +9,39 @@
  *
  *  END OF LICENSE INFORMATION
  */
-$body_color: rgb(250, 250, 250);
-$red: rgb(255,0,0);
-$hosting: rgb(5, 104, 0);
-$date_request_box: rgb(27, 60, 53);
-$response_yes: rgb(227, 195, 131);
-$response_no: rgb(0, 188, 0);
-$white: rgb(255,255,255);
-$nth_child_odd: rgb(240,240,240);
-$logo_color: rgb(0, 102, 0);
-$black: black;
 
-/*Meetup CSS*/
-$nav_background_color: #333;
-$hover_background-color: #111;
-$tab_background-color: #ccc;
-$tab_hover_background-color: #ddd;
-$tab_active_background-color: #f1f1f1;
+$theme-colors: (
+  'primary': (
+    'light': #006600,
+    'dark': #1B3C35,
+  ),
+  'accent': (
+    'light': #E3C385,
+    'dark': #000000,
+  ),
+  'base': (
+    'light': #FDFDFD,
+    'dark': #080808,
+  ),
+);
+
+// Returns a color from $theme-colors
+// Throws error if the color does not exist
+@function theme-color($key, $variant) {
+  $category: map-get($theme-colors, $key);
+
+  @if $category {
+    $type: map-get($category, $variant);
+
+    @if $type {
+      @return $type;
+    } @else {
+      @error 'No value found for `#{$key}:#{$variant}`. '
+        + 'Please make sure it is defined in `$theme-colors` map.';
+    }
+
+  } @else {
+    @error 'No value found for `#{$key}`. '
+        + 'Please make sure it is defined in `$theme-colors` map.';
+  }
+}
