@@ -31,7 +31,7 @@ public abstract class TokenCollection<T extends TokenEntity> extends EntityColle
     }
 
     private void updateToken(int primaryKey, String newToken) {
-        dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "Token", newToken);
+        dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "token", newToken);
     }
 
     @Override
