@@ -1,0 +1,77 @@
+/**
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+ */
+
+@import "../abstracts/colors";
+@import "../base/schemes";
+
+$details_margin: .2em;
+$details_padding: .2em;
+$details_border_radius: .5em;
+
+
+details {
+  background-color: transparent;
+  border: 2px solid theme-color('base', 'light');
+  color: theme-color('base', 'light');
+
+  &:hover {
+    background-color: theme-color('base', 'light');
+    color: theme-color('base', 'dark');
+  }
+
+  :focus {
+    outline: none;
+  }
+}
+
+summary, .card-header {
+  display: grid;
+  grid-template-columns: 5% 25% 25% 25% 20%;
+}
+
+.first-row{
+  visibility: hidden;
+  padding-top: 1em;
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.first-row span{
+  visibility: visible;
+}
+
+.card-header {
+  padding: 10vw;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 10%;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+  margin: 0 10vw;
+  padding: $details_padding;
+  border: solid theme-color('accent','light');
+  color: black;
+  &:hover {
+    background-color: lighten(theme-color('accent', 'light'), 20%);
+  }
+  &:hover {
+    border-color: theme-color('primary', 'light');
+    color: theme-color('primary', 'light');
+  }
+}
+

@@ -20,17 +20,31 @@
   <div th:replace="fragments/adminFragments.html :: navbar(pageName='Upcoming Dates')"></div>
 
   <form method="post" action="/meetup">
-    <i class="arrow right"></i>
+    <details class="card first-row">
+      <summary>
+        <span class="h6">Date </span>
+        <span class="h6">Speaker</span>
+        <span class="h6">Venue</span>
+      </summary>
+    </details>
     <th:block th:each="meetup : ${session.meetups}">
-      <div>
-        <span th:text="${meetup['date']}">Date</span>
-        <span th:text="${meetup['speaker']}">Speaker</span>
-        <span th:text="${meetup['venue']}">Venue</span>
-        <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
-          Details
-        </button>
-      </div>
+      <details class="card">
+        <summary>
+          <span th:text="${meetup['date']}">Date</span>
+          <span th:text="${meetup['speaker']}">Speaker</span>
+          <span th:text="${meetup['venue']}">Venue</span>
+          <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
+            Details
+          </button>
+        </summary>
+        <div class="details-grid"></div>
+          <span class="h6">Topic: </span><span th:text="${meetup['topic']}">Unavailable</span>
+          <span class="h6">Food: </span><span th:text="${meetup['food']}">Unavailable</span>
+          <span class="h6">After: </span><span th:text="${meetup['after']}">Unavailable</span>
+        </div>
+      </details>
     </th:block>
   </form>
+  <footer th:insert="fragments/adminFragments.html :: footer"></footer>
 </body>
 </html>
