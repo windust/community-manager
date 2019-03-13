@@ -38,18 +38,6 @@ summary, .card-header {
   grid-template-columns: 5% 25% 25% 25% 20%;
 }
 
-.first-row{
-  visibility: hidden;
-  padding-top: 1em;
-  &:hover {
-    background-color: transparent;
-  }
-}
-
-.first-row span{
-  visibility: visible;
-}
-
 .card-header {
   padding: 10vw;
   display: grid;
@@ -64,14 +52,30 @@ summary, .card-header {
 .card {
   margin: 0 10vw;
   padding: $details_padding;
-  border: solid theme-color('accent','light');
+  border: solid theme-color('primary','dark') 1px;
+  border-bottom: transparent;
   color: black;
   &:hover {
     background-color: lighten(theme-color('accent', 'light'), 20%);
-  }
-  &:hover {
-    border-color: theme-color('primary', 'light');
+    border-bottom: solid theme-color('primary','light') 1px;
     color: theme-color('primary', 'light');
   }
+}
+
+.card:last-child{
+  border-bottom: solid theme-color('primary','dark') 1px;
+}
+
+.first-row{
+  visibility: hidden;
+  padding-top: 1em;
+  &:hover {
+    background-color: transparent;
+    color: black;
+  }
+}
+
+.first-row span{
+  visibility: visible;
 }
 
