@@ -83,15 +83,18 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public boolean setVenueForMeetup(String venueName, String requestedDate){
+    public boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin){
         meetupCollection.fetchFromDataStorage();
         
         if(requestedDate.equals("notHosting")){
             return venueCollection.updateResponse(venueName, "no");
         }
-        else{
+        else if(requestedDate.equals(dateRequestedByAdmin)){
             return venueCollection.updateResponse(venueName, "yes") &&
                 meetupCollection.setVenueForMeetup(venueName, requestedDate);
+        }
+        else{
+            return meetupCollection.setVenueForMeetup(venueName, requestedDate);
         }
     }
 
