@@ -59,8 +59,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 */
 	public boolean setVenueForMeetup(String venueName, String hostingDate) {
 		for(Meetup meetup : getEntitiesValues()) {
-			//TODO write tests to confirm that venue won't be set if meetup already has a venue
-			if(meetup.getDate().equals(hostingDate) && meetup.getVenue().isEmpty()) {
+			if(meetup.getDate().equals(hostingDate) && (meetup.getVenue() == null || meetup.getVenue().isBlank())) {
 				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
 			}
 		}
