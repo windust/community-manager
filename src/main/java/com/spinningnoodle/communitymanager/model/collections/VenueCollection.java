@@ -101,22 +101,6 @@ public class VenueCollection extends TokenCollection<Venue> {
 	}
 
 	/**
-	 * If the current token is not in a valid format a new token will be generated.
-	 *
-	 * @param primaryKey The venue's id to pull from
-	 * @return token - token of this entity
-	 */
-	public String getOrGenerateToken(int primaryKey){
-		try {
-			Venue venue = this.getByPrimaryKey(primaryKey);
-			return venue.getOrGenerateToken();
-		} catch (EntityNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
 	 * gets a venue based on its primary key
 	 *
 	 * @param key the primary key to search by
