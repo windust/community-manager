@@ -124,7 +124,7 @@ public class GoogleSheetsManager implements DataManager {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
             setRequestedDate(venue.getName(), date);
-            return retrieveToken(primaryKey);
+            return retrieveToken(key);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -136,7 +136,13 @@ public class GoogleSheetsManager implements DataManager {
         venueCollection.updateRequestedDate(venueName, date);
     }
     
-    private String retrieveToken(String primaryKey){
-        return venueCollection.getOrGenerateToken(Integer.parseInt(primaryKey));
+    private String retrieveToken(int primaryKey){
+        try {
+            Venue venue = venueCollection.getByPrimaryKey(primaryKey);
+            return venue.getOrGenerateToken();
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

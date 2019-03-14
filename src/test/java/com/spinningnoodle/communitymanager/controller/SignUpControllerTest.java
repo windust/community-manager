@@ -14,6 +14,8 @@ package com.spinningnoodle.communitymanager.controller;
 import static org.mockito.Mockito.mock;
 
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -27,9 +29,12 @@ public class SignUpControllerTest {
     
     private final String validToken = "123N";
     
+    //objects to test
     private SignUpController signUpController;
     private GoogleSheetsManager model;
     private HttpSession session;
+    
+    //data to compare to
 
     
     @BeforeEach
@@ -107,7 +112,55 @@ public class SignUpControllerTest {
         Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
     }
     
-    private List<Map<String, String>> createMeetupsAndVenueWithToken(){
-        return null;
+    private List<Map<String, String>> createMeetupsAndVenueWithToken(String response){
+        List<Map<String, String>> meetupsWithVenue = new ArrayList<>();
+        
+        meetupsWithVenue.addAll(createMeetups());
+        meetupsWithVenue.add(0, createPartialVenue(response));
+        
+        return meetupsWithVenue;
+    }
+    
+    private Map<String, String> createPartialVenue(String response){
+        Map<String, String> partialVenue = new HashMap<>();
+    
+        partialVenue.put("name","Excellent");
+        partialVenue.put("requestedHostingDate", "01/14/2019");
+        partialVenue.put("response", response);
+        
+        return partialVenue;
+    }
+    
+    private List<Map<String, String>> createMeetups(){
+        List<Map<String, String>> meetupData = new ArrayList<>();
+        Map<String, String> row = new HashMap<>();
+        
+        row.put("primaryKey", "1");
+        row.put("date","01/14/2019");
+        row.put("speaker","Purple");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Excellent");
+        meetupData.add(row);
+        
+        row = new HashMap<>();
+        row.put("primaryKey", "2");
+        row.put("date","02/19/2019");
+        row.put("speaker","Yellow");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", "Amazing");
+        meetupData.add(row);
+        
+        row = new HashMap<>();
+        row.put("primaryKey", "3");
+        row.put("date","03/22/2019");
+        row.put("speaker","John Doe");
+        row.put("topic", "How to do Stuff");
+        row.put("description", "nailing stuff");
+        row.put("venue", null);
+        meetupData.add(row);
+        
+        return meetupData;
     }
 }
