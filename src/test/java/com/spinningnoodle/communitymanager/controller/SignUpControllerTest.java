@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.controller;
  */
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class SignUpControllerTest {
     private HttpSession session;
     
     //data to compare to
+    List<Map<String, String>> expectedMeetupsWithVenue;
 
     
     @BeforeEach
@@ -43,11 +45,14 @@ public class SignUpControllerTest {
         model = mock(GoogleSheetsManager.class);
         signUpController.model = model;
         session = new MockHttpSession();
+        
+        expectedMeetupsWithVenue = createMeetupsAndVenueWithToken("yes");
     }
     
     @Test
     @DisplayName("venue route renders venue page given a valid token")
     public void venueReturnsDatesPageWithToken() {
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
         Assertions.assertEquals("available_dates", signUpController.venue(validToken, session));
     }
     
