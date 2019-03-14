@@ -90,4 +90,14 @@ class VenueCollectionTest {
     void whenAVenueNameIsIncorrectWhenSettingTheResponseThenFalseIsReturned() {
 	  assertFalse(venueCollection.updateResponse("DoesNotExist", "yes"));
     }
+
+  @Test
+  void whenAVenueRequestsADateThenItReturnsTrue() {
+    assertTrue(venueCollection.updateRequestedDate("Excellent", "01/01/1970"));
+  }
+
+  @Test
+  void whenAVenueWithInvalidNameRequestsADateThenItReturnsTrue() {
+    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", "01/01/1970"));
+  }
 }
