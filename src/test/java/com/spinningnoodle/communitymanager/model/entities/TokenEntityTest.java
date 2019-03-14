@@ -75,11 +75,6 @@ class TokenEntityTest {
     }
 
     @Test
-    void invalidTokenIsIllegalArgument() {
-        assertThrows(IllegalArgumentException.class,  () -> tokenEntity.setToken("invalid token"));
-    }
-
-    @Test
     void whitespaceInNameIsRemovedInToken() {
         tokenEntity.setName("two words");
         tokenEntity.setToken(tokenEntity.generateNewToken());

@@ -52,7 +52,7 @@ public abstract class TokenEntity extends Entity {
      *
      * @param token The token of this entity
      */
-    protected void setToken(String token) throws IllegalArgumentException {
+    protected void setToken(String token) {
         this.token = token;
 
         this.notifyObservers();
