@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,9 +169,32 @@ public class modelIntegrationTest {
     The following are tests related to the Upcoming Dates Page.
      */
     @Test
-    @DisplayName("Model return list of meetups, when I get All Meetups.")
+    @DisplayName("Model return correct length of list of meetups, when I get All Meetups.")
+    void whenIGetAllMeetupsIGetTheExpectedLengthOfListOfMeetups(){
+        assertEquals(expected.size(),testManager.getAllMeetups().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of meetups, when I get All Meetups.")
     void whenIGetAllMeetupsIGetTheExpectedListOfMeetups(){
-        assertEquals(expected,testManager.getAllMeetups());
+        assertTrue(testManager.getAllMeetups().get(0).entrySet().containsAll(expected.get(0).entrySet()) );
+    }
+
+    @Test
+    @DisplayName("Model returns correct dates of meetups, when I get All Meetups.")
+    void whenIGetAllMeetupsIGetTheExpectedDatesOfMeetups(){
+        ArrayList<String> expectedDates = new ArrayList<>();
+        ArrayList<String> actualDates = new ArrayList<>();
+        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getAllMeetups();
+        for(int i =0; i < expected.size(); i++) {
+            expectedDates.add(expected.get(i).get("date"));
+        }
+        for(int i =0; i < actualAvailableDatesMeetups.size(); i++) {
+            actualDates.add(actualAvailableDatesMeetups.get(i).get("date"));
+        }
+        Collections.sort(expectedDates);
+        Collections.sort(actualDates);
+        assertEquals(expectedDates, actualDates);
     }
 
     @Test
