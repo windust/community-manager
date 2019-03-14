@@ -42,9 +42,10 @@ class VenueCollectionTest {
 	@Test
 	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
 		Venue testVenue = new Venue();
+		int initialSize = venueCollection.size();
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(1, venueCollection.size());
+		assertEquals(initialSize + 1, venueCollection.size());
 	}
 
 	@Test
