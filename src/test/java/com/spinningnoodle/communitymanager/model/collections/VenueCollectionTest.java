@@ -14,10 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,11 +29,11 @@ class VenueCollectionTest {
 
 	@BeforeEach
 	void setUp() {
-		venueCollection.clear();
+		venueCollection.fetchFromDataStorage();
 	}
 
 	@Test
-	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
+	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() {
 		venueCollection.fetchFromDataStorage();
 
 		assertEquals(dummyStorage.readAll("venues").size(), venueCollection.size());
@@ -63,12 +62,6 @@ class VenueCollectionTest {
 
 	@Test
 	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() {
-		//TODO Rewrite test. get all fetches from DataStorage
-//		int collectionSize = 5;
-//
-//		IntStream.range(0, collectionSize).mapToObj(i -> new Venue())
-//			.forEach(venueCollection::addToCollection);
-
 		int collectionSize = 2;
 		assertEquals(collectionSize, venueCollection.getAll().size());
 	}
