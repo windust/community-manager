@@ -112,9 +112,9 @@ public class AdminController {
     @PostMapping("/meetup")
     public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
         throws InvalidUserException {
-//        if(!loggedIn) {
-//            throw new InvalidUserException();
-//        }
+        if(!loggedIn) {
+            throw new InvalidUserException();
+        }
 
         //TODO consider having this done in the model somewhere
         List<Map<String, String>> meetups = model.getAllMeetups();
@@ -141,20 +141,14 @@ public class AdminController {
     @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getToken(@RequestBody String params) throws InvalidUserException {
-//        if(!loggedIn){
-//            throw new InvalidUserException();
-//        }
-//        else{
+        if(!loggedIn){
+            throw new InvalidUserException();
+        }
+        else{
             String[] args = params.split("&");
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
             return ((GoogleSheetsManager) model).requestHost(venueKey, date);
-//        }
+        }
     }
-    
-    //TODO create google sheets page
-//    @GetMapping("/googleSheets")
-//    public String googleSheets(@RequestParam(name = "sheet", required = false, defaultValue = "all") String sheet){
-//        return "login.html";
-//    }
 }
