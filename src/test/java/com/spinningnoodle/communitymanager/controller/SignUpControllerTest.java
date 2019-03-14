@@ -36,7 +36,7 @@ public class SignUpControllerTest {
     private HttpSession session;
     
     //data to compare to
-    List<Map<String, String>> expectedMeetupsWithVenue;
+    private List<Map<String, String>> expectedMeetupsWithVenue;
 
     
     @BeforeEach
@@ -57,18 +57,17 @@ public class SignUpControllerTest {
     }
     
     @Test
+    @DisplayName("venue route throws IllegalArgumentException if given an invalid token")
     public void venueThrowsExceptionWithInvalidToken(){
+        when(model.getMeetupsByVenueToken("invalid")).thenThrow(new IllegalArgumentException("Invalid Token"));
         Assertions.assertThrows(
             IllegalArgumentException.class, () -> signUpController.venue("invalid", session));
     }
     
     @Test
-    public void venueThrowsExceptionWithNoToken(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> signUpController.venue("", session));
-    }
-    
-    @Test
+    @DisplayName("venue route sets hosting message")
     public void venueSetsHostingMessageInSession(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
         signUpController.venue(validToken, session);
         
         Assertions.assertEquals(signUpController.hostingMessage, session.getAttribute("hostingMessage"));
@@ -86,35 +85,6 @@ public class SignUpControllerTest {
         signUpController.venue(validToken, session);
         
         Assertions.assertEquals(validToken, signUpController.currentToken);
-    }
-    
-    @Test
-    public void messageForWhenVenueHostsAvailableMeetup(){
-        String availableDate = "03/22/2019";
-        signUpController.venue(validToken, session);
-        signUpController.venueSignUp(availableDate);
-        signUpController.venue(validToken, session);
-        
-        Assertions.assertEquals("Thank you for hosting on " + availableDate + ". \nContact Freddy to cancel.", session.getAttribute("hostingMessage"));
-    }
-    
-    @Test
-    public void messageForWhenVenueHostsUnavailableMeetup() {
-        String unavailableDate = "02/19/2019";
-        signUpController.venue(validToken, session);
-        signUpController.venueSignUp(unavailableDate);
-        signUpController.venue(validToken, session);
-        
-        Assertions.assertEquals("Thank you for volunteering but this date already has a host", session.getAttribute("hostingMessage"));
-    }
-    
-    @Test
-    public void messageForWhenVenueDeclinesHostsMeetup(){
-        signUpController.venue(validToken, session);
-        signUpController.venueSignUp("notHosting");
-        signUpController.venue(validToken, session);
-        
-        Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
     }
     
     private List<Map<String, String>> createMeetupsAndVenueWithToken(String response){
