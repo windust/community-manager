@@ -124,12 +124,10 @@ public class modelIntegrationTest {
         assertEquals(expectedAvailableDatesMeetups.get(1).get("primaryKey"),actualAvailableDatesMeetups.get(1).get("primaryKey"));
     }
 
-    //We need to figure out what should happen here. Should it throw or ???
     @Test
-    @Disabled
-    @DisplayName("Throws error, When I get meetups by invalid token.")
+    @DisplayName("Throws IllegalArgumentException, When I get meetups by invalid token.")
     void whenIgetMeetupByVenueTokenWithInvalidTokenThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             testManager.getMeetupsByVenueToken("455");
         });
     }
