@@ -11,10 +11,15 @@ package com.spinningnoodle.communitymanager.controller;
  *  END OF LICENSE INFORMATION
  */
 
-import com.spinningnoodle.communitymanager.model.DummyGoogleSheetsManager;
+import static org.mockito.Mockito.mock;
+
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 
@@ -23,17 +28,20 @@ public class SignUpControllerTest {
     private final String validToken = "123N";
     
     private SignUpController signUpController;
+    private GoogleSheetsManager model;
     private HttpSession session;
 
     
     @BeforeEach
     public void initializeController(){
         signUpController = new SignUpController();
-        signUpController.model = new DummyGoogleSheetsManager();
+        model = mock(GoogleSheetsManager.class);
+        signUpController.model = model;
         session = new MockHttpSession();
     }
     
     @Test
+    @DisplayName("venue route renders venue page given a valid token")
     public void venueReturnsDatesPageWithToken() {
         Assertions.assertEquals("available_dates", signUpController.venue(validToken, session));
     }
@@ -97,5 +105,9 @@ public class SignUpControllerTest {
         signUpController.venue(validToken, session);
         
         Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
+    }
+    
+    private List<Map<String, String>> createMeetupsAndVenueWithToken(){
+        return null;
     }
 }

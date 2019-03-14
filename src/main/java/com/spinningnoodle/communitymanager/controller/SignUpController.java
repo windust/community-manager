@@ -45,11 +45,6 @@ public class SignUpController {
     boolean alert = false;
     boolean hostingRequestedDate = false;
     
-//    public SignUpController(){
-//        model = new GoogleSheetsManager();
-//        requestedDateAvailable = true;
-//    }
-    
     //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
