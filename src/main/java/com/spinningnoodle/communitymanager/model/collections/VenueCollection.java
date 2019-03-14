@@ -49,7 +49,13 @@ public class VenueCollection extends TokenCollection<Venue> {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Get a venue from this collection based on its token as a Map of attributes
+	 *
+	 * @param venueToken the token to match
+	 * @return A venue represented with a map of attributes
+	 */
 	public Map<String, String> getVenueFromToken(String venueToken){
 		Venue venue = this.getEntityByToken(venueToken);
 		Map<String, String> venueInfo = new HashMap<>();
@@ -59,7 +65,14 @@ public class VenueCollection extends TokenCollection<Venue> {
 		
 		return venueInfo;
 	}
-	
+
+	/**
+	 * Update a venues response to hosting
+	 *
+	 * @param venueName The name of the venue which responded
+	 * @param response The venues response
+	 * @return If the dataStorage successfully updated
+	 */
 	public boolean updateResponse(String venueName, String response){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
@@ -69,7 +82,14 @@ public class VenueCollection extends TokenCollection<Venue> {
 		
 		return false;
 	}
-	
+
+	/**
+	 * Update the date the venue has requested to host
+	 *
+	 * @param venueName The venue which has requested a date
+	 * @param date The date the venue requested
+	 * @return If the dataStorage was successfully updated
+	 */
 	public boolean updateRequestedDate(String venueName, String date){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
@@ -79,7 +99,13 @@ public class VenueCollection extends TokenCollection<Venue> {
 		
 		return false;
 	}
-	
+
+	/**
+	 * If the current token is not in a valid format a new token will be generated.
+	 *
+	 * @param primaryKey The venue's id to pull from
+	 * @return token - token of this entity
+	 */
 	public String getOrGenerateToken(int primaryKey){
 		try {
 			Venue venue = this.getByPrimaryKey(primaryKey);
@@ -89,7 +115,14 @@ public class VenueCollection extends TokenCollection<Venue> {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * gets a venue based on its primary key
+	 *
+	 * @param key the primary key to search by
+	 * @return a Venue object
+	 * @throws EntityNotFoundException
+	 */
 	public Venue getByPrimaryKey(int key) throws EntityNotFoundException{
 		for(Venue venue : getEntitiesValues()){
 			if(venue.getPrimaryKey() == key){
