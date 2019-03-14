@@ -11,9 +11,11 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
@@ -77,5 +79,15 @@ class VenueCollectionTest {
     @Test
     void whenIAttemptToFetchVenueByInvalidTokenInvalidTokenException() {
 	  assertThrows(IllegalArgumentException.class, () -> venueCollection.getVenueFromToken("invalid"));
+    }
+
+    @Test
+    void whenAVenuesResponseIsSetThenItReturnsTrue() {
+	  assertTrue(venueCollection.updateResponse("Excellent", "yes"));
+    }
+
+    @Test
+    void whenAVenueNameIsIncorrectWhenSettingTheResponseThenFalseIsReturned() {
+	  assertFalse(venueCollection.updateResponse("DoesNotExist", "yes"));
     }
 }
