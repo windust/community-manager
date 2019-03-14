@@ -100,4 +100,14 @@ class VenueCollectionTest {
   void whenAVenueWithInvalidNameRequestsADateThenItReturnsTrue() {
     assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", "01/01/1970"));
   }
+
+	@Test
+	void whenAVenueIsLookedUpByPrimaryKeyItIsReturned() throws EntityNotFoundException {
+		assertEquals(1, venueCollection.getByPrimaryKey(1).getPrimaryKey());
+	}
+
+	@Test
+	void whenAVenueIsLookedUpByPrimaryKeyWhichDoesNotExistExceptionIsThrown() {
+		assertThrows(EntityNotFoundException.class, () -> venueCollection.getByPrimaryKey(-1));
+	}
 }
