@@ -1,9 +1,12 @@
 package com.spinningnoodle.communitymanager.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -71,19 +74,22 @@ public class modelIntegrationTest {
 
         testManager = new GoogleSheetsManager();
         testManager.dataStorage = testStorage;
+        testManager.meetupCollection = new MeetupCollection(testStorage);
+        testManager.venueCollection = new VenueCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
 //        resetDatastorage();
     }
 
     @Test
-    @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, and requested date.")
+    @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, requested date, and response.")
     void whenIgetMeetupByVenueTokenIGetVenueNameDateRequestedAndAllMeetups(){
         List<Map<String,String>> expectedAvailableDatesMeetups = new ArrayList<>();
 
         Map<String, String> row = new HashMap<>();
         row.put("name", "Excellent");
         row.put("requestedDate", "01/14/2019");
+        row.put("response","yes");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
@@ -92,6 +98,7 @@ public class modelIntegrationTest {
         row.put("date", "01/14/2019");
         row.put("topic","100");
         row.put("primaryKey","1");
+        row.put("description","Freddy");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
@@ -100,9 +107,19 @@ public class modelIntegrationTest {
         row.put("date", "01/15/2019");
         row.put("topic","150");
         row.put("primaryKey","2");
+        row.put("description", "Nimret");
         expectedAvailableDatesMeetups.add(row);
 
-        assertEquals(expectedAvailableDatesMeetups,testManager.getMeetupsByVenueToken("123N"));
+        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getMeetupsByVenueToken("123N");
+        assertEquals(expectedAvailableDatesMeetups.get(0),actualAvailableDatesMeetups.get(0));
+
+        assertTrue(actualAvailableDatesMeetups.get(2).containsKey("venue"));
+
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("venue"),actualAvailableDatesMeetups.get(1).get("venue"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("speaker"),actualAvailableDatesMeetups.get(1).get("speaker"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("date"),actualAvailableDatesMeetups.get(1).get("date"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("topic"),actualAvailableDatesMeetups.get(1).get("topic"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("primaryKey"),actualAvailableDatesMeetups.get(1).get("primaryKey"));
     }
 
     //We need to figure out what should happen here. Should it throw or ???
@@ -184,6 +201,7 @@ public class modelIntegrationTest {
     @BeforeEach
     @AfterEach
     void resetDatastorage(){
+
         testManager.setVenueForMeetup("", "01/15/2019");
         testManager.setVenueForMeetup("Excellent", "01/14/2019");
     }
