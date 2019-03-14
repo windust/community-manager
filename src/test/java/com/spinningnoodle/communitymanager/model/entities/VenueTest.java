@@ -73,7 +73,7 @@ class VenueTest {
 
     @Test
     void whenIHaveAVenueICanGetItsVenueId() {
-        assertTrue(venue.getEntityId() >= 1);
+        assertTrue(venue.getEntityId() >= 0);
     }
 
     @Test
