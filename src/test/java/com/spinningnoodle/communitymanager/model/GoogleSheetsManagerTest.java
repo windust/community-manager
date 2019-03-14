@@ -73,7 +73,7 @@ public class GoogleSheetsManagerTest {
     void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         int previousCount = dummy.getTimesSetVenueCalled();
-        testManager.setVenueForMeetup("NewName", "01/14/2019");
+        testManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019");
 
         int newCount = dummy.getTimesSetVenueCalled();
         System.out.println(previousCount + ":" + newCount);
@@ -83,7 +83,7 @@ public class GoogleSheetsManagerTest {
     @Test
     void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
         boolean expected = testManager.meetupCollection.setVenueForMeetup("NewName", "01/14/2019");
-        assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019"));
+        assertEquals(expected, testManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019"));
     }
 
     @Test

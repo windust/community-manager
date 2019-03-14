@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
@@ -135,34 +136,27 @@ public class modelIntegrationTest {
 
     //Expect these two tests to change when we update the available dates page to accept more than true or false.
     @Test
-    @Disabled
     @DisplayName("When I set the venue for a hosted event, the venue host is unchanged.")
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
-       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019"));
+       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019"));
     }
 
     @Test
     @DisplayName("When I set the venue for an unhosted event, the venue host is filled.")
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
-        assertEquals(true,testManager.setVenueForMeetup("NewName", "01/15/2019"));
+        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2019","01/14/2019"));
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, when I attempt to set venue to an invalid venue")
+    @DisplayName("Model returns false, when I attempt to set venue to an invalid venue")
     void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
-            testManager.setVenueForMeetup("NeverExisted", "01/14/2019");
-        });
+        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2019","01/14/2019"));
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, when I attempt to set venue for invalid event date.")
+    @DisplayName("Model returns false, when I attempt to set venue for invalid event date.")
     void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
-            testManager.setVenueForMeetup("Excellent", "01/24/2019");
-        });
+        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019","01/14/2019"));
     }
 
     /*
@@ -226,8 +220,9 @@ public class modelIntegrationTest {
     @AfterEach
     void resetDatastorage(){
 
-        testManager.setVenueForMeetup("", "01/15/2019");
-        testManager.setVenueForMeetup("Excellent", "01/14/2019");
+        testStorage.update("meetups","2","venue","");
+        testStorage.update("meetups","1","venue","Excellent");
+
     }
 
 }

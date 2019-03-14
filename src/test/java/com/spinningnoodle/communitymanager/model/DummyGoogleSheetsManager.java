@@ -48,7 +48,7 @@ public class DummyGoogleSheetsManager extends GoogleSheetsManager {
     }
     
     @Override
-    public boolean setVenueForMeetup(String venueName, String date){
+    public boolean setVenueForMeetup(String venueName, String date, String requestedDate){
         return true;
     }
     
