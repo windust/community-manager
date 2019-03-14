@@ -9,7 +9,7 @@ public interface DataManager {
     
     List<Map<String,String>> getMeetupsByVenueToken(String venueToken);
     
-    boolean setVenueForMeetup(String venueName, String requestedDate);
+    boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin);
     
     List<Map<String, String>> getAllVenues();
 }
