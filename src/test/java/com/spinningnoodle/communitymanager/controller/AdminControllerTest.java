@@ -38,6 +38,7 @@ public class AdminControllerTest {
     
     //data to compare to
     private List<Map<String, String>> expectedMeetups;
+    private List<Map<String, String>> expectedVenues;
     
     @BeforeEach
     public void initializeController(){
@@ -47,6 +48,7 @@ public class AdminControllerTest {
         session = new MockHttpSession();
     
         expectedMeetups = createMeetups();
+        expectedVenues = createVenues();
     }
     
     //TODO replace with oauth tests once oauth is implemented
@@ -150,6 +152,17 @@ public class AdminControllerTest {
         adminController.meetup("2", session);
         
         Assertions.assertEquals(expected, session.getAttribute("meetup"));
+    }
+    
+    @Test
+    @DisplayName("meetup route gets and displays all venues")
+    public void meetupGetsVenues() throws InvalidUserException {
+        when(model.getAllVenues()).thenReturn(expectedVenues);
+        
+        adminController.loggedIn = true;
+        adminController.meetup("1", session);
+        
+        Assertions.assertEquals(expectedVenues, session.getAttribute("venues"));
     }
     
     @Test
