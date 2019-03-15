@@ -137,7 +137,7 @@ public class AdminController {
      * logged in.
      */
     //TODO return token from DB when logged in
-    @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(path = "/getToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getToken(@RequestParam(name = "venueKey") String venueKey, @RequestParam(name = "date") String date) throws InvalidUserException {
 //        if(!loggedIn){

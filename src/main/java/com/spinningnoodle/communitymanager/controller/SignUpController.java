@@ -38,7 +38,6 @@ public class SignUpController {
     String currentToken;
     String venueName;
     String requestedDate;
-    String response;
     String hostingMessage = "";
     String alertMessage = "";
     boolean requestedDateAvailable = true;
@@ -62,12 +61,14 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
+            String response;
             List<Map<String, String>> meetups;
             meetups = model.getMeetupsByVenueToken(token);
+            
             currentToken = token;
             this.venueName = meetups.get(0).get("name");
             this.requestedDate = meetups.get(0).get("requestedDate");
-            this.response = meetups.get(0).get("response").toLowerCase();
+            response = meetups.get(0).get("response").toLowerCase();
             meetups.remove(0);
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
@@ -76,7 +77,7 @@ public class SignUpController {
                 setHostingRequestedDate(meetups);
             }
             
-            this.hostingMessage = getHostingMessage();
+            this.hostingMessage = getHostingMessage(response);
             
             session.setAttribute("meetups", meetups);
             session.setAttribute("venueName", this.venueName);
@@ -94,7 +95,7 @@ public class SignUpController {
         
     }
     
-    private String getHostingMessage(){
+    private String getHostingMessage(String response){
         if(requestedDateAvailable && response.equals("")){
             return "Can you host on " + requestedDate + "?";
         }
@@ -112,8 +113,7 @@ public class SignUpController {
             //from meetup and then changes venue.response to reflect this
             boolean success = model.setVenueForMeetup(venueName, "notHosting");
             if(success){
-                response = "no";
-                return getHostingMessage();
+                return getHostingMessage("no");
             }
             else{
                 throw new IllegalArgumentException("Unable to update response");
