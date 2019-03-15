@@ -31,7 +31,7 @@ public abstract class TokenEntity extends Entity {
      * @return token - token of this entity
      */
     public String getOrGenerateToken() {
-        if(isTokenValid(token)) {
+        if(!isTokenValid(token)) {
             setToken(generateNewToken());
         }
 
