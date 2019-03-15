@@ -28,6 +28,7 @@ public class DummyGoogleSheetsManager extends GoogleSheetsManager {
             System.out.println("Data Storage Error");
         }
         meetupCollection = new DummyMeetupCollection(dataStorage);
+        venueCollection = new VenueCollection(dataStorage);
     }
     
     @Override

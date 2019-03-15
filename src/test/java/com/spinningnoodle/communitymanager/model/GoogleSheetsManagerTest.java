@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -35,42 +36,15 @@ public class GoogleSheetsManagerTest {
 
     private static GoogleSheetsManager testManager;
     private static DataStorage testStorage;
-    private static String testID;
-    private static List<Map<String, String>> availableDatesMeetups;
 
     @BeforeAll
-    public static void initializeDataBase() throws IOException, GeneralSecurityException {
-        Scanner testIDFile = new Scanner(new File("config/SpreadSheetID.txt"));
-        testID = testIDFile.next();
-
+    static void setup() throws GeneralSecurityException {
         testManager = new DummyGoogleSheetsManager();
         testStorage = new DummyStorage("123");
-        testManager.dataStorage = new DummyStorage("123");
-        testManager.meetupCollection = new DummyMeetupCollection(testManager.dataStorage);
-
-        availableDatesMeetups = new ArrayList<>();
-
-        Map<String, String> row = new HashMap<>();
-        row.put("name", "Excellent");
-        row.put("requestedDate", "01/14/2019");
-        availableDatesMeetups.add(row);
-
-        row = new HashMap<>();
-        row.put("venue", "Excellent");
-        row.put("speaker", "Freddy ");
-        row.put("date", "01/14/2019");
-        availableDatesMeetups.add(row);
-
-        row = new HashMap<>();
-        row.put("venue", "Amazing");
-        row.put("speaker", "Nimret ");
-        row.put("date", "01/15/2019");
-        availableDatesMeetups.add(row);
     }
 
-    //TODO test needs to be rewritten, currently causes other tests to fail
     @Test
-    @Disabled
+    @Disabled("test needs to be rewritten, currently causes other tests to fail")
     void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
         DummyMeetupCollection dummy = (DummyMeetupCollection) testManager.meetupCollection;
         int previousCount = dummy.getTimesSetVenueCalled();
