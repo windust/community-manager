@@ -12,15 +12,10 @@
 
 @import "../abstracts/colors";
 
-.banner {
-  width: 100%;
-  padding: 1em;
+footer {
+  margin: 1% 10%;
+  padding: 0.1em;
   text-align: center;
   background-color: theme-color('primary', 'dark');
-  border: 2px solid theme-color('base', 'dark');
   color: theme-color('base', 'light');
-}
-
-.page_name {
-  padding-bottom: 1em;
 }

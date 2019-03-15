@@ -10,11 +10,10 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,10 +45,6 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 		}
 	}
 
-	public boolean updateMeetupHost(Meetup meetup, String nameOfVenue){
-		return true;
-	}
-
 	@Override
 	public void update(Meetup observable) {
 
@@ -64,35 +59,11 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 */
 	public boolean setVenueForMeetup(String venueName, String hostingDate) {
 		for(Meetup meetup : getEntitiesValues()) {
-			if(meetup.getDate().equals(hostingDate)) {
+			//TODO write tests to confirm that venue won't be set if meetup already has a venue
+			if(meetup.getDate().equals(hostingDate) && meetup.getVenue().isEmpty()) {
 				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @param token the token to search
-	 * @return a lost of meetups
-	 */
-	public Map<String, String> getAllMeetupsForToken(String token) {
-		this.fetchFromDataStorage();
-
-		return isTokenValid(token);
-	}
-
-	// is valid token, get name of venue & requested date
-	// is value 'excellent' not valid
-	private Map<String, String> isTokenValid(String token) {
-		// create venue collection with this datastorage
-		VenueCollection venueCollection = new VenueCollection(getDataStorage());
-//		venueCollection.fetchFromDataStorage();
-
-		Venue venue = venueCollection.getEntityByToken(token);
-		Map<String, String> venueInfo = new HashMap<>();
-		venueInfo.put("name", venue.getName());
-		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
-
-		return venueInfo;
 	}
 }

@@ -10,7 +10,7 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js">
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,35 +23,39 @@
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
 
     <article class="meetup-details">
-      <p class="meetup-data">Date: 12/12/12</p>
-      <p class="meetup-data">Topic: Deflating Ball</p>
-      <p class="meetup-data">Venue: Foxborough Stadium</p>
-      <p class="meetup-data">Speaker: Tom Brady</p>
-      <p class="meetup-data">Food: Pig Skin</p>
-      <p class="meetup-data">After Event: Apologizing Ceremony</p>
-      <p class="meetup-data">Description: Sorry</p>
+      <p class="meetup-data"><span class="h6">Date: </span><span id="date" th:text="${session.meetup['date']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Topic: </span><span th:text="${session.meetup['topic']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Venue: </span><span th:text="${session.meetup['venue']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Speaker: </span><span th:text="${session.meetup['speaker']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Food: </span><span th:text="${session.meetup['food']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">After Event: </span><span th:text="${session.meetup['after']}">Error</span></p>
+      <p class="meetup-data"><span class="h6">Description: </span><span th:text="${session.meetup['description']}">Error</span></p>
     </article>
 
     <menu class="tab">
-      <li class="tablinks active" onclick="openTab(event, 'Venue')" selected>Venue</li>
-      <li class="tablinks" onclick="openTab(event, 'Speaker')">Speaker</li>
-      <li class="tablinks" onclick="openTab(event, 'Food')">Food</li>
-      <li class="tablinks" onclick="openTab(event, 'After')">After</li>
+      <li class="tablinks active h6" onclick="openTab(event, 'Venue')" selected>Venue</li>
+      <li class="tablinks h6" onclick="openTab(event, 'Speaker')">Speaker</li>
+      <li class="tablinks h6" onclick="openTab(event, 'Food')">Food</li>
+      <li class="tablinks h6" onclick="openTab(event, 'After')">After</li>
     </menu>
 
     <article id="Venue" class="tabcontent table" style="display: block;">
-        <section class="tr">
-          <p>Expedia</p>
-          <div class="btn_container">
-            <a rel="request-host" class="btn_primary">Request Host</a>
-          </div>
-        </section>
       <section class="tr">
-        <p>Code Fellows</p>
+        <p class="meetup-venue h6"><span >Venue Name</span><span >Response</span></p>
         <div class="btn_container">
-          <a rel="request-host" class="btn_primary">Request Host</a>
         </div>
       </section>
+      <th:block th:each="venue : ${session.venues}">
+        <section class="tr">
+          <p class="meetup-venue">
+            <span th:text="${venue['venueName']}">No Venue Name</span>
+            <span th:if="${session.meetup['date'].equals(venue['requestedDate'])}"
+                  th:text="${venue['response']}">Response</span></p>
+          <div class="btn_container">
+            <a rel="request-host" class="btn_primary" th:data-venueIndentifier="${venue['primaryKey']}">Request Host</a>
+          </div>
+        </section>
+      </th:block>
     </article>
 
     <div id="Speaker" class="tabcontent">

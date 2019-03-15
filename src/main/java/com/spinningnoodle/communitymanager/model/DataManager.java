@@ -7,7 +7,7 @@ public interface DataManager {
     
     List<Map<String, String>> getAllMeetups();
     
-    List<Map<String,String>> getMeetupByVenueToken(String venueToken);
+    List<Map<String,String>> getMeetupsByVenueToken(String venueToken);
     
     boolean setVenueForMeetup(String venueName, String requestedDate);
     

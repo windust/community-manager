@@ -32,16 +32,21 @@ function openTab(evt, category) {
 }
 
 function getTokenURL(element) {
-  var ajax = new XMLHttpRequest();
-  //TODO find out why 0 is returned before actual content
-  ajax.onreadystatechange = function() {
-    if (this.status == 200) {
-      element.parentElement.innerHTML = "<a href=\"/venue?token=123N\">http://localhost:8080/venue?token=" + this.responseText + "Expedia-valid</a>";
-    }
-    else{
-      alert(this.status)
+  var xhr = new XMLHttpRequest();
+  var primaryKey = element.getAttribute('data-venueIndentifier');
+  var requestedDate = document.getElementById("date").innerHTML;
+
+  xhr.open('POST', "/getToken?venueKey=" + primaryKey + "&" + "date=" + requestedDate, true);
+
+  xhr.onload = function() {
+    if(this.status === 200) {
+      element.parentElement.innerHTML =
+          "<a href=\"/venue?token=" + this.responseText +
+          "\">http://localhost:8080/venue?token=" + this.responseText + "</a>";
+    } else {
+      alert('Error fetching token URL. STATUS: ' + this.status);
     }
   };
-  ajax.open("POST", "/getToken", true);
-  ajax.send();
+
+  xhr.send("venueKey=" + primaryKey + "&" + "date=" + requestedDate);
 }

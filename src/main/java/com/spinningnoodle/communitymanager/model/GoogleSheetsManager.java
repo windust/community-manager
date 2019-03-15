@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model;
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
@@ -50,6 +51,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Map<String, String>> getAllMeetups() {
+        meetupCollection.fetchFromDataStorage();
         List<Meetup> meetups = meetupCollection.getAll();
 
         List<Map<String, String>> meetupList = new ArrayList<>();
@@ -61,6 +63,7 @@ public class GoogleSheetsManager implements DataManager {
             attributes.put("topic", meetup.getTopic());
             attributes.put("speaker", meetup.getSpeaker());
             attributes.put("venue", meetup.getVenue());
+            attributes.put("description", meetup.getDescription());
             attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
 
             meetupList.add(attributes);
@@ -70,20 +73,31 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String,String>> getMeetupByVenueToken(String venueToken){
+    public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
+        meetupCollection.fetchFromDataStorage();
+        venueCollection.fetchFromDataStorage();
         List<Map<String, String>> meetups;
         meetups = getAllMeetups();
-        meetups.add(0, meetupCollection.getAllMeetupsForToken(venueToken));
+        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
         return meetups;
     }
 
     @Override
     public boolean setVenueForMeetup(String venueName, String requestedDate){
-        return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+        meetupCollection.fetchFromDataStorage();
+        
+        if(requestedDate.equals("notHosting")){
+            return venueCollection.updateResponse(venueName, "no");
+        }
+        else{
+            return venueCollection.updateResponse(venueName, "yes") &&
+                meetupCollection.setVenueForMeetup(venueName, requestedDate);
+        }
     }
 
     @Override
     public List<Map<String, String>> getAllVenues() {
+        venueCollection.fetchFromDataStorage();
         List<Venue> venues = venueCollection.getAll();
         List<Map<String, String>> returnValue  = new ArrayList<>();
 
@@ -91,13 +105,35 @@ public class GoogleSheetsManager implements DataManager {
             Map<String, String> venueAttributes = new HashMap<>();
 
             // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
-
+            venueAttributes.put("requestedDate", venue.getRequestedHostingDate());
+            venueAttributes.put("response", venue.getResponse());
+            venueAttributes.put("venueName", venue.getName());
+            venueAttributes.put("primaryKey", Integer.toString(venue.getPrimaryKey()));
             returnValue.add(venueAttributes);
         }
 
         return returnValue;
     }
-
-
-
+    
+    public String requestHost(String primaryKey, String date){
+        venueCollection.fetchFromDataStorage();
+        try {
+            int key = Integer.parseInt(primaryKey);
+            Venue venue = venueCollection.getByPrimaryKey(key);
+            setRequestedDate(venue.getName(), date);
+            return retrieveToken(primaryKey);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    private void setRequestedDate(String venueName, String date){
+        venueCollection.updateResponse(venueName, "");
+        venueCollection.updateRequestedDate(venueName, date);
+    }
+    
+    private String retrieveToken(String primaryKey){
+        return venueCollection.getOrGenerateToken(Integer.parseInt(primaryKey));
+    }
 }

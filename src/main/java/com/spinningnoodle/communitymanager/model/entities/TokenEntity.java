@@ -20,38 +20,69 @@ import java.util.UUID;
  * @version 0.1
  */
 public abstract class TokenEntity extends Entity {
+    private static final int UUID_MIN_LENGTH = 32;
+
     private String name;
-    private String token;
-    
+    private String token = "";
+
     /**
-     * Returns the token if it currently has one otherwise
-     * creates and sets token variable
-     * @return token - token for specific entity
+     * If the current token is not in a valid format a new token will be generated.
+     *
+     * @return token - token of this entity
      */
-    public String getToken(){
-        if(token == null){
-            generateToken();
+    public String getOrGenerateToken() {
+        if(!isTokenValid(token)) {
+            setToken(generateNewToken());
         }
-        
+
         return token;
     }
-    
-    private void generateToken() {
 
-        String entityName = Character.toString(name.charAt(0)).toUpperCase() +
-                            name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
-        
-        setToken(UUID.randomUUID().toString() + entityName);
-
-    }
-    
     /**
-     * @param token - token for specific entity
+     * Returns the token as-is
+     *
+     * @return token - token of this entity
      */
-    public void setToken(String token){
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * Validates a token is in a valid format, set the entities token, and notify observers of a change in this entity.
+     *
+     * @param token The token of this entity
+     */
+    protected void setToken(String token) throws IllegalArgumentException {
         this.token = token;
 
         this.notifyObservers();
+    }
+
+    /**
+     * Returns if a token does not match the expected format of a token.
+     *
+     * @param token the token which is being checked
+     * @return true - the token is not valid; false - the token is valid
+     */
+    protected static boolean isTokenValid(String token) {
+        return ((token != null) && token.length() >= UUID_MIN_LENGTH);
+    }
+
+    /**
+     * Generates a new token with the format name-UUID
+     *
+     * @return The token generated
+     */
+    protected String generateNewToken() {
+
+      String entityName = "";
+        if(name != null) {
+          entityName = Character.toString(name.charAt(0)).toUpperCase() +
+                      name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+          entityName += '-';
+        }
+
+        return entityName + UUID.randomUUID().toString();
     }
     
     /**

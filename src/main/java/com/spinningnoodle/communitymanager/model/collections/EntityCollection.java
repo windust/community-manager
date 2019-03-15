@@ -28,7 +28,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 	private final String TABLE_NAME;
-	
+
 	/**
 	 * @param dataStorage the data storage to use as a database
 	 */
@@ -58,7 +58,8 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The entity to store in the collection
 	 */
 	protected void addToEntities(T entity) {
-		entities.put(entity.getEntityId(), entity);
+	  entity.atachObserver(this);
+	  entities.put(entity.getEntityId(), entity);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The <T> to be saved into the EntityCollection .
 	 */
 	public void addToCollection(T entity) {
-		entities.put(entity.getEntityId(), entity);
+		addToEntities(entity);
 	}
 
 	/**
@@ -96,7 +97,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return A List of all <T>.
 	 */
 	public List<T> getAll() {
-		fetchFromDataStorage();
 		return new ArrayList<>(entities.values());
 	}
 

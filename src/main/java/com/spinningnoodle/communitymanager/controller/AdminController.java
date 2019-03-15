@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller that handles login features and
@@ -105,12 +109,22 @@ public class AdminController {
      * logged in.
      */
     @PostMapping("/meetup")
-    public String meetup(@RequestParam(name = "meetupKey") String meetupKey) throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
+    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
+        throws InvalidUserException {
+//        if(!loggedIn) {
+//            throw new InvalidUserException();
+//        }
+
+        //TODO consider having this done in the model somewhere
+        List<Map<String, String>> meetups = model.getAllMeetups();
+        for (Map<String, String> meetup: meetups) {
+            if(meetup.get("primaryKey").equals(meetupKey)){
+                session.setAttribute("meetup", meetup);
+            }
         }
-        
-        //TODO use key to retrieve details for specific meetup
+
+        List<Map<String, String>> venues = model.getAllVenues();
+        session.setAttribute("venues", venues);
         
         return "meetup";
     }
@@ -123,14 +137,15 @@ public class AdminController {
      * logged in.
      */
     //TODO return token from DB when logged in
-    @PostMapping("/getToken")
-    public String getToken() throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
-            return "meetup";
-        }
+    @RequestMapping(path = "/getToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String getToken(@RequestParam(name = "venueKey") String venueKey, @RequestParam(name = "date") String date) throws InvalidUserException {
+//        if(!loggedIn){
+//            throw new InvalidUserException();
+//        }
+//        else{
+            return ((GoogleSheetsManager) model).requestHost(venueKey, date);
+//        }
     }
     
     //TODO create google sheets page

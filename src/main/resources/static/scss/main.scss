@@ -14,10 +14,13 @@
         './abstracts/typography';
 @import './vendors/normalize';
 @import './base/typography',
-        './base/reset';
+        './base/reset',
+        './base/schemes';
 @import './components/buttons',
+        './components/details',
         './components/header',
         './components/navbar',
-        './components/tables';
+        './components/tables',
+        './components/footer';
 @import './pages/available_dates',
         './pages/meetup';

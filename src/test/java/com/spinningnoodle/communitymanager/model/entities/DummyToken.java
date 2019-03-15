@@ -18,6 +18,7 @@ import java.util.Map;
  * @version 0.1
  */
 public class DummyToken extends TokenEntity {
+
     @Override
     public Entity build(Map<String, String> fields){
         DummyToken temp = new DummyToken();
@@ -27,5 +28,4 @@ public class DummyToken extends TokenEntity {
         
         return temp;
     }
-    
 }

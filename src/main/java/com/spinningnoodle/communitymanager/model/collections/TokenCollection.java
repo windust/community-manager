@@ -30,12 +30,12 @@ public abstract class TokenCollection<T extends TokenEntity> extends EntityColle
         throw new IllegalArgumentException("Invalid Token: " + token);
     }
 
-    private void updateToken(DataStorage dataStorage, int primaryKey, String newToken) {
-        dataStorage.update(this.getTableName(), Integer.toString(primaryKey), "Token", newToken);
+    private void updateToken(int primaryKey, String newToken) {
+        dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "token", newToken);
     }
 
     @Override
     public void update(TokenEntity observable) {
-        updateToken(getDataStorage(), observable.getPrimaryKey(),observable.getToken());
+        updateToken(observable.getPrimaryKey(),observable.getToken());
     }
 }

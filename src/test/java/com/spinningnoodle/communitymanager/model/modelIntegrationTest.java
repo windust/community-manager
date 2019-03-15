@@ -76,11 +76,6 @@ public class modelIntegrationTest {
 //        resetDatastorage();
     }
 
-//    @BeforeEach
-//    public void resetDataStorage(){
-//
-//    }
-
     @Test
     @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, and requested date.")
     void whenIgetMeetupByVenueTokenIGetVenueNameDateRequestedAndAllMeetups(){
@@ -107,7 +102,7 @@ public class modelIntegrationTest {
         row.put("primaryKey","2");
         expectedAvailableDatesMeetups.add(row);
 
-        assertEquals(expectedAvailableDatesMeetups,testManager.getMeetupByVenueToken("123N"));
+        assertEquals(expectedAvailableDatesMeetups,testManager.getMeetupsByVenueToken("123N"));
     }
 
     //We need to figure out what should happen here. Should it throw or ???
@@ -116,7 +111,7 @@ public class modelIntegrationTest {
     @DisplayName("Throws error, When I get meetups by invalid token.")
     void whenIgetMeetupByVenueTokenWithInvalidTokenThrowsError(){
         Assertions.assertThrows(IOException.class, () -> {
-            testManager.getMeetupByVenueToken("455");
+            testManager.getMeetupsByVenueToken("455");
         });
     }
 
