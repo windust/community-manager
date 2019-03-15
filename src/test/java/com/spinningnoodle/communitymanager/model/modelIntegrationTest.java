@@ -157,6 +157,12 @@ public class modelIntegrationTest {
         assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019","01/14/2019"));
     }
 
+    @Test
+    @DisplayName("Model returns true, when I venue declines to test.")
+    void whenISetTheVenueForAnEventWithNotHostingDateReturnsTrue(){
+        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting","01/14/2019"));
+    }
+
     /*
     The following are tests related to the Upcoming Dates Page.
      */
@@ -191,22 +197,6 @@ public class modelIntegrationTest {
 
     @Test
     @Disabled
-    @DisplayName("Model returns Map of meetup attributes, When I get Meetup Details.")
-    void whenIGetMeetupDetailsIGetAMapOfAllMeetupAttributes(){
-        Map<String,String> expectedMeetupDetailsForPK2 = new HashMap<>();
-        expectedMeetupDetailsForPK2.put("primaryKey", "2");
-        expectedMeetupDetailsForPK2.put("date","01/15/2019");
-        expectedMeetupDetailsForPK2.put("venue","");
-        expectedMeetupDetailsForPK2.put("speaker", "Nimret");
-        expectedMeetupDetailsForPK2.put("topic", "150");
-        expectedMeetupDetailsForPK2.put("description","Nimret");
-        expectedMeetupDetailsForPK2.put("food","");
-        expectedMeetupDetailsForPK2.put("after","");
-//        assertEquals(expectedMeetupDetailsForPK2,testManager.getMeetupDetails("2"));
-    }
-
-    @Test
-    @Disabled
     @DisplayName("Model throws error, When I get meetup detail for an event with an invalid primary key.")
     void whenIGetMeetupDetailForAnEventWithInvalidPrimaryKeyThrowsError(){
 //        Assertions.assertThrows(IOException.class, () -> {
@@ -220,6 +210,8 @@ public class modelIntegrationTest {
 
         testStorage.update("meetups","2","venue","");
         testStorage.update("meetups","1","venue","Excellent");
+        testStorage.update("venues","1","response","yes");
+
 
     }
 
