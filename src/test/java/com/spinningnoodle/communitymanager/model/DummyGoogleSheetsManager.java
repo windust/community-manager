@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.model;
 
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.model.collections.DummyMeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +48,5 @@ public class DummyGoogleSheetsManager extends GoogleSheetsManager {
         return expected;
     }
     
-    @Override
-    public boolean setVenueForMeetup(String venueName, String date, String requestedDate){
-        return true;
-    }
+
 }
