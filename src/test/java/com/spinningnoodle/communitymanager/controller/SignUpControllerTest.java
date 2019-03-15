@@ -46,7 +46,7 @@ public class SignUpControllerTest {
         signUpController.model = model;
         session = new MockHttpSession();
         
-        expectedMeetupsWithVenue = createMeetupsAndVenueWithToken("yes");
+        expectedMeetupsWithVenue = createMeetupsAndVenueWithToken("yes", "Excellent");
     }
     
     @Test
@@ -74,23 +74,137 @@ public class SignUpControllerTest {
     }
     
     @Test
-    public void venueSetsDateAvailableInSession(){
+    @DisplayName("venue route sets meetups as an attribute in the session")
+    public void venueSetsSessionMeetupsAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
         signUpController.venue(validToken, session);
         
-        Assertions.assertEquals(signUpController.requestedDateAvailable, session.getAttribute("requestedDateAvailable"));
+        Assertions.assertNotNull(session.getAttribute("meetups"));
     }
     
     @Test
-    public void venueSetsCurrentToken(){
+    @DisplayName("venue route sets venue name as an attribute in the session")
+    public void venueSetsSessionVenueNameAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
         signUpController.venue(validToken, session);
         
-        Assertions.assertEquals(validToken, signUpController.currentToken);
+        Assertions.assertNotNull(session.getAttribute("venueName"));
     }
     
-    private List<Map<String, String>> createMeetupsAndVenueWithToken(String response){
+    @Test
+    @DisplayName("venue route sets hosting message as an attribute in the session")
+    public void venueSetsSessionHostingMessageAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertNotNull(session.getAttribute("hostingMessage"));
+    }
+    
+    @Test
+    @DisplayName("venue route sets requested date as an attribute in the session")
+    public void venueSetsSessionRequestedDateAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertNotNull(session.getAttribute("requestedDate"));
+    }
+    
+    @Test
+    @DisplayName("venue route sets ask as an attribute in the session")
+    public void venueSetsSessionAskAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertNotNull(session.getAttribute("ask"));
+    }
+    
+    @Test
+    @DisplayName("venue route sets alert as an attribute in the session")
+    public void venueSetsSessionAlertAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertNotNull(session.getAttribute("alert"));
+    }
+    
+    @Test
+    @DisplayName("venue route sets alert message as an attribute in the session")
+    public void venueSetsSessionAlertMessageAttribute(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(expectedMeetupsWithVenue);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertNotNull(session.getAttribute("alertMessage"));
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when requested date is available and venue hasn't responded")
+    public void hostingMessageWithDateAvailableAndNoResponse(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("", ""));
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("Can you host on 01/14/2019?", signUpController.hostingMessage);
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when requested date is available and venue declines")
+    public void hostingMessageWithDateAvailableAndResponseIsNo(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("no", ""));
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("Thank you for your consideration.", signUpController.hostingMessage);
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when requested date is unavailable")
+    public void hostingMessageWithDateUnavailable(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("", "Amazing"));
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("Thank you for volunteering but 01/14/2019 is already being hosted by another venue.", signUpController.hostingMessage);
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when requested date is hosted by requested venue")
+    public void hostingMessageWithDateHostedByVenue(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("yes", "Excellent"));
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("Thank you for hosting on 01/14/2019, Contact your SeaJUG contact to cancel.", signUpController.hostingMessage);
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when venue response is yes but venue isn't actually hosting")
+    public void hostingMessageWhenVenueSaysYesButIsNotHosting(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("yes", ""));
+        when(model.setVenueForMeetup("Excellent", "notHosting", "01/14/2019")).thenReturn(true);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("Thank you for your consideration.", signUpController.hostingMessage);
+    }
+    
+    @Test
+    @DisplayName("When venue response is yes but venue isn't actually hosting change response to no")
+    public void WhenVenueSaysYesButIsNotHostingChangeResponse(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("yes", ""));
+        when(model.setVenueForMeetup("Excellent", "notHosting", "01/14/2019")).thenReturn(true);
+        signUpController.venue(validToken, session);
+        
+        Assertions.assertEquals("no", signUpController.response);
+    }
+    
+    @Test
+    @DisplayName("Hosting Message for when venue response is yes but venue isn't actually hosting throws IllegalArgumentException if unable to update database")
+    public void hostingMessageWhenVenueSaysYesButIsNotHostingThrowsException(){
+        when(model.getMeetupsByVenueToken(validToken)).thenReturn(createMeetupsAndVenueWithToken("yes", ""));
+        when(model.setVenueForMeetup("Excellent", "notHosting", "01/14/2019")).thenReturn(false);
+        
+        Assertions.assertThrows(IllegalArgumentException.class, () -> signUpController.venue(validToken, session));
+    }
+    
+    private List<Map<String, String>> createMeetupsAndVenueWithToken(String response, String venue){
         List<Map<String, String>> meetupsWithVenue = new ArrayList<>();
         
-        meetupsWithVenue.addAll(createMeetups());
+        meetupsWithVenue.addAll(createMeetups(venue));
         meetupsWithVenue.add(0, createPartialVenue(response));
         
         return meetupsWithVenue;
@@ -100,13 +214,13 @@ public class SignUpControllerTest {
         Map<String, String> partialVenue = new HashMap<>();
     
         partialVenue.put("name","Excellent");
-        partialVenue.put("requestedHostingDate", "01/14/2019");
+        partialVenue.put("requestedDate", "01/14/2019");
         partialVenue.put("response", response);
         
         return partialVenue;
     }
     
-    private List<Map<String, String>> createMeetups(){
+    private List<Map<String, String>> createMeetups(String venue){
         List<Map<String, String>> meetupData = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
         
@@ -115,7 +229,7 @@ public class SignUpControllerTest {
         row.put("speaker","Purple");
         row.put("topic", "How to do Stuff");
         row.put("description", "nailing stuff");
-        row.put("venue", "Excellent");
+        row.put("venue", venue);
         meetupData.add(row);
         
         row = new HashMap<>();
