@@ -33,10 +33,10 @@ function openTab(evt, category) {
 
 function getTokenURL(element) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/getToken', true);
   var primaryKey = element.getAttribute('data-venueIndentifier');
   var requestedDate = document.getElementById("date").innerHTML;
-  // var params = encodeURIComponent('venueKey') + '=' + encodeURIComponent(primaryKey);
+
+  xhr.open('POST', "/getToken?venueKey=" + primaryKey + "&" + "date=" + requestedDate, true);
 
   xhr.onload = function() {
     if(this.status === 200) {
