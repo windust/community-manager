@@ -82,56 +82,81 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned() {
-        List<Meetup> expected = new ArrayList<>();
-        Meetup meetup = new Meetup();
-        meetup.setDate("01/01/1970");
-        expected.add(meetup);
+        int listSize = 5;
 
         when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
             @Override
             public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
-                return expected;
+                List<Meetup> meetups = new ArrayList<>();
+                for (int i = 0; i < listSize; i++) {
+                    meetups.add(new Meetup());
+                }
+                return meetups;
             }
         });
 
-        assertEquals(expected.size(), googleSheetsManager.getAllMeetups().size());
+        assertEquals(listSize, googleSheetsManager.getAllMeetups().size());
     }
-//
-//    //TODO
-//    @Test
-//    void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
-//        Map<String, String> meetup = googleSheetsManager.getAllMeetups().get(0);
-//
-//        assertAll(() -> {
-//            assertTrue(meetup.containsKey("date"));
-//            assertTrue(meetup.containsKey("topic"));
-//            assertTrue(meetup.containsKey("speaker"));
-//            assertTrue(meetup.containsKey("venue"));
-//            assertTrue(meetup.containsKey("primaryKey"));
-//        });
-//    }
-//
-//
-//    @Test
-//    void getAllMeetupsReturnsMeetupsWithExpectedValues() {
-//        Map<String, String> row = new HashMap<>();
-//        row.put("primaryKey", "1");
-//        row.put("date","01/14/2019");
-//        row.put("speaker","Purple");
-//        row.put("topic", "How to do Stuff");
-//        row.put("description", "nailing stuff");
-//        row.put("venue", "Excellent");
-//
-//        Map<String, String> meetup = googleSheetsManager.getAllMeetups().get(0);
-//
-//        assertAll(() -> {
-//            assertEquals(row.get("date"), meetup.get("date"));
-//            assertEquals(row.get("topic"), meetup.get("topic"));
-//            assertEquals(row.get("speaker"), meetup.get("speaker"));
-//            assertEquals(row.get("venue"), meetup.get("venue"));
-//            assertEquals(row.get("primaryKey"), meetup.get("primaryKey"));
-//        });
-//    }
+
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
+        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
+            @Override
+            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
+                List<Meetup> meetups = new ArrayList<>();
+                meetups.add(new Meetup());
+                return meetups;
+            }
+        });
+
+        Map<String, String> meetupMap = googleSheetsManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertTrue(meetupMap.containsKey("date"));
+            assertTrue(meetupMap.containsKey("topic"));
+            assertTrue(meetupMap.containsKey("speaker"));
+            assertTrue(meetupMap.containsKey("venue"));
+            assertTrue(meetupMap.containsKey("primaryKey"));
+        });
+    }
+
+    @Test
+    void getAllMeetupsReturnsMeetupsWithExpectedValues() {
+        Map<String, String> expectedMeetupValues = new HashMap<>();
+        expectedMeetupValues.put("primaryKey", "1");
+        expectedMeetupValues.put("date","01/14/2019");
+        expectedMeetupValues.put("speaker","Purple");
+        expectedMeetupValues.put("topic", "How to do Stuff");
+        expectedMeetupValues.put("description", "nailing stuff");
+        expectedMeetupValues.put("venue", "Excellent");
+
+        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
+            @Override
+            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
+                List<Meetup> meetups = new ArrayList<>();
+                Meetup meetup = new Meetup();
+                meetup.setPrimaryKey(Integer.parseInt(expectedMeetupValues.get("primaryKey")));
+                meetup.setDate(expectedMeetupValues.get("date"));
+                meetup.setSpeaker(expectedMeetupValues.get("speaker"));
+                meetup.setTopic(expectedMeetupValues.get("topic"));
+                meetup.setDescription(expectedMeetupValues.get("description"));
+                meetup.setVenue(expectedMeetupValues.get("venue"));
+
+                meetups.add(meetup);
+                return meetups;
+            }
+        });
+
+        Map<String, String> meetup = googleSheetsManager.getAllMeetups().get(0);
+
+        assertAll(() -> {
+            assertEquals(expectedMeetupValues.get("date"), meetup.get("date"));
+            assertEquals(expectedMeetupValues.get("topic"), meetup.get("topic"));
+            assertEquals(expectedMeetupValues.get("speaker"), meetup.get("speaker"));
+            assertEquals(expectedMeetupValues.get("venue"), meetup.get("venue"));
+            assertEquals(expectedMeetupValues.get("primaryKey"), meetup.get("primaryKey"));
+        });
+    }
 //
 //    @Test
 //    void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() throws IOException {
