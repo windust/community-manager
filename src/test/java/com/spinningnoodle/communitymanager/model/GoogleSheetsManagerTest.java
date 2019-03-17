@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.model;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,8 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,31 +160,82 @@ public class GoogleSheetsManagerTest {
             assertEquals(expectedMeetupValues.get("primaryKey"), meetup.get("primaryKey"));
         });
     }
-//
-//    @Test
-//    void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() throws IOException {
-//        assertEquals(googleSheetsManager.dataStorage.readAll("venues").size(), googleSheetsManager.getAllVenues().size());
-//    }
-//
-//    @Test
-//    @Disabled
-//    void getAllVenuesReturnsVenuesWithExpectedAttributes() {
-//        Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
-//
-//        assertAll(() -> {
-//            // TODO: add attribute assertions
-//        });
-//    }
-//
-//    @Test
-//    @Disabled
-//    void getAllVenuesReturnsVenuesWithExpectedValues() {
-//    }
-//
-//    //TODO
-//    @Test
-//    @Disabled
-//    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFileIGetFileException(){
-//
-//    }
+
+    @Test
+    void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() {
+        int listSize = 5;
+
+        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
+            @Override
+            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
+                List<Venue> venues = new ArrayList<>();
+                for (int i = 0; i < listSize; i++) {
+                    venues.add(new Venue());
+                }
+                return venues;
+            }
+        });
+
+        assertEquals(listSize, googleSheetsManager.getAllVenues().size());
+    }
+
+    @Test
+    void getAllVenuesReturnsVenuesWithExpectedAttributes() {
+        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
+            @Override
+            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
+                List<Venue> venues = new ArrayList<>();
+                venues.add(new Venue());
+                return venues;
+            }
+        });
+
+        Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
+
+        assertAll(() -> {
+            assertTrue(venue.containsKey("primaryKey"));
+            assertTrue(venue.containsKey("requestedDate"));
+            assertTrue(venue.containsKey("response"));
+            assertTrue(venue.containsKey("venueName"));
+        });
+    }
+
+    @Test
+    void getAllVenuesReturnsVenuesWithExpectedValues() {
+        Map<String, String> expectedVenueValues = new HashMap<>();
+        expectedVenueValues.put("requestedDate", "01/01/1970");
+        expectedVenueValues.put("response","yes");
+        expectedVenueValues.put("venueName","Purple Inc.");
+        expectedVenueValues.put("primaryKey", "1");
+
+        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
+            @Override
+            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
+                List<Venue> venues = new ArrayList<>();
+                Venue venue = new Venue();
+
+                venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
+                venue.setRequestedHostingDate(expectedVenueValues.get("requestedDate"));
+                venue.setResponse(expectedVenueValues.get("response"));
+                venue.setName(expectedVenueValues.get("venueName"));
+
+                venues.add(venue);
+                return venues;
+            }
+        });
+
+        Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
+
+        assertAll(() -> {
+            assertEquals(expectedVenueValues.get("primaryKey"), venue.get("primaryKey"));
+            assertEquals(expectedVenueValues.get("requestedDate"), venue.get("requestedDate"));
+            assertEquals(expectedVenueValues.get("response"), venue.get("response"));
+            assertEquals(expectedVenueValues.get("venueName"), venue.get("venueName"));
+        });
+    }
+
+    @Test
+    void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFileIGetFileException(){
+        assertThrows(IOException.class, () -> new GoogleSheetsManager("Invalid"));
+    }
 }
