@@ -31,17 +31,22 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 public class GoogleSheetsManagerTest {
 
-    private static GoogleSheetsManager testManager;
-    private static DataStorage testStorage;
+    @InjectMocks
+    private GoogleSheetsManager testManager = new GoogleSheetsManager();
 
-    @BeforeAll
-    static void setup() throws GeneralSecurityException {
-        testManager = new DummyGoogleSheetsManager();
-        testStorage = new DummyStorage("123");
-    }
+    @Mock
+    private static DataStorage dataStorage;
+
+//    @BeforeAll
+//    static void setup() throws GeneralSecurityException {
+//        testManager = new DummyGoogleSheetsManager();
+//        testStorage = new DummyStorage("123");
+//    }
 
     @Test
     @Disabled("test needs to be rewritten, currently causes other tests to fail")
