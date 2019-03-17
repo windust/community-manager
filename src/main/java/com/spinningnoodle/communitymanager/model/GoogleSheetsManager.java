@@ -33,8 +33,7 @@ public class GoogleSheetsManager implements DataManager {
     //TODO rework to remove defualt constructor, currently used for dummy test class
     public GoogleSheetsManager(){}
     
-    public GoogleSheetsManager(String storageID){
-        try {
+    public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
 //            config.put("storage","google");
 //            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
@@ -44,9 +43,6 @@ public class GoogleSheetsManager implements DataManager {
 //            }
             meetupCollection = new MeetupCollection(dataStorage);
             venueCollection = new VenueCollection(dataStorage);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -90,8 +86,7 @@ public class GoogleSheetsManager implements DataManager {
             return venueCollection.updateResponse(venueName, "no");
         }
         else if(requestedDate.equals(dateRequestedByAdmin)){
-            return venueCollection.updateResponse(venueName, "yes") &&
-                meetupCollection.setVenueForMeetup(venueName, requestedDate);
+            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, "yes");
         }
         else{
             return meetupCollection.setVenueForMeetup(venueName, requestedDate);
