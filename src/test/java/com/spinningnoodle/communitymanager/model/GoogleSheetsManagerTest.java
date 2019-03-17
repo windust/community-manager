@@ -13,11 +13,19 @@ package com.spinningnoodle.communitymanager.model;
 
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -66,28 +74,28 @@ public class GoogleSheetsManagerTest {
         });
     }
 
-//    @Test
-//    void whenIGetMeetupsByVenueGetAllMeetupsForTokenIsCalled() {
-//        DummyMeetupCollection dummy = (DummyMeetupCollection) googleSheetsManager.meetupCollection;
-//        int previousCount = dummy.timesGetAllMeetupsForTokenIsCalled;
-//        googleSheetsManager.getMeetupsByVenueToken("123N");
-//
-//        int newCount = dummy.timesGetAllMeetupsForTokenIsCalled;
-//        assertFalse(previousCount == newCount );
-//    }
-//
-//    @Test
-//    @Disabled("getAllMeetupsForToken() is not implemented")
-//    void whenIGetMeetupsByVenueIReturnWhatIReceived() {
-//        //Map<String,String> expected = googleSheetsManager.meetupCollection.getAllMeetupsForToken("123N");
-//        //assertEquals(expected, googleSheetsManager.getMeetupsByVenueToken("123N").get(0) );
-//    }
-//
-//    @Test
-//    void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned()
-//        throws IOException {
-//        assertEquals(testStorage.readAll("meetups").size(), googleSheetsManager.getAllMeetups().size());
-//    }
+    @Test
+    void whenIGetMeetupsByVenueGetAllMeetupsForTokenIsCalled() {
+        googleSheetsManager.getMeetupsByVenueToken("");
+        verify(meetupCollection, atLeastOnce()).getAll();
+    }
+
+    @Test
+    void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned() {
+        List<Meetup> expected = new ArrayList<>();
+        Meetup meetup = new Meetup();
+        meetup.setDate("01/01/1970");
+        expected.add(meetup);
+
+        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
+            @Override
+            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
+                return expected;
+            }
+        });
+
+        assertEquals(expected.size(), googleSheetsManager.getAllMeetups().size());
+    }
 //
 //    //TODO
 //    @Test
