@@ -16,15 +16,12 @@ import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +30,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class GoogleSheetsManagerTest {
+class GoogleSheetsManagerTest {
 
     @InjectMocks
     private GoogleSheetsManager googleSheetsManager = new GoogleSheetsManager();
@@ -87,15 +84,12 @@ public class GoogleSheetsManagerTest {
     void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned() {
         int listSize = 5;
 
-        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
-            @Override
-            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
-                List<Meetup> meetups = new ArrayList<>();
-                for (int i = 0; i < listSize; i++) {
-                    meetups.add(new Meetup());
-                }
-                return meetups;
+        when(meetupCollection.getAll()).thenAnswer((Answer<List<Meetup>>) invocation -> {
+            List<Meetup> meetups = new ArrayList<>();
+            for (int i = 0; i < listSize; i++) {
+                meetups.add(new Meetup());
             }
+            return meetups;
         });
 
         assertEquals(listSize, googleSheetsManager.getAllMeetups().size());
@@ -103,13 +97,10 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
-        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
-            @Override
-            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
-                List<Meetup> meetups = new ArrayList<>();
-                meetups.add(new Meetup());
-                return meetups;
-            }
+        when(meetupCollection.getAll()).thenAnswer((Answer<List<Meetup>>) invocation -> {
+            List<Meetup> meetups = new ArrayList<>();
+            meetups.add(new Meetup());
+            return meetups;
         });
 
         Map<String, String> meetupMap = googleSheetsManager.getAllMeetups().get(0);
@@ -133,21 +124,18 @@ public class GoogleSheetsManagerTest {
         expectedMeetupValues.put("description", "nailing stuff");
         expectedMeetupValues.put("venue", "Excellent");
 
-        when(meetupCollection.getAll()).thenAnswer(new Answer<List<Meetup>>() {
-            @Override
-            public List<Meetup> answer(InvocationOnMock invocation) throws Throwable {
-                List<Meetup> meetups = new ArrayList<>();
-                Meetup meetup = new Meetup();
-                meetup.setPrimaryKey(Integer.parseInt(expectedMeetupValues.get("primaryKey")));
-                meetup.setDate(expectedMeetupValues.get("date"));
-                meetup.setSpeaker(expectedMeetupValues.get("speaker"));
-                meetup.setTopic(expectedMeetupValues.get("topic"));
-                meetup.setDescription(expectedMeetupValues.get("description"));
-                meetup.setVenue(expectedMeetupValues.get("venue"));
+        when(meetupCollection.getAll()).thenAnswer((Answer<List<Meetup>>) invocation -> {
+            List<Meetup> meetups = new ArrayList<>();
+            Meetup meetup = new Meetup();
+            meetup.setPrimaryKey(Integer.parseInt(expectedMeetupValues.get("primaryKey")));
+            meetup.setDate(expectedMeetupValues.get("date"));
+            meetup.setSpeaker(expectedMeetupValues.get("speaker"));
+            meetup.setTopic(expectedMeetupValues.get("topic"));
+            meetup.setDescription(expectedMeetupValues.get("description"));
+            meetup.setVenue(expectedMeetupValues.get("venue"));
 
-                meetups.add(meetup);
-                return meetups;
-            }
+            meetups.add(meetup);
+            return meetups;
         });
 
         Map<String, String> meetup = googleSheetsManager.getAllMeetups().get(0);
@@ -165,15 +153,12 @@ public class GoogleSheetsManagerTest {
     void whenGetAllVenuesIsCalledCorrectNumberOfVenuesAreReturned() {
         int listSize = 5;
 
-        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
-            @Override
-            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
-                List<Venue> venues = new ArrayList<>();
-                for (int i = 0; i < listSize; i++) {
-                    venues.add(new Venue());
-                }
-                return venues;
+        when(venueCollection.getAll()).thenAnswer((Answer<List<Venue>>) invocation -> {
+            List<Venue> venues = new ArrayList<>();
+            for (int i = 0; i < listSize; i++) {
+                venues.add(new Venue());
             }
+            return venues;
         });
 
         assertEquals(listSize, googleSheetsManager.getAllVenues().size());
@@ -181,13 +166,10 @@ public class GoogleSheetsManagerTest {
 
     @Test
     void getAllVenuesReturnsVenuesWithExpectedAttributes() {
-        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
-            @Override
-            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
-                List<Venue> venues = new ArrayList<>();
-                venues.add(new Venue());
-                return venues;
-            }
+        when(venueCollection.getAll()).thenAnswer((Answer<List<Venue>>) invocation -> {
+            List<Venue> venues = new ArrayList<>();
+            venues.add(new Venue());
+            return venues;
         });
 
         Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
@@ -208,20 +190,17 @@ public class GoogleSheetsManagerTest {
         expectedVenueValues.put("venueName","Purple Inc.");
         expectedVenueValues.put("primaryKey", "1");
 
-        when(venueCollection.getAll()).thenAnswer(new Answer<List<Venue>>() {
-            @Override
-            public List<Venue> answer(InvocationOnMock invocation) throws Throwable {
-                List<Venue> venues = new ArrayList<>();
-                Venue venue = new Venue();
+        when(venueCollection.getAll()).thenAnswer((Answer<List<Venue>>) invocation -> {
+            List<Venue> venues = new ArrayList<>();
+            Venue venue = new Venue();
 
-                venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
-                venue.setRequestedHostingDate(expectedVenueValues.get("requestedDate"));
-                venue.setResponse(expectedVenueValues.get("response"));
-                venue.setName(expectedVenueValues.get("venueName"));
+            venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
+            venue.setRequestedHostingDate(expectedVenueValues.get("requestedDate"));
+            venue.setResponse(expectedVenueValues.get("response"));
+            venue.setName(expectedVenueValues.get("venueName"));
 
-                venues.add(venue);
-                return venues;
-            }
+            venues.add(venue);
+            return venues;
         });
 
         Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
