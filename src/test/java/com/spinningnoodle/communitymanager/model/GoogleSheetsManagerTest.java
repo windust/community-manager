@@ -11,6 +11,7 @@ package com.spinningnoodle.communitymanager.model;
  *  END OF LICENSE INFORMATION
  */
 
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
@@ -216,5 +217,41 @@ class GoogleSheetsManagerTest {
     @Test
     void whenICreateAGoogleSheetsManagerWithABadSpreadSheetIDFileIGetFileException(){
         assertThrows(IOException.class, () -> new GoogleSheetsManager("Invalid"));
+    }
+
+    @Test
+    void requestHostWillSetVenueResponse() throws EntityNotFoundException {
+        when(venueCollection.getByPrimaryKey(1)).thenAnswer((Answer<Venue>) invocation -> {
+            Venue venue = new Venue();
+            venue.setName("Venue Inc.");
+            return venue;
+        });
+        googleSheetsManager.requestHost("1", "01/01/1970");
+        verify(venueCollection, atLeastOnce()).updateResponse("Venue Inc.", "");
+    }
+
+    @Test
+    void requestHostWillUpdateRequestedDate() throws EntityNotFoundException {
+        when(venueCollection.getByPrimaryKey(1)).thenAnswer((Answer<Venue>) invocation -> {
+            Venue venue = new Venue();
+            venue.setName("Venue Inc.");
+            return venue;
+        });
+
+        googleSheetsManager.requestHost("1", "01/01/1970");
+        verify(venueCollection, atLeastOnce()).updateRequestedDate("Venue Inc.", "01/01/1970");
+    }
+
+    @Test
+    void requestHostWillReturnTokenOfVenue() throws EntityNotFoundException {
+        Venue venue = mock(Venue.class);
+        String expectedToken = "expected token";
+        when(venue.getOrGenerateToken()).thenAnswer((Answer<String>) invocation -> expectedToken);
+        when(venueCollection.getByPrimaryKey(1)).thenAnswer((Answer<Venue>) invocation -> {
+            venue.getOrGenerateToken();
+            return venue;
+        });
+
+        assertEquals(expectedToken, googleSheetsManager.requestHost("1", "01/01/1970"));
     }
 }
