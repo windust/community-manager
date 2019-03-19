@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import java.io.File;
@@ -31,6 +32,7 @@ public class modelIntegrationTest {
     private static DataStorage testStorage;
     private static String testID;
     private static List<Map<String, String>> expected;
+    private static List<Map<String, String>> expectedVenues;
 
     @BeforeAll
     public static void initializeDataBase() throws IOException, GeneralSecurityException {
@@ -73,6 +75,23 @@ public class modelIntegrationTest {
         list.add(row);
 
         expected = list;
+
+        list = new ArrayList<>();
+        row = new HashMap<>();
+        row.put("primaryKey", "1");
+        row.put("venueName", "Excellent");
+        row.put("response", "yes");
+        row.put("requestedDate", "01/14/2019");
+        list.add(row);
+
+        row = new HashMap<>();
+        row.put("primaryKey", "2");
+        row.put("venueName", "Amazing");
+        row.put("response", "yes");
+        row.put("requestedDate", "01/14/2019");
+        list.add(row);
+
+        expectedVenues = list;
 
         testManager = new GoogleSheetsManager();
         testManager.dataStorage = testStorage;
@@ -196,12 +215,44 @@ public class modelIntegrationTest {
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, When I get meetup detail for an event with an invalid primary key.")
-    void whenIGetMeetupDetailForAnEventWithInvalidPrimaryKeyThrowsError(){
-//        Assertions.assertThrows(IOException.class, () -> {
-//            testManager.getMeetupDetails("300");
-//        });
+    @DisplayName("Model return correct length of list of venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedLengthOfListOfVenues(){
+        assertEquals(expectedVenues.size(),testManager.getAllVenues().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedListOfVenues(){
+        assertTrue(testManager.getAllVenues().get(0).entrySet().containsAll(expectedVenues.get(0).entrySet()) );
+    }
+
+    @Test
+    @DisplayName("Model returns correct requested dates for venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedRequestDatesOfVenues(){
+        ArrayList<String> expectedDates = new ArrayList<>();
+        ArrayList<String> actualDates = new ArrayList<>();
+        List<Map<String,String>> actualRequestedDatesMeetups = testManager.getAllVenues();
+        for(int i =0; i < expectedVenues.size(); i++) {
+            expectedDates.add(expectedVenues.get(i).get("requestedDate"));
+        }
+        for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
+            actualDates.add(actualRequestedDatesMeetups.get(i).get("requestedDate"));
+        }
+        Collections.sort(expectedDates);
+        Collections.sort(actualDates);
+        assertEquals(expectedDates, actualDates);
+    }
+
+    @Test
+    @DisplayName("Returns null, When I retrieve token with invalid primary key.")
+    void whenIRetrieveTokenWithInvalidPrimaryKeyReturnsNull(){
+           assertEquals(null, testManager.requestHost("455","01/14/2019"));
+    }
+
+    @Test
+    @DisplayName("Returns Token, When I retrieve token with valid primary key.")
+    void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
+        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2","01/14/2019"));
     }
 
     @BeforeEach
