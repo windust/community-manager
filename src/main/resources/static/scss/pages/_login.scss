@@ -9,3 +9,23 @@
  *
  *  END OF LICENSE INFORMATION
  */
+
+.main_login {
+  margin: 1em 20%;
+}
+
+.main_login h1 {
+  margin-bottom: 5%;
+}
+.main_login div, .main_login button {
+  margin: 1em 10%;
+}
+.username, .password {
+  margin-top: 2em;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+.main_login button {
+  float: right;
+}
