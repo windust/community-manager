@@ -88,7 +88,6 @@ public class AdminController {
      * @param session - session to store variables for view to display
      * @return upcoming_dates - name of html page to render
      */
-    //TODO uncomment lines of code once merged with necessary branches
     @GetMapping("/upcoming")
     public String upcomingDates(HttpSession session) throws InvalidUserException {
         if(!loggedIn) {

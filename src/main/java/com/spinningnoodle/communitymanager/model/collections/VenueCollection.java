@@ -116,15 +116,4 @@ public class VenueCollection extends TokenCollection<Venue> {
 		
 		throw new EntityNotFoundException();
 	}
-
-	/*
-	public boolean setVenueRequestedHostingDateByVenueName(String venueName, String requestedHostingDate) {
-		for(Venue venue : this.entities.values()) {
-			if(venue.getName().equals(venueName)) {
-				return dataStorage.update(TABLE_NAME, Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", requestedHostingDate);
-			}
-		}
-		return false;
-	}
-	*/
 }

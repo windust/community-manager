@@ -134,13 +134,4 @@ public class GoogleSheetsManager implements DataManager {
     private String retrieveToken(Venue venue){
             return venue.getOrGenerateToken();
     }
-//    private String retrieveToken(int primaryKey){
-//        try {
-//            Venue venue = venueCollection.getByPrimaryKey(primaryKey);
-//            return venue.getOrGenerateToken();
-//        } catch (EntityNotFoundException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 }
