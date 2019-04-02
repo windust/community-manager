@@ -48,15 +48,15 @@
           <tbody>
           <th:block th:each="meetup : ${session.meetups}">
               <tr>
-                  <td th:text="${meetup['date']}"></td>
-                  <td th:text="${meetup['speaker']}"></td>
-                  <td th:if="${meetup['venue'] == ''}">
-                      <button class="btn_red" type="submit" name="meetup" th:value="${meetup['date']}">
+                  <td th:text="${meetup.getDate()}"></td>
+                  <td th:text="${meetup.getSpeaker()}"></td>
+                  <td th:if="${meetup.getVenue() == ''}">
+                      <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
                           Needs Host
                       </button>
                   </td>
-                  <td th:if="${meetup['venue'] == session.venueName}"><span th:text="${session.venueName}" class="accent-text">Reserved</span></td>
-                  <td th:if="${meetup['venue'] != '' and meetup['venue'] != session.venueName}">Reserved</td>
+                  <td th:if="${meetup.getVenue() == session.venueName}"><span th:text="${session.venueName}" class="accent-text">Reserved</span></td>
+                  <td th:if="${meetup.getVenue() != '' and meetup.getVenue() != session.venueName}">Reserved</td>
 
               </tr>
           </th:block>

@@ -30,17 +30,17 @@
     <th:block th:each="meetup : ${session.meetups}">
       <details class="card">
         <summary>
-          <span th:text="${meetup['date']}">Date</span>
-          <span th:text="${meetup['speaker']}">Speaker</span>
-          <span th:text="${meetup['venue']}">Venue</span>
-          <button th:value="${meetup['primaryKey']}" type="submit" name="meetupKey">
+          <span th:text="${meetup.getDate()}">Date</span>
+          <span th:text="${meetup.getSpeaker()}">Speaker</span>
+          <span th:text="${meetup.getVenue()}">Venue</span>
+          <button th:value="${meetup.getPrimaryKey()}" type="submit" name="meetupKey">
             Details
           </button>
         </summary>
         <div class="details-grid">
-          <span class="h6">Topic: </span><span th:text="${meetup['topic']}">Unavailable</span>
-          <span class="h6">Food: </span><span th:text="${meetup['food']}">Unavailable</span>
-          <span class="h6">After: </span><span th:text="${meetup['after']}">Unavailable</span>
+          <span class="h6">Topic: </span><span th:text="${meetup.getTopic()}">Unavailable</span>
+          <span class="h6">Food: </span><span th:text="${meetup.getFood()}">Unavailable</span>
+          <span class="h6">After: </span><span th:text="${meetup.getAfter()}">Unavailable</span>
         </div>
       </details>
     </th:block>
