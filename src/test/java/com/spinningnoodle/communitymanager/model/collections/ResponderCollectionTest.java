@@ -27,6 +27,7 @@ public class ResponderCollectionTest {
     public void initializeTokenCollection() throws GeneralSecurityException {
         DummyStorage dummyStorage = new DummyStorage("123");
         tokenCollection = new DummyResponderCollection(dummyStorage);
+        tokenCollection = tokenCollection.fetchFromDataStorage();
     }
     
     @Test
