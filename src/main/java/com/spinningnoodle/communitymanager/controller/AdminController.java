@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -94,7 +95,7 @@ public class AdminController {
             throw new InvalidUserException();
         }
         
-        List<Map<String, String>> meetups = model.getAllMeetups();
+        List<Meetup> meetups = model.getAllMeetups();
         
         session.setAttribute("meetups", meetups);
         
@@ -116,9 +117,9 @@ public class AdminController {
         }
 
         //TODO consider having this done in the model somewhere
-        List<Map<String, String>> meetups = model.getAllMeetups();
-        for (Map<String, String> meetup: meetups) {
-            if(meetup.get("primaryKey").equals(meetupKey)){
+        List<Meetup> meetups = model.getAllMeetups();
+        for (Meetup meetup: meetups) {
+            if(meetup.getPrimaryKey() == Integer.parseInt(meetupKey)){
                 session.setAttribute("meetup", meetup);
             }
         }

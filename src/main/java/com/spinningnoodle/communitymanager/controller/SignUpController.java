@@ -13,6 +13,8 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -57,13 +59,23 @@ public class SignUpController {
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
             String response;
-            List<Map<String, String>> meetups;
-            meetups = model.getMeetupsByVenueToken(token);
+            List<Meetup> meetups;
+            Map<String, String> venue;
+            List<Map<String, String>> venues = model.getAllVenues();
+            meetups = model.getAllMeetups();
+            
+            //TODO remove once getVenueByToken is implemented
+            for(Map<String, String> ven : venues){
+                if(ven.get("token").equals(token)){
+                    venue = ven;
+                    break;
+                }
+            }
             
             currentToken = token;
-            this.venueName = meetups.get(0).get("name");
-            this.requestedDate = meetups.get(0).get("requestedDate");
-            response = meetups.get(0).get("response").toLowerCase();
+            this.venueName = venue.get("name");
+            this.requestedDate = venue.get("requestedDate");
+            response = venue.get("response").toLowerCase();
             meetups.remove(0);
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
@@ -120,9 +132,9 @@ public class SignUpController {
         }
     }
     
-    private boolean isDateAvailable(List<Map<String, String>> meetups, String date) {
-        for(Map<String, String> meetup : meetups){
-            if(meetup.get("date").equals(date) && meetup.get("venue").equals("")){
+    private boolean isDateAvailable(List<Meetup> meetups, String date) {
+        for(Meetup meetup : meetups){
+            if(meetup.getDate().equals(date) && meetup.getVenue().equals("")){
                 return true;
             }
         }
@@ -130,9 +142,9 @@ public class SignUpController {
         return false;
     }
     
-    private void setHostingRequestedDate(List<Map<String, String>> meetups){
-        for(Map<String, String> meetup : meetups){
-            if(meetup.get("date").equals(this.requestedDate) && meetup.get("venue").equals(venueName)){
+    private void setHostingRequestedDate(List<Meetup> meetups){
+        for(Meetup meetup : meetups){
+            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(venueName)){
                 hostingRequestedDate = true;
             }
         }
