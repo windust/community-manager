@@ -12,10 +12,20 @@ package com.spinningnoodle.communitymanager.datastorage;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
+import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.ConnectException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -25,11 +35,15 @@ import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 public class GoogleSheetsTest {
 
-    private static DataStorage testStorage;
+    private static GoogleSheets testStorage;
     private static String testID;
     private static List<Map<String, String>> expected;
 
@@ -84,7 +98,7 @@ public class GoogleSheetsTest {
 
     @Test
     public void throwsIOExceptionWhenGivenBadStorageID() {
-        Assertions.assertThrows(IOException.class, () ->
+        assertThrows(IOException.class, () ->
             new GoogleSheets("133"));
     }
 
@@ -105,7 +119,7 @@ public class GoogleSheetsTest {
 
     @Test
     public void whenIRequestNonExistentTableIGetIOException() {
-        Assertions.assertThrows(IOException.class, () -> {
+        assertThrows(IOException.class, () -> {
             testStorage.readAll("sprinklers");
         });
     }
@@ -142,4 +156,92 @@ public class GoogleSheetsTest {
         testStorage.update("venues", "2", "name", "Amazing");
         assertEquals("NewName", nameAfterChange);
     }
+
+    @Test
+    void whenIAttemptToCreateEntryIGetFalse(){
+        assertFalse(testStorage.createEntry());
+    }
+
+    @Test
+    void whenIAttemptToDeleteRowIGetFalse(){
+        assertFalse(testStorage.deleteEntry("venues", "3"));
+    }
+
+    @Test
+    void whenNoValuesAreReturnedFromSpreadSheetIGetNullFromReadAll()
+        throws IOException, GeneralSecurityException {
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+        List<List<Object>> rawRow = new ArrayList<>();
+        when(testStorage.getData("venues")).thenReturn(rawRow);
+        assertNull(testStorage.readAll("venues"));
+    }
+
+    @Test
+    void whenNullIsReturnedFromSpreadSheetIGetNullFromReadAll()
+        throws IOException, GeneralSecurityException {
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+//        List<List<Object>> rawRow = new ArrayList<>();
+        when(testStorage.getData("venues")).thenReturn(null);
+        assertNull(testStorage.readAll("venues"));
+    }
+
+    @Test
+    void whenStringsAreNotReturnedFromSpreadSheetIGetNullFromReadAll()
+        throws IOException, GeneralSecurityException {
+        List<Map<String,String>> nonStringExpected = new ArrayList<>();
+
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+        List<List<Object>> rawRow = new ArrayList<>();
+        List<Object> badRow = new ArrayList<>();
+        badRow.add(new Object());
+        rawRow.add(badRow);
+        when(testStorage.getData("venues")).thenReturn(rawRow);
+        assertEquals(nonStringExpected,testStorage.readAll("venues"));
+    }
+
+    @Test
+    void whenIGiveInvalidPrimaryKeyIGetFalseFromUpdate()
+        throws IOException, GeneralSecurityException {
+//        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+//        List<List<Object>> rawRow = new ArrayList<>();
+//        when(testStorage.getData("venues")).thenReturn(rawRow);
+        assertFalse(testStorage.update("venues","3","requestedHostingDate","01/14/2019"));
+    }
+
+    @Test
+    void whenIGiveInvalidAttributeIGetFalseFromUpdate()
+        throws IOException, GeneralSecurityException {
+//        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+//        List<List<Object>> rawRow = new ArrayList<>();
+//        when(testStorage.getData("venues")).thenReturn(rawRow);
+        assertFalse(testStorage.update("venues","3","invalidAttribute","01/14/2019"));
+    }
+
+    @Test
+    void whenNoValuesAreReturnedFromSpreadSheetIGetFalseFromUpdate()
+        throws IOException, GeneralSecurityException {
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+        List<List<Object>> rawRow = new ArrayList<>();
+        when(testStorage.getData("venues")).thenReturn(rawRow);
+        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+    }
+
+    @Test
+    void whenNullIsReturnedFromSpreadSheetIGetFalseFromUpdate()
+        throws IOException, GeneralSecurityException {
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+        List<List<Object>> rawRow = new ArrayList<>();
+        when(testStorage.getData("venues")).thenReturn(null);
+        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+    }
+
+    @Test
+    void whenExceptionIsThrownFromSpreadSheetIGetFalseFromUpdate()
+        throws IOException, GeneralSecurityException {
+        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
+        List<List<Object>> rawRow = new ArrayList<>();
+        when(testStorage.getData("venues")).thenThrow(new IOException());
+        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+    }
+
 }

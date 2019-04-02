@@ -11,10 +11,15 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
+import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.IOException;
@@ -22,6 +27,10 @@ import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 class MeetupCollectionTest {
 
@@ -30,10 +39,9 @@ class MeetupCollectionTest {
 
     @BeforeEach
     void setUp() throws GeneralSecurityException {
+        dataStorage = mock(GoogleSheets.class);
         dataStorage = new DummyStorage("123");
         meetupCollection = new MeetupCollection(dataStorage);
-
-        meetupCollection.clear();
     }
 
     @Test
@@ -43,7 +51,6 @@ class MeetupCollectionTest {
     }
 
     @Test
-    @Disabled("Collection.size() will refresh the data with what exists in the data storage. Collection.addToCollection() does not add to the data storage.")
     void addingAVenueToTheCollectionShouldUpdateTheCollection() throws IOException {
         Meetup testMeetup = new Meetup();
         meetupCollection.addToCollection(testMeetup);
@@ -52,7 +59,6 @@ class MeetupCollectionTest {
     }
 
     @Test
-    @Disabled("Collection.getEntityId() will refresh the data with what exists in the data storage. Collection.addToCollection() does not add to the data storage.")
     void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
         Meetup testMeetup = new Meetup();
         meetupCollection.addToCollection(testMeetup);
@@ -70,72 +76,19 @@ class MeetupCollectionTest {
         assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.getAll().size());
     }
 
-	/*
-	@Test
-	void getAllMeetupsForTokenGetsTheVenueByItsTokenIn0Index() {
-	}
-	@Test
-	void getAllMeetupsForTokenGetsAllMeetups() {
-		List<Map<String, String>> meetupList =  meetupCollection.getAllMeetupsForToken("");
-		try {
-			assertEquals(new GoogleSheets());
-		} catch (GeneralSecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	*/
-//TODO rewrite to reflect current MeetupCollection.
-//
-//	private DummyStorage dummyStorage = new DummyStorage("123");
-//	private MeetupCollection meetupCollection = new MeetupCollection(dummyStorage);
-//
-//
-//	MeetupCollectionTest() throws GeneralSecurityException {
-//	}
-//
-//	@BeforeEach
-//	void setUp() {
-//		meetupCollection.clear();
-//	}
-//
-//	@Test
-//	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
-//		meetupCollection.fetchFromDataStorage();
-//
-//		assertEquals(dummyStorage.readAll("meetups").size(), meetupCollection.size());
-//	}
-//
-//	@Test
-//	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
-//		Meetup testMeetup = new Meetup();
-//		meetupCollection.addToCollection(testMeetup);
-//
-//		assertEquals(1, meetupCollection.size());
-//	}
-//
-//	@Test
-//	void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
-//		Meetup testMeetup = new Meetup();
-//		meetupCollection.addToCollection(testMeetup);
-//
-//		assertEquals(testMeetup, meetupCollection.getById(testMeetup.getMeetupId()));
-//	}
-//
-//	@Test
-//	void whenAIdIsPassedToGetByIdThatDoesNotExistThenEntityNotFoundExceptionShouldBeThrown() {
-//		assertThrows(EntityNotFoundException.class, () -> meetupCollection.getById(-1));
-//	}
-//
-//	@Test
-//	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() {
-//		int collectionSize = 5;
-//
-//		IntStream.range(0, collectionSize).mapToObj(i -> new Meetup())
-//			.forEach(meetupCollection::addToCollection);
-//
-//		assertEquals(collectionSize, meetupCollection.getAll().size());
-//	}
+    @Test
+    void whenAMeetupDoesNotHaveAVenueTheVenueCanBeSet() {
+      assertTrue(meetupCollection.setVenueForMeetup("New Venue", "03/22/2019"));
+    }
 
+    @Test
+    void whenAMeetupHasAVenueItCantBeOverridden() {
+        meetupCollection.setVenueForMeetup("New Venue", "03/22/2019");
+        assertFalse(meetupCollection.setVenueForMeetup("should false", "03/22/2019"));
+    }
+
+    @Test
+    void whenAMeetupDoesNotExistForADateReturnFalse() {
+        assertFalse(meetupCollection.setVenueForMeetup("should false", "01/01/1970"));
+    }
 }

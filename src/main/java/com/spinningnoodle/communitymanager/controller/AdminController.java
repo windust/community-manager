@@ -87,7 +87,6 @@ public class AdminController {
      * @param session - session to store variables for view to display
      * @return upcoming_dates - name of html page to render
      */
-    //TODO uncomment lines of code once merged with necessary branches
     @GetMapping("/upcoming")
     public String upcomingDates(HttpSession session) throws InvalidUserException {
         if(!loggedIn) {
@@ -111,9 +110,9 @@ public class AdminController {
     @PostMapping("/meetup")
     public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
         throws InvalidUserException {
-//        if(!loggedIn) {
-//            throw new InvalidUserException();
-//        }
+        if(!loggedIn) {
+            throw new InvalidUserException();
+        }
 
         //TODO consider having this done in the model somewhere
         List<Map<String, String>> meetups = model.getAllMeetups();
@@ -139,18 +138,16 @@ public class AdminController {
     //TODO return token from DB when logged in
     @RequestMapping(path = "/getToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getToken(@RequestParam(name = "venueKey") String venueKey, @RequestParam(name = "date") String date) throws InvalidUserException {
-//        if(!loggedIn){
-//            throw new InvalidUserException();
-//        }
-//        else{
+    public String getToken(@RequestBody String params) throws InvalidUserException {
+        if(!loggedIn){
+            throw new InvalidUserException();
+        }
+        else{
+            String[] args = params.split("&");
+            String venueKey = args[0].split("=")[1];
+            String date = args[1].split("=")[1];
+
             return ((GoogleSheetsManager) model).requestHost(venueKey, date);
-//        }
+        }
     }
-    
-    //TODO create google sheets page
-//    @GetMapping("/googleSheets")
-//    public String googleSheets(@RequestParam(name = "sheet", required = false, defaultValue = "all") String sheet){
-//        return "login.html";
-//    }
 }

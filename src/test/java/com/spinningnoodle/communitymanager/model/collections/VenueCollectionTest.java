@@ -11,13 +11,16 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,11 +33,11 @@ class VenueCollectionTest {
 
 	@BeforeEach
 	void setUp() {
-		venueCollection.clear();
+		venueCollection.fetchFromDataStorage();
 	}
 
 	@Test
-	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() throws GeneralSecurityException {
+	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() {
 		venueCollection.fetchFromDataStorage();
 
 		assertEquals(dummyStorage.readAll("venues").size(), venueCollection.size());
@@ -43,9 +46,10 @@ class VenueCollectionTest {
 	@Test
 	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
 		Venue testVenue = new Venue();
+		int initialSize = venueCollection.size();
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(1, venueCollection.size());
+		assertEquals(initialSize + 1, venueCollection.size());
 	}
 
 	@Test
@@ -63,13 +67,47 @@ class VenueCollectionTest {
 
 	@Test
 	void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() {
-		//TODO Rewrite test. get all fetches from DataStorage
-//		int collectionSize = 5;
-//
-//		IntStream.range(0, collectionSize).mapToObj(i -> new Venue())
-//			.forEach(venueCollection::addToCollection);
-
 		int collectionSize = 2;
 		assertEquals(collectionSize, venueCollection.getAll().size());
+	}
+
+	@Test
+    void whenIFetchAVenueByTokenIShouldGetAVenue() {
+      assertNotNull(venueCollection.getVenueFromToken("123N"));
+    }
+
+    @Test
+    void whenIAttemptToFetchVenueByInvalidTokenInvalidTokenException() {
+	  assertThrows(IllegalArgumentException.class, () -> venueCollection.getVenueFromToken("invalid"));
+    }
+
+    @Test
+    void whenAVenuesResponseIsSetThenItReturnsTrue() {
+	  assertTrue(venueCollection.updateResponse("Excellent", "yes"));
+    }
+
+    @Test
+    void whenAVenueNameIsIncorrectWhenSettingTheResponseThenFalseIsReturned() {
+	  assertFalse(venueCollection.updateResponse("DoesNotExist", "yes"));
+    }
+
+  @Test
+  void whenAVenueRequestsADateThenItReturnsTrue() {
+    assertTrue(venueCollection.updateRequestedDate("Excellent", "01/01/1970"));
+  }
+
+  @Test
+  void whenAVenueWithInvalidNameRequestsADateThenItReturnsTrue() {
+    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", "01/01/1970"));
+  }
+
+	@Test
+	void whenAVenueIsLookedUpByPrimaryKeyItIsReturned() throws EntityNotFoundException {
+		assertEquals(1, venueCollection.getByPrimaryKey(1).getPrimaryKey());
+	}
+
+	@Test
+	void whenAVenueIsLookedUpByPrimaryKeyWhichDoesNotExistExceptionIsThrown() {
+		assertThrows(EntityNotFoundException.class, () -> venueCollection.getByPrimaryKey(-1));
 	}
 }

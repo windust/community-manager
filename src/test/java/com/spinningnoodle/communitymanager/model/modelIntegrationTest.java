@@ -1,14 +1,20 @@
 package com.spinningnoodle.communitymanager.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +32,7 @@ public class modelIntegrationTest {
     private static DataStorage testStorage;
     private static String testID;
     private static List<Map<String, String>> expected;
+    private static List<Map<String, String>> expectedVenues;
 
     @BeforeAll
     public static void initializeDataBase() throws IOException, GeneralSecurityException {
@@ -69,21 +76,41 @@ public class modelIntegrationTest {
 
         expected = list;
 
+        list = new ArrayList<>();
+        row = new HashMap<>();
+        row.put("primaryKey", "1");
+        row.put("venueName", "Excellent");
+        row.put("response", "yes");
+        row.put("requestedDate", "01/14/2019");
+        list.add(row);
+
+        row = new HashMap<>();
+        row.put("primaryKey", "2");
+        row.put("venueName", "Amazing");
+        row.put("response", "yes");
+        row.put("requestedDate", "01/14/2019");
+        list.add(row);
+
+        expectedVenues = list;
+
         testManager = new GoogleSheetsManager();
         testManager.dataStorage = testStorage;
+        testManager.meetupCollection = new MeetupCollection(testStorage);
+        testManager.venueCollection = new VenueCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
 //        resetDatastorage();
     }
 
     @Test
-    @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, and requested date.")
+    @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, requested date, and response.")
     void whenIgetMeetupByVenueTokenIGetVenueNameDateRequestedAndAllMeetups(){
         List<Map<String,String>> expectedAvailableDatesMeetups = new ArrayList<>();
 
         Map<String, String> row = new HashMap<>();
         row.put("name", "Excellent");
         row.put("requestedDate", "01/14/2019");
+        row.put("response","yes");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
@@ -92,6 +119,7 @@ public class modelIntegrationTest {
         row.put("date", "01/14/2019");
         row.put("topic","100");
         row.put("primaryKey","1");
+        row.put("description","Freddy");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
@@ -100,92 +128,142 @@ public class modelIntegrationTest {
         row.put("date", "01/15/2019");
         row.put("topic","150");
         row.put("primaryKey","2");
+        row.put("description", "Nimret");
         expectedAvailableDatesMeetups.add(row);
 
-        assertEquals(expectedAvailableDatesMeetups,testManager.getMeetupsByVenueToken("123N"));
+        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getMeetupsByVenueToken("123N");
+        assertEquals(expectedAvailableDatesMeetups.get(0),actualAvailableDatesMeetups.get(0));
+
+        assertTrue(actualAvailableDatesMeetups.get(2).containsKey("venue"));
+
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("venue"),actualAvailableDatesMeetups.get(1).get("venue"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("speaker"),actualAvailableDatesMeetups.get(1).get("speaker"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("date"),actualAvailableDatesMeetups.get(1).get("date"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("topic"),actualAvailableDatesMeetups.get(1).get("topic"));
+        assertEquals(expectedAvailableDatesMeetups.get(1).get("primaryKey"),actualAvailableDatesMeetups.get(1).get("primaryKey"));
     }
 
-    //We need to figure out what should happen here. Should it throw or ???
     @Test
-    @Disabled
-    @DisplayName("Throws error, When I get meetups by invalid token.")
+    @DisplayName("Throws IllegalArgumentException, When I get meetups by invalid token.")
     void whenIgetMeetupByVenueTokenWithInvalidTokenThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             testManager.getMeetupsByVenueToken("455");
         });
     }
 
     //Expect these two tests to change when we update the available dates page to accept more than true or false.
     @Test
-    @Disabled
     @DisplayName("When I set the venue for a hosted event, the venue host is unchanged.")
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
-       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019"));
+       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019"));
     }
 
     @Test
     @DisplayName("When I set the venue for an unhosted event, the venue host is filled.")
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
-        assertEquals(true,testManager.setVenueForMeetup("NewName", "01/15/2019"));
+        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2019","01/14/2019"));
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, when I attempt to set venue to an invalid venue")
+    @DisplayName("Model returns false, when I attempt to set venue to an invalid venue")
     void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
-            testManager.setVenueForMeetup("NeverExisted", "01/14/2019");
-        });
+        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2019","01/14/2019"));
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, when I attempt to set venue for invalid event date.")
+    @DisplayName("Model returns false, when I attempt to set venue for invalid event date.")
     void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
-        Assertions.assertThrows(IOException.class, () -> {
-            testManager.setVenueForMeetup("Excellent", "01/24/2019");
-        });
+        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019","01/14/2019"));
+    }
+
+    @Test
+    @DisplayName("Model returns true, when I venue declines to test.")
+    void whenISetTheVenueForAnEventWithNotHostingDateReturnsTrue(){
+        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting","01/14/2019"));
     }
 
     /*
     The following are tests related to the Upcoming Dates Page.
      */
     @Test
-    @DisplayName("Model return list of meetups, when I get All Meetups.")
+    @DisplayName("Model return correct length of list of meetups, when I get All Meetups.")
+    void whenIGetAllMeetupsIGetTheExpectedLengthOfListOfMeetups(){
+        assertEquals(expected.size(),testManager.getAllMeetups().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of meetups, when I get All Meetups.")
     void whenIGetAllMeetupsIGetTheExpectedListOfMeetups(){
-        assertEquals(expected,testManager.getAllMeetups());
+        assertTrue(testManager.getAllMeetups().get(0).entrySet().containsAll(expected.get(0).entrySet()) );
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model returns Map of meetup attributes, When I get Meetup Details.")
-    void whenIGetMeetupDetailsIGetAMapOfAllMeetupAttributes(){
-        Map<String,String> expectedMeetupDetailsForPK2 = new HashMap<>();
-        expectedMeetupDetailsForPK2.put("primaryKey", "2");
-        expectedMeetupDetailsForPK2.put("date","01/15/2019");
-        expectedMeetupDetailsForPK2.put("venue","");
-        expectedMeetupDetailsForPK2.put("speaker", "Nimret");
-        expectedMeetupDetailsForPK2.put("topic", "150");
-        expectedMeetupDetailsForPK2.put("description","Nimret");
-        expectedMeetupDetailsForPK2.put("food","");
-        expectedMeetupDetailsForPK2.put("after","");
-//        assertEquals(expectedMeetupDetailsForPK2,testManager.getMeetupDetails("2"));
+    @DisplayName("Model returns correct dates of meetups, when I get All Meetups.")
+    void whenIGetAllMeetupsIGetTheExpectedDatesOfMeetups(){
+        ArrayList<String> expectedDates = new ArrayList<>();
+        ArrayList<String> actualDates = new ArrayList<>();
+        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getAllMeetups();
+        for(int i =0; i < expected.size(); i++) {
+            expectedDates.add(expected.get(i).get("date"));
+        }
+        for(int i =0; i < actualAvailableDatesMeetups.size(); i++) {
+            actualDates.add(actualAvailableDatesMeetups.get(i).get("date"));
+        }
+        Collections.sort(expectedDates);
+        Collections.sort(actualDates);
+        assertEquals(expectedDates, actualDates);
     }
 
     @Test
-    @Disabled
-    @DisplayName("Model throws error, When I get meetup detail for an event with an invalid primary key.")
-    void whenIGetMeetupDetailForAnEventWithInvalidPrimaryKeyThrowsError(){
-//        Assertions.assertThrows(IOException.class, () -> {
-//            testManager.getMeetupDetails("300");
-//        });
+    @DisplayName("Model return correct length of list of venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedLengthOfListOfVenues(){
+        assertEquals(expectedVenues.size(),testManager.getAllVenues().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedListOfVenues(){
+        assertTrue(testManager.getAllVenues().get(0).entrySet().containsAll(expectedVenues.get(0).entrySet()) );
+    }
+
+    @Test
+    @DisplayName("Model returns correct requested dates for venues, when I get All Venues.")
+    void whenIGetAllVenuesIGetTheExpectedRequestDatesOfVenues(){
+        ArrayList<String> expectedDates = new ArrayList<>();
+        ArrayList<String> actualDates = new ArrayList<>();
+        List<Map<String,String>> actualRequestedDatesMeetups = testManager.getAllVenues();
+        for(int i =0; i < expectedVenues.size(); i++) {
+            expectedDates.add(expectedVenues.get(i).get("requestedDate"));
+        }
+        for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
+            actualDates.add(actualRequestedDatesMeetups.get(i).get("requestedDate"));
+        }
+        Collections.sort(expectedDates);
+        Collections.sort(actualDates);
+        assertEquals(expectedDates, actualDates);
+    }
+
+    @Test
+    @DisplayName("Returns null, When I retrieve token with invalid primary key.")
+    void whenIRetrieveTokenWithInvalidPrimaryKeyReturnsNull(){
+           assertEquals(null, testManager.requestHost("455","01/14/2019"));
+    }
+
+    @Test
+    @DisplayName("Returns Token, When I retrieve token with valid primary key.")
+    void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
+        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2","01/14/2019"));
     }
 
     @BeforeEach
     @AfterEach
     void resetDatastorage(){
-        testManager.setVenueForMeetup("", "01/15/2019");
-        testManager.setVenueForMeetup("Excellent", "01/14/2019");
+
+        testStorage.update("meetups","2","venue","");
+        testStorage.update("meetups","1","venue","Excellent");
+        testStorage.update("venues","1","response","yes");
+
+
     }
 
 }

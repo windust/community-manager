@@ -36,12 +36,6 @@ public class DummyMeetupCollection extends MeetupCollection {
         return super.setVenueForMeetup(venueName, requestedDate);
     }
 
-//    public Map<String, String> getAllMeetupsForToken(String venueToken){
-//        List<Map<String,String>> list = new ArrayList<>();
-//        timesGetAllMeetupsForTokenIsCalled++;
-//        return super.getAllMeetupsForToken(venueToken);
-//    }
-
     public int getTimesSetVenueCalled(){
         return timesSetVenueCalled;
     }

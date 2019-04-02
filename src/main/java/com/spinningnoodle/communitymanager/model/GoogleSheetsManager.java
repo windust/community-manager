@@ -33,8 +33,7 @@ public class GoogleSheetsManager implements DataManager {
     //TODO rework to remove defualt constructor, currently used for dummy test class
     public GoogleSheetsManager(){}
     
-    public GoogleSheetsManager(String storageID){
-        try {
+    public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
 //            config.put("storage","google");
 //            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
@@ -44,9 +43,6 @@ public class GoogleSheetsManager implements DataManager {
 //            }
             meetupCollection = new MeetupCollection(dataStorage);
             venueCollection = new VenueCollection(dataStorage);
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -83,15 +79,17 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public boolean setVenueForMeetup(String venueName, String requestedDate){
+    public boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin){
         meetupCollection.fetchFromDataStorage();
         
         if(requestedDate.equals("notHosting")){
             return venueCollection.updateResponse(venueName, "no");
         }
+        else if(requestedDate.equals(dateRequestedByAdmin)){
+            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, "yes");
+        }
         else{
-            return venueCollection.updateResponse(venueName, "yes") &&
-                meetupCollection.setVenueForMeetup(venueName, requestedDate);
+            return meetupCollection.setVenueForMeetup(venueName, requestedDate);
         }
     }
 
@@ -121,7 +119,7 @@ public class GoogleSheetsManager implements DataManager {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
             setRequestedDate(venue.getName(), date);
-            return retrieveToken(primaryKey);
+            return retrieveToken(venue);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -132,8 +130,8 @@ public class GoogleSheetsManager implements DataManager {
         venueCollection.updateResponse(venueName, "");
         venueCollection.updateRequestedDate(venueName, date);
     }
-    
-    private String retrieveToken(String primaryKey){
-        return venueCollection.getOrGenerateToken(Integer.parseInt(primaryKey));
+
+    private String retrieveToken(Venue venue){
+            return venue.getOrGenerateToken();
     }
 }

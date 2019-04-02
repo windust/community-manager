@@ -45,6 +45,7 @@ summary, .card-header {
 }
 
 .details-grid {
+  padding: 0.2em 2em;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }

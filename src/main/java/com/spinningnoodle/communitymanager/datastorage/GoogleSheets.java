@@ -52,9 +52,9 @@ import java.util.Map;
  */
 public class GoogleSheets implements DataStorage {
 
-    private Sheets service;
+    Sheets service;
     private String storageID;
-    private Spreadsheet spreadsheet;
+    Spreadsheet spreadsheet;
 
     private static final String APPLICATION_NAME = "Community Manager";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -265,7 +265,7 @@ public class GoogleSheets implements DataStorage {
     }
 
 
-    private List<List<Object>> getData(String tableName) throws IOException{
+    List<List<Object>> getData(String tableName) throws IOException{
         String range = tableName;
         try {
             if (!spreadsheet.isEmpty()) {

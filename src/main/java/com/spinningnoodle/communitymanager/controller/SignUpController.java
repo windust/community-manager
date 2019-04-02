@@ -44,11 +44,6 @@ public class SignUpController {
     boolean alert = false;
     boolean hostingRequestedDate = false;
     
-//    public SignUpController(){
-//        model = new GoogleSheetsManager();
-//        requestedDateAvailable = true;
-//    }
-    
     //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
@@ -111,7 +106,7 @@ public class SignUpController {
         else if(!hostingRequestedDate && response.equals("yes")){
             //assumes venue cancelled and SeaJUG volunteer removed them
             //from meetup and then changes venue.response to reflect this
-            boolean success = model.setVenueForMeetup(venueName, "notHosting");
+            boolean success = model.setVenueForMeetup(venueName, "notHosting", requestedDate);
             if(success){
                 return getHostingMessage("no");
             }
@@ -147,7 +142,7 @@ public class SignUpController {
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate){
         boolean success;
         
-        success = model.setVenueForMeetup(venueName, meetupDate);
+        success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
         
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
