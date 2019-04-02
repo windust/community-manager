@@ -77,9 +77,8 @@ public class SignUpController {
             this.hostingMessage = getHostingMessage(response);
             
             session.setAttribute("meetups", meetups);
-            session.setAttribute("venueName", this.venueName);
+            session.setAttribute("venue", venue);
             session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("requestedDate", this.requestedDate);
             session.setAttribute("ask", this.requestedDateAvailable && response.equals(""));
             session.setAttribute("alert", alert);
             session.setAttribute("alertMessage", alertMessage);
