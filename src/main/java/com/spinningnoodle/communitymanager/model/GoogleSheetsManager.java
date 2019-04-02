@@ -52,13 +52,13 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
-//        meetupCollection.fetchFromDataStorage();
-//        venueCollection.fetchFromDataStorage();
-//        List<Map<String, String>> meetups;
-//        meetups = getAllMeetups();
-//        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
-//        return meetups;
+    public Venue getVenueByToken(String venueToken){
+        for(Venue venue : venueCollection.getAll()) {
+            if(venue.getToken().equals(venueToken)) {
+                return venue;
+            }
+        }
+
         return null;
     }
 
