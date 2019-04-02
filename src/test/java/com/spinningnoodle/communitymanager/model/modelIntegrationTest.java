@@ -12,6 +12,7 @@ import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.File;
 import java.io.FileInputStream;
@@ -138,7 +139,7 @@ public class modelIntegrationTest {
         Venue venueByToken = testManager.getVenueByToken("123N");
         assertEquals(expectedAvailableDatesMeetups.get(0).get("name"),venueByToken.getName());
         assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"),venueByToken.getRequestedHostingDate());
-        assertEquals(expectedAvailableDatesMeetups.get(0).get("response"),venueByToken.getResponse());
+        assertEquals(Response.ACCEPTED,venueByToken.getResponse());
     }
 
     @Test
