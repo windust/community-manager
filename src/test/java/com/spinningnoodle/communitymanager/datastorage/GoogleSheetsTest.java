@@ -180,7 +180,6 @@ public class GoogleSheetsTest {
     void whenNullIsReturnedFromSpreadSheetIGetNullFromReadAll()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
-//        List<List<Object>> rawRow = new ArrayList<>();
         when(testStorage.getData("venues")).thenReturn(null);
         assertNull(testStorage.readAll("venues"));
     }
@@ -202,18 +201,12 @@ public class GoogleSheetsTest {
     @Test
     void whenIGiveInvalidPrimaryKeyIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
-//        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
-//        List<List<Object>> rawRow = new ArrayList<>();
-//        when(testStorage.getData("venues")).thenReturn(rawRow);
         assertFalse(testStorage.update("venues","3","requestedHostingDate","01/14/2019"));
     }
 
     @Test
     void whenIGiveInvalidAttributeIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
-//        GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
-//        List<List<Object>> rawRow = new ArrayList<>();
-//        when(testStorage.getData("venues")).thenReturn(rawRow);
         assertFalse(testStorage.update("venues","3","invalidAttribute","01/14/2019"));
     }
 
