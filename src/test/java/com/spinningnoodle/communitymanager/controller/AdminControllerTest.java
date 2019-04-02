@@ -16,6 +16,8 @@ import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -37,8 +39,8 @@ public class AdminControllerTest {
     private HttpSession session;
     
     //data to compare to
-    private List<Map<String, String>> expectedMeetups;
-    private List<Map<String, String>> expectedVenues;
+    private List<Meetup> expectedMeetups;
+    private List<Venue> expectedVenues;
     
     @BeforeEach
     public void initializeController(){
@@ -146,7 +148,7 @@ public class AdminControllerTest {
     @DisplayName("meetup route finds specified meetup and sends to view")
     public void meetupGetsSpecificMeetupForView() throws InvalidUserException {
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        Map<String, String> expected = expectedMeetups.get(1);
+        Meetup expected = expectedMeetups.get(1);
         
         adminController.loggedIn = true;
         adminController.meetup("2", session);
@@ -176,12 +178,12 @@ public class AdminControllerTest {
     @DisplayName("upcoming dates displays all meetups")
     public void upcomingGivesViewMeetupsFromModel() throws InvalidUserException {
         adminController.loggedIn = true;
-        Comparator<Map<String, String>> compareMeetups = Comparator.comparing(o -> o.get("primaryKey"));
+        Comparator<Meetup> compareMeetups = Comparator.comparing(o -> o.getPrimaryKey());
         
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
         
         adminController.upcomingDates(session);
-        List<Map<String, String>> actual = (List<Map<String, String>>) session.getAttribute("meetups");
+        List<Meetup> actual = (List<Meetup>) session.getAttribute("meetups");
         
         expectedMeetups.sort(compareMeetups);
         actual.sort(compareMeetups);
@@ -200,67 +202,71 @@ public class AdminControllerTest {
         Assertions.assertEquals(expected, adminController.getToken("venueKey=1&date=1/14/2019"));
     }
     
-    private List<Map<String, String>> createMeetups(){
-        List<Map<String, String>> meetupData = new ArrayList<>();
-        Map<String, String> row = new HashMap<>();
+    private List<Meetup> createMeetups(){
+        List<Meetup> meetupData = new ArrayList<>();
+        Meetup meetup = new Meetup();
         
-        row.put("primaryKey", "1");
-        row.put("date","01/14/2019");
-        row.put("speaker","Purple");
-        row.put("topic", "How to do Stuff");
-        row.put("description", "nailing stuff");
-        row.put("venue", "Excellent");
-        meetupData.add(row);
+        meetup.setPrimaryKey(1);
+        meetup.setDate("01/14/2019");
+        meetup.setSpeaker("Purple");
+        meetup.setTopic("How to do Stuff");
+        meetup.setDescription("nailing stuff");
+        meetup.setVenue("Excellent");
+        meetupData.add(meetup);
         
-        row = new HashMap<>();
-        row.put("primaryKey", "2");
-        row.put("date","02/19/2019");
-        row.put("speaker","Yellow");
-        row.put("topic", "How to do Stuff");
-        row.put("description", "nailing stuff");
-        row.put("venue", "Amazing");
-        meetupData.add(row);
+        meetup = new Meetup();
+        meetup.setPrimaryKey(2);
+        meetup.setDate("02/19/2019");
+        meetup.setSpeaker("Yellow");
+        meetup.setTopic("How to do Stuff");
+        meetup.setDescription("nailing stuff");
+        meetup.setVenue("Amazing");
+        meetupData.add(meetup);
         
-        row = new HashMap<>();
-        row.put("primaryKey", "3");
-        row.put("date","03/22/2019");
-        row.put("speaker","John Doe");
-        row.put("topic", "How to do Stuff");
-        row.put("description", "nailing stuff");
-        row.put("venue", null);
-        meetupData.add(row);
+        meetup = new Meetup();
+        meetup.setPrimaryKey(3);
+        meetup.setDate("03/22/2019");
+        meetup.setSpeaker("John Doe");
+        meetup.setTopic("How to do Stuff");
+        meetup.setDescription("nailing stuff");
+        meetup.setVenue(null);
+        meetupData.add(meetup);
         
         return meetupData;
     }
     
-    private List<Map<String, String>> createVenues(){
-        List<Map<String, String>> venueData = new ArrayList<>();
-        Map<String, String> row = new HashMap<>();
+    private List<Venue> createVenues(){
+        List<Venue> venueData = new ArrayList<>();
+        Venue venue = new Venue();
+        Map<String, String> setToken = new HashMap<>();
         
-        row.put("primaryKey", "1");
-        row.put("name","Excellent");
-        row.put("address","100 Nowhere St");
-        row.put("capacity", "100");
-        row.put("contactPerson", "Freddy");
-        row.put("contactEmail", "freddy@excellent.com");
-        row.put("contactPhone", "");
-        row.put("altContactPhone", "");
-        row.put("token","123N");
-        row.put("requestedHostingDate", "01/14/2019");
-        venueData.add(row);
+        setToken.put("token", "123N");
+        venue = venue.build(setToken);
+        venue.setPrimaryKey(1);
+        venue.setName("Excellent");
+        venue.setAddress("100 Nowhere St");
+        venue.setCapacity(100);
+        venue.setContactPerson("Freddy");
+        venue.setContactEmail("freddy@excellent.com");
+        venue.setContactPhone("");
+        venue.setContactAltPhone("");
+        venue.setRequestedHostingDate("01/14/2019");
+        venueData.add(venue);
         
-        row = new HashMap<>();
-        row.put("primaryKey", "2");
-        row.put("name","Amazing");
-        row.put("address","200 Nowhere St");
-        row.put("capacity", "150");
-        row.put("contactPerson", "Nimret");
-        row.put("contactEmail", "nimret@amazing.com");
-        row.put("contactPhone", "");
-        row.put("altContactPhone", "");
-        row.put("token","143N");
-        row.put("requestedHostingDate", "01/14/2019");
-        venueData.add(row);
+        venue = new Venue();
+        setToken = new HashMap<>();
+        setToken.put("token", "143N");
+        venue = venue.build(setToken);
+        venue.setPrimaryKey(2);
+        venue.setName("Amazing");
+        venue.setAddress("200 Nowhere St");
+        venue.setCapacity(150);
+        venue.setContactPerson("Nimret");
+        venue.setContactEmail("nimret@amazing.com");
+        venue.setContactPhone("");
+        venue.setContactAltPhone("");
+        venue.setRequestedHostingDate("01/14/2019");
+        venueData.add(venue);
         
         return venueData;
     }
