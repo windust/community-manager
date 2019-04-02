@@ -13,5 +13,5 @@ public interface DataManager {
     
     boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin);
     
-    List<Map<String, String>> getAllVenues();
+    List<Venue> getAllVenues();
 }

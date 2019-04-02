@@ -78,23 +78,9 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String, String>> getAllVenues() {
+    public List<Venue> getAllVenues() {
         venueCollection.fetchFromDataStorage();
-        List<Venue> venues = venueCollection.getAll();
-        List<Map<String, String>> returnValue  = new ArrayList<>();
-
-        for(Venue venue : venues) {
-            Map<String, String> venueAttributes = new HashMap<>();
-
-            // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
-            venueAttributes.put("requestedDate", venue.getRequestedHostingDate());
-            venueAttributes.put("response", venue.getResponse());
-            venueAttributes.put("venueName", venue.getName());
-            venueAttributes.put("primaryKey", Integer.toString(venue.getPrimaryKey()));
-            returnValue.add(venueAttributes);
-        }
-
-        return returnValue;
+        return venueCollection.getAll();
     }
     
     public String requestHost(String primaryKey, String date){
