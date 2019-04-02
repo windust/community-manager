@@ -29,6 +29,7 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Respon
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,14 @@ class GoogleSheetsManagerTest {
         venueCollection = mock(VenueCollection.class);
         meetupCollection = mock(MeetupCollection.class);
 
+        when(meetupCollection.fetchFromDataStorage()).thenReturn(meetupCollection);
+        when(venueCollection.fetchFromDataStorage()).thenReturn(venueCollection);
+
+
         googleSheetsManager.meetupCollection = meetupCollection;
         googleSheetsManager.venueCollection = venueCollection;
+
+
     }
 
     @Test
