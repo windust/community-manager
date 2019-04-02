@@ -14,7 +14,7 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
@@ -60,7 +60,7 @@ public class SignUpController {
         try{
             String response;
             List<Meetup> meetups;
-            Map<String, String> venue;
+            Map<String, String> venue = new HashMap<>();
             List<Map<String, String>> venues = model.getAllVenues();
             meetups = model.getAllMeetups();
             
