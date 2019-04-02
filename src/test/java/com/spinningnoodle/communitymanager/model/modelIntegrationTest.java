@@ -2,6 +2,7 @@ package com.spinningnoodle.communitymanager.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
@@ -9,6 +10,8 @@ import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -104,7 +107,7 @@ public class modelIntegrationTest {
 
     @Test
     @DisplayName("When I get Meetups by venue, I get all meetups, associated venue name, requested date, and response.")
-    void whenIgetMeetupByVenueTokenIGetVenueNameDateRequestedAndAllMeetups(){
+    void whenIgetVenueByTokenIGetVenueNameDateRequestedAndResponse(){
         List<Map<String,String>> expectedAvailableDatesMeetups = new ArrayList<>();
 
         Map<String, String> row = new HashMap<>();
@@ -131,23 +134,17 @@ public class modelIntegrationTest {
         row.put("description", "Nimret");
         expectedAvailableDatesMeetups.add(row);
 
-        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getMeetupsByVenueToken("123N");
-        assertEquals(expectedAvailableDatesMeetups.get(0),actualAvailableDatesMeetups.get(0));
-
-        assertTrue(actualAvailableDatesMeetups.get(2).containsKey("venue"));
-
-        assertEquals(expectedAvailableDatesMeetups.get(1).get("venue"),actualAvailableDatesMeetups.get(1).get("venue"));
-        assertEquals(expectedAvailableDatesMeetups.get(1).get("speaker"),actualAvailableDatesMeetups.get(1).get("speaker"));
-        assertEquals(expectedAvailableDatesMeetups.get(1).get("date"),actualAvailableDatesMeetups.get(1).get("date"));
-        assertEquals(expectedAvailableDatesMeetups.get(1).get("topic"),actualAvailableDatesMeetups.get(1).get("topic"));
-        assertEquals(expectedAvailableDatesMeetups.get(1).get("primaryKey"),actualAvailableDatesMeetups.get(1).get("primaryKey"));
+        Venue venueByToken = testManager.getVenueByToken("123N");
+        assertEquals(expectedAvailableDatesMeetups.get(0).get("name"),venueByToken.getName());
+        assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"),venueByToken.getRequestedHostingDate());
+        assertEquals(expectedAvailableDatesMeetups.get(0).get("response"),venueByToken.getResponse());
     }
 
     @Test
     @DisplayName("Throws IllegalArgumentException, When I get meetups by invalid token.")
     void whenIgetMeetupByVenueTokenWithInvalidTokenThrowsError(){
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            testManager.getMeetupsByVenueToken("455");
+            testManager.getVenueByToken("455");
         });
     }
 
@@ -193,8 +190,14 @@ public class modelIntegrationTest {
 
     @Test
     @DisplayName("Model returns minimum attributes of meetups, when I get All Meetups.")
-    void whenIGetAllMeetupsIGetTheExpectedListOfMeetups(){
-        assertTrue(testManager.getAllMeetups().get(0).entrySet().containsAll(expected.get(0).entrySet()) );
+    void whenIGetAllMeetupsIGetTheExpectedValuesForMeetups(){
+        assertNotNull(testManager.getAllMeetups().get(0).getPrimaryKey() );
+        assertNotNull(testManager.getAllMeetups().get(0).getVenue() );
+        assertNotNull(testManager.getAllMeetups().get(0).getTopic() );
+        assertNotNull(testManager.getAllMeetups().get(0).getSpeaker() );
+        assertNotNull(testManager.getAllMeetups().get(0).getFood() );
+        assertNotNull(testManager.getAllMeetups().get(0).getAfter() );
+        assertNotNull(testManager.getAllMeetups().get(0).getDate());
     }
 
     @Test
@@ -202,12 +205,12 @@ public class modelIntegrationTest {
     void whenIGetAllMeetupsIGetTheExpectedDatesOfMeetups(){
         ArrayList<String> expectedDates = new ArrayList<>();
         ArrayList<String> actualDates = new ArrayList<>();
-        List<Map<String,String>> actualAvailableDatesMeetups = testManager.getAllMeetups();
+        List<Meetup> actualAvailableDatesMeetups = testManager.getAllMeetups();
         for(int i =0; i < expected.size(); i++) {
             expectedDates.add(expected.get(i).get("date"));
         }
         for(int i =0; i < actualAvailableDatesMeetups.size(); i++) {
-            actualDates.add(actualAvailableDatesMeetups.get(i).get("date"));
+            actualDates.add(actualAvailableDatesMeetups.get(i).getDate());
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);
@@ -223,7 +226,10 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Model returns minimum attributes of venues, when I get All Venues.")
     void whenIGetAllVenuesIGetTheExpectedListOfVenues(){
-        assertTrue(testManager.getAllVenues().get(0).entrySet().containsAll(expectedVenues.get(0).entrySet()) );
+        assertNotNull(testManager.getAllVenues().get(0).getPrimaryKey() );
+        assertNotNull(testManager.getAllVenues().get(0).getName() );
+        assertNotNull(testManager.getAllVenues().get(0).getRequestedHostingDate() );
+        assertNotNull(testManager.getAllVenues().get(0).getResponse() );
     }
 
     @Test
@@ -231,12 +237,12 @@ public class modelIntegrationTest {
     void whenIGetAllVenuesIGetTheExpectedRequestDatesOfVenues(){
         ArrayList<String> expectedDates = new ArrayList<>();
         ArrayList<String> actualDates = new ArrayList<>();
-        List<Map<String,String>> actualRequestedDatesMeetups = testManager.getAllVenues();
+        List<Venue> actualRequestedDatesMeetups = testManager.getAllVenues();
         for(int i =0; i < expectedVenues.size(); i++) {
             expectedDates.add(expectedVenues.get(i).get("requestedDate"));
         }
         for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
-            actualDates.add(actualRequestedDatesMeetups.get(i).get("requestedDate"));
+            actualDates.add(actualRequestedDatesMeetups.get(i).getRequestedHostingDate());
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);
