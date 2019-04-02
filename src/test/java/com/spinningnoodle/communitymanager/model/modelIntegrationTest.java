@@ -266,6 +266,8 @@ public class modelIntegrationTest {
     @BeforeEach
     @AfterEach
     void resetDatastorage(){
+        testManager.meetupCollection = testManager.meetupCollection.fetchFromDataStorage();
+        testManager.venueCollection = testManager.venueCollection.fetchFromDataStorage();
 
         testStorage.update("meetups","2","venue","");
         testStorage.update("meetups","1","venue","Excellent");
