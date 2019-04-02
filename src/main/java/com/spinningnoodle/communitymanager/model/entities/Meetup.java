@@ -32,6 +32,8 @@ public class Meetup extends Entity {
 	private String topic;
 	private String description;
 	private String venue;
+	private String food;
+	private String after;
 
     /**
      * Create a new Meetup with a unique generated object ID
@@ -51,7 +53,7 @@ public class Meetup extends Entity {
      * @param venue The venue which will host the venue
      */
 	public Meetup(int primaryKey, String date, String speaker, String topic,
-		String description, String venue) {
+		String description, String venue, String food, String after) {
 		this();
 		this.primaryKey = primaryKey;
 		this.date = date;
@@ -59,6 +61,8 @@ public class Meetup extends Entity {
 		this.topic = topic;
 		this.description = description;
 		this.venue = venue;
+		this.food = food;
+		this.after = after;
 	}
 
 	@Override
@@ -69,6 +73,8 @@ public class Meetup extends Entity {
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
 		this.setVenue(fields.getOrDefault("venue", null));
+		this.setFood(fields.getOrDefault("food", null));
+		this.setAfter(fields.getOrDefault("after", null));
 
 		return this;
 	}
@@ -181,7 +187,23 @@ public class Meetup extends Entity {
 		this.venue = venue;
 	}
 
-    @Override
+	public String getFood() {
+		return food;
+	}
+
+	public void setFood(String food) {
+		this.food = food;
+	}
+
+	public String getAfter() {
+		return after;
+	}
+
+	public void setAfter(String after) {
+		this.after = after;
+	}
+
+	@Override
     public String toString() {
         return "Meetup{" +
             "meetupId=" + meetupId +
