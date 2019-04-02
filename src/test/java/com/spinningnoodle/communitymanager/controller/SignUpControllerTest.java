@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class SignUpControllerTest {
         session = new MockHttpSession();
     
         expectedMeetups = createMeetups("Excellent");
-        expectedVenue = createVenue("yes");
+        expectedVenue = createVenue(Response.ACCEPTED);
     }
 
     @Test
@@ -139,7 +140,7 @@ public class SignUpControllerTest {
     @Test
     @DisplayName("Hosting Message for when requested date is available and venue hasn't responded")
     public void hostingMessageWithDateAvailableAndNoResponse(){
-        when(model.getVenueByToken(validToken)).thenReturn(createVenue(""));
+        when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
         signUpController.venue(validToken, session);
 
@@ -149,7 +150,7 @@ public class SignUpControllerTest {
     @Test
     @DisplayName("Hosting Message for when requested date is available and venue declines")
     public void hostingMessageWithDateAvailableAndResponseIsNo(){
-        when(model.getVenueByToken(validToken)).thenReturn(createVenue("no"));
+        when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.DECLINED));
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
         signUpController.venue(validToken, session);
 
@@ -159,7 +160,7 @@ public class SignUpControllerTest {
     @Test
     @DisplayName("Hosting Message for when requested date is unavailable")
     public void hostingMessageWithDateUnavailable(){
-        when(model.getVenueByToken(validToken)).thenReturn(createVenue(""));
+        when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
         when(model.getAllMeetups()).thenReturn(createMeetups("Amazing"));
         signUpController.venue(validToken, session);
 
@@ -197,7 +198,7 @@ public class SignUpControllerTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> signUpController.venue(validToken, session));
     }
 
-    private Venue createVenue(String response){
+    private Venue createVenue(Response response){
         Venue partialVenue = new Venue();
 
         partialVenue.setName("Excellent");

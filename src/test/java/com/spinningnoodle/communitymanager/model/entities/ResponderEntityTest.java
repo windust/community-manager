@@ -20,39 +20,38 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-class TokenEntityTest {
+class ResponderEntityTest {
 
     private final String testName = "Expedia";
 
-    private DummyToken tokenEntity;
+    private DummyResponder tokenEntity;
     private Map<String, String> fields;
     
     @BeforeEach
     void initializeTokenGenerator(){
-        tokenEntity = new DummyToken();
+        tokenEntity = new DummyResponder();
         fields = new HashMap<>();
         fields.put("name", testName);
         fields.put("token", tokenEntity.generateNewToken());
-        tokenEntity = (DummyToken) tokenEntity.build(fields);
+        tokenEntity = (DummyResponder) tokenEntity.build(fields);
         tokenEntity.setToken(tokenEntity.generateNewToken());
     }
     
     @Test
     void tokenSetWhenProvided(){
         fields.put("token", tokenEntity.getOrGenerateToken());
-        tokenEntity = (DummyToken) tokenEntity.build(fields);
+        tokenEntity = (DummyResponder) tokenEntity.build(fields);
         
         Assertions.assertNotNull(ReflectionTestUtils.getField(tokenEntity, "token"));
     }
     
     @Test
     void tokenIsEmptyStringWhenNotProvided() {
-        TokenEntity newTokenEntity = new DummyToken();
-        Assertions.assertEquals("", ReflectionTestUtils.getField(newTokenEntity, "token"));
+        ResponderEntity newResponderEntity = new DummyResponder();
+        Assertions.assertEquals("", ReflectionTestUtils.getField(newResponderEntity, "token"));
     }
     
     @Test

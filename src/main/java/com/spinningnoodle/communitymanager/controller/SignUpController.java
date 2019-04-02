@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -57,7 +58,7 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
-            String response;
+            Response response;
             List<Meetup> meetups;
             Venue venue;
             meetups = model.getAllMeetups();
@@ -66,7 +67,7 @@ public class SignUpController {
             currentToken = token;
             this.venueName = venue.getName();
             this.requestedDate = venue.getRequestedHostingDate();
-            response = venue.getResponse().toLowerCase();
+            response = venue.getResponse();
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
             
@@ -91,11 +92,11 @@ public class SignUpController {
         
     }
     
-    private String getHostingMessage(String response){
-        if(requestedDateAvailable && response.equals("")){
+    private String getHostingMessage(Response response){
+        if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
             return "Can you host on " + requestedDate + "?";
         }
-        else if(response.equals("no")){
+        else if(response.equals(Response.DECLINED)){
             return "Thank you for your consideration.";
         }
         else if(!requestedDateAvailable && !hostingRequestedDate){
@@ -104,12 +105,12 @@ public class SignUpController {
         else if(hostingRequestedDate){
             return "Thank you for hosting on " + requestedDate + ", Contact your SeaJUG contact to cancel.";
         }
-        else if(!hostingRequestedDate && response.equals("yes")){
+        else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
             //assumes venue cancelled and SeaJUG volunteer removed them
             //from meetup and then changes venue.response to reflect this
             boolean success = model.setVenueForMeetup(venueName, "notHosting", requestedDate);
             if(success){
-                return getHostingMessage("no");
+                return getHostingMessage(Response.DECLINED);
             }
             else{
                 throw new IllegalArgumentException("Unable to update response");

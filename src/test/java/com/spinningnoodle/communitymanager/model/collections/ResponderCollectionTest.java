@@ -18,15 +18,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TokenCollectionTest {
-    private DummyTokenCollection tokenCollection;
+public class ResponderCollectionTest {
+    private DummyResponderCollection tokenCollection;
     private final String validToken = "valid";
     private final String invalidToken = "invalid";
     
     @BeforeEach
     public void initializeTokenCollection() throws GeneralSecurityException {
         DummyStorage dummyStorage = new DummyStorage("123");
-        tokenCollection = new DummyTokenCollection(dummyStorage);
+        tokenCollection = new DummyResponderCollection(dummyStorage);
     }
     
     @Test

@@ -16,13 +16,11 @@ import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GoogleSheetsManager implements DataManager {
     DataStorage dataStorage;
@@ -53,14 +51,8 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public Venue getVenueByToken(String venueToken){
-        meetupCollection.fetchFromDataStorage();
-        for(Venue venue : venueCollection.getAll()) {
-            if(venue.getToken().equals(venueToken)) {
-                return venue;
-            }
-        }
-
-        return null;
+        venueCollection.fetchFromDataStorage();
+        return venueCollection.getEntityByToken(venueToken);
     }
 
     @Override
@@ -68,10 +60,10 @@ public class GoogleSheetsManager implements DataManager {
         meetupCollection.fetchFromDataStorage();
         
         if(requestedDate.equals("notHosting")){
-            return venueCollection.updateResponse(venueName, "no");
+            return venueCollection.updateResponse(venueName, Response.DECLINED);
         }
         else if(requestedDate.equals(dateRequestedByAdmin)){
-            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, "yes");
+            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, Response.ACCEPTED);
         }
         else{
             return meetupCollection.setVenueForMeetup(venueName, requestedDate);
@@ -98,7 +90,7 @@ public class GoogleSheetsManager implements DataManager {
     }
     
     private void setRequestedDate(String venueName, String date){
-        venueCollection.updateResponse(venueName, "");
+        venueCollection.updateResponse(venueName, Response.UNDECIDED);
         venueCollection.updateRequestedDate(venueName, date);
     }
 

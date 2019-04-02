@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class Venue extends TokenEntity {
+public class Venue extends ResponderEntity {
     private static int nextId = 1;
 
     private String name;
@@ -45,7 +45,7 @@ public class Venue extends TokenEntity {
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
         this.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
-        this.setResponse(fields.getOrDefault("response", ""));
+        this.setResponse(convertResponse(fields.getOrDefault("response", "")));
         this.setToken(fields.getOrDefault("token", ""));
 
         return this;
@@ -182,14 +182,6 @@ public class Venue extends TokenEntity {
 	 */
     public void setRequestedHostingDate(String requestedHostingDate) {
         this.requestedHostingDate = requestedHostingDate;
-    }
-    
-    public String getResponse(){
-        return response;
-    }
-    
-    public void setResponse(String response){
-        this.response = response;
     }
 
 	@Override

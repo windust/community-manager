@@ -12,11 +12,12 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 
-public abstract class TokenCollection<T extends TokenEntity> extends EntityCollection<T> {
+public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
     
-    public TokenCollection(DataStorage dataStorage, String tableName){
+    public ResponderCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);
     }
 
@@ -29,13 +30,24 @@ public abstract class TokenCollection<T extends TokenEntity> extends EntityColle
         
         throw new IllegalArgumentException("Invalid Token: " + token);
     }
+    
+    protected String convertResponseToText(Response response){
+        switch (response){
+            case ACCEPTED:
+                return "yes";
+            case DECLINED:
+                return "no";
+            default:
+                return "";
+        }
+    }
 
     private void updateToken(int primaryKey, String newToken) {
         dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "token", newToken);
     }
 
     @Override
-    public void update(TokenEntity observable) {
+    public void update(ResponderEntity observable) {
         updateToken(observable.getPrimaryKey(),observable.getToken());
     }
 }

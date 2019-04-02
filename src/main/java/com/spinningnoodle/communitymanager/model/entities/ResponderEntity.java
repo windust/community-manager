@@ -19,10 +19,11 @@ import java.util.UUID;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public abstract class TokenEntity extends Entity {
+public abstract class ResponderEntity extends Entity {
     private static final int UUID_MIN_LENGTH = 32;
 
     private String name;
+    private Response response;
     private String token = "";
 
     /**
@@ -99,11 +100,36 @@ public abstract class TokenEntity extends Entity {
         this.name = name;
     }
 
+    public Response getResponse(){
+        return response;
+    }
+    
+    public void setResponse(Response response){
+        this.response = response;
+    }
+    
+    Response convertResponse(String response){
+        switch (response){
+            case "yes":
+                return Response.ACCEPTED;
+            case "no":
+                return Response.DECLINED;
+            default:
+                return Response.UNDECIDED;
+        }
+    }
+    
     @Override
     public String toString() {
         return "TokenEntity{" +
             "name='" + name + '\'' +
             ", token='" + token + '\'' +
             '}';
+    }
+    
+    public enum Response{
+        ACCEPTED,
+        DECLINED,
+        UNDECIDED
     }
 }

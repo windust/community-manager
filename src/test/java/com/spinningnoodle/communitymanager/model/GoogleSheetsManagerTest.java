@@ -11,25 +11,32 @@ package com.spinningnoodle.communitymanager.model;
  *  END OF LICENSE INFORMATION
  */
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.stubbing.Answer;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.stubbing.Answer;
 
 class GoogleSheetsManagerTest {
 
@@ -144,6 +151,7 @@ class GoogleSheetsManagerTest {
     void getAllVenuesReturnsVenuesWithExpectedValues() {
         Map<String, String> expectedVenueValues = new HashMap<>();
         expectedVenueValues.put("requestedDate", "01/01/1970");
+        //TODO fix to match response as enum
         expectedVenueValues.put("response","yes");
         expectedVenueValues.put("venueName","Purple Inc.");
         expectedVenueValues.put("primaryKey", "1");
@@ -154,7 +162,7 @@ class GoogleSheetsManagerTest {
 
             venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
             venue.setRequestedHostingDate(expectedVenueValues.get("requestedDate"));
-            venue.setResponse(expectedVenueValues.get("response"));
+            venue.setResponse(Response.ACCEPTED);
             venue.setName(expectedVenueValues.get("venueName"));
 
             venues.add(venue);
@@ -166,7 +174,7 @@ class GoogleSheetsManagerTest {
         assertAll(() -> {
             assertEquals(Integer.parseInt(expectedVenueValues.get("primaryKey")), venue.getPrimaryKey());
             assertEquals(expectedVenueValues.get("requestedDate"), venue.getRequestedHostingDate());
-            assertEquals(expectedVenueValues.get("response"), venue.getResponse());
+            assertEquals(Response.ACCEPTED, venue.getResponse());
             assertEquals(expectedVenueValues.get("venueName"), venue.getName());
         });
     }
