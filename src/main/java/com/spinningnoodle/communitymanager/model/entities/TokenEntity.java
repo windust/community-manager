@@ -31,7 +31,7 @@ public abstract class TokenEntity extends Entity {
      * @return token - token of this entity
      */
     public String getOrGenerateToken() {
-        if(isTokenNotValid(token)) {
+        if(!isTokenValid(token)) {
             setToken(generateNewToken());
         }
 
@@ -64,8 +64,8 @@ public abstract class TokenEntity extends Entity {
      * @param token the token which is being checked
      * @return true - the token is not valid; false - the token is valid
      */
-    protected static boolean isTokenNotValid(String token) {
-        return ((token == null) || token.length() < UUID_MIN_LENGTH);
+    protected static boolean isTokenValid(String token) {
+        return ((token != null) && token.length() >= UUID_MIN_LENGTH);
     }
 
     /**

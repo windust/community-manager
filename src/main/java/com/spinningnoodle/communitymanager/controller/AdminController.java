@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,7 +136,7 @@ public class AdminController {
      * logged in.
      */
     //TODO return token from DB when logged in
-    @RequestMapping(path = "/getToken", produces = "appliation/json; charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(path = "/getToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getToken(@RequestBody String params) throws InvalidUserException {
         if(!loggedIn){
@@ -147,6 +146,7 @@ public class AdminController {
             String[] args = params.split("&");
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
+
             return ((GoogleSheetsManager) model).requestHost(venueKey, date);
         }
     }
