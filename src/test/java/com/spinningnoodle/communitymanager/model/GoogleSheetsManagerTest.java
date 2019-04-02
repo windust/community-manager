@@ -76,12 +76,6 @@ class GoogleSheetsManagerTest {
     }
 
     @Test
-    void whenIGetMeetupsByVenueGetAllMeetupsForTokenIsCalled() {
-        googleSheetsManager.getMeetupsByVenueToken("");
-        verify(meetupCollection, atLeastOnce()).getAll();
-    }
-
-    @Test
     void whenGetAllMeetupsIsCalledCorrectNumberOfMeetupsAreReturned() {
         int listSize = 5;
 
@@ -94,25 +88,6 @@ class GoogleSheetsManagerTest {
         });
 
         assertEquals(listSize, googleSheetsManager.getAllMeetups().size());
-    }
-
-    @Test
-    void getAllMeetupsReturnsMeetupsWithExpectedAttributes() {
-        when(meetupCollection.getAll()).thenAnswer((Answer<List<Meetup>>) invocation -> {
-            List<Meetup> meetups = new ArrayList<>();
-            meetups.add(new Meetup());
-            return meetups;
-        });
-
-        Map<String, String> meetupMap = googleSheetsManager.getAllMeetups().get(0);
-
-        assertAll(() -> {
-            assertTrue(meetupMap.containsKey("date"));
-            assertTrue(meetupMap.containsKey("topic"));
-            assertTrue(meetupMap.containsKey("speaker"));
-            assertTrue(meetupMap.containsKey("venue"));
-            assertTrue(meetupMap.containsKey("primaryKey"));
-        });
     }
 
     @Test
@@ -139,14 +114,14 @@ class GoogleSheetsManagerTest {
             return meetups;
         });
 
-        Map<String, String> meetup = googleSheetsManager.getAllMeetups().get(0);
+        Meetup meetup = googleSheetsManager.getAllMeetups().get(0);
 
         assertAll(() -> {
-            assertEquals(expectedMeetupValues.get("date"), meetup.get("date"));
-            assertEquals(expectedMeetupValues.get("topic"), meetup.get("topic"));
-            assertEquals(expectedMeetupValues.get("speaker"), meetup.get("speaker"));
-            assertEquals(expectedMeetupValues.get("venue"), meetup.get("venue"));
-            assertEquals(expectedMeetupValues.get("primaryKey"), meetup.get("primaryKey"));
+            assertEquals(expectedMeetupValues.get("date"), meetup.getDate());
+            assertEquals(expectedMeetupValues.get("topic"), meetup.getTopic());
+            assertEquals(expectedMeetupValues.get("speaker"), meetup.getSpeaker());
+            assertEquals(expectedMeetupValues.get("venue"), meetup.getVenue());
+            assertEquals(Integer.parseInt(expectedMeetupValues.get("primaryKey")), meetup.getPrimaryKey());
         });
     }
 
@@ -163,24 +138,6 @@ class GoogleSheetsManagerTest {
         });
 
         assertEquals(listSize, googleSheetsManager.getAllVenues().size());
-    }
-
-    @Test
-    void getAllVenuesReturnsVenuesWithExpectedAttributes() {
-        when(venueCollection.getAll()).thenAnswer((Answer<List<Venue>>) invocation -> {
-            List<Venue> venues = new ArrayList<>();
-            venues.add(new Venue());
-            return venues;
-        });
-
-        Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
-
-        assertAll(() -> {
-            assertTrue(venue.containsKey("primaryKey"));
-            assertTrue(venue.containsKey("requestedDate"));
-            assertTrue(venue.containsKey("response"));
-            assertTrue(venue.containsKey("venueName"));
-        });
     }
 
     @Test
@@ -204,13 +161,13 @@ class GoogleSheetsManagerTest {
             return venues;
         });
 
-        Map<String, String> venue = googleSheetsManager.getAllVenues().get(0);
+        Venue venue = googleSheetsManager.getAllVenues().get(0);
 
         assertAll(() -> {
-            assertEquals(expectedVenueValues.get("primaryKey"), venue.get("primaryKey"));
-            assertEquals(expectedVenueValues.get("requestedDate"), venue.get("requestedDate"));
-            assertEquals(expectedVenueValues.get("response"), venue.get("response"));
-            assertEquals(expectedVenueValues.get("venueName"), venue.get("venueName"));
+            assertEquals(Integer.parseInt(expectedVenueValues.get("primaryKey")), venue.getPrimaryKey());
+            assertEquals(expectedVenueValues.get("requestedDate"), venue.getRequestedHostingDate());
+            assertEquals(expectedVenueValues.get("response"), venue.getResponse());
+            assertEquals(expectedVenueValues.get("venueName"), venue.getName());
         });
     }
 

@@ -53,6 +53,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public Venue getVenueByToken(String venueToken){
+        meetupCollection.fetchFromDataStorage();
         for(Venue venue : venueCollection.getAll()) {
             if(venue.getToken().equals(venueToken)) {
                 return venue;
