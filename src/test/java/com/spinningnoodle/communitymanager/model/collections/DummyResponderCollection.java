@@ -24,14 +24,20 @@ public class DummyResponderCollection<T extends ResponderEntity> extends Respond
     }
     
     @Override
-    public void fetchFromDataStorage() {
+    public DummyResponderCollection fetchFromDataStorage() {
         try{
+            DummyResponderCollection responderCollection = new DummyResponderCollection(this.getDataStorage());
+            
             for(Map<String, String> entity : getDataStorage().readAll("tokenTest")){
-                addToEntities(new DummyResponder().build(entity));
+                responderCollection.addToEntities(new DummyResponder().build(entity));
             }
+        
+            return responderCollection;
         } catch (IOException e){
             System.out.println("datastorage error");
         }
+        
+        return null;
     }
     
     @Override
