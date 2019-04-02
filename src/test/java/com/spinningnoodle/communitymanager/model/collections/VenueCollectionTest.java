@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,12 +84,12 @@ class VenueCollectionTest {
 
     @Test
     void whenAVenuesResponseIsSetThenItReturnsTrue() {
-	  assertTrue(venueCollection.updateResponse("Excellent", "yes"));
+	  assertTrue(venueCollection.updateResponse("Excellent", Response.ACCEPTED));
     }
 
     @Test
     void whenAVenueNameIsIncorrectWhenSettingTheResponseThenFalseIsReturned() {
-	  assertFalse(venueCollection.updateResponse("DoesNotExist", "yes"));
+	  assertFalse(venueCollection.updateResponse("DoesNotExist", Response.ACCEPTED));
     }
 
   @Test

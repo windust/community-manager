@@ -62,7 +62,7 @@ class GoogleSheetsManagerTest {
     @Test
     void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
         when(meetupCollection.setVenueForMeetup("NewName", "01/14/2019")).thenReturn(true);
-        when(venueCollection.updateResponse("01/14/2019", "yes")).thenReturn(true);
+        when(venueCollection.updateResponse("01/14/2019", Response.ACCEPTED)).thenReturn(true);
         googleSheetsManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019");
         verify(meetupCollection, atLeastOnce()).setVenueForMeetup("NewName", "01/14/2019");
 
@@ -73,8 +73,8 @@ class GoogleSheetsManagerTest {
         when(meetupCollection.setVenueForMeetup("True Venue", "01/14/2019")).thenReturn(true);
         when(meetupCollection.setVenueForMeetup("False Venue", "01/14/2019")).thenReturn(false);
 
-        when(venueCollection.updateResponse("True Venue", "yes")).thenReturn(true);
-        when(venueCollection.updateResponse("False Venue", "yes")).thenReturn(true);
+        when(venueCollection.updateResponse("True Venue", Response.ACCEPTED)).thenReturn(true);
+        when(venueCollection.updateResponse("False Venue", Response.ACCEPTED)).thenReturn(true);
 
         assertAll(() -> {
             assertTrue(googleSheetsManager.setVenueForMeetup("True Venue", "01/14/2019","01/14/2019"));
@@ -192,7 +192,7 @@ class GoogleSheetsManagerTest {
             return venue;
         });
         googleSheetsManager.requestHost("1", "01/01/1970");
-        verify(venueCollection, atLeastOnce()).updateResponse("Venue Inc.", "");
+        verify(venueCollection, atLeastOnce()).updateResponse("Venue Inc.", Response.UNDECIDED);
     }
 
     @Test

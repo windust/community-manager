@@ -1,5 +1,6 @@
 package com.spinningnoodle.communitymanager.model;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -191,13 +192,13 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Model returns minimum attributes of meetups, when I get All Meetups.")
     void whenIGetAllMeetupsIGetTheExpectedValuesForMeetups(){
-        assertNotNull(testManager.getAllMeetups().get(0).getPrimaryKey() );
-        assertNotNull(testManager.getAllMeetups().get(0).getVenue() );
-        assertNotNull(testManager.getAllMeetups().get(0).getTopic() );
-        assertNotNull(testManager.getAllMeetups().get(0).getSpeaker() );
-        assertNotNull(testManager.getAllMeetups().get(0).getFood() );
-        assertNotNull(testManager.getAllMeetups().get(0).getAfter() );
-        assertNotNull(testManager.getAllMeetups().get(0).getDate());
+        assertAll(
+            () -> assertNotNull(testManager.getAllMeetups().get(0).getPrimaryKey() ),
+            () -> assertNotNull(testManager.getAllMeetups().get(0).getVenue() ),
+            () -> assertNotNull(testManager.getAllMeetups().get(0).getTopic() ),
+            () -> assertNotNull(testManager.getAllMeetups().get(0).getSpeaker() ),
+            () -> assertNotNull(testManager.getAllMeetups().get(0).getDate())
+        );
     }
 
     @Test
