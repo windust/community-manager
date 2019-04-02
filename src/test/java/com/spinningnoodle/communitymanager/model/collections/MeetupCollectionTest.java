@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
@@ -25,12 +24,7 @@ import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 class MeetupCollectionTest {
 
@@ -47,12 +41,14 @@ class MeetupCollectionTest {
     @Test
     void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase()
         throws IOException {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.size());
     }
 
     @Test
     void addingAVenueToTheCollectionShouldUpdateTheCollection() throws IOException {
         Meetup testMeetup = new Meetup();
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         meetupCollection.addToCollection(testMeetup);
 
         assertEquals(dataStorage.readAll("meetups").size() + 1, meetupCollection.size());
@@ -73,11 +69,13 @@ class MeetupCollectionTest {
 
     @Test
     void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() throws IOException {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.getAll().size());
     }
 
     @Test
     void whenAMeetupDoesNotHaveAVenueTheVenueCanBeSet() {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
       assertTrue(meetupCollection.setVenueForMeetup("New Venue", "03/22/2019"));
     }
 
