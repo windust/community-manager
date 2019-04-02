@@ -31,18 +31,24 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	}
 
 	@Override
-	public void fetchFromDataStorage() {
-		this.clear();
+	public MeetupCollection fetchFromDataStorage() {
 		try {
+			MeetupCollection meetupCollection = new MeetupCollection(this.getDataStorage());
+			
 			for(Map<String, String> meetupFields : getDataStorage().readAll(getTableName())) {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				addToEntities(meetup);
+				meetupCollection.addToEntities(meetup);
+				
+				return meetupCollection;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		//TODO refactor in order to remove null
+		return null;
 	}
 
 	@Override

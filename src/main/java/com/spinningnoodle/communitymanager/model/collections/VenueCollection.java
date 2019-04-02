@@ -32,9 +32,10 @@ public class VenueCollection extends ResponderCollection<Venue> {
 	}
 
 	@Override
-	public void fetchFromDataStorage() {
-		this.clear();
+	public VenueCollection fetchFromDataStorage() {
 		try {
+			VenueCollection venueCollection = new VenueCollection(this.getDataStorage());
+			
 			for(Map<String, String> venueFields : getDataStorage().readAll(getTableName())) {
 				Venue venue = new Venue();
 				try {
@@ -42,12 +43,17 @@ public class VenueCollection extends ResponderCollection<Venue> {
 				} catch (UnexpectedPrimaryKeyException e) {
 					e.printStackTrace();
 				}
-				addToEntities(venue);
+				venueCollection.addToEntities(venue);
+				
+				return venueCollection;
 			}
 		} catch (IOException e) {
 			System.out.println("Error: Reading from non-existant table.");
 			e.printStackTrace();
 		}
+		
+		//TODO refactor in order to remove null
+		return null;
 	}
 
 //	/**

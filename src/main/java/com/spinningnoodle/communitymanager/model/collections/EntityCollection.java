@@ -66,7 +66,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * Gets all <T> from a DataStorage.
 	 *
 	 */
-	public abstract void fetchFromDataStorage();
+	public abstract EntityCollection fetchFromDataStorage();
 
 	/**
 	 * Add one venue to the collection.

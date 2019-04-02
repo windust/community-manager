@@ -45,19 +45,19 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Meetup> getAllMeetups() {
-        meetupCollection.fetchFromDataStorage();
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         return meetupCollection.getAll();
     }
 
     @Override
     public Venue getVenueByToken(String venueToken){
-        venueCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getEntityByToken(venueToken);
     }
 
     @Override
     public boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin){
-        meetupCollection.fetchFromDataStorage();
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         
         if(requestedDate.equals("notHosting")){
             return venueCollection.updateResponse(venueName, Response.DECLINED);
@@ -72,12 +72,12 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public List<Venue> getAllVenues() {
-        venueCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getAll();
     }
     
     public String requestHost(String primaryKey, String date){
-        venueCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
         try {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
