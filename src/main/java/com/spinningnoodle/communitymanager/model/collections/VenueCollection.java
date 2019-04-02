@@ -44,9 +44,9 @@ public class VenueCollection extends ResponderCollection<Venue> {
 					e.printStackTrace();
 				}
 				venueCollection.addToEntities(venue);
-				
-				return venueCollection;
 			}
+			
+			return venueCollection;
 		} catch (IOException e) {
 			System.out.println("Error: Reading from non-existant table.");
 			e.printStackTrace();

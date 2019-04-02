@@ -12,8 +12,6 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,13 +32,11 @@ class VenueCollectionTest {
 
 	@BeforeEach
 	void setUp() {
-		venueCollection.fetchFromDataStorage();
+		venueCollection = venueCollection.fetchFromDataStorage();
 	}
 
 	@Test
 	void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase() {
-		venueCollection.fetchFromDataStorage();
-
 		assertEquals(dummyStorage.readAll("venues").size(), venueCollection.size());
 	}
 

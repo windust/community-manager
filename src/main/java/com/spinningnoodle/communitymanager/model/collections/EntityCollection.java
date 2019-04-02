@@ -35,7 +35,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	public EntityCollection(DataStorage dataStorage, String tableName) {
 		this.dataStorage = dataStorage;
 		this.TABLE_NAME = tableName;
-//		fetchFromDataStorage();
 	}
 
 	protected DataStorage getDataStorage() {
