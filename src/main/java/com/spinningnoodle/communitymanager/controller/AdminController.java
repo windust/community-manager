@@ -15,8 +15,8 @@ import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -124,7 +124,7 @@ public class AdminController {
             }
         }
 
-        List<Map<String, String>> venues = model.getAllVenues();
+        List<Venue> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
         
         return "meetup";

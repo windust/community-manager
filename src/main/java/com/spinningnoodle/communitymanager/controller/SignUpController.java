@@ -14,9 +14,8 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
-import java.util.HashMap;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,23 +59,14 @@ public class SignUpController {
         try{
             String response;
             List<Meetup> meetups;
-            Map<String, String> venue = new HashMap<>();
-            List<Map<String, String>> venues = model.getAllVenues();
+            Venue venue;
             meetups = model.getAllMeetups();
-            
-            //TODO remove once getVenueByToken is implemented
-            for(Map<String, String> ven : venues){
-                if(ven.get("token").equals(token)){
-                    venue = ven;
-                    break;
-                }
-            }
+            venue = model.getVenueByToken(token);
             
             currentToken = token;
-            this.venueName = venue.get("name");
-            this.requestedDate = venue.get("requestedDate");
-            response = venue.get("response").toLowerCase();
-            meetups.remove(0);
+            this.venueName = venue.getName();
+            this.requestedDate = venue.getRequestedHostingDate();
+            response = venue.getResponse().toLowerCase();
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
             
