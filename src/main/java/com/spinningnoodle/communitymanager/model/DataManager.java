@@ -1,11 +1,12 @@
 package com.spinningnoodle.communitymanager.model;
 
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.util.List;
 import java.util.Map;
 
 public interface DataManager {
     
-    List<Map<String, String>> getAllMeetups();
+    List<Meetup> getAllMeetups();
     
     List<Map<String,String>> getMeetupsByVenueToken(String venueToken);
     

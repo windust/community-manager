@@ -46,36 +46,20 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String, String>> getAllMeetups() {
+    public List<Meetup> getAllMeetups() {
         meetupCollection.fetchFromDataStorage();
-        List<Meetup> meetups = meetupCollection.getAll();
-
-        List<Map<String, String>> meetupList = new ArrayList<>();
-
-        for(Meetup meetup : meetups) {
-            Map<String, String> attributes = new HashMap<>();
-
-            attributes.put("date", meetup.getDate());
-            attributes.put("topic", meetup.getTopic());
-            attributes.put("speaker", meetup.getSpeaker());
-            attributes.put("venue", meetup.getVenue());
-            attributes.put("description", meetup.getDescription());
-            attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
-
-            meetupList.add(attributes);
-        }
-
-        return meetupList;
+        return meetupCollection.getAll();
     }
 
     @Override
     public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
-        meetupCollection.fetchFromDataStorage();
-        venueCollection.fetchFromDataStorage();
-        List<Map<String, String>> meetups;
-        meetups = getAllMeetups();
-        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
-        return meetups;
+//        meetupCollection.fetchFromDataStorage();
+//        venueCollection.fetchFromDataStorage();
+//        List<Map<String, String>> meetups;
+//        meetups = getAllMeetups();
+//        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
+//        return meetups;
+        return null;
     }
 
     @Override
