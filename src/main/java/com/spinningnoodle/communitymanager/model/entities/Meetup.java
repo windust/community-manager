@@ -66,7 +66,7 @@ public class Meetup extends Entity {
 	}
 
 	@Override
-	public Entity build(Map<String, String> fields) throws AttributeException {
+	public Meetup build(Map<String, String> fields) throws AttributeException {
 		this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
 		this.setDate(fields.getOrDefault("date", null));
 		this.setSpeaker(fields.getOrDefault("speaker", null));
