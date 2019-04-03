@@ -82,7 +82,7 @@ public class VenueCollection extends ResponderCollection<Venue> {
 	public boolean updateResponse(String venueName, Response response){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", convertResponseToText(response));
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", response.getFriendlyName());
 			}
 		}
 		

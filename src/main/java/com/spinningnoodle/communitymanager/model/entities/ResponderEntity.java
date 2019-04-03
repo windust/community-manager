@@ -128,8 +128,19 @@ public abstract class ResponderEntity extends Entity {
     }
     
     public enum Response{
-        ACCEPTED,
-        DECLINED,
-        UNDECIDED
+        ACCEPTED("yes"),
+        DECLINED("no"),
+        UNDECIDED("");
+
+        private String friendlyName;
+
+        Response(String response){
+            this.friendlyName = response;
+        }
+
+        public String getFriendlyName(){
+            return friendlyName;
+        }
+
     }
 }
