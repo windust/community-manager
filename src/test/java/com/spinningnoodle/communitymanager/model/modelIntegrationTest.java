@@ -212,7 +212,7 @@ public class modelIntegrationTest {
             expectedDates.add(expected.get(i).get("date"));
         }
         for(int i =0; i < actualAvailableDatesMeetups.size(); i++) {
-            actualDates.add(actualAvailableDatesMeetups.get(i).getDate().toString());
+            actualDates.add(Entity.dateFormat.format(actualAvailableDatesMeetups.get(i).getDate()));
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);
