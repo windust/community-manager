@@ -17,6 +17,7 @@ import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class SignUpController {
     boolean requestedDateAvailable = true;
     boolean alert = false;
     boolean hostingRequestedDate = false;
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
     //TODO update javadocs
     /**
@@ -95,16 +97,16 @@ public class SignUpController {
     
     private String getHostingMessage(Response response){
         if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
-            return "Can you host on " + requestedDate + "?";
+            return "Can you host on " + requestedDate.format(dateFormat) + "?";
         }
         else if(response.equals(Response.DECLINED)){
             return "Thank you for your consideration.";
         }
         else if(!requestedDateAvailable && !hostingRequestedDate){
-            return "Thank you for volunteering but " + requestedDate + " is already being hosted by another venue.";
+            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
         }
         else if(hostingRequestedDate){
-            return "Thank you for hosting on " + requestedDate + ", Contact your SeaJUG contact to cancel.";
+            return "Thank you for hosting on " + requestedDate.format(dateFormat) + ", Contact your SeaJUG contact to cancel.";
         }
         else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
             //assumes venue cancelled and SeaJUG volunteer removed them
@@ -119,7 +121,7 @@ public class SignUpController {
         }
         else{
             return "Unable to generate proper response given: "
-                + requestedDate + ", " + requestedDateAvailable + ", " + response;
+                + requestedDate.format(dateFormat) + ", " + requestedDateAvailable + ", " + response;
         }
     }
     

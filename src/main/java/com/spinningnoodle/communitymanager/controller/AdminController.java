@@ -156,7 +156,7 @@ public class AdminController {
     
     //TODO find way to access method located in model
     protected LocalDate convertDate(String date){
-        if(date != null){
+        if(date != null && date != ""){
             String[] dateComponents = date.split("/");
         
             int year = Integer.parseInt(dateComponents[2]);

@@ -64,7 +64,7 @@ public abstract class Entity extends Observable {
 	}
 	
 	protected LocalDate convertDate(String date){
-		if(date != null){
+		if(date != null && date != ""){
 			String[] dateComponents = date.split("/");
 			
 			int year = Integer.parseInt(dateComponents[2]);

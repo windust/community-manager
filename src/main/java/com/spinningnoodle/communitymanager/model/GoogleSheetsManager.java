@@ -78,7 +78,7 @@ public class GoogleSheetsManager implements DataManager {
     
     //TODO find way to have this method be accessable from all model files
     protected LocalDate convertDate(String date){
-        if(date != null){
+        if(date != null && date != ""){
             String[] dateComponents = date.split("/");
         
             int year = Integer.parseInt(dateComponents[2]);
