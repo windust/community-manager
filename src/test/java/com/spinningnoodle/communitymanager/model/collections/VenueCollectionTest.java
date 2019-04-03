@@ -91,12 +91,12 @@ class VenueCollectionTest {
 
   @Test
   void whenAVenueRequestsADateThenItReturnsTrue() {
-    assertTrue(venueCollection.updateRequestedDate("Excellent", LocalDate.of(1, 1, 1970)));
+    assertTrue(venueCollection.updateRequestedDate("Excellent", LocalDate.of(1970,1,1)));
   }
 
   @Test
   void whenAVenueWithInvalidNameRequestsADateThenItReturnsTrue() {
-    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", LocalDate.of(1,1,1970)));
+    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", LocalDate.of(1970,1,1)));
   }
 
 	@Test

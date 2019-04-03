@@ -10,6 +10,7 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
@@ -137,7 +138,7 @@ public class modelIntegrationTest {
 
         Venue venueByToken = testManager.getVenueByToken("123N");
         assertEquals(expectedAvailableDatesMeetups.get(0).get("name"),venueByToken.getName());
-        assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"),venueByToken.getRequestedHostingDate());
+        assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"), Entity.dateFormat.format(venueByToken.getRequestedHostingDate()));
         assertEquals(Response.ACCEPTED,venueByToken.getResponse());
     }
 
@@ -243,7 +244,7 @@ public class modelIntegrationTest {
             expectedDates.add(expectedVenues.get(i).get("requestedDate"));
         }
         for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
-            actualDates.add(actualRequestedDatesMeetups.get(i).getRequestedHostingDate().toString());
+            actualDates.add(Entity.dateFormat.format(actualRequestedDatesMeetups.get(i).getRequestedHostingDate()));
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);

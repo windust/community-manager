@@ -10,11 +10,13 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
@@ -61,7 +63,7 @@ public class GoogleSheetsManager implements DataManager {
         meetupCollection = meetupCollection.fetchFromDataStorage();
         
         if(!requestedDate.equals("notHosting")){
-            LocalDate date = convertDate(requestedDate);
+            LocalDate date = Entity.convertDate(requestedDate);
             
             if(date.equals(dateRequestedByAdmin)){
                 return meetupCollection.setVenueForMeetup(venueName, date) && venueCollection.updateResponse(venueName, Response.ACCEPTED);
@@ -74,20 +76,6 @@ public class GoogleSheetsManager implements DataManager {
             return venueCollection.updateResponse(venueName, Response.DECLINED);
         }
         
-    }
-    
-    //TODO find way to have this method be accessable from all model files
-    protected LocalDate convertDate(String date){
-        if(date != null && date != ""){
-            String[] dateComponents = date.split("/");
-        
-            int year = Integer.parseInt(dateComponents[2]);
-            int month = Integer.parseInt(dateComponents[0]);
-            int day = Integer.parseInt(dateComponents[1]);
-        
-            return LocalDate.of(year, month, day);
-        }
-        return null;
     }
 
     @Override

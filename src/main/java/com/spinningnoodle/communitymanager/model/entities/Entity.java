@@ -15,6 +15,7 @@ import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -28,6 +29,8 @@ public abstract class Entity extends Observable {
 
 	private int entityId;
 	private int primaryKey;
+	
+	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
 	public Entity() {
 		setEntityId();
@@ -63,13 +66,24 @@ public abstract class Entity extends Observable {
 		this.primaryKey = primaryKey;
 	}
 	
-	protected LocalDate convertDate(String date){
+	public static LocalDate convertDate(String date){
+		int year, month, day;
+		
 		if(date != null && date != ""){
-			String[] dateComponents = date.split("/");
-			
-			int year = Integer.parseInt(dateComponents[2]);
-			int month = Integer.parseInt(dateComponents[0]);
-			int day = Integer.parseInt(dateComponents[1]);
+			if(date.contains("/")){
+				String[] dateComponents = date.split("/");
+				
+				year = Integer.parseInt(dateComponents[2]);
+				month = Integer.parseInt(dateComponents[0]);
+				day = Integer.parseInt(dateComponents[1]);
+			}
+			else{
+				String[] dateComponents = date.split("-");
+				
+				year = Integer.parseInt(dateComponents[0]);
+				month = Integer.parseInt(dateComponents[1]);
+				day = Integer.parseInt(dateComponents[2]);
+			}
 			
 			return LocalDate.of(year, month, day);
 		}

@@ -24,13 +24,13 @@ import static org.mockito.Mockito.when;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +119,7 @@ class GoogleSheetsManagerTest {
             List<Meetup> meetups = new ArrayList<>();
             Meetup meetup = new Meetup();
             meetup.setPrimaryKey(Integer.parseInt(expectedMeetupValues.get("primaryKey")));
-            meetup.setDate(googleSheetsManager.convertDate(expectedMeetupValues.get("date")));
+            meetup.setDate(Entity.convertDate(expectedMeetupValues.get("date")));
             meetup.setSpeaker(expectedMeetupValues.get("speaker"));
             meetup.setTopic(expectedMeetupValues.get("topic"));
             meetup.setDescription(expectedMeetupValues.get("description"));
@@ -132,7 +132,7 @@ class GoogleSheetsManagerTest {
         Meetup meetup = googleSheetsManager.getAllMeetups().get(0);
 
         assertAll(() -> {
-            assertEquals(expectedMeetupValues.get("date"), meetup.getDate());
+            assertEquals(expectedMeetupValues.get("date"), Entity.dateFormat.format(meetup.getDate()));
             assertEquals(expectedMeetupValues.get("topic"), meetup.getTopic());
             assertEquals(expectedMeetupValues.get("speaker"), meetup.getSpeaker());
             assertEquals(expectedMeetupValues.get("venue"), meetup.getVenue());
@@ -169,7 +169,7 @@ class GoogleSheetsManagerTest {
             Venue venue = new Venue();
 
             venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
-            venue.setRequestedHostingDate(googleSheetsManager.convertDate(expectedVenueValues.get("requestedDate")));
+            venue.setRequestedHostingDate(Entity.convertDate(expectedVenueValues.get("requestedDate")));
             venue.setResponse(Response.ACCEPTED);
             venue.setName(expectedVenueValues.get("venueName"));
 
@@ -181,7 +181,7 @@ class GoogleSheetsManagerTest {
 
         assertAll(() -> {
             assertEquals(Integer.parseInt(expectedVenueValues.get("primaryKey")), venue.getPrimaryKey());
-            assertEquals(expectedVenueValues.get("requestedDate"), venue.getRequestedHostingDate());
+            assertEquals(expectedVenueValues.get("requestedDate"), Entity.dateFormat.format(venue.getRequestedHostingDate()));
             assertEquals(Response.ACCEPTED, venue.getResponse());
             assertEquals(expectedVenueValues.get("venueName"), venue.getName());
         });
@@ -199,7 +199,7 @@ class GoogleSheetsManagerTest {
             venue.setName("Venue Inc.");
             return venue;
         });
-        googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970));
+        googleSheetsManager.requestHost("1", LocalDate.of(1970,1,1));
         verify(venueCollection, atLeastOnce()).updateResponse("Venue Inc.", Response.UNDECIDED);
     }
 
@@ -211,8 +211,8 @@ class GoogleSheetsManagerTest {
             return venue;
         });
 
-        googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970));
-        verify(venueCollection, atLeastOnce()).updateRequestedDate("Venue Inc.", LocalDate.of(1,1,1970));
+        googleSheetsManager.requestHost("1", LocalDate.of(1970,1,1));
+        verify(venueCollection, atLeastOnce()).updateRequestedDate("Venue Inc.", LocalDate.of(1970,1,1));
     }
 
     @Test
@@ -225,6 +225,6 @@ class GoogleSheetsManagerTest {
             return venue;
         });
 
-        assertEquals(expectedToken, googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970)));
+        assertEquals(expectedToken, googleSheetsManager.requestHost("1", LocalDate.of(1970,1,1)));
     }
 }

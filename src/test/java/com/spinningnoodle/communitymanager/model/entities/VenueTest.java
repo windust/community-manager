@@ -34,7 +34,7 @@ class VenueTest {
     private final String testContactEmail = "jsmith@mail.com";
     private final String testContactPhone = "5555555555";
     private final String testContactAltPhone = "(555) 555 - 5555";
-    private final LocalDate testRequestedHostingDate = LocalDate.of(1,1,1970);
+    private final LocalDate testRequestedHostingDate = LocalDate.of(1970,1,1);
 
     @BeforeEach
     void setUp() {
@@ -157,7 +157,7 @@ class VenueTest {
 
     @Test
     void whenIHaveAVenueThenICanSetTheDateIRequestThisVenueToHost() {
-        LocalDate newHostingDate = LocalDate.of(1,2,1971);
+        LocalDate newHostingDate = LocalDate.of(1971,1,2);
         venue.setRequestedHostingDate(newHostingDate);
         assertEquals(newHostingDate, venue.getRequestedHostingDate());
     }
@@ -229,7 +229,7 @@ class VenueTest {
 
         @Test
         void whenIBuildAVenueThenRequestedHostingDateIsSet() {
-            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate());
+            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate().toString());
         }
 
 

@@ -88,6 +88,6 @@ class MeetupCollectionTest {
 
     @Test
     void whenAMeetupDoesNotExistForADateReturnFalse() {
-        assertFalse(meetupCollection.setVenueForMeetup("should false", LocalDate.of(1,1,1970)));
+        assertFalse(meetupCollection.setVenueForMeetup("should false", LocalDate.of(1970,1,1)));
     }
 }
