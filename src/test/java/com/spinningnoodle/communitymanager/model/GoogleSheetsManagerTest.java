@@ -28,6 +28,7 @@ import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,24 +62,24 @@ class GoogleSheetsManagerTest {
 
     @Test
     void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
-        when(meetupCollection.setVenueForMeetup("NewName", "01/14/2019")).thenReturn(true);
+        when(meetupCollection.setVenueForMeetup("NewName", LocalDate.of(2019,1,14))).thenReturn(true);
         when(venueCollection.updateResponse("01/14/2019", Response.ACCEPTED)).thenReturn(true);
-        googleSheetsManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019");
-        verify(meetupCollection, atLeastOnce()).setVenueForMeetup("NewName", "01/14/2019");
+        googleSheetsManager.setVenueForMeetup("NewName", "01/14/2019",LocalDate.of(2019,1,14));
+        verify(meetupCollection, atLeastOnce()).setVenueForMeetup("NewName", LocalDate.of(2019,1,14));
 
     }
 
     @Test
     void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
-        when(meetupCollection.setVenueForMeetup("True Venue", "01/14/2019")).thenReturn(true);
-        when(meetupCollection.setVenueForMeetup("False Venue", "01/14/2019")).thenReturn(false);
+        when(meetupCollection.setVenueForMeetup("True Venue", LocalDate.of(2019,1,14))).thenReturn(true);
+        when(meetupCollection.setVenueForMeetup("False Venue", LocalDate.of(2019,1,14))).thenReturn(false);
 
         when(venueCollection.updateResponse("True Venue", Response.ACCEPTED)).thenReturn(true);
         when(venueCollection.updateResponse("False Venue", Response.ACCEPTED)).thenReturn(true);
 
         assertAll(() -> {
-            assertTrue(googleSheetsManager.setVenueForMeetup("True Venue", "01/14/2019","01/14/2019"));
-            assertFalse(googleSheetsManager.setVenueForMeetup("False Venue", "01/14/2019","01/14/2019"));
+            assertTrue(googleSheetsManager.setVenueForMeetup("True Venue", "01/14/2019",LocalDate.of(2019,1,14)));
+            assertFalse(googleSheetsManager.setVenueForMeetup("False Venue", "01/14/2019",LocalDate.of(2019,1,14)));
         });
     }
 
@@ -111,7 +112,7 @@ class GoogleSheetsManagerTest {
             List<Meetup> meetups = new ArrayList<>();
             Meetup meetup = new Meetup();
             meetup.setPrimaryKey(Integer.parseInt(expectedMeetupValues.get("primaryKey")));
-            meetup.setDate(expectedMeetupValues.get("date"));
+            meetup.setDate(googleSheetsManager.convertDate(expectedMeetupValues.get("date")));
             meetup.setSpeaker(expectedMeetupValues.get("speaker"));
             meetup.setTopic(expectedMeetupValues.get("topic"));
             meetup.setDescription(expectedMeetupValues.get("description"));
@@ -161,7 +162,7 @@ class GoogleSheetsManagerTest {
             Venue venue = new Venue();
 
             venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
-            venue.setRequestedHostingDate(expectedVenueValues.get("requestedDate"));
+            venue.setRequestedHostingDate(googleSheetsManager.convertDate(expectedVenueValues.get("requestedDate")));
             venue.setResponse(Response.ACCEPTED);
             venue.setName(expectedVenueValues.get("venueName"));
 
@@ -191,7 +192,7 @@ class GoogleSheetsManagerTest {
             venue.setName("Venue Inc.");
             return venue;
         });
-        googleSheetsManager.requestHost("1", "01/01/1970");
+        googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970));
         verify(venueCollection, atLeastOnce()).updateResponse("Venue Inc.", Response.UNDECIDED);
     }
 
@@ -203,8 +204,8 @@ class GoogleSheetsManagerTest {
             return venue;
         });
 
-        googleSheetsManager.requestHost("1", "01/01/1970");
-        verify(venueCollection, atLeastOnce()).updateRequestedDate("Venue Inc.", "01/01/1970");
+        googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970));
+        verify(venueCollection, atLeastOnce()).updateRequestedDate("Venue Inc.", LocalDate.of(1,1,1970));
     }
 
     @Test
@@ -217,6 +218,6 @@ class GoogleSheetsManagerTest {
             return venue;
         });
 
-        assertEquals(expectedToken, googleSheetsManager.requestHost("1", "01/01/1970"));
+        assertEquals(expectedToken, googleSheetsManager.requestHost("1", LocalDate.of(1,1,1970)));
     }
 }

@@ -11,6 +11,7 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -31,7 +32,7 @@ public class Venue extends ResponderEntity {
     private String contactEmail;
     private String contactPhone;
     private String contactAltPhone;
-    private String requestedHostingDate;
+    private LocalDate requestedHostingDate;
     private String response;
 
     @Override
@@ -44,7 +45,7 @@ public class Venue extends ResponderEntity {
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedHostingDate(fields.getOrDefault("requestedHostingDate", null));
+        this.setRequestedHostingDate(convertDate(fields.getOrDefault("requestedHostingDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("response", "")));
         this.setToken(fields.getOrDefault("token", ""));
 
@@ -73,7 +74,7 @@ public class Venue extends ResponderEntity {
 	 */
     public Venue(int primaryKey, String name, String address, int capacity, String contactPerson,
         String contactEmail, String contactPhone, String contactAltPhone,
-        String requestedHostingDate) {
+        LocalDate requestedHostingDate) {
         this.setPrimaryKey(primaryKey);
         this.name = name;
         this.address = address;
@@ -173,14 +174,14 @@ public class Venue extends ResponderEntity {
 	/**
 	 * @return The date that was this venue was requested to host by Java User Group
 	 */
-    public String getRequestedHostingDate() {
+    public LocalDate getRequestedHostingDate() {
         return requestedHostingDate;
     }
 
 	/**
 	 * @param requestedHostingDate The date this venue was requested to host by Java User Group
 	 */
-    public void setRequestedHostingDate(String requestedHostingDate) {
+    public void setRequestedHostingDate(LocalDate requestedHostingDate) {
         this.requestedHostingDate = requestedHostingDate;
     }
 

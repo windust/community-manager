@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model.entities;
  */
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -27,7 +28,7 @@ public class Meetup extends Entity {
 
 	private int meetupId;
 	private int primaryKey;
-	private String date;
+	private LocalDate date;
 	private String speaker;
 	private String topic;
 	private String description;
@@ -52,7 +53,7 @@ public class Meetup extends Entity {
      * @param description The description of the meetup
      * @param venue The venue which will host the venue
      */
-	public Meetup(int primaryKey, String date, String speaker, String topic,
+	public Meetup(int primaryKey, LocalDate date, String speaker, String topic,
 		String description, String venue, String food, String after) {
 		this();
 		this.primaryKey = primaryKey;
@@ -68,7 +69,7 @@ public class Meetup extends Entity {
 	@Override
 	public Meetup build(Map<String, String> fields) throws AttributeException {
 		this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
-		this.setDate(fields.getOrDefault("date", null));
+		this.setDate(convertDate(fields.getOrDefault("date", null)));
 		this.setSpeaker(fields.getOrDefault("speaker", null));
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
@@ -120,14 +121,14 @@ public class Meetup extends Entity {
     /**
      * @return The date the meetup will take place
      */
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
     /**
      * @param date The date the meetup will take place
      */
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

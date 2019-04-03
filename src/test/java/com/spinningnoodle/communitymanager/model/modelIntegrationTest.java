@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
@@ -18,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +28,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -154,31 +153,31 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("When I set the venue for a hosted event, the venue host is unchanged.")
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
-       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019","01/14/2019"));
+       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019",LocalDate.of(2019,1,14)));
     }
 
     @Test
     @DisplayName("When I set the venue for an unhosted event, the venue host is filled.")
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
-        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2019","01/14/2019"));
+        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2019",LocalDate.of(2019,1,14)));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue to an invalid venue")
     void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2019","01/14/2019"));
+        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2019",LocalDate.of(2019,1,14)));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue for invalid event date.")
     void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019","01/14/2019"));
+        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019",LocalDate.of(2019,1,14)));
     }
 
     @Test
     @DisplayName("Model returns true, when I venue declines to test.")
     void whenISetTheVenueForAnEventWithNotHostingDateReturnsTrue(){
-        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting","01/14/2019"));
+        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting",LocalDate.of(2019,1,14)));
     }
 
     /*
@@ -212,7 +211,7 @@ public class modelIntegrationTest {
             expectedDates.add(expected.get(i).get("date"));
         }
         for(int i =0; i < actualAvailableDatesMeetups.size(); i++) {
-            actualDates.add(actualAvailableDatesMeetups.get(i).getDate());
+            actualDates.add(actualAvailableDatesMeetups.get(i).getDate().toString());
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);
@@ -244,7 +243,7 @@ public class modelIntegrationTest {
             expectedDates.add(expectedVenues.get(i).get("requestedDate"));
         }
         for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
-            actualDates.add(actualRequestedDatesMeetups.get(i).getRequestedHostingDate());
+            actualDates.add(actualRequestedDatesMeetups.get(i).getRequestedHostingDate().toString());
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);
@@ -254,13 +253,14 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Returns null, When I retrieve token with invalid primary key.")
     void whenIRetrieveTokenWithInvalidPrimaryKeyReturnsNull(){
-           assertEquals(null, testManager.requestHost("455","01/14/2019"));
+           assertEquals(null, testManager.requestHost("455",LocalDate.of(2019,1,14)));
     }
 
     @Test
     @DisplayName("Returns Token, When I retrieve token with valid primary key.")
     void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
-        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2","01/14/2019"));
+        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2",
+            LocalDate.of(2019,1,14)));
     }
 
     @BeforeEach

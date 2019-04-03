@@ -10,9 +10,11 @@ package com.spinningnoodle.communitymanager.model.entities;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.observer.Observable;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -59,5 +61,18 @@ public abstract class Entity extends Observable {
 			throw new UnexpectedPrimaryKeyException();
 		}
 		this.primaryKey = primaryKey;
+	}
+	
+	protected LocalDate convertDate(String date){
+		if(date != null){
+			String[] dateComponents = date.split("/");
+			
+			int year = Integer.parseInt(dateComponents[2]);
+			int month = Integer.parseInt(dateComponents[0]);
+			int day = Integer.parseInt(dateComponents[1]);
+			
+			return LocalDate.of(year, month, day);
+		}
+		return null;
 	}
 }

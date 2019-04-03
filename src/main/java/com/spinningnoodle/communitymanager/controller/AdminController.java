@@ -16,6 +16,7 @@ import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,7 +150,21 @@ public class AdminController {
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
 
-            return ((GoogleSheetsManager) model).requestHost(venueKey, date);
+            return ((GoogleSheetsManager) model).requestHost(venueKey, convertDate(date));
         }
+    }
+    
+    //TODO find way to access method located in model
+    protected LocalDate convertDate(String date){
+        if(date != null){
+            String[] dateComponents = date.split("/");
+        
+            int year = Integer.parseInt(dateComponents[2]);
+            int month = Integer.parseInt(dateComponents[0]);
+            int day = Integer.parseInt(dateComponents[1]);
+        
+            return LocalDate.of(year, month, day);
+        }
+        return null;
     }
 }

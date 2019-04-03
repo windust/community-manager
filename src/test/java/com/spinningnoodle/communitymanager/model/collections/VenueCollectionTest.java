@@ -20,6 +20,7 @@ import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -90,12 +91,12 @@ class VenueCollectionTest {
 
   @Test
   void whenAVenueRequestsADateThenItReturnsTrue() {
-    assertTrue(venueCollection.updateRequestedDate("Excellent", "01/01/1970"));
+    assertTrue(venueCollection.updateRequestedDate("Excellent", LocalDate.of(1, 1, 1970)));
   }
 
   @Test
   void whenAVenueWithInvalidNameRequestsADateThenItReturnsTrue() {
-    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", "01/01/1970"));
+    assertFalse(venueCollection.updateRequestedDate("DoesNotExist!!!", LocalDate.of(1,1,1970)));
   }
 
 	@Test

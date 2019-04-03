@@ -18,6 +18,7 @@ import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -194,8 +195,8 @@ public class AdminControllerTest {
     @Test
     @DisplayName("getToken returns a token for specified venue")
     public void getTokenReturnSpecificToken() throws InvalidUserException {
-        when(model.requestHost("1", "1/14/2019")).thenReturn("123N");
-        String expected = model.requestHost("1", "1/14/2019");
+        when(model.requestHost("1", LocalDate.of(2019,1,14))).thenReturn("123N");
+        String expected = model.requestHost("1", LocalDate.of(2019,1,14));
         
         adminController.loggedIn = true;
         
@@ -207,7 +208,7 @@ public class AdminControllerTest {
         Meetup meetup = new Meetup();
         
         meetup.setPrimaryKey(1);
-        meetup.setDate("01/14/2019");
+        meetup.setDate(LocalDate.of(2019,1,14));
         meetup.setSpeaker("Purple");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
@@ -216,7 +217,7 @@ public class AdminControllerTest {
         
         meetup = new Meetup();
         meetup.setPrimaryKey(2);
-        meetup.setDate("02/19/2019");
+        meetup.setDate(LocalDate.of(2019,2,19));
         meetup.setSpeaker("Yellow");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
@@ -225,7 +226,7 @@ public class AdminControllerTest {
         
         meetup = new Meetup();
         meetup.setPrimaryKey(3);
-        meetup.setDate("03/22/2019");
+        meetup.setDate(LocalDate.of(2019,3,22));
         meetup.setSpeaker("John Doe");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
@@ -250,7 +251,7 @@ public class AdminControllerTest {
         venue.setContactEmail("freddy@excellent.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate("01/14/2019");
+        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
         
         venue = new Venue();
@@ -265,7 +266,7 @@ public class AdminControllerTest {
         venue.setContactEmail("nimret@amazing.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate("01/14/2019");
+        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
         
         return venueData;

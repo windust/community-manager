@@ -16,6 +16,7 @@ import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class SignUpController {
     
     String currentToken;
     String venueName;
-    String requestedDate;
+    LocalDate requestedDate;
     String hostingMessage = "";
     String alertMessage = "";
     boolean requestedDateAvailable = true;
@@ -80,7 +81,7 @@ public class SignUpController {
             session.setAttribute("meetups", meetups);
             session.setAttribute("venue", venue);
             session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("ask", this.requestedDateAvailable && response.equals(""));
+            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
             session.setAttribute("alert", alert);
             session.setAttribute("alertMessage", alertMessage);
             
@@ -122,7 +123,7 @@ public class SignUpController {
         }
     }
     
-    private boolean isDateAvailable(List<Meetup> meetups, String date) {
+    private boolean isDateAvailable(List<Meetup> meetups, LocalDate date) {
         for(Meetup meetup : meetups){
             if(meetup.getDate().equals(date) && meetup.getVenue().equals("")){
                 return true;

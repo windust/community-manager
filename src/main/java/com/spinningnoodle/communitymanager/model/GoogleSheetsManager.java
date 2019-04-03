@@ -20,6 +20,7 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Respon
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class GoogleSheetsManager implements DataManager {
@@ -56,18 +57,37 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin){
+    public boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin){
         meetupCollection = meetupCollection.fetchFromDataStorage();
         
-        if(requestedDate.equals("notHosting")){
-            return venueCollection.updateResponse(venueName, Response.DECLINED);
-        }
-        else if(requestedDate.equals(dateRequestedByAdmin)){
-            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, Response.ACCEPTED);
+        if(!requestedDate.equals("notHosting")){
+            LocalDate date = convertDate(requestedDate);
+            
+            if(date.equals(dateRequestedByAdmin)){
+                return meetupCollection.setVenueForMeetup(venueName, date) && venueCollection.updateResponse(venueName, Response.ACCEPTED);
+            }
+            else{
+                return meetupCollection.setVenueForMeetup(venueName, date);
+            }
         }
         else{
-            return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+            return venueCollection.updateResponse(venueName, Response.DECLINED);
         }
+        
+    }
+    
+    //TODO find way to have this method be accessable from all model files
+    protected LocalDate convertDate(String date){
+        if(date != null){
+            String[] dateComponents = date.split("/");
+        
+            int year = Integer.parseInt(dateComponents[2]);
+            int month = Integer.parseInt(dateComponents[0]);
+            int day = Integer.parseInt(dateComponents[1]);
+        
+            return LocalDate.of(year, month, day);
+        }
+        return null;
     }
 
     @Override
@@ -76,7 +96,7 @@ public class GoogleSheetsManager implements DataManager {
         return venueCollection.getAll();
     }
     
-    public String requestHost(String primaryKey, String date){
+    public String requestHost(String primaryKey, LocalDate date){
         venueCollection = venueCollection.fetchFromDataStorage();
         try {
             int key = Integer.parseInt(primaryKey);
@@ -89,7 +109,7 @@ public class GoogleSheetsManager implements DataManager {
         }
     }
     
-    private void setRequestedDate(String venueName, String date){
+    private void setRequestedDate(String venueName, LocalDate date){
         venueCollection.updateResponse(venueName, Response.UNDECIDED);
         venueCollection.updateRequestedDate(venueName, date);
     }

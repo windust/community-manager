@@ -17,6 +17,7 @@ import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyExcept
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -96,10 +97,10 @@ public class VenueCollection extends ResponderCollection<Venue> {
 	 * @param date The date the venue requested
 	 * @return If the dataStorage was successfully updated
 	 */
-	public boolean updateRequestedDate(String venueName, String date){
+	public boolean updateRequestedDate(String venueName, LocalDate date){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", date);
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", date.toString());
 			}
 		}
 		

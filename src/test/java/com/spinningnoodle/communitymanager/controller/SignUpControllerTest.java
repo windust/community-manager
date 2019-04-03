@@ -18,6 +18,7 @@ import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -182,7 +183,7 @@ public class SignUpControllerTest {
     public void hostingMessageWhenVenueSaysYesButIsNotHosting(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
-        when(model.setVenueForMeetup("Excellent", "notHosting", "01/14/2019")).thenReturn(true);
+        when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(true);
         signUpController.venue(validToken, session);
 
         Assertions.assertEquals("Thank you for your consideration.", signUpController.hostingMessage);
@@ -193,7 +194,7 @@ public class SignUpControllerTest {
     public void hostingMessageWhenVenueSaysYesButIsNotHostingThrowsException(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
-        when(model.setVenueForMeetup("Excellent", "notHosting", "01/14/2019")).thenReturn(false);
+        when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(false);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> signUpController.venue(validToken, session));
     }
@@ -202,7 +203,7 @@ public class SignUpControllerTest {
         Venue partialVenue = new Venue();
 
         partialVenue.setName("Excellent");
-        partialVenue.setRequestedHostingDate("01/14/2019");
+        partialVenue.setRequestedHostingDate(LocalDate.of(2019,1,14));
         partialVenue.setResponse(response);
 
         return partialVenue;
@@ -213,7 +214,7 @@ public class SignUpControllerTest {
         Meetup meetup = new Meetup();
         
         meetup.setPrimaryKey(1);
-        meetup.setDate("01/14/2019");
+        meetup.setDate(LocalDate.of(2019,1,14));
         meetup.setSpeaker("Purple");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
@@ -222,7 +223,7 @@ public class SignUpControllerTest {
         
         meetup = new Meetup();
         meetup.setPrimaryKey(2);
-        meetup.setDate("02/19/2019");
+        meetup.setDate(LocalDate.of(2019,2,19));
         meetup.setSpeaker("Yellow");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
@@ -231,7 +232,7 @@ public class SignUpControllerTest {
         
         meetup = new Meetup();
         meetup.setPrimaryKey(3);
-        meetup.setDate("03/22/2019");
+        meetup.setDate(LocalDate.of(2019,3,22));
         meetup.setSpeaker("John Doe");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");

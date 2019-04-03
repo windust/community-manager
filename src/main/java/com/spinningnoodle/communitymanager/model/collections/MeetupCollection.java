@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -63,7 +64,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 	 * @param hostingDate The date to be hosted
 	 * @return true or false if the DataStore updated
 	 */
-	public boolean setVenueForMeetup(String venueName, String hostingDate) {
+	public boolean setVenueForMeetup(String venueName, LocalDate hostingDate) {
 		for(Meetup meetup : getEntitiesValues()) {
 			if(meetup.getDate().equals(hostingDate) && (meetup.getVenue() == null || meetup.getVenue().isBlank())) {
 				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "venue", venueName);

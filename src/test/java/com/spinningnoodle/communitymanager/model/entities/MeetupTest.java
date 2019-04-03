@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.model.entities;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,7 @@ import org.junit.jupiter.api.Test;
 class MeetupTest {
 	private Meetup meetup;
 	private final int testPrimaryKey = 1;
-	private final String testDate = "01/01/1970";
+	private final LocalDate testDate = LocalDate.of(1,1,1970);
 	private final String testSpeaker = "Jane Doe";
 	private final String testTopic = "Java programming";
 	private final String testDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec quidem liberius ab eo dicuntur et saepius.";
@@ -79,7 +80,7 @@ class MeetupTest {
 
 	@Test
 	void canSetMeetupDate() {
-		String newDate = "02/02/2020";
+		LocalDate newDate = LocalDate.of(2,2,2020);
 		meetup.setDate(newDate);
 		assertEquals(newDate, meetup.getDate());
 	}
@@ -165,7 +166,7 @@ class MeetupTest {
 		@BeforeEach
 		void setUp() {
 			fields.put("primaryKey", Integer.toString(testPrimaryKey));
-			fields.put("date", testDate);
+			fields.put("date", testDate.toString());
 			fields.put("speaker", testSpeaker);
 			fields.put("topic", testTopic);
 			fields.put("description", testDescription);
