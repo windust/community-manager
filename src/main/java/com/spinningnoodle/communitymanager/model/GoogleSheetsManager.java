@@ -26,13 +26,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class GoogleSheetsManager implements DataManager {
-    DataStorage dataStorage;
     MeetupCollection meetupCollection;
     VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
-    //TODO rework to remove defualt constructor, currently used for dummy test class
-    public GoogleSheetsManager(){}
+    public GoogleSheetsManager(){
+        meetupCollection = new MeetupCollection();
+        venueCollection = new VenueCollection();
+    }
     
     public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
@@ -40,7 +41,7 @@ public class GoogleSheetsManager implements DataManager {
 //            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
 //            config.put("storageID",testIDFile.next());
 //            if(config.get("storage").equals("google")) {
-                dataStorage = new GoogleSheets(storageID);
+                DataStorage dataStorage = new GoogleSheets(storageID);
 //            }
             meetupCollection = new MeetupCollection(dataStorage);
             venueCollection = new VenueCollection(dataStorage);

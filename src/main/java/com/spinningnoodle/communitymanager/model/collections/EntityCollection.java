@@ -18,17 +18,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 /**
  * @param <T> Entity type
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
+@Repository
+@Qualifier("entities")
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
+	@Autowired
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 	private final String TABLE_NAME;
 
+	public EntityCollection(String tableName){
+		this.TABLE_NAME = tableName;
+	}
+	
 	/**
 	 * @param dataStorage the data storage to use as a database
 	 */

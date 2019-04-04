@@ -20,6 +20,7 @@ import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * The VenueCollection stores a collection of venues and connect the list to a DataStorage.
@@ -27,8 +28,13 @@ import java.util.Map;
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
+@Repository(value = "venues")
 public class VenueCollection extends ResponderCollection<Venue> {
 
+	public VenueCollection(){
+		super("venues");
+	}
+	
 	public VenueCollection(DataStorage dataStorage) {
 		super(dataStorage, "venues");
 	}
