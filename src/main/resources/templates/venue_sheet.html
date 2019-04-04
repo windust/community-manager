@@ -10,31 +10,24 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js">
-  <head th:fragment="head (title)">
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Meetup</title>
+    <title>Venue Sheet</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
   </head>
-  <body class="meetup">
-    <header class="navbar" th:fragment="navbar (pageName)">
-      <nav>
-        <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
-          <ul>
-            <ul>
-              <li><a href="/upcoming">Admin</a></li>
-              <li><a href="/upcoming">Upcoming Dates</a></li>
-              <li><a href="/venue_sheet">Google Sheets</a></li>
-            </ul>
-            <li id="logout"><a href="/logout">Logout</a></li>
-          </ul>
-      </nav>
-      <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
-    </header>
+  <body id="meetup">
+    <div th:replace="fragments/adminFragments.html :: navbar(pageName='Google Sheets:Venue')"></div>
+    <div>
+      <div class="guard moveUp"></div>
+      <div class="block moveUp"></div>
+      <iframe class="moveUp" th:src="${session.dbaccess}">This browser does not support IFrames.</iframe>
+    </div>
 
-    <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>
+    <footer th:replace="fragments/adminFragments.html :: footer"></footer>
+    <script src="js/meetup.js" async defer></script>
   </body>
 </html>

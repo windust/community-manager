@@ -1,0 +1,33 @@
+@import '../abstracts/colors';
+
+iframe,
+.iframe {
+  margin-left: 10vw;
+  width: 79.5%;
+  height: 75vh;
+  float: left;
+  position: relative;
+  z-index: -10;
+}
+
+.moveUp {
+  margin-top: -20vh;
+}
+
+.block {
+  width: 100vw;
+  height: 20vh;
+  float: left;
+  background: white;
+  position: absolute;
+  z-index: -8;
+}
+
+.guard {
+  width: 100vw;
+  height: 27vh;
+  float: left;
+  background: transparent;
+  position: absolute;
+  z-index: -9;
+}

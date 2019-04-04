@@ -14,8 +14,9 @@
 
 footer {
   margin: 1% 10%;
-  padding: 0.1em;
+  padding: 1em;
   text-align: center;
   background-color: theme-color('primary', 'dark');
   color: theme-color('base', 'light');
+  clear: both;
 }

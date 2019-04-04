@@ -83,7 +83,8 @@ public class GoogleSheetsManager implements DataManager {
         venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getAll();
     }
-    
+
+    @Override
     public String requestHost(String primaryKey, LocalDate date){
         venueCollection = venueCollection.fetchFromDataStorage();
         try {
@@ -96,7 +97,12 @@ public class GoogleSheetsManager implements DataManager {
             return null;
         }
     }
-    
+
+    @Override
+    public String getDatabaseAccessPage(){
+        return "https://docs.google.com/spreadsheets/d/113AbcCLo0ZAJLhoqP0BXaJPRlzslESkkk98D44Ut1Do/edit#gid=0";
+    }
+
     private void setRequestedDate(String venueName, LocalDate date){
         venueCollection.updateResponse(venueName, Response.UNDECIDED);
         venueCollection.updateRequestedDate(venueName, date);
