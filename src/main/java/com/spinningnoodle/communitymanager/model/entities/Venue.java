@@ -57,6 +57,10 @@ public class Venue extends ResponderEntity {
         super();
     }
 
+    public Venue(int primaryKey) {
+        super(primaryKey);
+    }
+
 	/**
 	 * Create a new venue with all fields and a unique generated ID
 	 *

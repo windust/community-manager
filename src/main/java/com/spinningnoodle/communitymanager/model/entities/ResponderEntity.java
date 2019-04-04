@@ -26,6 +26,12 @@ public abstract class ResponderEntity extends Entity {
     private Response response;
     private String token = "";
 
+    public ResponderEntity() {}
+
+    public ResponderEntity(int primaryKey) {
+        super(primaryKey);
+    }
+
     /**
      * If the current token is not in a valid format a new token will be generated.
      *

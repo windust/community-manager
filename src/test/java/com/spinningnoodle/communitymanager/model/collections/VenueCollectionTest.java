@@ -52,10 +52,10 @@ class VenueCollectionTest {
 
 	@Test
 	void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
-		Venue testVenue = new Venue();
+		Venue testVenue = new Venue(1);
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(testVenue, venueCollection.getById(testVenue.getEntityId()));
+		assertEquals(testVenue, venueCollection.getById(testVenue.getPrimaryKey()));
 	}
 
 	@Test

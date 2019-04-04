@@ -57,10 +57,10 @@ class MeetupCollectionTest {
 
     @Test
     void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
-        Meetup testMeetup = new Meetup();
+        Meetup testMeetup = new Meetup(1);
         meetupCollection.addToCollection(testMeetup);
 
-        assertEquals(testMeetup, meetupCollection.getById(testMeetup.getEntityId()));
+        assertEquals(testMeetup, meetupCollection.getById(testMeetup.getPrimaryKey()));
     }
 
     @Test
