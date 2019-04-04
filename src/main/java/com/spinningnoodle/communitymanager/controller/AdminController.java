@@ -150,7 +150,24 @@ public class AdminController {
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
 
-            return ((GoogleSheetsManager) model).requestHost(venueKey, Entity.convertDate(date));
+            return  model.requestHost(venueKey, Entity.convertDate(date));
         }
+    }
+
+    /**
+     * Route to page for displaying upcoming dates
+     * @param session - session to store variables for view to display
+     * @return upcoming_dates - name of html page to render
+     */
+    @GetMapping("/venue_sheet")
+    public String venueSheet(HttpSession session) throws InvalidUserException {
+        if(!loggedIn) {
+            throw new InvalidUserException();
+        }
+
+        String url = model.getDatabaseAccessPage();
+        session.setAttribute("dbaccess", url);
+
+        return "venue_sheet";
     }
 }
