@@ -56,24 +56,6 @@ class MeetupTest {
 	}
 
 	@Test
-	void canGetItMeetupId() {
-		assertTrue(meetup.getMeetupId() >= 1);
-	}
-
-	@Test
-	void canSetItsMeetupIdToTheNextId() {
-		int originalId = meetup.getMeetupId();
-		meetup.setMeetupId();
-		assertEquals(originalId + 1, meetup.getMeetupId());
-	}
-
-	@Test
-	void eachMeetupIncrementsIdByOne() {
-		Meetup newMeetup = new Meetup();
-		assertEquals(newMeetup.getMeetupId(), meetup.getMeetupId() + 1);
-	}
-
-	@Test
 	void canGetMeetupDate() {
 		assertEquals(testDate, meetup.getDate());
 	}
