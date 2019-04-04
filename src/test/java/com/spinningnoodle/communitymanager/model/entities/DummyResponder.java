@@ -17,11 +17,11 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class DummyToken extends TokenEntity {
+public class DummyResponder extends ResponderEntity {
 
     @Override
     public Entity build(Map<String, String> fields){
-        DummyToken temp = new DummyToken();
+        DummyResponder temp = new DummyResponder();
         
         temp.setName(fields.get("name"));
         temp.setToken(fields.get("token"));

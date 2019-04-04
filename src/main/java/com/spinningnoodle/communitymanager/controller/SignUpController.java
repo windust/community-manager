@@ -13,8 +13,12 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,12 +41,13 @@ public class SignUpController {
     
     String currentToken;
     String venueName;
-    String requestedDate;
+    LocalDate requestedDate;
     String hostingMessage = "";
     String alertMessage = "";
     boolean requestedDateAvailable = true;
     boolean alert = false;
     boolean hostingRequestedDate = false;
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
     //TODO update javadocs
     /**
@@ -56,15 +61,16 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
-            String response;
-            List<Map<String, String>> meetups;
-            meetups = model.getMeetupsByVenueToken(token);
+            Response response;
+            List<Meetup> meetups;
+            Venue venue;
+            meetups = model.getAllMeetups();
+            venue = model.getVenueByToken(token);
             
             currentToken = token;
-            this.venueName = meetups.get(0).get("name");
-            this.requestedDate = meetups.get(0).get("requestedDate");
-            response = meetups.get(0).get("response").toLowerCase();
-            meetups.remove(0);
+            this.venueName = venue.getName();
+            this.requestedDate = venue.getRequestedHostingDate();
+            response = venue.getResponse();
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
             
@@ -75,10 +81,9 @@ public class SignUpController {
             this.hostingMessage = getHostingMessage(response);
             
             session.setAttribute("meetups", meetups);
-            session.setAttribute("venueName", this.venueName);
+            session.setAttribute("venue", venue);
             session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("requestedDate", this.requestedDate);
-            session.setAttribute("ask", this.requestedDateAvailable && response.equals(""));
+            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
             session.setAttribute("alert", alert);
             session.setAttribute("alertMessage", alertMessage);
             
@@ -90,25 +95,25 @@ public class SignUpController {
         
     }
     
-    private String getHostingMessage(String response){
-        if(requestedDateAvailable && response.equals("")){
-            return "Can you host on " + requestedDate + "?";
+    private String getHostingMessage(Response response){
+        if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
+            return "Can you host on " + requestedDate.format(dateFormat) + "?";
         }
-        else if(response.equals("no")){
+        else if(response.equals(Response.DECLINED)){
             return "Thank you for your consideration.";
         }
         else if(!requestedDateAvailable && !hostingRequestedDate){
-            return "Thank you for volunteering but " + requestedDate + " is already being hosted by another venue.";
+            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
         }
         else if(hostingRequestedDate){
-            return "Thank you for hosting on " + requestedDate + ", Contact your SeaJUG contact to cancel.";
+            return "Thank you for hosting on " + requestedDate.format(dateFormat) + ", Contact your SeaJUG contact to cancel.";
         }
-        else if(!hostingRequestedDate && response.equals("yes")){
+        else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
             //assumes venue cancelled and SeaJUG volunteer removed them
             //from meetup and then changes venue.response to reflect this
             boolean success = model.setVenueForMeetup(venueName, "notHosting", requestedDate);
             if(success){
-                return getHostingMessage("no");
+                return getHostingMessage(Response.DECLINED);
             }
             else{
                 throw new IllegalArgumentException("Unable to update response");
@@ -116,13 +121,13 @@ public class SignUpController {
         }
         else{
             return "Unable to generate proper response given: "
-                + requestedDate + ", " + requestedDateAvailable + ", " + response;
+                + requestedDate.format(dateFormat) + ", " + requestedDateAvailable + ", " + response;
         }
     }
     
-    private boolean isDateAvailable(List<Map<String, String>> meetups, String date) {
-        for(Map<String, String> meetup : meetups){
-            if(meetup.get("date").equals(date) && meetup.get("venue").equals("")){
+    private boolean isDateAvailable(List<Meetup> meetups, LocalDate date) {
+        for(Meetup meetup : meetups){
+            if(meetup.getDate().equals(date) && meetup.getVenue().equals("")){
                 return true;
             }
         }
@@ -130,9 +135,9 @@ public class SignUpController {
         return false;
     }
     
-    private void setHostingRequestedDate(List<Map<String, String>> meetups){
-        for(Map<String, String> meetup : meetups){
-            if(meetup.get("date").equals(this.requestedDate) && meetup.get("venue").equals(venueName)){
+    private void setHostingRequestedDate(List<Meetup> meetups){
+        for(Meetup meetup : meetups){
+            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(venueName)){
                 hostingRequestedDate = true;
             }
         }

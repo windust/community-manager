@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model.entities;
  */
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -27,11 +28,13 @@ public class Meetup extends Entity {
 
 	private int meetupId;
 	private int primaryKey;
-	private String date;
+	private LocalDate date;
 	private String speaker;
 	private String topic;
 	private String description;
 	private String venue;
+	private String food;
+	private String after;
 
     /**
      * Create a new Meetup with a unique generated object ID
@@ -50,8 +53,8 @@ public class Meetup extends Entity {
      * @param description The description of the meetup
      * @param venue The venue which will host the venue
      */
-	public Meetup(int primaryKey, String date, String speaker, String topic,
-		String description, String venue) {
+	public Meetup(int primaryKey, LocalDate date, String speaker, String topic,
+		String description, String venue, String food, String after) {
 		this();
 		this.primaryKey = primaryKey;
 		this.date = date;
@@ -59,16 +62,20 @@ public class Meetup extends Entity {
 		this.topic = topic;
 		this.description = description;
 		this.venue = venue;
+		this.food = food;
+		this.after = after;
 	}
 
 	@Override
-	public Entity build(Map<String, String> fields) throws AttributeException {
+	public Meetup build(Map<String, String> fields) throws AttributeException {
 		this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
-		this.setDate(fields.getOrDefault("date", null));
+		this.setDate(convertDate(fields.getOrDefault("date", null)));
 		this.setSpeaker(fields.getOrDefault("speaker", null));
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
 		this.setVenue(fields.getOrDefault("venue", null));
+		this.setFood(fields.getOrDefault("food", null));
+		this.setAfter(fields.getOrDefault("after", null));
 
 		return this;
 	}
@@ -114,14 +121,14 @@ public class Meetup extends Entity {
     /**
      * @return The date the meetup will take place
      */
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
     /**
      * @param date The date the meetup will take place
      */
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -181,7 +188,23 @@ public class Meetup extends Entity {
 		this.venue = venue;
 	}
 
-    @Override
+	public String getFood() {
+		return food;
+	}
+
+	public void setFood(String food) {
+		this.food = food;
+	}
+
+	public String getAfter() {
+		return after;
+	}
+
+	public void setAfter(String after) {
+		this.after = after;
+	}
+
+	@Override
     public String toString() {
         return "Meetup{" +
             "meetupId=" + meetupId +

@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,7 @@ class VenueTest {
     private final String testContactEmail = "jsmith@mail.com";
     private final String testContactPhone = "5555555555";
     private final String testContactAltPhone = "(555) 555 - 5555";
-    private final String testRequestedHostingDate = "Jan. 1, 1970";
+    private final LocalDate testRequestedHostingDate = LocalDate.of(1970,1,1);
 
     @BeforeEach
     void setUp() {
@@ -156,7 +157,7 @@ class VenueTest {
 
     @Test
     void whenIHaveAVenueThenICanSetTheDateIRequestThisVenueToHost() {
-        String newHostingDate = "1/2/1971";
+        LocalDate newHostingDate = LocalDate.of(1971,1,2);
         venue.setRequestedHostingDate(newHostingDate);
         assertEquals(newHostingDate, venue.getRequestedHostingDate());
     }
@@ -177,7 +178,7 @@ class VenueTest {
             fields.put("contactEmail", testContactEmail);
             fields.put("contactPhone", testContactPhone);
             fields.put("contactAltPhone", testContactAltPhone);
-            fields.put("requestedHostingDate", testRequestedHostingDate);
+            fields.put("requestedHostingDate", testRequestedHostingDate.toString());
 
             try {
                 builtVenue = new Venue().build(fields);
@@ -228,7 +229,7 @@ class VenueTest {
 
         @Test
         void whenIBuildAVenueThenRequestedHostingDateIsSet() {
-            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate());
+            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate().toString());
         }
 
 

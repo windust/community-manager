@@ -14,9 +14,11 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -25,16 +27,17 @@ import java.util.Map;
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
-public class VenueCollection extends TokenCollection<Venue> {
+public class VenueCollection extends ResponderCollection<Venue> {
 
 	public VenueCollection(DataStorage dataStorage) {
 		super(dataStorage, "venues");
 	}
 
 	@Override
-	public void fetchFromDataStorage() {
-		this.clear();
+	public VenueCollection fetchFromDataStorage() {
 		try {
+			VenueCollection venueCollection = new VenueCollection(this.getDataStorage());
+			
 			for(Map<String, String> venueFields : getDataStorage().readAll(getTableName())) {
 				Venue venue = new Venue();
 				try {
@@ -42,29 +45,34 @@ public class VenueCollection extends TokenCollection<Venue> {
 				} catch (UnexpectedPrimaryKeyException e) {
 					e.printStackTrace();
 				}
-				addToEntities(venue);
+				venueCollection.addToEntities(venue);
 			}
+			
+			return venueCollection;
 		} catch (IOException e) {
 			System.out.println("Error: Reading from non-existant table.");
 			e.printStackTrace();
 		}
+		
+		//TODO refactor in order to remove null
+		return null;
 	}
 
-	/**
-	 * Get a venue from this collection based on its token as a Map of attributes
-	 *
-	 * @param venueToken the token to match
-	 * @return A venue represented with a map of attributes
-	 */
-	public Map<String, String> getVenueFromToken(String venueToken){
-		Venue venue = this.getEntityByToken(venueToken);
-		Map<String, String> venueInfo = new HashMap<>();
-		venueInfo.put("name", venue.getName());
-		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
-		venueInfo.put("response", venue.getResponse());
-		
-		return venueInfo;
-	}
+//	/**
+//	 * Get a venue from this collection based on its token as a Map of attributes
+//	 *
+//	 * @param venueToken the token to match
+//	 * @return A venue represented with a map of attributes
+//	 */
+//	public Map<String, String> getVenueFromToken(String venueToken){
+//		Venue venue = this.getEntityByToken(venueToken);
+//		Map<String, String> venueInfo = new HashMap<>();
+//		venueInfo.put("name", venue.getName());
+//		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
+//		venueInfo.put("response", venue.getResponse());
+//
+//		return venueInfo;
+//	}
 
 	/**
 	 * Update a venues response to hosting
@@ -73,10 +81,10 @@ public class VenueCollection extends TokenCollection<Venue> {
 	 * @param response The venues response
 	 * @return If the dataStorage successfully updated
 	 */
-	public boolean updateResponse(String venueName, String response){
+	public boolean updateResponse(String venueName, Response response){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", response);
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", response.getFriendlyName());
 			}
 		}
 		
@@ -90,10 +98,10 @@ public class VenueCollection extends TokenCollection<Venue> {
 	 * @param date The date the venue requested
 	 * @return If the dataStorage was successfully updated
 	 */
-	public boolean updateRequestedDate(String venueName, String date){
+	public boolean updateRequestedDate(String venueName, LocalDate date){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", date);
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", Entity.dateFormat.format(date));
 			}
 		}
 		

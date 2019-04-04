@@ -21,10 +21,10 @@
 
   <header class="banner">
       <img src="images/logo_draft_1.png" id="logo">
-      <h1>Welcome<span th:if="${session.venueName}">, <span th:text="${session.venueName}"></span></span></h1>
+      <h1>Welcome<span th:if="${session.venue.getName()}">, <span th:text="${session.venue.getName()}"></span></span></h1>
       <form method="POST" action="/venueSignUp" modelAttribute="venue">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
-        <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.requestedDate}">Yes, I can host</button>
+        <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes, I can host</button>
         <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
 
       </form>
@@ -48,15 +48,15 @@
           <tbody>
           <th:block th:each="meetup : ${session.meetups}">
               <tr>
-                  <td th:text="${meetup['date']}"></td>
-                  <td th:text="${meetup['speaker']}"></td>
-                  <td th:if="${meetup['venue'] == ''}">
-                      <button class="btn_red" type="submit" name="meetup" th:value="${meetup['date']}">
+                  <td th:text="${meetup.getDate()}"></td>
+                  <td th:text="${meetup.getSpeaker()}"></td>
+                  <td th:if="${meetup.getVenue() == ''}">
+                      <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
                           Needs Host
                       </button>
                   </td>
-                  <td th:if="${meetup['venue'] == session.venueName}"><span th:text="${session.venueName}" class="accent-text">Reserved</span></td>
-                  <td th:if="${meetup['venue'] != '' and meetup['venue'] != session.venueName}">Reserved</td>
+                  <td th:if="${meetup.getVenue() == session.venue.getName()}"><span th:text="${session.venue.getName()}" class="accent-text">Reserved</span></td>
+                  <td th:if="${meetup.getVenue() != '' and meetup.getVenue() != session.venue.getName()}">Reserved</td>
 
               </tr>
           </th:block>

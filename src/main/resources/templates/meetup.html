@@ -48,11 +48,11 @@
       <th:block th:each="venue : ${session.venues}">
         <section class="tr">
           <p class="meetup-venue">
-            <span th:text="${venue['venueName']}">No Venue Name</span>
-            <span th:if="${session.meetup['date'].equals(venue['requestedDate'])}"
-                  th:text="${venue['response']}">Response</span></p>
+            <span th:text="${venue.getName()}">No Venue Name</span>
+            <span th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
+                  th:text="${venue.getResponse()}">Response</span></p>
           <div class="btn_container">
-            <a rel="request-host" class="btn_primary" th:data-venueIndentifier="${venue['primaryKey']}">Request Host</a>
+            <a rel="request-host" class="btn_primary" th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
           </div>
         </section>
       </th:block>

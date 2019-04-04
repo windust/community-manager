@@ -13,22 +13,28 @@ package com.spinningnoodle.communitymanager.model.entities;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class MeetupTest {
 	private Meetup meetup;
 	private final int testPrimaryKey = 1;
-	private final String testDate = "01/01/1970";
+	private final LocalDate testDate = LocalDate.of(1970,1,1);
 	private final String testSpeaker = "Jane Doe";
 	private final String testTopic = "Java programming";
 	private final String testDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed haec quidem liberius ab eo dicuntur et saepius.";
 	private final String testVenue = "Test Venue";
+	private final String testFood = "Pizza Place";
+	private final String testAfter = "After Event";
 	//private final Venue testVenue = new Venue();
 
 	@BeforeEach
 	void setUp() {
-		meetup = new Meetup(testPrimaryKey, testDate, testSpeaker, testTopic, testDescription, testVenue);
+		meetup = new Meetup(testPrimaryKey, testDate, testSpeaker, testTopic, testDescription, testVenue, testFood, testAfter);
 	}
 
 	@Test
@@ -74,7 +80,7 @@ class MeetupTest {
 
 	@Test
 	void canSetMeetupDate() {
-		String newDate = "02/02/2020";
+		LocalDate newDate = LocalDate.of(2020,2,2);
 		meetup.setDate(newDate);
 		assertEquals(newDate, meetup.getDate());
 	}
@@ -120,6 +126,30 @@ class MeetupTest {
 		assertEquals(testVenue, meetup.getVenue());
 	}
 
+	@Test
+    void canGetFood() {
+		assertEquals(testFood, meetup.getFood());
+    }
+
+    @Test
+	void canSetFood() {
+		String newFood = "Im new food";
+		meetup.setFood(newFood);
+		assertEquals(newFood, meetup.getFood());
+	}
+
+	@Test
+	void canGetAfter() {
+		assertEquals(testAfter, meetup.getAfter());
+	}
+
+	@Test
+	void canSetAfter() {
+		String newAfter = "Im new After";
+		meetup.setAfter(newAfter);
+		assertEquals(newAfter, meetup.getAfter());
+	}
+
 //	@Test
 //	void canSetVenue() {
 //		Venue newVenue = new Venue();
@@ -127,78 +157,101 @@ class MeetupTest {
 //		assertEquals(newVenue, meetup.getVenue());
 //	}
 
-//	@Nested
-//	class BuildNewMeetupFromMapOfFieldsTest {
-//		private Meetup builtMeetup;
-//		private Map<String, String> fields = new HashMap<>();
-//
-//		@BeforeEach
-//		void setUp() {
-//			fields.put("primaryKey", Integer.toString(testPrimaryKey));
-//			fields.put("date", testDate);
-//			fields.put("speaker", testSpeaker);
-//			fields.put("topic", testTopic);
-//			fields.put("description", testDescription);
-//
-//			builtMeetup = new Meetup().build(fields);
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsPrimaryKey() {
-//			assertEquals(Integer.parseInt(fields.get("primaryKey")), builtMeetup.getPrimaryKey());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsDate() {
-//			assertEquals(testDate, builtMeetup.getDate());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsSpeaker() {
-//			assertEquals(testSpeaker, builtMeetup.getSpeaker());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsTopic() {
-//			assertEquals(testTopic, builtMeetup.getTopic());
-//		}
-//
-//		@Test
-//		void buildingMeetupSetsDescription() {
-//			assertEquals(testDescription, builtMeetup.getDescription());
-//		}
-//
-//		@Nested
-//		class BuildMeetupWithNoFieldsTest {
-//			@BeforeEach
-//			void setUp() {
-//				builtMeetup = new Meetup().build(new HashMap<>());
-//			}
-//
-//			@Test
-//			void whenIBuildAVenueWithNoFieldsThenPrimaryKeyShouldBeNegativeOne() {
-//				assertEquals(-1, builtMeetup.getPrimaryKey());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenDateShouldBeNull() {
-//				assertNull(builtMeetup.getDate());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenSpeakerShouldBeNull() {
-//				assertNull(builtMeetup.getSpeaker());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenTopicShouldBeNull() {
-//				assertNull(builtMeetup.getTopic());
-//			}
-//
-//			@Test
-//			void whenIBuildAMeetupWithNoFieldsThenDescriptionShouldBeNull() {
-//				assertNull(builtMeetup.getDescription());
-//			}
-//		}
-//	}
+
+	@Nested
+	class BuildNewMeetupFromMapOfFieldsTest {
+		private Meetup builtMeetup;
+		private Map<String, String> fields = new HashMap<>();
+
+		@BeforeEach
+		void setUp() {
+			fields.put("primaryKey", Integer.toString(testPrimaryKey));
+			fields.put("date", Entity.dateFormat.format(testDate));
+			fields.put("speaker", testSpeaker);
+			fields.put("topic", testTopic);
+			fields.put("description", testDescription);
+			fields.put("food", testFood);
+			fields.put("after", testAfter);
+
+			builtMeetup = new Meetup().build(fields);
+		}
+
+		@Test
+		void buildingMeetupSetsPrimaryKey() {
+			assertEquals(Integer.parseInt(fields.get("primaryKey")), builtMeetup.getPrimaryKey());
+		}
+
+		@Test
+		void buildingMeetupSetsDate() {
+			assertEquals(testDate, builtMeetup.getDate());
+		}
+
+		@Test
+		void buildingMeetupSetsSpeaker() {
+			assertEquals(testSpeaker, builtMeetup.getSpeaker());
+		}
+
+		@Test
+		void buildingMeetupSetsTopic() {
+			assertEquals(testTopic, builtMeetup.getTopic());
+		}
+
+		@Test
+		void buildingMeetupSetsDescription() {
+			assertEquals(testDescription, builtMeetup.getDescription());
+		}
+
+		@Test
+		void buildingMeetupSetsFood() {
+			assertEquals(testFood, builtMeetup.getFood());
+		}
+
+		@Test
+		void buildingMeetupSetsAfter() {
+			assertEquals(testAfter, builtMeetup.getAfter());
+		}
+
+		@Nested
+		class BuildMeetupWithNoFieldsTest {
+			@BeforeEach
+			void setUp() {
+				builtMeetup = new Meetup().build(new HashMap<>());
+			}
+
+			@Test
+			void whenIBuildAVenueWithNoFieldsThenPrimaryKeyShouldBeNegativeOne() {
+				assertEquals(-1, builtMeetup.getPrimaryKey());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenDateShouldBeNull() {
+				assertNull(builtMeetup.getDate());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenSpeakerShouldBeNull() {
+				assertNull(builtMeetup.getSpeaker());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenTopicShouldBeNull() {
+				assertNull(builtMeetup.getTopic());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenDescriptionShouldBeNull() {
+				assertNull(builtMeetup.getDescription());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenFoodShouldBeNull() {
+				assertNull(builtMeetup.getFood());
+			}
+
+			@Test
+			void whenIBuildAMeetupWithNoFieldsThenAfterShouldBeNull() {
+				assertNull(builtMeetup.getAfter());
+			}
+		}
+	}
 }

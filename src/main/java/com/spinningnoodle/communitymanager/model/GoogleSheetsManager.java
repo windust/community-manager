@@ -10,19 +10,20 @@ package com.spinningnoodle.communitymanager.model;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public class GoogleSheetsManager implements DataManager {
     DataStorage dataStorage;
@@ -46,75 +47,45 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public List<Map<String, String>> getAllMeetups() {
-        meetupCollection.fetchFromDataStorage();
-        List<Meetup> meetups = meetupCollection.getAll();
-
-        List<Map<String, String>> meetupList = new ArrayList<>();
-
-        for(Meetup meetup : meetups) {
-            Map<String, String> attributes = new HashMap<>();
-
-            attributes.put("date", meetup.getDate());
-            attributes.put("topic", meetup.getTopic());
-            attributes.put("speaker", meetup.getSpeaker());
-            attributes.put("venue", meetup.getVenue());
-            attributes.put("description", meetup.getDescription());
-            attributes.put("primaryKey", Integer.toString(meetup.getPrimaryKey()));
-
-            meetupList.add(attributes);
-        }
-
-        return meetupList;
+    public List<Meetup> getAllMeetups() {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+        return meetupCollection.getAll();
     }
 
     @Override
-    public List<Map<String,String>> getMeetupsByVenueToken(String venueToken){
-        meetupCollection.fetchFromDataStorage();
-        venueCollection.fetchFromDataStorage();
-        List<Map<String, String>> meetups;
-        meetups = getAllMeetups();
-        meetups.add(0, venueCollection.getVenueFromToken(venueToken));
-        return meetups;
+    public Venue getVenueByToken(String venueToken){
+        venueCollection = venueCollection.fetchFromDataStorage();
+        return venueCollection.getEntityByToken(venueToken);
     }
 
     @Override
-    public boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin){
-        meetupCollection.fetchFromDataStorage();
+    public boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin){
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         
-        if(requestedDate.equals("notHosting")){
-            return venueCollection.updateResponse(venueName, "no");
-        }
-        else if(requestedDate.equals(dateRequestedByAdmin)){
-            return meetupCollection.setVenueForMeetup(venueName, requestedDate) && venueCollection.updateResponse(venueName, "yes");
+        if(!requestedDate.equals("notHosting")){
+            LocalDate date = Entity.convertDate(requestedDate);
+            
+            if(date.equals(dateRequestedByAdmin)){
+                return meetupCollection.setVenueForMeetup(venueName, date) && venueCollection.updateResponse(venueName, Response.ACCEPTED);
+            }
+            else{
+                return meetupCollection.setVenueForMeetup(venueName, date);
+            }
         }
         else{
-            return meetupCollection.setVenueForMeetup(venueName, requestedDate);
+            return venueCollection.updateResponse(venueName, Response.DECLINED);
         }
+        
     }
 
     @Override
-    public List<Map<String, String>> getAllVenues() {
-        venueCollection.fetchFromDataStorage();
-        List<Venue> venues = venueCollection.getAll();
-        List<Map<String, String>> returnValue  = new ArrayList<>();
-
-        for(Venue venue : venues) {
-            Map<String, String> venueAttributes = new HashMap<>();
-
-            // TODO: for each venue, add its attributes and values to a map then store the venue map in a list
-            venueAttributes.put("requestedDate", venue.getRequestedHostingDate());
-            venueAttributes.put("response", venue.getResponse());
-            venueAttributes.put("venueName", venue.getName());
-            venueAttributes.put("primaryKey", Integer.toString(venue.getPrimaryKey()));
-            returnValue.add(venueAttributes);
-        }
-
-        return returnValue;
+    public List<Venue> getAllVenues() {
+        venueCollection = venueCollection.fetchFromDataStorage();
+        return venueCollection.getAll();
     }
     
-    public String requestHost(String primaryKey, String date){
-        venueCollection.fetchFromDataStorage();
+    public String requestHost(String primaryKey, LocalDate date){
+        venueCollection = venueCollection.fetchFromDataStorage();
         try {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
@@ -126,8 +97,8 @@ public class GoogleSheetsManager implements DataManager {
         }
     }
     
-    private void setRequestedDate(String venueName, String date){
-        venueCollection.updateResponse(venueName, "");
+    private void setRequestedDate(String venueName, LocalDate date){
+        venueCollection.updateResponse(venueName, Response.UNDECIDED);
         venueCollection.updateRequestedDate(venueName, date);
     }
 

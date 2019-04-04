@@ -14,13 +14,16 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,7 +96,7 @@ public class AdminController {
             throw new InvalidUserException();
         }
         
-        List<Map<String, String>> meetups = model.getAllMeetups();
+        List<Meetup> meetups = model.getAllMeetups();
         
         session.setAttribute("meetups", meetups);
         
@@ -115,14 +118,14 @@ public class AdminController {
         }
 
         //TODO consider having this done in the model somewhere
-        List<Map<String, String>> meetups = model.getAllMeetups();
-        for (Map<String, String> meetup: meetups) {
-            if(meetup.get("primaryKey").equals(meetupKey)){
+        List<Meetup> meetups = model.getAllMeetups();
+        for (Meetup meetup: meetups) {
+            if(meetup.getPrimaryKey() == Integer.parseInt(meetupKey)){
                 session.setAttribute("meetup", meetup);
             }
         }
 
-        List<Map<String, String>> venues = model.getAllVenues();
+        List<Venue> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
         
         return "meetup";
@@ -147,7 +150,7 @@ public class AdminController {
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
 
-            return ((GoogleSheetsManager) model).requestHost(venueKey, date);
+            return ((GoogleSheetsManager) model).requestHost(venueKey, Entity.convertDate(date));
         }
     }
 }

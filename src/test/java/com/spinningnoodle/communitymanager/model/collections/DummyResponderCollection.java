@@ -11,27 +11,33 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.model.entities.DummyToken;
-import com.spinningnoodle.communitymanager.model.entities.TokenEntity;
+import com.spinningnoodle.communitymanager.model.entities.DummyResponder;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.observer.Observable;
 import java.io.IOException;
 import java.util.Map;
 
-public class DummyTokenCollection<T extends TokenEntity> extends TokenCollection {
+public class DummyResponderCollection<T extends ResponderEntity> extends ResponderCollection {
 
-    public DummyTokenCollection(DataStorage dataStorage) {
+    public DummyResponderCollection(DataStorage dataStorage) {
         super(dataStorage, "tokenTest");
     }
     
     @Override
-    public void fetchFromDataStorage() {
+    public DummyResponderCollection fetchFromDataStorage() {
         try{
+            DummyResponderCollection responderCollection = new DummyResponderCollection(this.getDataStorage());
+            
             for(Map<String, String> entity : getDataStorage().readAll("tokenTest")){
-                addToEntities(new DummyToken().build(entity));
+                responderCollection.addToEntities(new DummyResponder().build(entity));
             }
+        
+            return responderCollection;
         } catch (IOException e){
             System.out.println("datastorage error");
         }
+        
+        return null;
     }
     
     @Override

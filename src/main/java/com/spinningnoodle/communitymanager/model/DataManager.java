@@ -1,15 +1,17 @@
 package com.spinningnoodle.communitymanager.model;
 
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface DataManager {
     
-    List<Map<String, String>> getAllMeetups();
+    List<Meetup> getAllMeetups();
     
-    List<Map<String,String>> getMeetupsByVenueToken(String venueToken);
+    Venue getVenueByToken(String venueToken);
     
-    boolean setVenueForMeetup(String venueName, String requestedDate, String dateRequestedByAdmin);
+    boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin);
     
-    List<Map<String, String>> getAllVenues();
+    List<Venue> getAllVenues();
 }

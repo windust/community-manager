@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
@@ -24,13 +23,9 @@ import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 class MeetupCollectionTest {
 
@@ -47,12 +42,14 @@ class MeetupCollectionTest {
     @Test
     void fetchFromDataStorageShouldPopulateTheCollectionFromDatabase()
         throws IOException {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.size());
     }
 
     @Test
     void addingAVenueToTheCollectionShouldUpdateTheCollection() throws IOException {
         Meetup testMeetup = new Meetup();
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         meetupCollection.addToCollection(testMeetup);
 
         assertEquals(dataStorage.readAll("meetups").size() + 1, meetupCollection.size());
@@ -73,22 +70,24 @@ class MeetupCollectionTest {
 
     @Test
     void whenVenueCollectionHasDataThenIShouldBeAbleToGetAllVenues() throws IOException {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         assertEquals(dataStorage.readAll("meetups").size(), meetupCollection.getAll().size());
     }
 
     @Test
     void whenAMeetupDoesNotHaveAVenueTheVenueCanBeSet() {
-      assertTrue(meetupCollection.setVenueForMeetup("New Venue", "03/22/2019"));
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+      assertTrue(meetupCollection.setVenueForMeetup("New Venue", LocalDate.of(2019,3,22)));
     }
 
     @Test
     void whenAMeetupHasAVenueItCantBeOverridden() {
-        meetupCollection.setVenueForMeetup("New Venue", "03/22/2019");
-        assertFalse(meetupCollection.setVenueForMeetup("should false", "03/22/2019"));
+        meetupCollection.setVenueForMeetup("New Venue", LocalDate.of(2019,3,22));
+        assertFalse(meetupCollection.setVenueForMeetup("should false", LocalDate.of(2019,3,22)));
     }
 
     @Test
     void whenAMeetupDoesNotExistForADateReturnFalse() {
-        assertFalse(meetupCollection.setVenueForMeetup("should false", "01/01/1970"));
+        assertFalse(meetupCollection.setVenueForMeetup("should false", LocalDate.of(1970,1,1)));
     }
 }
