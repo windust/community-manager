@@ -45,7 +45,7 @@ public class VenueCollection extends ResponderCollection<Venue> {
 				} catch (UnexpectedPrimaryKeyException e) {
 					e.printStackTrace();
 				}
-				venueCollection.addToEntities(venue);
+				venueCollection.addToCollection(venue);
 			}
 			
 			return venueCollection;

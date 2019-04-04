@@ -40,7 +40,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				meetupCollection.addToEntities(meetup);
+				meetupCollection.addToCollection(meetup);
 			}
 			
 			return meetupCollection;
