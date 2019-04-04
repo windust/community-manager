@@ -23,8 +23,6 @@ import java.util.Map;
  * @version 0.1
  */
 public class Venue extends ResponderEntity {
-    private static int nextId = 1;
-
     private String name;
     private String address;
     private int capacity;
@@ -188,7 +186,6 @@ public class Venue extends ResponderEntity {
 	@Override
 	public String toString() {
 		return "Venue{" +
-			"venueId=" + this.getEntityId() +
 			", primaryKey=" + this.getPrimaryKey() +
 			", name='" + name + '\'' +
 			", address='" + address + '\'' +

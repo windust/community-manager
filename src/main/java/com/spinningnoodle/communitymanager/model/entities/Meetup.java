@@ -24,10 +24,6 @@ import java.util.Map;
  * @version 0.1
  */
 public class Meetup extends Entity {
-	private static int nextId = 1;
-
-	private int meetupId;
-	private int primaryKey;
 	private LocalDate date;
 	private String speaker;
 	private String topic;
@@ -36,11 +32,10 @@ public class Meetup extends Entity {
 	private String food;
 	private String after;
 
-    /**
-     * Create a new Meetup with a unique generated object ID
-     */
-	public Meetup() {
-		setMeetupId();
+	public Meetup(){}
+
+	public Meetup(int primaryKey) {
+		super(primaryKey);
 	}
 
     /**
@@ -55,8 +50,7 @@ public class Meetup extends Entity {
      */
 	public Meetup(int primaryKey, LocalDate date, String speaker, String topic,
 		String description, String venue, String food, String after) {
-		this();
-		this.primaryKey = primaryKey;
+		super(primaryKey);
 		this.date = date;
 		this.speaker = speaker;
 		this.topic = topic;
@@ -78,44 +72,6 @@ public class Meetup extends Entity {
 		this.setAfter(fields.getOrDefault("after", null));
 
 		return this;
-	}
-
-	public static int getNextId() {
-		return nextId;
-	}
-
-    /**
-     * @return This meetup's unique ID. NOT ASSOCIATED WITH PRIMARY KEY
-     */
-	public int getMeetupId() {
-		return meetupId;
-	}
-
-    /**
-     * Increments the Meetup's ID to the next available ID. NOT ASSOCIATED WITH PRIMARY KEY
-     */
-	public void setMeetupId() {
-		this.meetupId = nextId;
-		++nextId;
-	}
-
-    /**
-     * @return The meetup's primary key stored in DataStorage
-     */
-	public int getPrimaryKey() {
-		return primaryKey;
-	}
-
-    /**
-     * @param primaryKey The venue's primary key stored in DataStorage
-     * @throws UnexpectedPrimaryKeyException If Primary Key is 0 or < -1
-     */
-	public void setPrimaryKey(int primaryKey) {
-		if(primaryKey == 0 || primaryKey < -1) {
-			throw new UnexpectedPrimaryKeyException();
-		}
-
-		this.primaryKey = primaryKey;
 	}
 
     /**
@@ -207,8 +163,7 @@ public class Meetup extends Entity {
 	@Override
     public String toString() {
         return "Meetup{" +
-            "meetupId=" + meetupId +
-            ", primaryKey=" + primaryKey +
+            ", primaryKey=" + this.getPrimaryKey() +
             ", date='" + date + '\'' +
             ", speaker='" + speaker + '\'' +
             ", topic='" + topic + '\'' +
