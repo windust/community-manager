@@ -78,8 +78,7 @@ public abstract class ResponderEntity extends Entity {
 
       String entityName = "";
         if(name != null) {
-          entityName = Character.toString(name.charAt(0)).toUpperCase() +
-                      name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+          entityName = name.replaceAll("\\p{javaWhitespace}", "");
           entityName += '-';
         }
 
