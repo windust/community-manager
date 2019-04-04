@@ -54,14 +54,6 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	}
 
 	/**
-	 * @param entity The entity to store in the collection
-	 */
-	protected void addToEntities(T entity) {
-	  entity.atachObserver(this);
-	  entities.put(entity.getEntityId(), entity);
-	}
-
-	/**
 	 * Gets all <T> from a DataStorage.
 	 *
 	 */
@@ -73,7 +65,8 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @param entity The <T> to be saved into the EntityCollection .
 	 */
 	public void addToCollection(T entity) {
-		addToEntities(entity);
+		entity.atachObserver(this);
+		entities.put(entity.getPrimaryKey(), entity);
 	}
 
 	/**
