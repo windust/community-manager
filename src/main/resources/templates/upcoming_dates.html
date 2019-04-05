@@ -29,7 +29,7 @@
     </details>
     <th:block th:each="meetup : ${session.meetups}">
       <details class="card">
-        <summary>
+        <summary class="summary">
           <span th:text="${meetup.getDate()}">Date</span>
           <span th:text="${meetup.getSpeaker()}">Speaker</span>
           <span th:text="${meetup.getVenue()}">Venue</span>
