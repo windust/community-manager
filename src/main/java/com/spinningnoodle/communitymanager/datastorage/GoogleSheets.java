@@ -150,9 +150,11 @@ public class GoogleSheets implements DataStorage {
         List<Map<String, String>> data = new ArrayList<>();
         List<String> attributes = getAttributesAsStrings(values);
 
-        for (int rowNum = 1; rowNum < values.size(); rowNum++) {
+        for (int listNum = 1; listNum < values.size(); listNum++) {
             HashMap<String, String> row = new HashMap<>();
-            List<Object> rawRow = values.get(rowNum);
+            List<Object> rawRow = values.get(listNum);
+            int rowNum = listNum + 1;
+            row.put("primaryKey",rowNum + "");
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
@@ -282,14 +284,15 @@ public class GoogleSheets implements DataStorage {
 
     private int getRowNumber(List<List<Object>> values, String primaryKey){
 
-        int rowNumber = 1;
-        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
-            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
-                rowNumber = rowIndex+1;
-                break;
-            }
-        }
-        return rowNumber;
+//        int rowNumber = 1;
+//        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
+//            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
+//                rowNumber = rowIndex+1;
+//                break;
+//            }
+//        }
+//        return rowNumber;
+        return Integer.parseInt(primaryKey);
     }
 
     private String getColumnLetter(List<Object> attributes, String attribute){
