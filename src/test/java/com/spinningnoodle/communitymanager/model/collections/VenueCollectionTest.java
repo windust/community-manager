@@ -44,6 +44,7 @@ class VenueCollectionTest {
 	@Test
 	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
 		Venue testVenue = new Venue();
+		testVenue.setPrimaryKey(15);
 		int initialSize = venueCollection.size();
 		venueCollection.addToCollection(testVenue);
 
