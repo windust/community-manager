@@ -80,3 +80,10 @@ summary, .summary, .card-header {
   visibility: visible;
 }
 
+@supports (-ms-ime-align:auto) {
+  .summary {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 20% !important;
+  }
+}
+
