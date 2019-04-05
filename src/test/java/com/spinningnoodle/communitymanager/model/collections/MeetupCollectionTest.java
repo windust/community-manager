@@ -49,6 +49,7 @@ class MeetupCollectionTest {
     @Test
     void addingAVenueToTheCollectionShouldUpdateTheCollection() throws IOException {
         Meetup testMeetup = new Meetup();
+        testMeetup.setPrimaryKey(15);
         meetupCollection = meetupCollection.fetchFromDataStorage();
         meetupCollection.addToCollection(testMeetup);
 

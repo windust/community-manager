@@ -24,16 +24,19 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class GoogleSheetsManager implements DataManager {
+    @Autowired
+    @Qualifier("meetups")
     MeetupCollection meetupCollection;
+    @Autowired
+    @Qualifier("venues")
     VenueCollection venueCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
-    public GoogleSheetsManager(){
-        meetupCollection = new MeetupCollection();
-        venueCollection = new VenueCollection();
-    }
+    public GoogleSheetsManager(){}
     
     public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
