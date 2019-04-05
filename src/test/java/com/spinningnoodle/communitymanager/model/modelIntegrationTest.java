@@ -60,7 +60,7 @@ public class modelIntegrationTest {
 
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
-        row.put("primaryKey", "1");
+        row.put("primaryKey", "2");
         row.put("venue", "Excellent");
         row.put("topic", "100");
         row.put("speaker", "Freddy");
@@ -70,7 +70,7 @@ public class modelIntegrationTest {
         list.add(row);
 
         row = new HashMap<>();
-        row.put("primaryKey", "2");
+        row.put("primaryKey", "3");
         row.put("venue", "");
         row.put("topic", "150");
         row.put("speaker", "Nimret");
@@ -83,14 +83,14 @@ public class modelIntegrationTest {
 
         list = new ArrayList<>();
         row = new HashMap<>();
-        row.put("primaryKey", "1");
+        row.put("primaryKey", "2");
         row.put("venueName", "Excellent");
         row.put("response", "yes");
         row.put("requestedDate", "01/14/2019");
         list.add(row);
 
         row = new HashMap<>();
-        row.put("primaryKey", "2");
+        row.put("primaryKey", "3");
         row.put("venueName", "Amazing");
         row.put("response", "yes");
         row.put("requestedDate", "01/14/2019");
@@ -122,7 +122,7 @@ public class modelIntegrationTest {
         row.put("speaker", "Freddy");
         row.put("date", "01/14/2019");
         row.put("topic","100");
-        row.put("primaryKey","1");
+        row.put("primaryKey","2");
         row.put("description","Freddy");
         expectedAvailableDatesMeetups.add(row);
 
@@ -131,7 +131,7 @@ public class modelIntegrationTest {
         row.put("speaker", "Nimret");
         row.put("date", "01/15/2019");
         row.put("topic","150");
-        row.put("primaryKey","2");
+        row.put("primaryKey","3");
         row.put("description", "Nimret");
         expectedAvailableDatesMeetups.add(row);
 
@@ -259,7 +259,7 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Returns Token, When I retrieve token with valid primary key.")
     void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
-        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2",
+        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("3",
             LocalDate.of(2019,1,14)));
     }
 

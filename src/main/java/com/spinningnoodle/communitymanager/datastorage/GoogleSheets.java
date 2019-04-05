@@ -178,7 +178,7 @@ public class GoogleSheets implements DataStorage {
             if (attributeName.getClass().toString().equals("class java.lang.String")) {
                 attributes.add(attributeName.toString());
             } else {
-                System.out.println(attributeName.getClass().toString());
+                System.out.println("Could not convert attribute name to String: " + attributeName.getClass().toString());
             }
         }
         return attributes;
@@ -208,7 +208,7 @@ public class GoogleSheets implements DataStorage {
 
     private boolean update(String cell, String newValue){
 
-        if(cell.contains("A") || cell.contains("1")) return false;
+        if(cell.contains("null") || cell.contains("1")) return false;
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
@@ -284,7 +284,7 @@ public class GoogleSheets implements DataStorage {
 
     private int getRowNumber(List<List<Object>> values, String primaryKey){
 
-//        int rowNumber = 1;
+        int rowNumber = 1;
 //        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
 //            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
 //                rowNumber = rowIndex+1;
@@ -292,13 +292,16 @@ public class GoogleSheets implements DataStorage {
 //            }
 //        }
 //        return rowNumber;
-        return Integer.parseInt(primaryKey);
+        if(Integer.parseInt(primaryKey) <= values.size()){
+            rowNumber = Integer.parseInt(primaryKey);
+        }
+        return rowNumber;
     }
 
     private String getColumnLetter(List<Object> attributes, String attribute){
 
         int a = 65;
-        String columnLetter = "" + (char)a;
+        String columnLetter = null;
         for(int i = 0; i < attributes.size(); i++){
             if(attribute.equals(attributes.get(i).toString())){
                 return ""+ (char)(a + i);
