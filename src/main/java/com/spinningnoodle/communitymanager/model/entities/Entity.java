@@ -25,15 +25,14 @@ import java.util.Map;
  * @version 0.1
  */
 public abstract class Entity extends Observable {
-	private static int nextId = 0;
-
-	private int entityId;
 	private int primaryKey;
 	
 	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-	public Entity() {
-		setEntityId();
+	public Entity() {}
+
+	public Entity(int primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 
 	/**
@@ -45,15 +44,6 @@ public abstract class Entity extends Observable {
 	 * @throws AttributeException An exception raised by invalid values for the specified key
 	 */
 	public abstract Entity build(Map<String, String> fields) throws AttributeException;
-
-	public int getEntityId() {
-		return entityId;
-	}
-
-	public void setEntityId() {
-		this.entityId = nextId;
-		++nextId;
-	}
 
 	public int getPrimaryKey() {
 		return primaryKey;

@@ -44,6 +44,7 @@ class VenueCollectionTest {
 	@Test
 	void addingAVenueToTheCollectionShouldUpdateTheCollection() {
 		Venue testVenue = new Venue();
+		testVenue.setPrimaryKey(15);
 		int initialSize = venueCollection.size();
 		venueCollection.addToCollection(testVenue);
 
@@ -52,10 +53,10 @@ class VenueCollectionTest {
 
 	@Test
 	void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
-		Venue testVenue = new Venue();
+		Venue testVenue = new Venue(1);
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(testVenue, venueCollection.getById(testVenue.getEntityId()));
+		assertEquals(testVenue, venueCollection.getById(testVenue.getPrimaryKey()));
 	}
 
 	@Test

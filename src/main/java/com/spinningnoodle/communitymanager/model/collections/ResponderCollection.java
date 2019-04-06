@@ -13,9 +13,12 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
-import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 
 public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
+    
+    public ResponderCollection(String tableName){
+        super(tableName);
+    }
     
     public ResponderCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);

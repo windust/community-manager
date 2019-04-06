@@ -26,6 +26,12 @@ public abstract class ResponderEntity extends Entity {
     private Response response;
     private String token = "";
 
+    public ResponderEntity() {}
+
+    public ResponderEntity(int primaryKey) {
+        super(primaryKey);
+    }
+
     /**
      * If the current token is not in a valid format a new token will be generated.
      *
@@ -78,8 +84,7 @@ public abstract class ResponderEntity extends Entity {
 
       String entityName = "";
         if(name != null) {
-          entityName = Character.toString(name.charAt(0)).toUpperCase() +
-                      name.substring(1).toLowerCase().replaceAll("\\p{javaWhitespace}", "");
+          entityName = name.replaceAll("\\p{javaWhitespace}", "");
           entityName += '-';
         }
 

@@ -73,24 +73,6 @@ class VenueTest {
     }
 
     @Test
-    void whenIHaveAVenueICanGetItsVenueId() {
-        assertTrue(venue.getEntityId() >= 0);
-    }
-
-    @Test
-    void whenIHaveAVenueICanSetItsVenueIdToTheNextId() {
-        int originalId = venue.getEntityId();
-        venue.setEntityId();
-        assertEquals(originalId + 1, venue.getEntityId());
-    }
-
-    @Test
-    void eachVenueIncrementsIdByOne() {
-        Venue newVenue = new Venue();
-        assertEquals(newVenue.getEntityId(), venue.getEntityId() + 1);
-    }
-
-    @Test
     void whenIHaveAVenueThenICanGetCapacity() {
         assertEquals(testCapacity, venue.getCapacity());
     }

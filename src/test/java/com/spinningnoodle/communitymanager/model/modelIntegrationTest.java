@@ -99,7 +99,6 @@ public class modelIntegrationTest {
         expectedVenues = list;
 
         testManager = new GoogleSheetsManager();
-        testManager.dataStorage = testStorage;
         testManager.meetupCollection = new MeetupCollection(testStorage);
         testManager.venueCollection = new VenueCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;

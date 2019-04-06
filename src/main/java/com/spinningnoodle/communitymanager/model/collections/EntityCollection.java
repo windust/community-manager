@@ -18,17 +18,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * @param <T> Entity type
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
+@Repository(value = "entities")
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
+	@Autowired
 	private DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 	private final String TABLE_NAME;
 
+	public EntityCollection(String tableName){
+		this.TABLE_NAME = tableName;
+	}
+	
 	/**
 	 * @param dataStorage the data storage to use as a database
 	 */
@@ -54,26 +62,24 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	}
 
 	/**
-	 * @param entity The entity to store in the collection
-	 */
-	protected void addToEntities(T entity) {
-	  entity.atachObserver(this);
-	  entities.put(entity.getEntityId(), entity);
-	}
-
-	/**
 	 * Gets all <T> from a DataStorage.
 	 *
 	 */
 	public abstract EntityCollection fetchFromDataStorage();
-
+	
 	/**
 	 * Add one venue to the collection.
 	 *
 	 * @param entity The <T> to be saved into the EntityCollection .
+	 * @throws IllegalArgumentException if primary key is <= 0
 	 */
-	public void addToCollection(T entity) {
-		addToEntities(entity);
+	public void addToCollection(T entity) throws IllegalArgumentException {
+		if (entity.getPrimaryKey() <= 0) {
+			throw new IllegalArgumentException("primary key must be > than 0. found: " + entity.getPrimaryKey());
+		}
+		
+		entity.atachObserver(this);
+		entities.put(entity.getPrimaryKey(), entity);
 	}
 
 	/**

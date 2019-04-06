@@ -16,14 +16,20 @@ import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
+@Repository(value = "meetups")
 public class MeetupCollection extends EntityCollection<Meetup> {
 
+	public MeetupCollection(){
+		super("meetups");
+	}
+	
 	/**
 	 * @param dataStorage the data storage this object should use as a database
 	 */
@@ -40,7 +46,7 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				meetupCollection.addToEntities(meetup);
+				meetupCollection.addToCollection(meetup);
 			}
 			
 			return meetupCollection;

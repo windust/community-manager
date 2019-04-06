@@ -29,7 +29,7 @@ public class DummyResponderCollection<T extends ResponderEntity> extends Respond
             DummyResponderCollection responderCollection = new DummyResponderCollection(this.getDataStorage());
             
             for(Map<String, String> entity : getDataStorage().readAll("tokenTest")){
-                responderCollection.addToEntities(new DummyResponder().build(entity));
+                responderCollection.addToCollection(new DummyResponder().build(entity));
             }
         
             return responderCollection;

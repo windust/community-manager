@@ -49,6 +49,7 @@ class MeetupCollectionTest {
     @Test
     void addingAVenueToTheCollectionShouldUpdateTheCollection() throws IOException {
         Meetup testMeetup = new Meetup();
+        testMeetup.setPrimaryKey(15);
         meetupCollection = meetupCollection.fetchFromDataStorage();
         meetupCollection.addToCollection(testMeetup);
 
@@ -57,10 +58,10 @@ class MeetupCollectionTest {
 
     @Test
     void whenVenueCollectionHasDataThenVenueCanBeRetriedById() throws EntityNotFoundException {
-        Meetup testMeetup = new Meetup();
+        Meetup testMeetup = new Meetup(1);
         meetupCollection.addToCollection(testMeetup);
 
-        assertEquals(testMeetup, meetupCollection.getById(testMeetup.getEntityId()));
+        assertEquals(testMeetup, meetupCollection.getById(testMeetup.getPrimaryKey()));
     }
 
     @Test
