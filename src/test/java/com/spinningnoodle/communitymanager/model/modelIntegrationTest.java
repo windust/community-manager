@@ -103,7 +103,6 @@ public class modelIntegrationTest {
         testManager.venueCollection = new VenueCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
-//        resetDatastorage();
     }
 
     @Test
@@ -269,9 +268,9 @@ public class modelIntegrationTest {
         testManager.meetupCollection = testManager.meetupCollection.fetchFromDataStorage();
         testManager.venueCollection = testManager.venueCollection.fetchFromDataStorage();
 
-        testStorage.update("meetups","2","venue","");
-        testStorage.update("meetups","1","venue","Excellent");
-        testStorage.update("venues","1","response","yes");
+        testStorage.update("meetups","3","venue","");
+        testStorage.update("meetups","2","venue","Excellent");
+        testStorage.update("venues","2","response","yes");
 
 
     }
