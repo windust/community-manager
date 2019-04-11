@@ -13,13 +13,17 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
-import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +46,7 @@ public class AdminController {
     
     @Autowired
     DataManager model;
+    
     /**
      * Route to basic login screen
      * @return login - name of html page to render
@@ -52,21 +57,14 @@ public class AdminController {
         return "login";
     }
     
-    /**
-     * Route to validate given username and password
-     * and sets loggedIn to true if credentials are
-     * valid
-     * @param username - admin username
-     * @param password - admin password
-     * @return login page if credentials are invalid
-     * or upcoming if credentials are valid
-     */
-    @PostMapping("/loginAttempt")
-    public String loginAttempt(@RequestParam(name = "username", required = false, defaultValue = "username") String username,
-                               @RequestParam(name = "password", required = false, defaultValue = "password") String password){
-        if(username.equals("username") && password.equals("password")) {
+    @RequestMapping("/loginSuccess")
+    public String loginSuccess(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String[] data = auth.getPrincipal().toString().split("email=");
+        String email = data[1].substring(0, data[1].length()-1);
+        
+        if(email.equals("troemer16@gmail.com")){
             loggedIn = true;
-            //TODO change to dashboard(once dashboard is created)
             return "redirect:/upcoming";
         }
         else{
@@ -74,13 +72,10 @@ public class AdminController {
         }
     }
     
-    /**
-     * Route that sets loggedIn to false and
-     * redirects user to login screen
-     * @return redirect:/ - redirects user to login page
-     */
-    @GetMapping("/logout")
-    public String logout(){
+    @RequestMapping("/log_out")
+    public String logOut(HttpServletRequest request, HttpServletResponse response){
+        new SecurityContextLogoutHandler().logout(request, null, null);
+        
         loggedIn = false;
         return "redirect:/";
     }
