@@ -38,6 +38,9 @@ public class Meetup extends Entity {
 		super(primaryKey);
 	}
 
+	/*
+		Todo UPDATE Javadocs
+	 */
     /**
      * Create a new Meetup with all fields and a unique generated ID
      *

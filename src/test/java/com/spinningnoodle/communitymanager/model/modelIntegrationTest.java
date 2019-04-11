@@ -8,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Admin;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +104,7 @@ public class modelIntegrationTest {
         testManager = new GoogleSheetsManager();
         testManager.meetupCollection = new MeetupCollection(testStorage);
         testManager.venueCollection = new VenueCollection(testStorage);
+        testManager.adminCollection = new AdminCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
     }
@@ -260,6 +264,70 @@ public class modelIntegrationTest {
     void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
         assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("3",
             LocalDate.of(2019,1,14)));
+    }
+
+    /*
+    The following are tests related to the admins.
+     */
+    @Test
+    @DisplayName("Model return correct length of list of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedLengthOfListOfAdmins(){
+        assertEquals(2,testManager.getAllAdmins().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedValuesForAdmins(){
+        assertAll(
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getPrimaryKey() ),
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getEmail() ),
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getName() )
+        );
+    }
+
+    @Test
+    @DisplayName("Model returns correct names of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedNamesOfAdmins(){
+        ArrayList<String> expectedNames = new ArrayList<>();
+        ArrayList<String> actualNames = new ArrayList<>();
+        List<Admin> actualAdmins = testManager.getAllAdmins();
+        expectedNames.add("Argh");
+        expectedNames.add("Mrou");
+        for(int i =0; i < actualAdmins.size(); i++) {
+            actualNames.add(actualAdmins.get(i).getName());
+        }
+        Collections.sort(expectedNames);
+        Collections.sort(actualNames);
+        assertEquals(expectedNames, actualNames);
+    }
+
+    @Test
+    @DisplayName("Model returns correct emails of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedEmailsOfAdmins(){
+        ArrayList<String> expectedEmails = new ArrayList<>();
+        ArrayList<String> actualEmails = new ArrayList<>();
+        List<Admin> actualAdmins = testManager.getAllAdmins();
+        expectedEmails.add("dog@animal.com");
+        expectedEmails.add("cat@animal.com");
+
+        for(int i =0; i < actualAdmins.size(); i++) {
+            actualEmails.add(actualAdmins.get(i).getEmail());
+        }
+        Collections.sort(expectedEmails);
+        Collections.sort(actualEmails);
+        assertEquals(expectedEmails, actualEmails);
+    }
+
+    @Test
+    @DisplayName("Model returns false when given an invalid email for the admin.")
+    void whenAUserLogsInWithAnInvalidEmailIGetFalse(){
+        assertFalse(testManager.verifyAdmin("giraff@animals.com"));
+    }
+
+    @Test
+    @DisplayName("Model returns true when given a valid email for the admin.")
+    void whenAUserLogsInWithAnValidEmailIGetTrue(){
+        assertTrue(testManager.verifyAdmin("cat@animal.com"));
     }
 
     @BeforeEach
