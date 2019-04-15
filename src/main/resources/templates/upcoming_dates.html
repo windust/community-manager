@@ -11,11 +11,12 @@
  *  END OF LICENSE INFORMATION
 -->
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="UTF-8">
-  <title>Upcoming Dates</title>
-  <link rel="stylesheet" href="css/main.css">
-</head>
+  <head th:replace="fragments/adminFragments.html :: head(title='Upcoming Dates')"></head>
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Upcoming Dates</title>-->
+<!--  <link rel="stylesheet" href="css/main.css">-->
+<!--</head>-->
 <body class="upcoming">
   <div th:replace="fragments/adminFragments.html :: navbar(pageName='Upcoming Dates')"></div>
 
