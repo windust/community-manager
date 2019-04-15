@@ -15,14 +15,14 @@
     <meta name="google-signin-client_id" content="seajug-community-1555359256720.apps.googleusercontent.com">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title th:text="${title}"></title>
+    <title th:text="${title}">Community Manager</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body class="meetup">
     <header class="navbar" th:fragment="navbar (pageName)">
-      <script src="https://apis.google.com/js/platform.js" async defer></script>
       <nav>
         <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
           <ul>
