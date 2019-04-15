@@ -12,6 +12,7 @@
 -->
 <html class="no-js">
   <head th:fragment="head (title)">
+    <meta name="google-signin-client_id" content="seajug-community-1555359256720.apps.googleusercontent.com">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title th:text="${title}"></title>
@@ -21,6 +22,7 @@
   </head>
   <body class="meetup">
     <header class="navbar" th:fragment="navbar (pageName)">
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
       <nav>
         <a href="/upcoming"><img src="images/logo_draft_1.png" id="logo"></a>
           <ul>
@@ -35,6 +37,16 @@
       <h1 class="page_name"><span th:text="${pageName}">Page Name</span></h1>
     </header>
 
-    <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>
+    <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee
+      <a href="#" onclick="signOut();">Sign out</a>
+      <script>
+        function signOut() {
+          var auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function () {
+            console.log('User signed out.');
+          });
+        }
+      </script>
+    </footer>
   </body>
 </html>
