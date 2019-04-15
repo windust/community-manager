@@ -63,7 +63,7 @@ public class AdminController {
         String[] data = auth.getPrincipal().toString().split("email=");
         String email = data[1].substring(0, data[1].length()-1);
         
-        if(email.equals("troemer16@gmail.com")){
+        if(model.verifyAdmin(email) && auth.isAuthenticated()){
             loggedIn = true;
             return "redirect:/upcoming";
         }
