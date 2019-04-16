@@ -22,9 +22,7 @@
   <body id="meetup">
     <div th:replace="fragments/adminFragments.html :: navbar(pageName='Google Sheets:Venue')"></div>
     <div>
-      <div class="guard moveUp"></div>
-      <div class="block moveUp"></div>
-      <iframe class="moveUp" th:src="${session.dbaccess}">This browser does not support IFrames.</iframe>
+      <iframe class="" th:src="${session.dbaccess}">This browser does not support IFrames.</iframe>
     </div>
 
     <footer th:replace="fragments/adminFragments.html :: footer"></footer>
