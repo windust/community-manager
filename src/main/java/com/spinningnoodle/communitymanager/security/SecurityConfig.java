@@ -10,15 +10,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers( "/", "/css/main.css", "/images/logo_draft_1.png")
-            .permitAll()
+                .antMatchers( "/", "/css/main.css", "/images/logo_draft_1.png")
+                    .permitAll()
             .anyRequest().authenticated()
-            .and()
+                .and()
             .oauth2Login()
-            .defaultSuccessUrl("/loginSuccess", true)
-            .and()
+                .defaultSuccessUrl("/loginSuccess", true)
+                .and()
             .logout()
-            .logoutUrl("/log_out")
-            .logoutSuccessUrl("/");
+                .logoutUrl("/log_out")
+                .logoutSuccessUrl("/")
+                .and()
+            .csrf().disable();
     }
 }
