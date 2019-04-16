@@ -9,7 +9,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .antMatcher("/**")
             .authorizeRequests()
             .antMatchers( "/", "/css/main.css", "/images/logo_draft_1.png")
             .permitAll()
@@ -18,11 +17,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .oauth2Login()
             .defaultSuccessUrl("/loginSuccess", true)
             .and()
-            .logout().logoutSuccessUrl("/").permitAll();
+            .logout()
+            .logoutUrl("/log_out")
+            .logoutSuccessUrl("/");
     }
-
-//    @Bean
-//    public TokenStore tokenStore(){
-//        return new InMemoryTokenStore();
-//    }
 }

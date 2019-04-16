@@ -18,7 +18,6 @@ import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -58,8 +57,9 @@ public class AdminController {
     }
     
     @RequestMapping("/loginSuccess")
-    public String loginSuccess(){
+    public String loginSuccess(HttpServletRequest request){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
         String[] data = auth.getPrincipal().toString().split("email=");
         String email = data[1].substring(0, data[1].length()-1);
         
@@ -68,14 +68,16 @@ public class AdminController {
             return "redirect:/upcoming";
         }
         else{
+            new SecurityContextLogoutHandler().logout(request, null, null);
             return "redirect:/";
         }
     }
     
+    //Route cannot equal "logout" because that is oauth default
     @RequestMapping("/log_out")
-    public String logOut(HttpServletRequest request, HttpServletResponse response){
+    public String logOut(HttpServletRequest request){
         new SecurityContextLogoutHandler().logout(request, null, null);
-        
+
         loggedIn = false;
         return "redirect:/";
     }
