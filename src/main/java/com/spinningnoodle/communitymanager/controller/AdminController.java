@@ -114,15 +114,22 @@ public class AdminController {
 
         //TODO consider having this done in the model somewhere
         List<Meetup> meetups = model.getAllMeetups();
-        for (Meetup meetup: meetups) {
-            if(meetup.getPrimaryKey() == Integer.parseInt(meetupKey)){
+        Meetup meetup = null;
+        for (Meetup mtup: meetups) {
+            if(mtup.getPrimaryKey() == Integer.parseInt(meetupKey)){
+                meetup = mtup;
                 session.setAttribute("meetup", meetup);
+                break;
             }
         }
 
         List<Venue> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
-        
+
+        //ToDo change venue to FoodSponsor
+        List<Venue> foodSponsors = model.getAllFoodSponsors(meetup);
+        session.setAttribute("foodsponsors", foodSponsors);
+
         return "meetup";
     }
     

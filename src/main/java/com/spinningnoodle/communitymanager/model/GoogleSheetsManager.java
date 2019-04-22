@@ -65,8 +65,8 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public boolean verifyAdmin(String email) {
         List<Admin> admins = this.getAllAdmins();
-        for(Admin admin: admins){
-            if(admin.getEmail().equals(email)) {
+        for (Admin admin : admins) {
+            if (admin.getEmail().equals(email)) {
                 return true;
             }
         }
@@ -115,6 +115,18 @@ public class GoogleSheetsManager implements DataManager {
     public List<Venue> getAllVenues() {
         venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getAll();
+    }
+
+    //TODO change to using FoodSponsor and FoodSponsorCollection
+    @Override
+    public List<Venue> getAllFoodSponsors(Meetup meetup) {
+        if (!meetup.getVenue().equals("") && meetup.getFood() == "") {
+            //TODO eventually use this and delete return of venueCollection
+//                    foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+//                    return foodSponsorCollection.getAll();
+            return this.getAllVenues();
+        }
+        return null;
     }
 
     @Override

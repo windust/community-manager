@@ -11,64 +11,96 @@
  *  END OF LICENSE INFORMATION
 -->
 <html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Meetup</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
-  </head>
-  <body id="meetup">
-    <div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
+</head>
+<body id="meetup">
+<div th:replace="fragments/adminFragments.html :: navbar(pageName='Meetup Details')"></div>
 
-    <article class="meetup-details">
-      <p class="meetup-data"><span class="h6">Date: </span><span id="date" th:text="${session.meetup['date']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">Topic: </span><span th:text="${session.meetup['topic']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">Venue: </span><span th:text="${session.meetup['venue']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">Speaker: </span><span th:text="${session.meetup['speaker']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">Food: </span><span th:text="${session.meetup['food']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">After Event: </span><span th:text="${session.meetup['after']}">Error</span></p>
-      <p class="meetup-data"><span class="h6">Description: </span><span th:text="${session.meetup['description']}">Error</span></p>
-    </article>
+<article class="meetup-details">
+    <p class="meetup-data"><span class="h6">Date: </span><span id="date"
+                                                               th:text="${session.meetup['date']}">Error</span>
+    </p>
+    <p class="meetup-data"><span class="h6">Topic: </span><span
+        th:text="${session.meetup['topic']}">Error</span></p>
+    <p class="meetup-data"><span class="h6">Venue: </span><span
+        th:text="${session.meetup['venue']}">Error</span></p>
+    <p class="meetup-data"><span class="h6">Speaker: </span><span
+        th:text="${session.meetup['speaker']}">Error</span></p>
+    <p class="meetup-data"><span class="h6">Food: </span><span th:text="${session.meetup['food']}">Error</span>
+    </p>
+    <p class="meetup-data"><span class="h6">After Event: </span><span
+        th:text="${session.meetup['after']}">Error</span></p>
+    <p class="meetup-data"><span class="h6">Description: </span><span
+        th:text="${session.meetup['description']}">Error</span></p>
+</article>
 
-    <menu class="tab">
-      <li class="tablinks active h6" onclick="openTab(event, 'Venue')" selected>Venue</li>
-      <li class="tablinks h6" onclick="openTab(event, 'Speaker')">Speaker</li>
-      <li class="tablinks h6" onclick="openTab(event, 'Food')">Food</li>
-      <li class="tablinks h6" onclick="openTab(event, 'After')">After</li>
-    </menu>
+<menu class="tab">
+    <li class="tablinks active h6" onclick="openTab(event, 'Venue')" selected>Venue</li>
+    <li class="tablinks h6" onclick="openTab(event, 'Speaker')">Speaker</li>
+    <li class="tablinks h6" onclick="openTab(event, 'Food')">Food</li>
+    <li class="tablinks h6" onclick="openTab(event, 'After')">After</li>
+</menu>
 
-    <article id="Venue" class="tabcontent table" style="display: block;">
-      <section class="tr">
-        <p class="meetup-venue h6"><span >Venue Name</span><span >Response</span></p>
+<article id="Venue" class="tabcontent table" style="display: block;">
+    <section class="tr">
+        <p class="meetup-venue h6"><span>Venue Name</span><span>Response</span></p>
         <div class="btn_container">
         </div>
-      </section>
-      <th:block th:each="venue : ${session.venues}">
+    </section>
+    <th:block th:each="venue : ${session.venues}">
         <section class="tr">
-          <p class="meetup-venue">
-            <span th:text="${venue.getName()}">No Venue Name</span>
-            <span th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
-                  th:text="${venue.getResponse()}">Response</span></p>
-          <div class="btn_container">
-            <a rel="request-host" class="btn_primary" th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
-          </div>
+            <p class="meetup-venue">
+                <span th:text="${venue.getName()}">No Venue Name</span>
+                <span th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
+                      th:text="${venue.getResponse()}">Response</span></p>
+            <div class="btn_container">
+                <a rel="request-host" class="btn_primary"
+                   th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
+            </div>
         </section>
-      </th:block>
-    </article>
+    </th:block>
+</article>
 
-    <div id="Speaker" class="tabcontent">
-      <p>This is the speaker tab.</p>
-    </div>
+<div id="Speaker" class="tabcontent">
+    <p>This is the speaker tab.</p>
+</div>
 
-    <div id="Food" class="tabcontent">
-      <p>This is the food tab.</p>
+<div id="Food" class="tabcontent">
+    <div th:if="${session.foodsponsors == null}">
+        <button class="btn_primary" onclick="openTab(event, 'Venue')">Venue Needed</button>
     </div>
-    <div id="After" class="tabcontent">
-      <p>This is the after tab.</p>
+    <div th:if="${session.foodsponsors != null}" class="table">
+        <section class="tr">
+            <p class="meetup-venue h6"><span>Venue Name</span><span>Response</span></p>
+            <div class="btn_container">
+            </div>
+        </section>
+        <th:block th:each="venue : ${session.venues}">
+            <section class="tr">
+                <p class="meetup-venue">
+                    <span th:text="${venue.getName()}">No Venue Name</span>
+                    <span
+                        th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
+                        th:text="${venue.getResponse()}">Response</span></p>
+                <div class="btn_container">
+                    <a rel="request-host" class="btn_primary"
+                       th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
+                </div>
+            </section>
+        </th:block>
     </div>
-    <footer th:replace="fragments/adminFragments.html :: footer"></footer>
-    <script src="js/meetup.js" async defer></script>
-  </body>
+</div>
+
+<div id="After" class="tabcontent">
+    <p>This is the after tab.</p>
+</div>
+<footer th:replace="fragments/adminFragments.html :: footer"></footer>
+<script src="js/meetup.js" async defer></script>
+</body>
 </html>
