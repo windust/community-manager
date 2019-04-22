@@ -17,11 +17,11 @@ import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,13 +57,11 @@ public class AdminController {
     }
     
     @RequestMapping("/loginSuccess")
-    public String loginSuccess(HttpServletRequest request){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String loginSuccess(HttpServletRequest request, OAuth2AuthenticationToken authentication){
+        Map<String, Object> properties = authentication.getPrincipal().getAttributes();
+        String email = (String) properties.get("email");
         
-        String[] data = auth.getPrincipal().toString().split("email=");
-        String email = data[1].substring(0, data[1].length()-1);
-        
-        if(model.verifyAdmin(email) && auth.isAuthenticated()){
+        if(model.verifyAdmin(email) && authentication.isAuthenticated()){
             loggedIn = true;
             return "redirect:/upcoming";
         }
