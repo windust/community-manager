@@ -35,7 +35,7 @@
 
   <article id="more-meetups" class="text-center">
       <h2 class="h3">Register to host additional dates below:</h2>
-      <form method="POST" action="/venueSignUp" modelAttribute="venue">
+      <form id="meetup_signup" method="POST" action="/venueSignUp" modelAttribute="venue">
 
       <table>
           <thead>
@@ -64,5 +64,7 @@
       </table>
       </form>
   </article>
+
+  <script src="js/available_dates.js" async defer></script>
 </body>
 </html>
