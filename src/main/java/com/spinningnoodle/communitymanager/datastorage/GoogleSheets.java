@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javassist.expr.Instanceof;
 
 /**
  * GoogleSheets implements Data Storage, the interface that all data storage implementations meet.
@@ -154,7 +155,7 @@ public class GoogleSheets implements DataStorage {
             HashMap<String, String> row = new HashMap<>();
             List<Object> rawRow = values.get(listNum);
             int rowNum = listNum + 1;
-            row.put("primaryKey",rowNum + "");
+            row.put("primaryKey",String.valueOf(rowNum));
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
@@ -175,7 +176,7 @@ public class GoogleSheets implements DataStorage {
         List<Object> attributesNames = values.get(0);
         List<String> attributes = new ArrayList<>();
         for(Object attributeName: attributesNames){
-            if (attributeName.getClass().toString().equals("class java.lang.String")) {
+            if (attributeName instanceof String) {
                 attributes.add(attributeName.toString());
             } else {
                 System.out.println("Could not convert attribute name to String: " + attributeName.getClass().toString());
@@ -285,13 +286,7 @@ public class GoogleSheets implements DataStorage {
     private int getRowNumber(List<List<Object>> values, String primaryKey){
 
         int rowNumber = 1;
-//        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
-//            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
-//                rowNumber = rowIndex+1;
-//                break;
-//            }
-//        }
-//        return rowNumber;
+
         if(Integer.parseInt(primaryKey) <= values.size()){
             rowNumber = Integer.parseInt(primaryKey);
         }
