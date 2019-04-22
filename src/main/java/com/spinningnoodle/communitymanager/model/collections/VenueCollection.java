@@ -64,6 +64,7 @@ public class VenueCollection extends ResponderCollection<Venue> {
 		return null;
 	}
 
+	//TODO review commented out code
 //	/**
 //	 * Get a venue from this collection based on its token as a Map of attributes
 //	 *
