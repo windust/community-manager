@@ -23,4 +23,7 @@ public interface DataManager {
     String requestHost(String primaryKey, LocalDate date);
 
     String getDatabaseAccessPage();
+
+    //TODO change Venue to FoodSponsor
+    List<Venue> getAllFoodSponsors(Meetup meetupKey);
 }
