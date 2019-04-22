@@ -12,15 +12,17 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
+
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
-import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * The FoodCollection stores a collection of food sponsors and connect the list to a DataStorage.
@@ -29,6 +31,7 @@ import java.util.Map;
  * @version 0.1
  */
 
+@Repository(value = "food")
 public class FoodCollection extends ResponderCollection<FoodSponsor>{
 
     public FoodCollection(){
@@ -41,7 +44,7 @@ public class FoodCollection extends ResponderCollection<FoodSponsor>{
 
 
     @Override
-    public EntityCollection fetchFromDataStorage() {
+    public FoodCollection fetchFromDataStorage() {
         try{
             FoodCollection foodCollection = new FoodCollection(this.getDataStorage());
 
@@ -55,6 +58,8 @@ public class FoodCollection extends ResponderCollection<FoodSponsor>{
                 }
                 foodCollection.addToCollection(foodSponsor);
             }
+            
+            return foodCollection;
         } catch (IOException e){
             System.out.println("Error: Reading from non-existant table.");
             e.printStackTrace();

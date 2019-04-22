@@ -23,7 +23,6 @@ import java.util.Map;
  * @version 0.1
  */
 public class Venue extends ResponderEntity {
-    private String name;
     private String address;
     private int capacity;
     private String contactPerson;
@@ -78,7 +77,7 @@ public class Venue extends ResponderEntity {
         String contactEmail, String contactPhone, String contactAltPhone,
         LocalDate requestedHostingDate) {
         this.setPrimaryKey(primaryKey);
-        this.name = name;
+        setName(name);
         this.address = address;
         this.capacity = capacity;
         this.contactPerson = contactPerson;
@@ -191,7 +190,7 @@ public class Venue extends ResponderEntity {
 	public String toString() {
 		return "Venue{" +
 			", primaryKey=" + this.getPrimaryKey() +
-			", name='" + name + '\'' +
+			", name='" + getName() + '\'' +
 			", address='" + address + '\'' +
 			", capacity=" + capacity +
 			", contactPerson='" + contactPerson + '\'' +

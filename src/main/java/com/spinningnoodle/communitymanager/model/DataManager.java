@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager.model;
 
 import com.spinningnoodle.communitymanager.model.entities.Admin;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
@@ -25,5 +26,5 @@ public interface DataManager {
     String getDatabaseAccessPage();
 
     //TODO change Venue to FoodSponsor
-    List<Venue> getAllFoodSponsors(Meetup meetupKey);
+    List<FoodSponsor> getAllFoodSponsors(Meetup meetupKey);
 }

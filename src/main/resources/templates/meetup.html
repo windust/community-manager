@@ -77,20 +77,20 @@
     </div>
     <div th:if="${session.foodsponsors != null}" class="table">
         <section class="tr">
-            <p class="meetup-venue h6"><span>Venue Name</span><span>Response</span></p>
+            <p class="meetup-venue h6"><span>Food Sponsor Name</span><span>Response</span></p>
             <div class="btn_container">
             </div>
         </section>
-        <th:block th:each="venue : ${session.venues}">
+        <th:block th:each="food : ${session.foodsponsors}">
             <section class="tr">
                 <p class="meetup-venue">
-                    <span th:text="${venue.getName()}">No Venue Name</span>
+                    <span th:text="${food.getName()}">No Food Sponsor Name</span>
                     <span
-                        th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
-                        th:text="${venue.getResponse()}">Response</span></p>
+                        th:if="${session.meetup.getDate().equals(food.getRequestedFoodDate())}"
+                        th:text="${food.getResponse()}">Response</span></p>
                 <div class="btn_container">
                     <a rel="request-host" class="btn_primary"
-                       th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
+                       th:data-foodIndentifier="${food.getPrimaryKey()}">Request Host</a>
                 </div>
             </section>
         </th:block>

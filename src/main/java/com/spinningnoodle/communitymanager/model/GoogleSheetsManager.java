@@ -19,10 +19,12 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
+import com.spinningnoodle.communitymanager.model.collections.FoodCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Admin;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
@@ -44,6 +46,9 @@ public class GoogleSheetsManager implements DataManager {
     @Autowired
     @Qualifier("venues")
     VenueCollection venueCollection;
+    @Autowired
+    @Qualifier("food")
+    FoodCollection foodCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager() {
@@ -119,12 +124,10 @@ public class GoogleSheetsManager implements DataManager {
 
     //TODO change to using FoodSponsor and FoodSponsorCollection
     @Override
-    public List<Venue> getAllFoodSponsors(Meetup meetup) {
-        if (!meetup.getVenue().equals("") && meetup.getFood() == "") {
-            //TODO eventually use this and delete return of venueCollection
-//                    foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
-//                    return foodSponsorCollection.getAll();
-            return this.getAllVenues();
+    public List<FoodSponsor> getAllFoodSponsors(Meetup meetup) {
+        if (!meetup.getVenue().equals("") && meetup.getFood().equals("")) {
+            foodCollection = foodCollection.fetchFromDataStorage();
+            return foodCollection.getAll();
         }
         return null;
     }

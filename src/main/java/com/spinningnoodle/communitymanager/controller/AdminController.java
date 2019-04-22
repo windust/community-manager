@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
@@ -127,7 +128,7 @@ public class AdminController {
         session.setAttribute("venues", venues);
 
         //ToDo change venue to FoodSponsor
-        List<Venue> foodSponsors = model.getAllFoodSponsors(meetup);
+        List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
         session.setAttribute("foodsponsors", foodSponsors);
 
         return "meetup";

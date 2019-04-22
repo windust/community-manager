@@ -24,7 +24,6 @@ import java.util.Map;
  * @version 0.1
  */
 public class FoodSponsor extends ResponderEntity{
-    private String name;
     private String address;
     private String contactPerson;
     private String contactEmail;
@@ -76,7 +75,7 @@ public class FoodSponsor extends ResponderEntity{
     public FoodSponsor(int primaryKey, String name, String address, String contactPerson, String contactEmail,
     String contactPhone, String contactAltPhone, LocalDate requestedFoodDate){
         this.setPrimaryKey(primaryKey);
-        this.name = name;
+        setName(name);
         this.address = address;
         this.contactPerson = contactPerson;
         this.contactEmail = contactEmail;
@@ -185,7 +184,7 @@ public class FoodSponsor extends ResponderEntity{
     @Override
     public String toString() {
         return "FoodSponsor{" +
-            "name='" + name + '\'' +
+            "name='" + getName() + '\'' +
             ", address='" + address + '\'' +
             ", contactPerson='" + contactPerson + '\'' +
             ", contactEmail='" + contactEmail + '\'' +
