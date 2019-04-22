@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javassist.expr.Instanceof;
 
 /**
  * GoogleSheets implements Data Storage, the interface that all data storage implementations meet.
@@ -150,9 +151,11 @@ public class GoogleSheets implements DataStorage {
         List<Map<String, String>> data = new ArrayList<>();
         List<String> attributes = getAttributesAsStrings(values);
 
-        for (int rowNum = 1; rowNum < values.size(); rowNum++) {
+        for (int listNum = 1; listNum < values.size(); listNum++) {
             HashMap<String, String> row = new HashMap<>();
-            List<Object> rawRow = values.get(rowNum);
+            List<Object> rawRow = values.get(listNum);
+            int rowNum = listNum + 1;
+            row.put("primaryKey",String.valueOf(rowNum));
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
@@ -173,10 +176,10 @@ public class GoogleSheets implements DataStorage {
         List<Object> attributesNames = values.get(0);
         List<String> attributes = new ArrayList<>();
         for(Object attributeName: attributesNames){
-            if (attributeName.getClass().toString().equals("class java.lang.String")) {
+            if (attributeName instanceof String) {
                 attributes.add(attributeName.toString());
             } else {
-                System.out.println(attributeName.getClass().toString());
+                System.out.println("Could not convert attribute name to String: " + attributeName.getClass().toString());
             }
         }
         return attributes;
@@ -206,7 +209,7 @@ public class GoogleSheets implements DataStorage {
 
     private boolean update(String cell, String newValue){
 
-        if(cell.contains("A") || cell.contains("1")) return false;
+        if(cell.contains("null") || cell.contains("1")) return false;
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
@@ -283,11 +286,9 @@ public class GoogleSheets implements DataStorage {
     private int getRowNumber(List<List<Object>> values, String primaryKey){
 
         int rowNumber = 1;
-        for(int rowIndex = 0; rowIndex < values.size(); rowIndex++){
-            if(values.get(rowIndex).get(0).toString().equals(primaryKey)){
-                rowNumber = rowIndex+1;
-                break;
-            }
+
+        if(Integer.parseInt(primaryKey) <= values.size()){
+            rowNumber = Integer.parseInt(primaryKey);
         }
         return rowNumber;
     }
@@ -295,7 +296,7 @@ public class GoogleSheets implements DataStorage {
     private String getColumnLetter(List<Object> attributes, String attribute){
 
         int a = 65;
-        String columnLetter = "" + (char)a;
+        String columnLetter = null;
         for(int i = 0; i < attributes.size(); i++){
             if(attribute.equals(attributes.get(i).toString())){
                 return ""+ (char)(a + i);

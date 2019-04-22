@@ -33,17 +33,6 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
         
         throw new IllegalArgumentException("Invalid Token: " + token);
     }
-    
-//    protected String convertResponseToText(Response response){
-//        switch (response){
-//            case ACCEPTED:
-//                return "yes";
-//            case DECLINED:
-//                return "no";
-//            default:
-//                return "";
-//        }
-//    }
 
     private void updateToken(int primaryKey, String newToken) {
         dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "token", newToken);

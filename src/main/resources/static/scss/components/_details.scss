@@ -33,7 +33,7 @@ details {
   }
 }
 
-summary, .card-header {
+summary, .summary, .card-header {
   display: grid;
   grid-template-columns: 5% 25% 25% 25% 20%;
 }
@@ -78,5 +78,12 @@ summary, .card-header {
 
 .first-row span{
   visibility: visible;
+}
+
+@supports (-ms-ime-align:auto) {
+  .summary {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 20% !important;
+  }
 }
 

@@ -68,7 +68,7 @@ public class GoogleSheetsTest {
 
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
-        row.put("primaryKey", "1");
+        row.put("primaryKey", "2");
         row.put("name", "Excellent");
         row.put("address", "100 Nowhere St");
         row.put("capacity", "100");
@@ -81,7 +81,7 @@ public class GoogleSheetsTest {
         list.add(row);
 
         row = new HashMap<>();
-        row.put("primaryKey", "2");
+        row.put("primaryKey", "3");
         row.put("name", "Amazing");
         row.put("address", "200 Nowhere St");
         row.put("capacity", "150");
@@ -146,14 +146,14 @@ public class GoogleSheetsTest {
     void whenIUpdateVenueNameIGetNewVenueNameBack() {
         String oldName = "Amazing";
         String nameAfterChange = "Amazing";
-        testStorage.update("venues", "2", "name", "NewName");
+        testStorage.update("venues", "3", "name", "NewName");
         try {
-            nameAfterChange =  testStorage.readAll("venues").get(0).get("name");
+            //nameAfterChange =  testStorage.readAll("venues").get(0).get("name");
             nameAfterChange =  testStorage.readAll("venues").get(1).get("name");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        testStorage.update("venues", "2", "name", "Amazing");
+        testStorage.update("venues", "3", "name", "Amazing");
         assertEquals("NewName", nameAfterChange);
     }
 
@@ -201,7 +201,7 @@ public class GoogleSheetsTest {
     @Test
     void whenIGiveInvalidPrimaryKeyIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
-        assertFalse(testStorage.update("venues","3","requestedHostingDate","01/14/2019"));
+        assertFalse(testStorage.update("venues","4","requestedHostingDate","01/14/2019"));
     }
 
     @Test

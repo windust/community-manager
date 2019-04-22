@@ -8,8 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
+import com.spinningnoodle.communitymanager.model.entities.Admin;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -60,40 +63,40 @@ public class modelIntegrationTest {
 
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> row = new HashMap<>();
-        row.put("primaryKey", "1");
+        row.put("primaryKey", "2");
         row.put("venue", "Excellent");
         row.put("topic", "100");
         row.put("speaker", "Freddy");
 //        row.put("food", "");
 //        row.put("after", "");
-        row.put("date", "01/14/2019");
+        row.put("date", "01/14/2029");
         list.add(row);
 
         row = new HashMap<>();
-        row.put("primaryKey", "2");
+        row.put("primaryKey", "3");
         row.put("venue", "");
         row.put("topic", "150");
         row.put("speaker", "Nimret");
 //        row.put("food", "");
 //        row.put("after", "");
-        row.put("date", "01/15/2019");
+        row.put("date", "01/15/2029");
         list.add(row);
 
         expected = list;
 
         list = new ArrayList<>();
         row = new HashMap<>();
-        row.put("primaryKey", "1");
+        row.put("primaryKey", "2");
         row.put("venueName", "Excellent");
         row.put("response", "yes");
-        row.put("requestedDate", "01/14/2019");
+        row.put("requestedDate", "01/14/2029");
         list.add(row);
 
         row = new HashMap<>();
-        row.put("primaryKey", "2");
+        row.put("primaryKey", "3");
         row.put("venueName", "Amazing");
         row.put("response", "yes");
-        row.put("requestedDate", "01/14/2019");
+        row.put("requestedDate", "01/14/2029");
         list.add(row);
 
         expectedVenues = list;
@@ -101,9 +104,9 @@ public class modelIntegrationTest {
         testManager = new GoogleSheetsManager();
         testManager.meetupCollection = new MeetupCollection(testStorage);
         testManager.venueCollection = new VenueCollection(testStorage);
+        testManager.adminCollection = new AdminCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
-//        resetDatastorage();
     }
 
     @Test
@@ -113,25 +116,25 @@ public class modelIntegrationTest {
 
         Map<String, String> row = new HashMap<>();
         row.put("name", "Excellent");
-        row.put("requestedDate", "01/14/2019");
+        row.put("requestedDate", "01/14/2029");
         row.put("response","yes");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
         row.put("venue", "Excellent");
         row.put("speaker", "Freddy");
-        row.put("date", "01/14/2019");
+        row.put("date", "01/14/2029");
         row.put("topic","100");
-        row.put("primaryKey","1");
+        row.put("primaryKey","2");
         row.put("description","Freddy");
         expectedAvailableDatesMeetups.add(row);
 
         row = new HashMap<>();
         row.put("venue", "");
         row.put("speaker", "Nimret");
-        row.put("date", "01/15/2019");
+        row.put("date", "01/15/2029");
         row.put("topic","150");
-        row.put("primaryKey","2");
+        row.put("primaryKey","3");
         row.put("description", "Nimret");
         expectedAvailableDatesMeetups.add(row);
 
@@ -153,31 +156,31 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("When I set the venue for a hosted event, the venue host is unchanged.")
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
-       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2019",LocalDate.of(2019,1,14)));
+       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
     @DisplayName("When I set the venue for an unhosted event, the venue host is filled.")
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
-        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2019",LocalDate.of(2019,1,14)));
+        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue to an invalid venue")
     void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2019",LocalDate.of(2019,1,14)));
+        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue for invalid event date.")
     void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2019",LocalDate.of(2019,1,14)));
+        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
     @DisplayName("Model returns true, when I venue declines to test.")
     void whenISetTheVenueForAnEventWithNotHostingDateReturnsTrue(){
-        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting",LocalDate.of(2019,1,14)));
+        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting",LocalDate.of(2029,1,14)));
     }
 
     /*
@@ -253,14 +256,78 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("Returns null, When I retrieve token with invalid primary key.")
     void whenIRetrieveTokenWithInvalidPrimaryKeyReturnsNull(){
-           assertEquals(null, testManager.requestHost("455",LocalDate.of(2019,1,14)));
+           assertEquals(null, testManager.requestHost("455",LocalDate.of(2029,1,14)));
     }
 
     @Test
     @DisplayName("Returns Token, When I retrieve token with valid primary key.")
     void whenIRetrieveTokenWithValidPrimaryKeyReturnsToken(){
-        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("2",
-            LocalDate.of(2019,1,14)));
+        assertEquals("Amazing-94598d03-b485-46e3-93f6-510f62f5a9af", testManager.requestHost("3",
+            LocalDate.of(2029,1,14)));
+    }
+
+    /*
+    The following are tests related to the admins.
+     */
+    @Test
+    @DisplayName("Model return correct length of list of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedLengthOfListOfAdmins(){
+        assertEquals(2,testManager.getAllAdmins().size());
+    }
+
+    @Test
+    @DisplayName("Model returns minimum attributes of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedValuesForAdmins(){
+        assertAll(
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getPrimaryKey() ),
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getEmail() ),
+            () -> assertNotNull(testManager.getAllAdmins().get(0).getName() )
+        );
+    }
+
+    @Test
+    @DisplayName("Model returns correct names of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedNamesOfAdmins(){
+        ArrayList<String> expectedNames = new ArrayList<>();
+        ArrayList<String> actualNames = new ArrayList<>();
+        List<Admin> actualAdmins = testManager.getAllAdmins();
+        expectedNames.add("Argh");
+        expectedNames.add("Mrou");
+        for(int i =0; i < actualAdmins.size(); i++) {
+            actualNames.add(actualAdmins.get(i).getName());
+        }
+        Collections.sort(expectedNames);
+        Collections.sort(actualNames);
+        assertEquals(expectedNames, actualNames);
+    }
+
+    @Test
+    @DisplayName("Model returns correct emails of admins, when I get All Admins.")
+    void whenIGetAllAdminsIGetTheExpectedEmailsOfAdmins(){
+        ArrayList<String> expectedEmails = new ArrayList<>();
+        ArrayList<String> actualEmails = new ArrayList<>();
+        List<Admin> actualAdmins = testManager.getAllAdmins();
+        expectedEmails.add("dog@animal.com");
+        expectedEmails.add("cat@animal.com");
+
+        for(int i =0; i < actualAdmins.size(); i++) {
+            actualEmails.add(actualAdmins.get(i).getEmail());
+        }
+        Collections.sort(expectedEmails);
+        Collections.sort(actualEmails);
+        assertEquals(expectedEmails, actualEmails);
+    }
+
+    @Test
+    @DisplayName("Model returns false when given an invalid email for the admin.")
+    void whenAUserLogsInWithAnInvalidEmailIGetFalse(){
+        assertFalse(testManager.verifyAdmin("giraff@animals.com"));
+    }
+
+    @Test
+    @DisplayName("Model returns true when given a valid email for the admin.")
+    void whenAUserLogsInWithAnValidEmailIGetTrue(){
+        assertTrue(testManager.verifyAdmin("cat@animal.com"));
     }
 
     @BeforeEach
@@ -269,9 +336,9 @@ public class modelIntegrationTest {
         testManager.meetupCollection = testManager.meetupCollection.fetchFromDataStorage();
         testManager.venueCollection = testManager.venueCollection.fetchFromDataStorage();
 
-        testStorage.update("meetups","2","venue","");
-        testStorage.update("meetups","1","venue","Excellent");
-        testStorage.update("venues","1","response","yes");
+        testStorage.update("meetups","3","venue","");
+        testStorage.update("meetups","2","venue","Excellent");
+        testStorage.update("venues","2","response","yes");
 
 
     }

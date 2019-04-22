@@ -24,13 +24,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.util.ReflectionTestUtils;
 
 public class AdminControllerTest {
     
@@ -38,6 +40,7 @@ public class AdminControllerTest {
     private GoogleSheetsManager model;
     private AdminController adminController;
     private HttpSession session;
+    private HttpServletRequest request;
     
     //data to compare to
     private List<Meetup> expectedMeetups;
@@ -49,19 +52,18 @@ public class AdminControllerTest {
         model = mock(GoogleSheetsManager.class);
         adminController.model = model;
         session = new MockHttpSession();
+        request = new MockHttpServletRequest();
     
         expectedMeetups = createMeetups();
         expectedVenues = createVenues();
     }
     
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("loggedIn is false when application starts")
     public void loggedInStartsAsFalse(){
         Assertions.assertFalse(adminController.loggedIn);
     }
     
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("Login route directs to login screen")
     public void loginReturnsLoginPage() {
@@ -71,50 +73,45 @@ public class AdminControllerTest {
     //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("Logging in with good credentials redirects to upcoming dates page")
-    public void loginAttemptRedirectsToUpcomingWhenSuccessful() {
-        Assertions.assertEquals("redirect:/upcoming", adminController.loginAttempt("username", "password"));
+    @Disabled
+    public void loginSuccessRedirectsToUpcomingWhenSuccessful() {
+        when(model.verifyAdmin("")).thenReturn(true);
+        Assertions.assertEquals("redirect:/upcoming", adminController.loginSuccess(request));
     }
     
-    //TODO replace with oauth tests once oauth is implemented
-    @Test
-    @DisplayName("Logging in with bad credentials redirects to login page")
-    public void loginAttemptRedirectsToLoginWhenFailed(){
-        Assertions.assertEquals("redirect:/", adminController.loginAttempt("incorrect", "wrong"));
-    }
-    
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("loggedIn changed to true when given correct credentials")
-    public void loginAttemptSuccessful(){
-        adminController.loginAttempt("username", "password");
+    @Disabled
+    public void loginSuccessful(){
+        when(model.verifyAdmin("")).thenReturn(true);
+        adminController.loginSuccess(request);
         Assertions.assertTrue(adminController.loggedIn);
     }
     
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("loggedIn remains false if attempted to login with bad credentials")
+    @Disabled
     public void loginAttemptWithBadCredentials(){
-        adminController.loginAttempt("incorrect", "wrong");
+        when(model.verifyAdmin("")).thenReturn(false);
+        adminController.loginSuccess(request);
         Assertions.assertFalse(adminController.loggedIn);
     }
     
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("Logout button redirects to login page")
     public void logoutRedirectsToLoginPage(){
-        Assertions.assertEquals("redirect:/", adminController.logout());
+        Assertions.assertEquals("redirect:/", adminController.logOut(request));
     }
     
     //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("Logout button sets loggedIn to false")
     public void logoutSetsLoggedInToFalse() {
-        ReflectionTestUtils.setField(adminController, "loggedIn", true);
-        adminController.logout();
+        adminController.loggedIn = true;
+        adminController.logOut(request);
         Assertions.assertFalse(adminController.loggedIn);
     }
     
-    //TODO refactor once oauth is implemented
     @Test
     @DisplayName("meetup route throws InvalidUserException if user isn't logged in")
     public void meetupRouteThrowsInvalidUserExceptionIfNotLoggedIn(){
@@ -122,7 +119,6 @@ public class AdminControllerTest {
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1", session));
     }
     
-    //TODO refactor once oauth is implemented
     @Test
     @DisplayName("getToken route throws InvalidUserException is user isn't logged in")
     public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
@@ -130,7 +126,6 @@ public class AdminControllerTest {
         Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken("1"));
     }
     
-    //TODO refactor once oauth is implemented
     @Test
     @DisplayName("upcoming dates route throws InvalidUserException is user isn't logged in")
     public void upcomingThrowsInvalidUserExceptionIfNotLoggedIn(){

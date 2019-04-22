@@ -46,7 +46,10 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 				Meetup meetup = new Meetup();
 
 				meetup.build(meetupFields);
-				meetupCollection.addToCollection(meetup);
+
+				if(meetup.getDate().isAfter(LocalDate.now())) {
+					meetupCollection.addToCollection(meetup);
+				}
 			}
 			
 			return meetupCollection;

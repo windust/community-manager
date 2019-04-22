@@ -13,13 +13,16 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
-import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,6 +45,7 @@ public class AdminController {
     
     @Autowired
     DataManager model;
+    
     /**
      * Route to basic login screen
      * @return login - name of html page to render
@@ -52,35 +56,26 @@ public class AdminController {
         return "login";
     }
     
-    /**
-     * Route to validate given username and password
-     * and sets loggedIn to true if credentials are
-     * valid
-     * @param username - admin username
-     * @param password - admin password
-     * @return login page if credentials are invalid
-     * or upcoming if credentials are valid
-     */
-    @PostMapping("/loginAttempt")
-    public String loginAttempt(@RequestParam(name = "username", required = false, defaultValue = "username") String username,
-                               @RequestParam(name = "password", required = false, defaultValue = "password") String password){
-        if(username.equals("username") && password.equals("password")) {
+    @RequestMapping("/loginSuccess")
+    public String loginSuccess(HttpServletRequest request, OAuth2AuthenticationToken authentication){
+        Map<String, Object> properties = authentication.getPrincipal().getAttributes();
+        String email = (String) properties.get("email");
+        
+        if(model.verifyAdmin(email) && authentication.isAuthenticated()){
             loggedIn = true;
-            //TODO change to dashboard(once dashboard is created)
             return "redirect:/upcoming";
         }
         else{
+            new SecurityContextLogoutHandler().logout(request, null, null);
             return "redirect:/";
         }
     }
     
-    /**
-     * Route that sets loggedIn to false and
-     * redirects user to login screen
-     * @return redirect:/ - redirects user to login page
-     */
-    @GetMapping("/logout")
-    public String logout(){
+    //Route cannot equal "logout" because that is oauth default
+    @RequestMapping("/log_out")
+    public String logOut(HttpServletRequest request){
+        new SecurityContextLogoutHandler().logout(request, null, null);
+
         loggedIn = false;
         return "redirect:/";
     }
