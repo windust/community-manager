@@ -19,7 +19,7 @@ import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
-import com.spinningnoodle.communitymanager.model.collections.FoodCollection;
+import com.spinningnoodle.communitymanager.model.collections.FoodSponsorCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Admin;
@@ -48,7 +48,7 @@ public class GoogleSheetsManager implements DataManager {
     VenueCollection venueCollection;
     @Autowired
     @Qualifier("food")
-    FoodCollection foodCollection;
+    FoodSponsorCollection foodSponsorCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager() {
@@ -126,8 +126,8 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public List<FoodSponsor> getAllFoodSponsors(Meetup meetup) {
         if (!meetup.getVenue().equals("") && meetup.getFood().equals("")) {
-            foodCollection = foodCollection.fetchFromDataStorage();
-            return foodCollection.getAll();
+            foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+            return foodSponsorCollection.getAll();
         }
         return null;
     }

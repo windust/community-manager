@@ -25,28 +25,28 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 /**
- * The FoodCollection stores a collection of food sponsors and connect the list to a DataStorage.
+ * The FoodSponsorCollection stores a collection of food sponsors and connect the list to a DataStorage.
  *
  * @author Crean 4 UR Coffee
  * @version 0.1
  */
 
 @Repository(value = "food")
-public class FoodCollection extends ResponderCollection<FoodSponsor>{
+public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
 
-    public FoodCollection(){
+    public FoodSponsorCollection(){
         super("foodSponsors");
     }
 
-    public FoodCollection(DataStorage dataStorage){
+    public FoodSponsorCollection(DataStorage dataStorage){
         super(dataStorage, "foodSponsors");
     }
 
 
     @Override
-    public FoodCollection fetchFromDataStorage() {
+    public FoodSponsorCollection fetchFromDataStorage() {
         try{
-            FoodCollection foodCollection = new FoodCollection(this.getDataStorage());
+            FoodSponsorCollection foodSponsorCollection = new FoodSponsorCollection(this.getDataStorage());
 
             for(Map<String, String> foodFields : getDataStorage().readAll(getTableName())){
                 FoodSponsor foodSponsor = new FoodSponsor();
@@ -56,10 +56,10 @@ public class FoodCollection extends ResponderCollection<FoodSponsor>{
                 catch (UnexpectedPrimaryKeyException e){
                     e.printStackTrace();
                 }
-                foodCollection.addToCollection(foodSponsor);
+                foodSponsorCollection.addToCollection(foodSponsor);
             }
             
-            return foodCollection;
+            return foodSponsorCollection;
         } catch (IOException e){
             System.out.println("Error: Reading from non-existant table.");
             e.printStackTrace();
