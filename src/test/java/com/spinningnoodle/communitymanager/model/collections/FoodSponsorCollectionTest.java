@@ -12,14 +12,18 @@ package com.spinningnoodle.communitymanager.model.collections;
  *  END OF LICENSE INFORMATION
  */
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,5 +59,53 @@ public class FoodSponsorCollectionTest {
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
         when(dataStorage.update("foodSponsors", "1","foodResponse" , "yes")).thenReturn(true);
         assertTrue(spyFoodSponsorCollection.updateResponse("Pizza Hut", Response.ACCEPTED));
+    }
+
+    @Test
+    void whenFoodSponsorIsIncorrectInSettingTheResponseThenItReturnsFalse() {
+        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
+        when(foodSponsor.getName()).thenReturn("Pizza Hut");
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        when(dataStorage.update("foodSponsors", "1", "foodResponse", "yes")).thenReturn(true);
+        assertFalse(spyFoodSponsorCollection.updateResponse("Papa Murphy's", Response.ACCEPTED));
+    }
+
+    @Test
+    void whenFoodSponsorRequestsDate(){
+        LocalDate date = LocalDate.of(2019, 4, 13);
+        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
+        when(foodSponsor.getName()).thenReturn("Pizza Hut");
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        when(dataStorage.update("foodSponsors", "1", "requestedFoodDate", "04/13/2019")).thenReturn(true);
+        assertTrue(spyFoodSponsorCollection.updateRequestedDate("Pizza Hut", date));
+    }
+
+    @Test
+    void whenFoodSponsorInvalidNameRequestDateShouldReturnFalse(){
+        LocalDate date = LocalDate.of(2020, 6, 6);
+        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
+        when(foodSponsor.getName()).thenReturn("Pizza Hut");
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        when(dataStorage.update("foodSponsors", "1", "requestedFoodDate", "06/06/2020")).thenReturn(true);
+        assertFalse(spyFoodSponsorCollection.updateRequestedDate("Subway", date));
+    }
+
+    @Test
+    void whenFoodSponsorIsLookedUpByPrimaryKey() throws EntityNotFoundException {
+        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getEntitiesValues();
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        assertEquals(1, spyFoodSponsorCollection.getByPrimaryKey(1).getPrimaryKey());
     }
 }
