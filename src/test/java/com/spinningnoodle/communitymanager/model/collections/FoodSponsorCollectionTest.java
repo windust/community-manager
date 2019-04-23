@@ -11,22 +11,49 @@ package com.spinningnoodle.communitymanager.model.collections;
  *
  *  END OF LICENSE INFORMATION
  */
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 public class FoodSponsorCollectionTest {
-    @Mock
     private FoodSponsorCollection foodSponsorCollection;
+
+    @Mock
+    private FoodSponsor foodSponsor;
+
+    @Mock
+    private DataStorage dataStorage;
 
     @BeforeEach
     void setUp(){
-        foodSponsorCollection = mock(FoodSponsorCollection.class);
+        foodSponsorCollection = new FoodSponsorCollection();
 
-        when(foodSponsorCollection.fetchFromDataStorage()).thenReturn(foodSponsorCollection);
+        dataStorage = mock(GoogleSheets.class);
+        foodSponsor = mock(FoodSponsor.class);
+
+        foodSponsorCollection.dataStorage = dataStorage;
     }
 
-    
+    @Test
+    void whenFoodSponsorIsSetThenItReturnsTrue(){
+        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
+        when(foodSponsor.getName()).thenReturn("Pizza Hut");
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        when(dataStorage.update("foodSponsors", "1","foodResponse" , "yes")).thenReturn(true);
+        assertTrue(spyFoodSponsorCollection.updateResponse("Pizza Hut", Response.ACCEPTED));
+    }
 }
