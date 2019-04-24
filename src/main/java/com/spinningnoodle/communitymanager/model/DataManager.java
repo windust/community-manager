@@ -15,6 +15,8 @@ public interface DataManager {
 
     List<Meetup> getAllMeetups();
     
+    List<Meetup> getAllHostedMeetups();
+    
     Venue getVenueByToken(String venueToken);
     
     FoodSponsor getFoodByToken(String foodToken);

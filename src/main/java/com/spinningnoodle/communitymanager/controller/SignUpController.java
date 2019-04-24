@@ -19,7 +19,6 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Respon
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +107,7 @@ public class SignUpController {
             Response response;
             List<Meetup> meetups;
             FoodSponsor foodSponsor;
-            meetups = getHostedMeetups(model.getAllMeetups());
+            meetups = model.getAllHostedMeetups();
             foodSponsor = model.getFoodByToken(token);
             
             currentToken = token;
@@ -137,17 +136,6 @@ public class SignUpController {
             throw new IllegalArgumentException(e.getMessage());
         }
         
-    }
-    
-    //TODO consider making this a GSM method
-    private List<Meetup> getHostedMeetups(List<Meetup> meetups){
-        List<Meetup> filteredMeetups = new ArrayList<Meetup>();
-        for(Meetup meetup : meetups){
-            if (!meetup.getVenue().equals("")){
-                filteredMeetups.add(meetup);
-            }
-        }
-        return filteredMeetups;
     }
     
     private String getHostingMessage(Response response){

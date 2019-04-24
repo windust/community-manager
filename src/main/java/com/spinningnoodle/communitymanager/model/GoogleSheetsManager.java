@@ -33,6 +33,7 @@ import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -90,6 +91,17 @@ public class GoogleSheetsManager implements DataManager {
     public List<Meetup> getAllMeetups() {
         meetupCollection = meetupCollection.fetchFromDataStorage();
         return meetupCollection.getAll();
+    }
+    
+    @Override
+    public List<Meetup> getAllHostedMeetups(){
+        List<Meetup> filteredMeetups = new ArrayList<>();
+        for(Meetup meetup : meetupCollection.getAll()){
+            if (!meetup.getVenue().equals("")){
+                filteredMeetups.add(meetup);
+            }
+        }
+        return filteredMeetups;
     }
 
     //TODO look into possibility of converting to getResponderByToken method
