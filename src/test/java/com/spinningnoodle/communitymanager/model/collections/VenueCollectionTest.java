@@ -70,6 +70,7 @@ class VenueCollectionTest {
 		assertEquals(collectionSize, venueCollection.getAll().size());
 	}
 
+	//TODO review commented out code
 //	@Test
 //    void whenIFetchAVenueByTokenIShouldGetAVenue() {
 //      assertNotNull(venueCollection.getVenueFromToken("123N"));

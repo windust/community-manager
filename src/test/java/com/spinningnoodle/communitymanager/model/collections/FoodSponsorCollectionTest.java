@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -47,6 +48,31 @@ public class FoodSponsorCollectionTest {
         foodSponsor = mock(FoodSponsor.class);
 
         foodSponsorCollection.dataStorage = dataStorage;
+    }
+
+    @Test
+    void addingFoodSponsorToCollectionShouldUpdateTheSize(){
+        FoodSponsor testFoodSponsor = new FoodSponsor();
+        testFoodSponsor.setPrimaryKey(15);
+        int intialSize = foodSponsorCollection.size();
+        foodSponsorCollection.addToCollection(testFoodSponsor);
+
+        assertEquals(intialSize + 1, foodSponsorCollection.size());
+    }
+
+    @Test
+    void foodSponsorCanBeRetrievedByID() throws EntityNotFoundException {
+        FoodSponsor testFoodSponsor = new FoodSponsor(1);
+        foodSponsorCollection.addToCollection(testFoodSponsor);
+
+        assertEquals(testFoodSponsor, foodSponsorCollection.getById(testFoodSponsor.getPrimaryKey()));
+    }
+
+    @Test
+    void whenFoodSponsorDoesNotExistErrorShouldBeThrownWhenLookedUpByID(){
+        FoodSponsor testFoodSponsor = new FoodSponsor(1);
+        foodSponsorCollection.addToCollection(testFoodSponsor);
+        assertThrows(EntityNotFoundException.class, () -> foodSponsorCollection.getById(-1));
     }
 
     @Test
@@ -107,5 +133,15 @@ public class FoodSponsorCollectionTest {
         Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getEntitiesValues();
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
         assertEquals(1, spyFoodSponsorCollection.getByPrimaryKey(1).getPrimaryKey());
+    }
+
+    @Test
+    void whenFoodSponsorDoesNotExistLookedUpByPrimaryKey(){
+        FoodSponsorCollection spyFoodSponsorCollect = Mockito.spy(foodSponsorCollection);
+        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
+        mockFoodSponsorList.add(foodSponsor);
+        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollect).getEntitiesValues();
+        when(foodSponsor.getPrimaryKey()).thenReturn(1);
+        assertThrows(EntityNotFoundException.class, () -> spyFoodSponsorCollect.getByPrimaryKey(-1));
     }
 }
