@@ -60,8 +60,10 @@
                 <span th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
                       th:text="${venue.getResponse()}">Response</span></p>
             <div class="btn_container">
-                <a rel="request-host" class="btn_primary"
+                <a th:if="${!session.meetup.getDate().equals(venue.getRequestedDate())}" rel="request-host" class="btn_primary"
                    th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
+                <a th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}" th:href="@{/venue?token=} + ${venue.getToken()}"
+                   th:inline="text">http://localhost:8080/venue?token=[[${venue.getToken()}]]</a>
             </div>
         </section>
     </th:block>
@@ -89,8 +91,9 @@
                         th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
                         th:text="${food.getResponse()}">Response</span></p>
                 <div class="btn_container">
-                    <a rel="request-food" class="btn_primary"
+                    <a th:if="${!session.meetup.getDate().equals(food.getRequestedDate())}" rel="request-food" class="btn_primary"
                        th:data-foodIndentifier="${food.getPrimaryKey()}">Request Food</a>
+                    <a th:if="${session.meetup.getDate().equals(food.getRequestedDate())}" th:href="@{/food?token=} + ${food.getToken()}" th:inline="text">http://localhost:8080/food?token=[[${food.getToken()}]]</a>
                 </div>
             </section>
         </th:block>
