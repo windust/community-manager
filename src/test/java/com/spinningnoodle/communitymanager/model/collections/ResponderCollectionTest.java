@@ -12,12 +12,9 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
-import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -30,7 +27,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.Answer;
 
 public class ResponderCollectionTest {
     private DummyResponderCollection tokenCollection;
@@ -78,7 +74,7 @@ public class ResponderCollectionTest {
         venue.setContactEmail("freddy@excellent.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
+        venue.setRequestedDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
 
         venue = new Venue();
@@ -93,7 +89,7 @@ public class ResponderCollectionTest {
         venue.setContactEmail("nimret@amazing.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
+        venue.setRequestedDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
 
         return venueData;

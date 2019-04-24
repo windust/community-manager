@@ -169,7 +169,7 @@ class GoogleSheetsManagerTest {
             Venue venue = new Venue();
 
             venue.setPrimaryKey(Integer.parseInt(expectedVenueValues.get("primaryKey")));
-            venue.setRequestedHostingDate(Entity.convertDate(expectedVenueValues.get("requestedDate")));
+            venue.setRequestedDate(Entity.convertDate(expectedVenueValues.get("requestedDate")));
             venue.setResponse(Response.ACCEPTED);
             venue.setName(expectedVenueValues.get("venueName"));
 
@@ -181,7 +181,7 @@ class GoogleSheetsManagerTest {
 
         assertAll(() -> {
             assertEquals(Integer.parseInt(expectedVenueValues.get("primaryKey")), venue.getPrimaryKey());
-            assertEquals(expectedVenueValues.get("requestedDate"), Entity.dateFormat.format(venue.getRequestedHostingDate()));
+            assertEquals(expectedVenueValues.get("requestedDate"), Entity.dateFormat.format(venue.getRequestedDate()));
             assertEquals(Response.ACCEPTED, venue.getResponse());
             assertEquals(expectedVenueValues.get("venueName"), venue.getName());
         });

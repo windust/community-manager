@@ -69,7 +69,7 @@ public class SignUpController {
             
             currentToken = token;
             this.venueName = venue.getName();
-            this.requestedDate = venue.getRequestedHostingDate();
+            this.requestedDate = venue.getRequestedDate();
             response = venue.getResponse();
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);

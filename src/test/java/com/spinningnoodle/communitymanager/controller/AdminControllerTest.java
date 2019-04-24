@@ -120,10 +120,10 @@ public class AdminControllerTest {
     }
     
     @Test
-    @DisplayName("getToken route throws InvalidUserException is user isn't logged in")
+    @DisplayName("getVenueToken route throws InvalidUserException is user isn't logged in")
     public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
         adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.getToken("1"));
+        Assertions.assertThrows(InvalidUserException.class, () -> adminController.getVenueToken("1"));
     }
     
     @Test
@@ -188,14 +188,14 @@ public class AdminControllerTest {
     }
     
     @Test
-    @DisplayName("getToken returns a token for specified venue")
+    @DisplayName("getVenueToken returns a token for specified venue")
     public void getTokenReturnSpecificToken() throws InvalidUserException {
         when(model.requestHost("1", LocalDate.of(2019,1,14))).thenReturn("123N");
         String expected = model.requestHost("1", LocalDate.of(2019,1,14));
         
         adminController.loggedIn = true;
         
-        Assertions.assertEquals(expected, adminController.getToken("venueKey=1&date=1/14/2019"));
+        Assertions.assertEquals(expected, adminController.getVenueToken("venueKey=1&date=1/14/2019"));
     }
     
     private List<Meetup> createMeetups(){
@@ -246,7 +246,7 @@ public class AdminControllerTest {
         venue.setContactEmail("freddy@excellent.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
+        venue.setRequestedDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
         
         venue = new Venue();
@@ -261,7 +261,7 @@ public class AdminControllerTest {
         venue.setContactEmail("nimret@amazing.com");
         venue.setContactPhone("");
         venue.setContactAltPhone("");
-        venue.setRequestedHostingDate(LocalDate.of(2019,1,14));
+        venue.setRequestedDate(LocalDate.of(2019,1,14));
         venueData.add(venue);
         
         return venueData;

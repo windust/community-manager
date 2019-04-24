@@ -21,11 +21,13 @@ import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
 import com.spinningnoodle.communitymanager.model.collections.FoodSponsorCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
+import com.spinningnoodle.communitymanager.model.collections.ResponderCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Admin;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
@@ -138,8 +140,22 @@ public class GoogleSheetsManager implements DataManager {
         try {
             int key = Integer.parseInt(primaryKey);
             Venue venue = venueCollection.getByPrimaryKey(key);
-            setRequestedDate(venue.getName(), date);
+            setRequestedDate(venue, date, venueCollection);
             return retrieveToken(venue);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    @Override
+    public String requestFood(String primaryKey, LocalDate date) {
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        try {
+            int key = Integer.parseInt(primaryKey);
+            FoodSponsor foodSponsor = foodSponsorCollection.getByPrimaryKey(key);
+            setRequestedDate(foodSponsor, date, foodSponsorCollection);
+            return retrieveToken(foodSponsor);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -151,12 +167,13 @@ public class GoogleSheetsManager implements DataManager {
         return "https://docs.google.com/spreadsheets/d/113AbcCLo0ZAJLhoqP0BXaJPRlzslESkkk98D44Ut1Do/edit#gid=0";
     }
 
-    private void setRequestedDate(String venueName, LocalDate date) {
-        venueCollection.updateResponse(venueName, Response.UNDECIDED);
-        venueCollection.updateRequestedDate(venueName, date);
+    //TODO Consider possible ways to remove collection argument as collection are already accessible via fields
+    private void setRequestedDate(ResponderEntity responder, LocalDate date, ResponderCollection collection) {
+        collection.updateResponse(responder.getName(), Response.UNDECIDED);
+        collection.updateRequestedDate(responder.getName(), date);
     }
 
-    private String retrieveToken(Venue venue) {
-        return venue.getOrGenerateToken();
+    private String retrieveToken(ResponderEntity responder) {
+        return responder.getOrGenerateToken();
     }
 }

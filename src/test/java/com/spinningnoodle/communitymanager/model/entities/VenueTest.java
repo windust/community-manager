@@ -13,7 +13,6 @@ package com.spinningnoodle.communitymanager.model.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
@@ -134,14 +133,14 @@ class VenueTest {
 
     @Test
     void whenIHaveAVenueThenICanGetTheDateIRequestedTheVenueToHost() {
-        assertEquals(testRequestedHostingDate, venue.getRequestedHostingDate());
+        assertEquals(testRequestedHostingDate, venue.getRequestedDate());
     }
 
     @Test
     void whenIHaveAVenueThenICanSetTheDateIRequestThisVenueToHost() {
         LocalDate newHostingDate = LocalDate.of(1971,1,2);
-        venue.setRequestedHostingDate(newHostingDate);
-        assertEquals(newHostingDate, venue.getRequestedHostingDate());
+        venue.setRequestedDate(newHostingDate);
+        assertEquals(newHostingDate, venue.getRequestedDate());
     }
 
     @Nested
@@ -211,7 +210,7 @@ class VenueTest {
 
         @Test
         void whenIBuildAVenueThenRequestedHostingDateIsSet() {
-            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedHostingDate().toString());
+            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedDate().toString());
         }
 
 
@@ -272,7 +271,7 @@ class VenueTest {
 
             @Test
             void whenIBuildAVenueWithNoFieldsThenRequestedHostingDateShouldBeNull() {
-                assertNull(venue.getRequestedHostingDate());
+                assertNull(venue.getRequestedDate());
             }
         }
     }
