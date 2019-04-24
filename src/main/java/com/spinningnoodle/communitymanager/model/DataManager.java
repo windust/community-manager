@@ -22,6 +22,8 @@ public interface DataManager {
     List<Venue> getAllVenues();
 
     String requestHost(String primaryKey, LocalDate date);
+    
+    String requestFood(String primaryKey, LocalDate date);
 
     String getDatabaseAccessPage();
 

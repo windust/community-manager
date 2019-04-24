@@ -14,11 +14,8 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
-import com.spinningnoodle.communitymanager.model.entities.Entity;
-import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
@@ -80,40 +77,6 @@ public class VenueCollection extends ResponderCollection<Venue> {
 //
 //		return venueInfo;
 //	}
-
-	/**
-	 * Update a venues response to hosting
-	 *
-	 * @param venueName The name of the venue which responded
-	 * @param response The venues response
-	 * @return If the dataStorage successfully updated
-	 */
-	public boolean updateResponse(String venueName, Response response){
-		for(Venue venue : getAll()){
-			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", response.getFriendlyName());
-			}
-		}
-		
-		return false;
-	}
-
-	/**
-	 * Update the date the venue has requested to host
-	 *
-	 * @param venueName The venue which has requested a date
-	 * @param date The date the venue requested
-	 * @return If the dataStorage was successfully updated
-	 */
-	public boolean updateRequestedDate(String venueName, LocalDate date){
-		for(Venue venue : getAll()){
-			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "requestedHostingDate", Entity.dateFormat.format(date));
-			}
-		}
-		
-		return false;
-	}
 
 	/**
 	 * gets a venue based on its primary key

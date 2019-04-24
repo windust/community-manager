@@ -12,7 +12,10 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
+import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import java.time.LocalDate;
 
 public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
     
@@ -36,6 +39,42 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
 
     private void updateToken(int primaryKey, String newToken) {
         dataStorageUpdate(this.getTableName(), Integer.toString(primaryKey), "token", newToken);
+    }
+    
+    /**
+     * Update a venues response to hosting
+     *
+     * @param responderName The name of the venue which responded
+     * @param response The venues response
+     * @return If the dataStorage successfully updated
+     */
+    //TODO consider refactoring to use ResponderEntity rather then String name
+    public boolean updateResponse(String responderName, Response response){
+        for(ResponderEntity responder : getAll()){
+            if(responder.getName().equals(responderName)){
+                return dataStorageUpdate(getTableName(), Integer.toString(responder.getPrimaryKey()), "response", response.getFriendlyName());
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Update the date the venue has requested to host
+     *
+     * @param responderName The venue which has requested a date
+     * @param date The date the venue requested
+     * @return If the dataStorage was successfully updated
+     */
+    //TODO consider refactoring to use ResponderEntity rather then String name
+    public boolean updateRequestedDate(String responderName, LocalDate date){
+        for(ResponderEntity responder : getAll()){
+            if(responder.getName().equals(responderName)){
+                return dataStorageUpdate(getTableName(), Integer.toString(responder.getPrimaryKey()), "requestedHostingDate", Entity.dateFormat.format(date));
+            }
+        }
+        
+        return false;
     }
 
     @Override

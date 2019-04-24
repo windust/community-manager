@@ -57,7 +57,7 @@
         <section class="tr">
             <p class="meetup-venue">
                 <span th:text="${venue.getName()}">No Venue Name</span>
-                <span th:if="${session.meetup.getDate().equals(venue.getRequestedHostingDate())}"
+                <span th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
                       th:text="${venue.getResponse()}">Response</span></p>
             <div class="btn_container">
                 <a rel="request-host" class="btn_primary"
@@ -86,11 +86,11 @@
                 <p class="meetup-venue">
                     <span th:text="${food.getName()}">No Food Sponsor Name</span>
                     <span
-                        th:if="${session.meetup.getDate().equals(food.getRequestedFoodDate())}"
+                        th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
                         th:text="${food.getResponse()}">Response</span></p>
                 <div class="btn_container">
-                    <a rel="request-host" class="btn_primary"
-                       th:data-foodIndentifier="${food.getPrimaryKey()}">Request Host</a>
+                    <a rel="request-food" class="btn_primary"
+                       th:data-foodIndentifier="${food.getPrimaryKey()}">Request Food</a>
                 </div>
             </section>
         </th:block>

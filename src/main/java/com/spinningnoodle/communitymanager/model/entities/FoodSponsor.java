@@ -29,12 +29,11 @@ public class FoodSponsor extends ResponderEntity{
     private String contactEmail;
     private String contactPhone;
     private String contactAltPhone;
-    private LocalDate requestedFoodDate;
-    private String foodResponse;
 
 
     @Override
     public Entity build(Map<String, String> fields) throws AttributeException {
+        //TODO see todo in Venue build method and apply here.
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -42,7 +41,7 @@ public class FoodSponsor extends ResponderEntity{
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedFoodDate(convertDate(fields.getOrDefault("requestedFoodDate", null)));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedFoodDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("foodResponse", null)));
         this.setToken(fields.getOrDefault("token", null));
 
@@ -81,7 +80,7 @@ public class FoodSponsor extends ResponderEntity{
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.contactAltPhone = contactAltPhone;
-        this.requestedFoodDate = requestedFoodDate;
+        setRequestedDate(requestedFoodDate);
     }
 
     /**
@@ -165,22 +164,6 @@ public class FoodSponsor extends ResponderEntity{
         this.contactAltPhone = contactAltPhone;
     }
 
-    /**
-     *
-     * @return this food sponsor's requested date
-     */
-    public LocalDate getRequestedFoodDate(){
-        return requestedFoodDate;
-    }
-
-    /**
-     *
-     * @param requestedFoodDate this food sponsor's requested date
-     */
-    public void setRequestedFoodDate(LocalDate requestedFoodDate){
-        this.requestedFoodDate = requestedFoodDate;
-    }
-
     @Override
     public String toString() {
         return "FoodSponsor{" +
@@ -190,7 +173,7 @@ public class FoodSponsor extends ResponderEntity{
             ", contactEmail='" + contactEmail + '\'' +
             ", contactPhone='" + contactPhone + '\'' +
             ", contactAltPhone='" + contactAltPhone + '\'' +
-            ", requestedFoodDate=" + requestedFoodDate +
+            ", requestedFoodDate=" + getRequestedDate() +
             ", response='" + getToken() + '\'' +
             '}';
     }

@@ -10,12 +10,17 @@
  *  END OF LICENSE INFORMATION
  */
 var hostingButtons = document.querySelectorAll("[rel='request-host']");
+var foodButtons = document.querySelectorAll("[rel='request-food']");
 
 for(var i = 0; i < hostingButtons.length; i++){
   const thisButton = hostingButtons[i];
-  hostingButtons[i].addEventListener("click", function() {getTokenURL(thisButton)});
+  hostingButtons[i].addEventListener("click", function() {getVenueTokenURL(thisButton)});
 }
 
+for(var i = 0; i < foodButtons.length; i++){
+  const thisButton = foodButtons[i];
+  foodButtons[i].addEventListener("click", function() {getFoodTokenURL(thisButton)});
+}
 
 function openTab(evt, category) {
   var i, tabcontent, tablinks;
@@ -31,12 +36,12 @@ function openTab(evt, category) {
   evt.currentTarget.className += " active";
 }
 
-function getTokenURL(element) {
+function getVenueTokenURL(element) {
   var xhr = new XMLHttpRequest();
   var primaryKey = element.getAttribute('data-venueIndentifier');
   var requestedDate = document.getElementById("date").innerHTML;
 
-  xhr.open('POST', "/getToken?venueKey=" + primaryKey + "&" + "date=" + requestedDate, true);
+  xhr.open('POST', "/getVenueToken?venueKey=" + primaryKey + "&" + "date=" + requestedDate, true);
 
   xhr.onload = function() {
     if(this.status === 200) {
@@ -49,4 +54,24 @@ function getTokenURL(element) {
   };
 
   xhr.send("venueKey=" + primaryKey + "&" + "date=" + requestedDate);
+}
+
+function getFoodTokenURL(element) {
+  var xhr = new XMLHttpRequest();
+  var primaryKey = element.getAttribute('data-foodIndentifier');
+  var requestedDate = document.getElementById("date").innerHTML;
+
+  xhr.open('POST', "/getFoodToken?foodKey=" + primaryKey + "&" + "date=" + requestedDate, true);
+
+  xhr.onload = function() {
+    if(this.status === 200) {
+      element.parentElement.innerHTML =
+          "<a href=\"/food?token=" + this.responseText +
+          "\">http://localhost:8080/food?token=" + this.responseText + "</a>";
+    } else {
+      alert('Error fetching token URL. STATUS: ' + this.status);
+    }
+  };
+
+  xhr.send("foodKey=" + primaryKey + "&" + "date=" + requestedDate);
 }

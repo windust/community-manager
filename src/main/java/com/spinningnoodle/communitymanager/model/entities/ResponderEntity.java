@@ -10,6 +10,8 @@ package com.spinningnoodle.communitymanager.model.entities;
  *
  *  END OF LICENSE INFORMATION
  */
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -25,6 +27,7 @@ public abstract class ResponderEntity extends Entity {
     private String name;
     private Response response;
     private String token = "";
+    private LocalDate requestedDate;
 
     public ResponderEntity() {}
 
@@ -111,6 +114,20 @@ public abstract class ResponderEntity extends Entity {
     
     public void setResponse(Response response){
         this.response = response;
+    }
+    
+    /**
+     * @return The date that was this venue was requested by Java User Group
+     */
+    public LocalDate getRequestedDate() {
+        return requestedDate;
+    }
+    
+    /**
+     * @param requestedDate The date this venue was requested by Java User Group
+     */
+    public void setRequestedDate(LocalDate requestedDate) {
+        this.requestedDate = requestedDate;
     }
     
     Response convertResponse(String response){
