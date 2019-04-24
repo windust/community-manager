@@ -21,6 +21,8 @@ public interface DataManager {
     
     boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin);
     
+    boolean setFoodForMeetup(String foodName, String requestedDate, LocalDate dateRequestedByAdmin);
+    
     List<Venue> getAllVenues();
 
     String requestHost(String primaryKey, LocalDate date);

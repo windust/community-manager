@@ -19,6 +19,7 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Respon
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,14 @@ public class SignUpController {
     @Autowired
     DataManager model;
     
+    /*
+    TODO look into localizing variables
+    because if fields are shared between users then
+    multiple users signing up at the same time will
+    break application
+    */
     String currentToken;
-    String venueName;
+    String responderName;
     LocalDate requestedDate;
     String hostingMessage = "";
     String alertMessage = "";
@@ -68,7 +75,7 @@ public class SignUpController {
             venue = model.getVenueByToken(token);
             
             currentToken = token;
-            this.venueName = venue.getName();
+            this.responderName = venue.getName();
             this.requestedDate = venue.getRequestedDate();
             response = venue.getResponse();
             
@@ -101,11 +108,11 @@ public class SignUpController {
             Response response;
             List<Meetup> meetups;
             FoodSponsor foodSponsor;
-            meetups = model.getAllMeetups();
+            meetups = getHostedMeetups(model.getAllMeetups());
             foodSponsor = model.getFoodByToken(token);
             
             currentToken = token;
-//            this.venueName = foodSponsor.getName();
+            this.responderName = foodSponsor.getName();
             this.requestedDate = foodSponsor.getRequestedDate();
             response = foodSponsor.getResponse();
             
@@ -132,6 +139,17 @@ public class SignUpController {
         
     }
     
+    //TODO consider making this a GSM method
+    private List<Meetup> getHostedMeetups(List<Meetup> meetups){
+        List<Meetup> filteredMeetups = new ArrayList<Meetup>();
+        for(Meetup meetup : meetups){
+            if (!meetup.getVenue().equals("")){
+                filteredMeetups.add(meetup);
+            }
+        }
+        return filteredMeetups;
+    }
+    
     private String getHostingMessage(Response response){
         if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
             return "Can you host on " + requestedDate.format(dateFormat) + "?";
@@ -148,7 +166,7 @@ public class SignUpController {
         else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
             //assumes venue cancelled and SeaJUG volunteer removed them
             //from meetup and then changes venue.response to reflect this
-            boolean success = model.setVenueForMeetup(venueName, "notHosting", requestedDate);
+            boolean success = model.setVenueForMeetup(responderName, "notHosting", requestedDate);
             if(success){
                 return getHostingMessage(Response.DECLINED);
             }
@@ -174,7 +192,8 @@ public class SignUpController {
     
     private void setHostingRequestedDate(List<Meetup> meetups){
         for(Meetup meetup : meetups){
-            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(venueName)){
+            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(
+                responderName)){
                 hostingRequestedDate = true;
             }
         }
@@ -186,7 +205,7 @@ public class SignUpController {
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
         boolean success;
         
-        success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
+        success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
@@ -198,15 +217,15 @@ public class SignUpController {
     
     @PostMapping("/foodSignUp")
     public String foodSignUp(@RequestParam(name = "meetup") String meetupDate){
-//        boolean success;
-//
-//        success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
-//
-//        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
-//            alert = true;
-//            alertMessage = getAlertMessage(success, meetupDate);
-//        }
-        System.out.println("I Made It!!");
+        boolean success;
+
+        success = model.setFoodForMeetup(responderName, meetupDate, requestedDate);
+
+        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
+            alert = true;
+            alertMessage = getAlertMessage(success, meetupDate);
+        }
+        
         return "redirect:/food?token=" + this.currentToken;
     }
     

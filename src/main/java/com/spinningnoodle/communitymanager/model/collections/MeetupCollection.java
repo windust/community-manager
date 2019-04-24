@@ -81,4 +81,13 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 		}
 		return false;
 	}
+	
+	public boolean setFoodForMeetup(String foodName, LocalDate hostingDate) {
+		for(Meetup meetup : getEntitiesValues()) {
+			if(meetup.getDate().equals(hostingDate) && (meetup.getFood() == null || meetup.getFood().isBlank())) {
+				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "food", foodName);
+			}
+		}
+		return false;
+	}
 }

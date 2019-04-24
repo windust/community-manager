@@ -124,6 +124,26 @@ public class GoogleSheetsManager implements DataManager {
         }
 
     }
+    
+    @Override
+    public boolean setFoodForMeetup(String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin) {
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+        
+        if (!requestedDate.equals("notHosting")) {
+            LocalDate date = Entity.convertDate(requestedDate);
+            
+            if (date.equals(dateRequestedByAdmin)) {
+                return meetupCollection.setFoodForMeetup(foodName, date) && foodSponsorCollection
+                    .updateResponse(foodName, Response.ACCEPTED);
+            } else {
+                return meetupCollection.setFoodForMeetup(foodName, date);
+            }
+        } else {
+            return foodSponsorCollection.updateResponse(foodName, Response.DECLINED);
+        }
+        
+    }
 
     @Override
     public List<Venue> getAllVenues() {
