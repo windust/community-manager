@@ -13,6 +13,7 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
@@ -94,6 +95,43 @@ public class SignUpController {
         
     }
     
+    @GetMapping("/food")
+    public String food(@RequestParam(name = "token") String token, HttpSession session) {
+        try{
+            Response response;
+            List<Meetup> meetups;
+            FoodSponsor foodSponsor;
+            meetups = model.getAllMeetups();
+            foodSponsor = model.getFoodByToken(token);
+            
+            currentToken = token;
+//            this.venueName = foodSponsor.getName();
+            this.requestedDate = foodSponsor.getRequestedDate();
+            response = foodSponsor.getResponse();
+            
+            this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
+            
+            if(!requestedDateAvailable){
+                setHostingRequestedDate(meetups);
+            }
+            
+            this.hostingMessage = getHostingMessage(response);
+            
+            session.setAttribute("meetups", meetups);
+            session.setAttribute("foodSponsor", foodSponsor);
+            session.setAttribute("hostingMessage", this.hostingMessage);
+            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
+            session.setAttribute("alert", alert);
+            session.setAttribute("alertMessage", alertMessage);
+            
+            return "food_dates";
+        }
+        catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        
+    }
+    
     private String getHostingMessage(Response response){
         if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
             return "Can you host on " + requestedDate.format(dateFormat) + "?";
@@ -142,6 +180,8 @@ public class SignUpController {
         }
     }
     
+    //TODO see if possible to abstract sign up process
+    //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
         boolean success;
@@ -154,6 +194,20 @@ public class SignUpController {
         }
 
         return "redirect:/venue?token=" + this.currentToken;
+    }
+    
+    @PostMapping("/foodSignUp")
+    public String foodSignUp(@RequestParam(name = "meetup") String meetupDate){
+//        boolean success;
+//
+//        success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
+//
+//        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
+//            alert = true;
+//            alertMessage = getAlertMessage(success, meetupDate);
+//        }
+        System.out.println("I Made It!!");
+        return "redirect:/food?token=" + this.currentToken;
     }
     
     private String getAlertMessage(boolean successful, String date){

@@ -92,10 +92,17 @@ public class GoogleSheetsManager implements DataManager {
         return meetupCollection.getAll();
     }
 
+    //TODO look into possibility of converting to getResponderByToken method
     @Override
     public Venue getVenueByToken(String venueToken) {
         venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getEntityByToken(venueToken);
+    }
+    
+    @Override
+    public FoodSponsor getFoodByToken(String venueToken) {
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        return foodSponsorCollection.getEntityByToken(venueToken);
     }
 
     @Override

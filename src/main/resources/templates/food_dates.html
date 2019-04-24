@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+-->
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Dates</title>
+    <meta http-equiv="refresh" content="900"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body id="available_dates">
+
+<header class="banner">
+    <img src="images/logo_draft_1.png" id="logo">
+    <h1>Welcome<span th:if="${session.foodSponsor.getName()}">, <span th:text="${session.foodSponsor.getName()}"></span></span></h1>
+    <form method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
+        <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
+        <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.foodSponsor.getRequestedDate()}">Yes, I can host</button>
+        <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
+    
+    </form>
+</header>
+<aside th:if="${session.alert}" class="primary text-center">
+    <h2 class="h3"><span th:text="${session.alertMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
+</aside>
+
+<article id="more-meetups" class="text-center">
+    <h2 class="h3">Register to host additional dates below:</h2>
+    <form id="meetup_signup" method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
+        
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Address</th>
+                <th>Food Sponsor</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="meetup : ${session.meetups}">
+                <tr>
+                    <td th:text="${meetup.getDate()}"></td>
+                    <td th:text="${meetup.getSpeaker()}"></td>
+                    <td th:if="${meetup.getFood() == ''}">
+                        <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
+                            Needs Food
+                        </button>
+                    </td>
+                    <td th:if="${meetup.getFood() == session.foodSponsor.getName()}"><span th:text="${session.foodSponsor.getName()}" class="accent-text">Reserved</span></td>
+                    <td th:if="${meetup.getFood() != '' and meetup.getFood() != session.foodSponsor.getName()}">Reserved</td>
+                
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </form>
+</article>
+
+<!--<script src="js/available_dates.js" async defer></script>-->
+</body>
+</html>

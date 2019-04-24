@@ -17,6 +17,8 @@ public interface DataManager {
     
     Venue getVenueByToken(String venueToken);
     
+    FoodSponsor getFoodByToken(String foodToken);
+    
     boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin);
     
     List<Venue> getAllVenues();
