@@ -51,7 +51,6 @@ public class AdminController {
      * Route to basic login screen
      * @return login - name of html page to render
      */
-    //TODO convert login to auth
     @GetMapping("/")
     public String login(){
         return "login";
@@ -127,7 +126,6 @@ public class AdminController {
         List<Venue> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
 
-        //ToDo change venue to FoodSponsor
         List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
         session.setAttribute("foodsponsors", foodSponsors);
 
@@ -141,6 +139,7 @@ public class AdminController {
      * @throws InvalidUserException - if user is not
      * logged in.
      */
+    //TODO see if token fetching can be abstracted into a single route/method
     @RequestMapping(path = "/getVenueToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getVenueToken(@RequestBody String params) throws InvalidUserException {

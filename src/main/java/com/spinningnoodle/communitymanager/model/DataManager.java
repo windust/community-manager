@@ -27,6 +27,5 @@ public interface DataManager {
 
     String getDatabaseAccessPage();
 
-    //TODO change Venue to FoodSponsor
     List<FoodSponsor> getAllFoodSponsors(Meetup meetupKey);
 }

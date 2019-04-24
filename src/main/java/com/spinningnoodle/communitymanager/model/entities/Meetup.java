@@ -11,7 +11,6 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
-import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -37,10 +36,7 @@ public class Meetup extends Entity {
 	public Meetup(int primaryKey) {
 		super(primaryKey);
 	}
-
-	/*
-		Todo UPDATE Javadocs
-	 */
+	
     /**
      * Create a new Meetup with all fields and a unique generated ID
      *

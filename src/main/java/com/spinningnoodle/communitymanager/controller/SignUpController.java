@@ -49,7 +49,6 @@ public class SignUpController {
     boolean hostingRequestedDate = false;
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
-    //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
      * if they have a valid token

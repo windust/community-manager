@@ -124,7 +124,6 @@ public class GoogleSheetsManager implements DataManager {
         return venueCollection.getAll();
     }
 
-    //TODO change to using FoodSponsor and FoodSponsorCollection
     @Override
     public List<FoodSponsor> getAllFoodSponsors(Meetup meetup) {
         if (!meetup.getVenue().equals("") && meetup.getFood().equals("")) {
