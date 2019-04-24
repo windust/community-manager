@@ -11,7 +11,7 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 
-import com.spinningnoodle.communitymanager.exceptions.AttributeException;
+import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class FoodSponsor extends ResponderEntity{
 
 
     @Override
-    public Entity build(Map<String, String> fields) throws AttributeException {
+    public FoodSponsor build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
         //TODO see todo in Venue build method and apply here.
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
@@ -42,7 +42,7 @@ public class FoodSponsor extends ResponderEntity{
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
         this.setRequestedDate(convertDate(fields.getOrDefault("requestedFoodDate", null)));
-        this.setResponse(convertResponse(fields.getOrDefault("foodResponse", null)));
+        this.setResponse(convertResponse(fields.getOrDefault("foodResponse", "")));
         this.setToken(fields.getOrDefault("token", null));
 
         return this;
