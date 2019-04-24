@@ -28,14 +28,19 @@
         <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
 
       </form>
+      <button rel='venueConfirm' th:if="${session.ask}" class="btn_secondary venueConfirm" name="meetup"
+              th:value="${session.venue.getRequestedHostingDate()}">
+          To Confirm Modal</button>
   </header>
   <aside th:if="${session.alert}" class="primary text-center">
       <h2 class="h3"><span th:text="${session.alertMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
   </aside>
 
+  <div th:replace="fragments/signupFragments.html :: responderConfirm"></div>
+
   <article id="more-meetups" class="text-center">
       <h2 class="h3">Register to host additional dates below:</h2>
-      <form id="meetup_signup" method="POST" action="/venueSignUp" modelAttribute="venue">
+      <!--<form id="meetup_signup" method="POST" action="/venueSignUp" modelAttribute="venue">-->
 
       <table>
           <thead>
@@ -51,7 +56,7 @@
                   <td th:text="${meetup.getDate()}"></td>
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
-                      <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
+                      <button rel='venueConfirm' class="btn_red" name="meetup" th:value="${meetup.getDate()}">
                           Needs Host
                       </button>
                   </td>
@@ -62,7 +67,7 @@
           </th:block>
           </tbody>
       </table>
-      </form>
+      <!--</form>-->
   </article>
 
   <script src="js/available_dates.js" async defer></script>

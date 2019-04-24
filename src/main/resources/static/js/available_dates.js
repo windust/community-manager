@@ -9,22 +9,78 @@
  *
  *  END OF LICENSE INFORMATION
  */
-document.forms["meetup_signup"].onsubmit = function (){
+// document.forms["meetup_signup"].onsubmit = function (){
+//   var date = document.activeElement.value;
+//   var confirmed = confirm("Are you sure you'd like to host the meetup on " + date + "?");
+//
+//   if(confirmed){
+//     var food = confirm("Would you like to provide food for the meetup?");
+//
+//     if(food){
+//       var hiddenInput = document.createElement("INPUT");
+//       hiddenInput.style.visibility = 'hidden';
+//       hiddenInput.setAttribute("name", "food");
+//       hiddenInput.value = "true";
+//       this.appendChild(hiddenInput);
+//     }
+//   }
+//
+//
+//   return confirmed;
+// };
+
+var confirmVenueButtons = document.querySelectorAll("[rel='venueConfirm']");
+
+for(var i = 0; i < confirmVenueButtons.length; i++){
+  thisButton = confirmVenueButtons[i];
+  confirmVenueButtons[i].addEventListener("click", function() {openVenueConfirmModal(thisButton)});
+}
+
+var confirmFoodButtons = document.querySelectorAll("[rel='foodConfirm']");
+
+for(var i = 0; i < confirmFoodButtons.length; i++){
+  thisButton = confirmFoodButtons[i];
+  confirmFoodButtons[i].addEventListener("click", function() {openFoodConfirmModal(thisButton)});
+}
+
+var declineButtons = document.querySelectorAll("[rel='declineConfirm']");
+
+for(var i = 0; i < declineButtons.length; i++){
+  thisButton = declineButtons[i];
+  declineButtons[i].addEventListener("click", function() {closeModal(thisButton)});
+}
+
+openVenueConfirmModal = function (element){
+  modal = document.getElementById("modal");
+  modal.classList.remove("hidden");
   var date = document.activeElement.value;
-  var confirmed = confirm("Are you sure you'd like to host the meetup on " + date + "?");
 
-  if(confirmed){
-    var food = confirm("Would you like to provide food for the meetup?");
+  document.getElementById("modalYes").value = date;
 
-    if(food){
-      var hiddenInput = document.createElement("INPUT");
-      hiddenInput.style.visibility = 'hidden';
-      hiddenInput.setAttribute("name", "food");
-      hiddenInput.value = "true";
-      this.appendChild(hiddenInput);
-    }
-  }
+  document.getElementById("modalDate").innerHTML = date;
+  document.getElementById("modalMessage").innerHTML = "are you sure you want to host on";
+}
 
+openFoodConfirmModal = function (element) {
+  modal = document.getElementById("modal");
+  modal.classList.remove("hidden");
+  var date = document.activeElement.value;
 
-  return confirmed;
-};
+  document.getElementById("modalDate").innerHTML = date;
+  document.getElementById("modalMessage").innerHTML = "can you provide food on";
+  document.getElementById("modalYes").addEventListener("click", function() {confirmFood(thisButton,true)});
+  document.getElementById("modalNo").addEventListener("click", function() {confirmFood(thisButton,false)});
+  document.getElementById("modalNo").value = date;
+
+}
+
+confirmFood = function (element, foodDecision) {
+  var date = document.activeElement.value;
+  window.location.href = "/venueSignUp?meetup="+date+"&food=" + foodDecision;
+}
+
+closeModal = function (element) {
+  modal = document.getElementById("modal");
+  modal.classList.add("hidden");
+
+}
