@@ -9,52 +9,68 @@
  *
  *  END OF LICENSE INFORMATION
  */
-// document.forms["meetup_signup"].onsubmit = function (){
-//   var date = document.activeElement.value;
-//   var confirmed = confirm("Are you sure you'd like to host the meetup on " + date + "?");
-//
-//   if(confirmed){
-//     var food = confirm("Would you like to provide food for the meetup?");
-//
-//     if(food){
-//       var hiddenInput = document.createElement("INPUT");
-//       hiddenInput.style.visibility = 'hidden';
-//       hiddenInput.setAttribute("name", "food");
-//       hiddenInput.value = "true";
-//       this.appendChild(hiddenInput);
-//     }
-//   }
-//
-//
-//   return confirmed;
-// };
-
-var confirmVenueButtons = document.querySelectorAll("[rel='venueConfirm']");
-
-for(var i = 0; i < confirmVenueButtons.length; i++){
-  thisButton = confirmVenueButtons[i];
-  confirmVenueButtons[i].addEventListener("click", function() {openVenueConfirmModal(thisButton)});
+// document.forms["meetup_signup","meetup_requested","meetup_confirm"].onsubmit = function (){
+document.forms["meetup_signup"].onsubmit = function (){
+  return confirmation();
 }
 
-var confirmFoodButtons = document.querySelectorAll("[rel='foodConfirm']");
-
-for(var i = 0; i < confirmFoodButtons.length; i++){
-  thisButton = confirmFoodButtons[i];
-  confirmFoodButtons[i].addEventListener("click", function() {openFoodConfirmModal(thisButton)});
+document.forms["meetup_requested"].onsubmit = function (){
+  return confirmation();
 }
 
-var declineButtons = document.querySelectorAll("[rel='declineConfirm']");
-
-for(var i = 0; i < declineButtons.length; i++){
-  thisButton = declineButtons[i];
-  declineButtons[i].addEventListener("click", function() {closeModal(thisButton)});
+document.forms["meetup_confirm"].onsubmit = function (){
+  return confirmation();
 }
+
+confirmation = function (){
+  var thisButton = document.activeElement;
+  var hiddenInput = document.getElementById("hiddenInput");
+  var modalYesButton = document.getElementById("modalYes");
+  var modalNoButton = document.getElementById("modalNo");
+
+  var date = thisButton.value;
+  var hiddenValue = hiddenInput.value;
+
+  if(hiddenInput.name === "unused") {
+    if (date === "notHosting" && hiddenValue === "unused") {
+      return true;
+    }
+
+    hiddenInput.value = "confirm";
+    hiddenInput.name = "confirm";
+    openVenueConfirmModal(thisButton);
+    return false;
+  }
+
+  if(hiddenInput.name == "confirm") {
+    if (date == "notHosting") {
+      closeModal(thisButton);
+      resetModal();
+      return false;
+    }
+
+    openFoodConfirmModal(thisButton);
+    hiddenInput.name = "meetup";
+    hiddenInput.value = date;
+    return false;
+  }
+
+  if(hiddenValue == "meetup") {
+
+      closeModal(thisButton);
+      return true;
+
+  }
+}
+
 
 openVenueConfirmModal = function (element){
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
   var date = document.activeElement.value;
 
+  document.getElementById("modalYes").name = "meetup";
+  document.getElementById("modalNo").name = "meetup";
   document.getElementById("modalYes").value = date;
 
   document.getElementById("modalDate").innerHTML = date;
@@ -64,19 +80,32 @@ openVenueConfirmModal = function (element){
 openFoodConfirmModal = function (element) {
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
+  modal.classList.add("foodModal");
   var date = document.activeElement.value;
+
+  document.getElementById("modalYes").name = "food";
+  document.getElementById("modalNo").name = "food";
+  document.getElementById("modalYes").value = date;
 
   document.getElementById("modalDate").innerHTML = date;
   document.getElementById("modalMessage").innerHTML = "can you provide food on";
-  document.getElementById("modalYes").addEventListener("click", function() {confirmFood(thisButton,true)});
-  document.getElementById("modalNo").addEventListener("click", function() {confirmFood(thisButton,false)});
-  document.getElementById("modalNo").value = date;
-
 }
 
 confirmFood = function (element, foodDecision) {
   var date = document.activeElement.value;
   window.location.href = "/venueSignUp?meetup="+date+"&food=" + foodDecision;
+}
+
+resetModal = function () {
+  var hiddenInput = document.getElementById("hiddenInput");
+  var modalYesButton = document.getElementById("modalYes");
+  var modalNoButton = document.getElementById("modalNo");
+
+  hiddenInput.name = "unused";
+  hiddenInput.value = "unused";
+
+  modalYesButton.name = "meetup";
+  modalNoButton.name = "meetup";
 }
 
 closeModal = function (element) {

@@ -145,9 +145,8 @@ public class SignUpController {
         }
     }
 
-    @GetMapping("/venueSignUp")
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) String foodDate){
         boolean success;
         
         success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
