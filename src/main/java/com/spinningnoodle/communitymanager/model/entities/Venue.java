@@ -29,8 +29,7 @@ public class Venue extends ResponderEntity {
     private String contactEmail;
     private String contactPhone;
     private String contactAltPhone;
-//    private LocalDate requestedHostingDate;
-//    private String response;
+    private Response foodResponse;
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
@@ -43,8 +42,9 @@ public class Venue extends ResponderEntity {
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedDate(convertDate(fields.getOrDefault("requestedHostingDate", null)));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("response", "")));
+        this.setFoodResponse(convertResponse(fields.getOrDefault("foodResponse", "")));
         this.setToken(fields.getOrDefault("token", ""));
 
         return this;
@@ -72,11 +72,14 @@ public class Venue extends ResponderEntity {
 	 * @param contactEmail The email the venue can be reached at
 	 * @param contactPhone The phone number the venue can be reached at
 	 * @param contactAltPhone An alternate phone number which could be used to contact the venue
-	 * @param requestedHostingDate The date this venue has requested to host
+	 * @param requestedDate The date this venue has requested to host
+     * @param response This venues response to the requested date
+     * @param foodResponse This venue's response to also providing food
+     * @param token The token of the venue
 	 */
     public Venue(int primaryKey, String name, String address, int capacity, String contactPerson,
         String contactEmail, String contactPhone, String contactAltPhone,
-        LocalDate requestedHostingDate) {
+        LocalDate requestedDate, String response, String foodResponse, String token) {
         this.setPrimaryKey(primaryKey);
         setName(name);
         this.address = address;
@@ -85,7 +88,10 @@ public class Venue extends ResponderEntity {
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.contactAltPhone = contactAltPhone;
-        setRequestedDate(requestedHostingDate);
+        this.setRequestedDate(requestedDate);
+        this.setResponse(convertResponse(response));
+        this.setFoodResponse(convertResponse(foodResponse));
+        this.setToken(token);
     }
 
 	/**
@@ -173,7 +179,16 @@ public class Venue extends ResponderEntity {
         this.contactAltPhone = contactAltPhone;
     }
 
-	@Override
+    public Response getFoodResponse(){
+        return foodResponse;
+    }
+
+    public void setFoodResponse(Response response){
+        this.foodResponse = foodResponse;
+    }
+
+
+    @Override
 	public String toString() {
 		return "Venue{" +
 			", primaryKey=" + this.getPrimaryKey() +
@@ -185,6 +200,8 @@ public class Venue extends ResponderEntity {
 			", contactPhone='" + contactPhone + '\'' +
 			", contactAltPhone='" + contactAltPhone + '\'' +
 			", requestedHostingDate='" + getRequestedDate() + '\'' +
+            ", response='" + getResponse() + '\'' +
+            ", foodResponse='" + getFoodResponse() + '\'' +
             ", token='" + getToken() + '\''+
 			'}';
 	}

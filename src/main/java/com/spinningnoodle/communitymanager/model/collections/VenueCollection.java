@@ -14,6 +14,8 @@ package com.spinningnoodle.communitymanager.model.collections;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.util.Map;
@@ -93,5 +95,23 @@ public class VenueCollection extends ResponderCollection<Venue> {
 		}
 		
 		throw new EntityNotFoundException();
+	}
+
+	/**
+	 * Update a venues response to hosting
+	 *
+	 * @param venueName The name of the venue which responded
+	 * @param foodResponse The venues response
+	 * @return If the dataStorage successfully updated
+	 */
+	//TODO consider refactoring to use ResponderEntity rather then String name
+	public boolean updateFoodResponse(String venueName, Response foodResponse){
+		for(Venue venue : getAll()){
+			if(venue.getName().equals(venueName)){
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", foodResponse.getFriendlyName());
+			}
+		}
+
+		return false;
 	}
 }
