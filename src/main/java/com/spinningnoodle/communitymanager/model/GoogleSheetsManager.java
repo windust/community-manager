@@ -136,6 +136,8 @@ public class GoogleSheetsManager implements DataManager {
         }
 
     }
+
+    @Override
     public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
         LocalDate dateRequestedByAdmin) {
         meetupCollection = meetupCollection.fetchFromDataStorage();
@@ -150,7 +152,7 @@ public class GoogleSheetsManager implements DataManager {
                 return meetupCollection.setFoodForMeetup(venueName, date);
             }
         } else {
-            return foodSponsorCollection.updateResponse(venueName, Response.DECLINED);
+            return venueCollection.updateFoodResponse(venueName, Response.DECLINED);
         }
 
     }

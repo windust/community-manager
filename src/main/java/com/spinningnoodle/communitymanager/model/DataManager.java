@@ -22,6 +22,9 @@ public interface DataManager {
     FoodSponsor getFoodByToken(String foodToken);
     
     boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin);
+
+    boolean setVenueFoodForMeetup(String venueName, String requestedDate,
+        LocalDate dateRequestedByAdmin);
     
     boolean setFoodForMeetup(String foodName, String requestedDate, LocalDate dateRequestedByAdmin);
     

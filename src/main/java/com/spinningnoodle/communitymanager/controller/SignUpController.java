@@ -206,6 +206,9 @@ public class SignUpController {
         boolean success;
         
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
+        if(!foodDate.equals("notHosting")){
+            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
+        }
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
