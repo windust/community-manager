@@ -15,6 +15,7 @@ import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
@@ -24,9 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -70,31 +69,9 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
-            Response response;
-            List<Meetup> meetups;
-            Venue venue;
-            meetups = model.getAllMeetups();
-            venue = model.getVenueByToken(token);
+            Venue venue = model.getVenueByToken(token);
             
-            currentToken = token;
-            this.responderName = venue.getName();
-            this.requestedDate = venue.getRequestedDate();
-            response = venue.getResponse();
-            
-            this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
-            
-            if(!requestedDateAvailable){
-                setHostingRequestedDate(meetups);
-            }
-            
-            this.hostingMessage = getHostingMessage(response);
-            
-            session.setAttribute("meetups", meetups);
-            session.setAttribute("venue", venue);
-            session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
-            session.setAttribute("alert", alert);
-            session.setAttribute("alertMessage", alertMessage);
+            generateSessionVariables(session, venue, "venue");
             
             return "available_dates";
         }
@@ -107,31 +84,9 @@ public class SignUpController {
     @GetMapping("/food")
     public String food(@RequestParam(name = "token") String token, HttpSession session) {
         try{
-            Response response;
-            List<Meetup> meetups;
-            FoodSponsor foodSponsor;
-            meetups = model.getAllHostedMeetups();
-            foodSponsor = model.getFoodByToken(token);
+            FoodSponsor foodSponsor = model.getFoodByToken(token);
             
-            currentToken = token;
-            this.responderName = foodSponsor.getName();
-            this.requestedDate = foodSponsor.getRequestedDate();
-            response = foodSponsor.getResponse();
-            
-            this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
-            
-            if(!requestedDateAvailable){
-                setHostingRequestedDate(meetups);
-            }
-            
-            this.hostingMessage = getHostingMessage(response);
-            
-            session.setAttribute("meetups", meetups);
-            session.setAttribute("foodSponsor", foodSponsor);
-            session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
-            session.setAttribute("alert", alert);
-            session.setAttribute("alertMessage", alertMessage);
+            generateSessionVariables(session, foodSponsor, "foodSponsor");
             
             return "food_dates";
         }
@@ -139,6 +94,29 @@ public class SignUpController {
             throw new IllegalArgumentException(e.getMessage());
         }
         
+    }
+    
+    private void generateSessionVariables(HttpSession session, ResponderEntity responder, String responderType){
+        List<Meetup> meetups = model.getAllMeetups();
+        Response response = responder.getResponse();
+        currentToken = responder.getToken();
+        this.responderName = responder.getName();
+        this.requestedDate = responder.getRequestedDate();
+    
+        this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
+    
+        if(!requestedDateAvailable){
+            setHostingRequestedDate(meetups);
+        }
+    
+        this.hostingMessage = getHostingMessage(response);
+    
+        session.setAttribute("meetups", meetups);
+        session.setAttribute(responderType, responder);
+        session.setAttribute("hostingMessage", this.hostingMessage);
+        session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
+        session.setAttribute("alert", alert);
+        session.setAttribute("alertMessage", alertMessage);
     }
     
     private String getHostingMessage(Response response){
