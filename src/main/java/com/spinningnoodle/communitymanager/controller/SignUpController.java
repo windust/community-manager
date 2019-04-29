@@ -109,7 +109,12 @@ public class SignUpController {
             setHostingRequestedDate(meetups);
         }
     
-        this.hostingMessage = getHostingMessage(response);
+        //ToDo find way to remove this if statement
+        if(responderType.equals("venue")){
+            this.hostingMessage = getHostingMessage(response);
+        } else {
+            this.hostingMessage = getFoodSponsorMessage(response);
+        }
     
         session.setAttribute("meetups", meetups);
         session.setAttribute(responderType, responder);
@@ -119,33 +124,59 @@ public class SignUpController {
         session.setAttribute("alertMessage", alertMessage);
     }
     
+    //ToDo find way to reuse this method for all resonders and depricate/remove getFoodSponsorMessage
     private String getHostingMessage(Response response){
-        if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
-            return "Can you host on " + requestedDate.format(dateFormat) + "?";
-        }
-        else if(response.equals(Response.DECLINED)){
+        if(response.equals(Response.DECLINED)){
             return "Thank you for your consideration.";
         }
-        else if(!requestedDateAvailable && !hostingRequestedDate){
-            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
+        else if(requestedDateAvailable){
+            if(response.equals(Response.UNDECIDED)) {
+                return "Can you host on " + requestedDate.format(dateFormat) + "?";
+            } else {
+                //if not hosting requested date and Response == Accepted then
+                //assumes venue cancelled and SeaJUG volunteer removed them
+                //from meetup and then changes venue.response to reflect this
+                boolean success = model.setVenueForMeetup(responderName, "notHosting", requestedDate);
+                if(success){
+                    return getHostingMessage(Response.DECLINED);
+                }
+                else{
+                    throw new IllegalArgumentException("Unable to update response");
+                }
+            }
         }
         else if(hostingRequestedDate){
             return "Thank you for hosting on " + requestedDate.format(dateFormat) + ", Contact your SeaJUG contact to cancel.";
         }
-        else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
-            //assumes venue cancelled and SeaJUG volunteer removed them
-            //from meetup and then changes venue.response to reflect this
-            boolean success = model.setVenueForMeetup(responderName, "notHosting", requestedDate);
-            if(success){
-                return getHostingMessage(Response.DECLINED);
-            }
-            else{
-                throw new IllegalArgumentException("Unable to update response");
-            }
+        else {
+            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
         }
-        else{
-            return "Unable to generate proper response given: "
-                + requestedDate.format(dateFormat) + ", " + requestedDateAvailable + ", " + response;
+    }
+    
+    private String getFoodSponsorMessage(Response response) {
+        if (response.equals(Response.DECLINED)) {
+            return "Thank you for your consideration.";
+        } else if (requestedDateAvailable) {
+            if (response.equals(Response.UNDECIDED)) {
+                return "Can you provide food on " + requestedDate.format(dateFormat) + "?";
+            } else {
+                //if not hosting requested date and Response == Accepted then
+                //assumes venue cancelled and SeaJUG volunteer removed them
+                //from meetup and then changes venue.response to reflect this
+                boolean success = model
+                    .setVenueForMeetup(responderName, "notHosting", requestedDate);
+                if (success) {
+                    return getFoodSponsorMessage(Response.DECLINED);
+                } else {
+                    throw new IllegalArgumentException("Unable to update response");
+                }
+            }
+        } else if (hostingRequestedDate) {
+            return "Thank you for sponsoring food on " + requestedDate.format(dateFormat)
+                + ", Contact your SeaJUG contact to cancel.";
+        } else {
+            return "Thank you for volunteering but " + requestedDate.format(dateFormat)
+                + " is already being provided food by another sponsor.";
         }
     }
     
@@ -168,7 +199,7 @@ public class SignUpController {
         }
     }
     
-    //TODO see if possible to abstract sign up process
+    //TODO see if possible to abstract sign up process (reflection?)
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) String foodDate){
