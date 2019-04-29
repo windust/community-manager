@@ -24,7 +24,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -56,6 +58,7 @@ public class SignUpController {
     boolean hostingRequestedDate = false;
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
+    //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
      * if they have a valid token
@@ -190,7 +193,7 @@ public class SignUpController {
     //TODO see if possible to abstract sign up process
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) String foodDate){
         boolean success;
         
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);

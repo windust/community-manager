@@ -9,21 +9,32 @@
  *
  *  END OF LICENSE INFORMATION
  */
+@import "../abstracts/typography";
+@import "../abstracts/colors";
+@import "../base/schemes";
 
-@import './abstracts/colors',
-        './abstracts/typography';
-@import './vendors/normalize';
-@import './base/typography',
-        './base/reset',
-        './base/schemes';
-@import './components/buttons',
-        './components/details',
-        './components/header',
-        './components/iframe',
-        './components/modal',
-        './components/navbar',
-        './components/tables',
-        './components/footer';
-@import './pages/available_dates',
-        './pages/login',
-        './pages/meetup';
+$details_margin: .2em;
+$details_padding: .2em;
+$details_border_radius: .5em;
+
+
+#modal {
+  background-color: theme-color('primary', 'light');;
+  border: 2px solid theme-color('base', 'light');
+  color: theme-color('accent', 'dark');
+  position: absolute;
+  margin-top: -20vh;
+  margin-left: 15vw;
+  padding: 5vw;
+  width: 60vw;
+  z-index: 500;
+
+
+}
+
+.hidden {
+  display: none;
+}
+
+
+
