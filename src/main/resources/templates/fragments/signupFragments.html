@@ -28,7 +28,7 @@
             <span id="modalMessage">are you sure you want to host on</span>
             <span id="modalDate">Unavailable</span>?</h2>
             <input id="hiddenInput" class="hidden" name="unused" value="unused">
-            <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit" name="meetup" th:value="${session.venue.getRequestedHostingDate()}">Yes</button>
+            <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes</button>
             <button id="modalNo" rel='declineConfirm' type="submit" class="btn_secondary" name="meetup" value="notHosting">No</button>
 
 

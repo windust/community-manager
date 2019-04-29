@@ -108,7 +108,7 @@ public class VenueCollection extends ResponderCollection<Venue> {
 	public boolean updateFoodResponse(String venueName, Response foodResponse){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
-				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "response", foodResponse.getFriendlyName());
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "foodResponse", foodResponse.getFriendlyName());
 			}
 		}
 
