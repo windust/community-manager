@@ -125,6 +125,7 @@ public class SignUpController {
     }
     
     //ToDo find way to reuse this method for all resonders and depricate/remove getFoodSponsorMessage
+    //ToDo find way to reuse isDateAvailable, setHostingRequestedDate, and getAlertMessage methods
     private String getHostingMessage(Response response){
         if(response.equals(Response.DECLINED)){
             return "Thank you for your consideration.";
