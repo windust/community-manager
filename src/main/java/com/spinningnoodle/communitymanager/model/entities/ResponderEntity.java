@@ -12,6 +12,8 @@ package com.spinningnoodle.communitymanager.model.entities;
  */
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,6 +30,7 @@ public abstract class ResponderEntity extends Entity {
     private Response response;
     private String token = "";
     private LocalDate requestedDate;
+    protected Map<Receipt, String> messages;
 
     public ResponderEntity() {}
 
@@ -141,6 +144,16 @@ public abstract class ResponderEntity extends Entity {
         }
     }
     
+    public String getMessage(Receipt receipt){
+        return this.messages.get(receipt);
+    }
+    
+    protected Map<Receipt, String> generateMessages(){
+        Map<Receipt, String> messages = new HashMap<>();
+        messages.put(Receipt.NO, "Thank you for your consideration.");
+        return messages;
+    }
+    
     @Override
     public String toString() {
         return "TokenEntity{" +
@@ -164,5 +177,13 @@ public abstract class ResponderEntity extends Entity {
             return friendlyName;
         }
 
+    }
+    
+    protected enum Receipt{
+        NO,
+        NOT_RESPONDED,
+        ALREADY_TAKEN,
+        ACCEPTED,
+        ACCEPTED_PLUS;
     }
 }

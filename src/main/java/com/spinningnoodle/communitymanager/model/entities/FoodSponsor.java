@@ -44,6 +44,7 @@ public class FoodSponsor extends ResponderEntity{
         this.setRequestedDate(convertDate(fields.getOrDefault("requestedDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("response", null)));
         this.setToken(fields.getOrDefault("token", null));
+        this.messages = generateMessages();
 
         return this;
     }
@@ -162,6 +163,17 @@ public class FoodSponsor extends ResponderEntity{
      */
     public void setContactAltPhone(String contactAltPhone){
         this.contactAltPhone = contactAltPhone;
+    }
+    
+    @Override
+    protected Map<Receipt, String> generateMessages(){
+        Map<Receipt, String> messages = super.generateMessages();
+        
+        messages.put(Receipt.NOT_RESPONDED, "Can you provide food on " + getRequestedDate().format(dateFormat) + "?");
+        messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + getRequestedDate().format(dateFormat) + " is already being provided food by another sponsor.");
+        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + getRequestedDate().format(dateFormat) + ", Contact your SeaJUG contact to cancel.");
+        
+        return messages;
     }
 
     /**
