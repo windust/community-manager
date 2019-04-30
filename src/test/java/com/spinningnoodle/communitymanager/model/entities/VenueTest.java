@@ -38,7 +38,7 @@ class VenueTest {
     @BeforeEach
     void setUp() {
         venue = new Venue(testPrimaryKey, testName, testAddress, testCapacity, testContactPerson,
-            testContactEmail, testContactPhone, testContactAltPhone, testRequestedHostingDate);
+            testContactEmail, testContactPhone, testContactAltPhone, testRequestedHostingDate,"yes","yes", "");
     }
 
     @Test
