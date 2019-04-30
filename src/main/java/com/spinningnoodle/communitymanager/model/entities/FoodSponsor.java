@@ -168,10 +168,20 @@ public class FoodSponsor extends ResponderEntity{
     @Override
     protected Map<Receipt, String> generateMessages(){
         Map<Receipt, String> messages = super.generateMessages();
+        String date;
+        /*
+         *TODO currently used to prevent NullPointerExceptions thrown during
+         * fetchFromDataStorage caused by other entities, find better alternative
+         */
+        if(getRequestedDate() == null){
+            date = "";
+        } else {
+            date = getRequestedDate().format(dateFormat);
+        }
         
-        messages.put(Receipt.NOT_RESPONDED, "Can you provide food on " + getRequestedDate().format(dateFormat) + "?");
-        messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + getRequestedDate().format(dateFormat) + " is already being provided food by another sponsor.");
-        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + getRequestedDate().format(dateFormat) + ", Contact your SeaJUG contact to cancel.");
+        messages.put(Receipt.NOT_RESPONDED, "Can you provide food on " + date + "?");
+        messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + date + " is already being provided food by another sponsor.");
+        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + date + ", Contact your SeaJUG contact to cancel.");
         
         return messages;
     }

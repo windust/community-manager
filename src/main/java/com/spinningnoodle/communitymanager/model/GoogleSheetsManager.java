@@ -224,6 +224,17 @@ public class GoogleSheetsManager implements DataManager {
     public String getDatabaseAccessPage() {
         return "https://docs.google.com/spreadsheets/d/113AbcCLo0ZAJLhoqP0BXaJPRlzslESkkk98D44Ut1Do/edit#gid=0";
     }
+    
+    @Override
+    public String getMessage(ResponderEntity entity){
+        //TODO find out whether or not we need "fetchFromDataStorage" calls here
+        
+        if(entity instanceof Venue) {
+            return venueCollection.getReceiptMessage(meetupCollection.getAll(), entity);
+        } else {
+            return foodSponsorCollection.getReceiptMessage(meetupCollection.getAll(), entity);
+        }
+    }
 
     //TODO Consider possible ways to remove collection argument as collection are already accessible via fields
     private void setRequestedDate(ResponderEntity responder, LocalDate date, ResponderCollection collection) {

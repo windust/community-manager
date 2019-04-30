@@ -11,10 +11,9 @@ package com.spinningnoodle.communitymanager.controller;
  *  END OF LICENSE INFORMATION
  */
 
-import static com.spinningnoodle.communitymanager.model.entities.Entity.dateFormat;
-
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.collections.ResponderCollection;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
@@ -51,11 +50,8 @@ public class SignUpController {
     String currentToken;
     String responderName;
     LocalDate requestedDate;
-    String hostingMessage = "";
     String alertMessage = "";
-    boolean requestedDateAvailable = true;
     boolean alert = false;
-    boolean hostingRequestedDate = false;
     
     //TODO update javadocs
     /**
@@ -98,106 +94,26 @@ public class SignUpController {
     
     private void generateSessionVariables(HttpSession session, ResponderEntity responder, String responderType){
         List<Meetup> meetups = model.getAllMeetups();
-        Response response = responder.getResponse();
-        currentToken = responder.getToken();
+        Meetup currentMeetup = new Meetup();
+        this.currentToken = responder.getToken();
+        //TODO find way to remove these two variables by altering signup routes
         this.responderName = responder.getName();
         this.requestedDate = responder.getRequestedDate();
-    
-        this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
-    
-        if(!requestedDateAvailable){
-            setHostingRequestedDate(meetups);
-        }
-    
-        //ToDo find way to remove this if statement
-        if(responderType.equals("venue")){
-            this.hostingMessage = getHostingMessage(response);
-        } else {
-            this.hostingMessage = getFoodSponsorMessage(response);
-        }
-    
-        session.setAttribute("meetups", meetups);
-        session.setAttribute(responderType, responder);
-        session.setAttribute("hostingMessage", this.hostingMessage);
-        session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
-        session.setAttribute("alert", alert);
-        session.setAttribute("alertMessage", alertMessage);
-    }
-    
-    //ToDo find way to reuse this method for all resonders and depricate/remove getFoodSponsorMessage
-    //ToDo find way to reuse isDateAvailable, setHostingRequestedDate, and getAlertMessage methods
-    private String getHostingMessage(Response response){
-        if(response.equals(Response.DECLINED)){
-            return "Thank you for your consideration.";
-        }
-        else if(requestedDateAvailable){
-            if(response.equals(Response.UNDECIDED)) {
-                return "Can you host on " + requestedDate.format(dateFormat) + "?";
-            } else {
-                //if not hosting requested date and Response == Accepted then
-                //assumes venue cancelled and SeaJUG volunteer removed them
-                //from meetup and then changes venue.response to reflect this
-                boolean success = model.setVenueForMeetup(responderName, "notHosting", requestedDate);
-                if(success){
-                    return getHostingMessage(Response.DECLINED);
-                }
-                else{
-                    throw new IllegalArgumentException("Unable to update response");
-                }
-            }
-        }
-        else if(hostingRequestedDate){
-            return "Thank you for hosting on " + requestedDate.format(dateFormat) + ", Contact your SeaJUG contact to cancel.";
-        }
-        else {
-            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
-        }
-    }
-    
-    private String getFoodSponsorMessage(Response response) {
-        if (response.equals(Response.DECLINED)) {
-            return "Thank you for your consideration.";
-        } else if (requestedDateAvailable) {
-            if (response.equals(Response.UNDECIDED)) {
-                return "Can you provide food on " + requestedDate.format(dateFormat) + "?";
-            } else {
-                //if not hosting requested date and Response == Accepted then
-                //assumes venue cancelled and SeaJUG volunteer removed them
-                //from meetup and then changes venue.response to reflect this
-                boolean success = model
-                    .setVenueForMeetup(responderName, "notHosting", requestedDate);
-                if (success) {
-                    return getFoodSponsorMessage(Response.DECLINED);
-                } else {
-                    throw new IllegalArgumentException("Unable to update response");
-                }
-            }
-        } else if (hostingRequestedDate) {
-            return "Thank you for sponsoring food on " + requestedDate.format(dateFormat)
-                + ", Contact your SeaJUG contact to cancel.";
-        } else {
-            return "Thank you for volunteering but " + requestedDate.format(dateFormat)
-                + " is already being provided food by another sponsor.";
-        }
-    }
-    
-    private boolean isDateAvailable(List<Meetup> meetups, LocalDate date) {
-        for(Meetup meetup : meetups){
-            if(meetup.getDate().equals(date) && meetup.getVenue().equals("")){
-                return true;
+
+        for (Meetup meetup : meetups){
+            if(meetup.getDate().equals(responder.getRequestedDate())){
+                currentMeetup = meetup;
             }
         }
         
-        return false;
-    }
-    
-    private void setHostingRequestedDate(List<Meetup> meetups){
-        for(Meetup meetup : meetups){
-            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(
-                responderName)){
-                hostingRequestedDate = true;
-            }
-        }
+        session.setAttribute("meetups", meetups);
+        session.setAttribute(responderType, responder);
+        session.setAttribute("hostingMessage", model.getMessage(responder));
+        session.setAttribute("ask",
+            ResponderCollection.isRequestedDateAvailable(currentMeetup, responder)
+                && responder.getResponse().equals(Response.UNDECIDED));
+        session.setAttribute("alert", alert);
+        session.setAttribute("alertMessage", alertMessage);
     }
     
     //TODO see if possible to abstract sign up process (reflection?)
@@ -207,9 +123,9 @@ public class SignUpController {
         boolean success;
         
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-        if(!foodDate.equals("notHosting")){
-            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
-        }
+//        if(!foodDate.equals("notHosting")){
+//            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
+//        }
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
@@ -233,6 +149,7 @@ public class SignUpController {
         return "redirect:/food?token=" + this.currentToken;
     }
     
+    //ToDo find way to reuse getAlertMessage methods
     private String getAlertMessage(boolean successful, String date){
         if(successful){
             return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";

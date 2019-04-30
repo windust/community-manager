@@ -13,9 +13,13 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Receipt;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
+import java.util.List;
 
 public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
     
@@ -75,6 +79,62 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
         }
         
         return false;
+    }
+    
+    public String getReceiptMessage(List<Meetup> meetups, ResponderEntity entity){
+        Meetup meetup = new Meetup();
+        
+        for(Meetup mu : meetups){
+            if(mu.getDate().equals(entity.getRequestedDate())){
+                meetup = mu;
+            }
+        }
+        
+        return entity.getMessage(getReceipt(meetup, entity));
+    }
+    
+    public static boolean isRequestedDateAvailable(Meetup meetup, ResponderEntity entity) {
+        if(entity instanceof Venue) {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getVenue().equals("");
+        } else {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getFood().equals("");
+        }
+    }
+    
+    private Receipt getReceipt(Meetup meetup, ResponderEntity entity){
+        if(entity.getResponse().equals(Response.DECLINED)){
+            return Receipt.NO;
+        }
+        else if(isRequestedDateAvailable(meetup, entity)){
+            if(entity.getResponse().equals(Response.UNDECIDED)) {
+                return Receipt.NOT_RESPONDED;
+            } else {
+                //if not hosting requested date and Response == Accepted then
+                //assumes responder cancelled and SeaJUG volunteer removed them
+                //from meetup and then changes responderEntity.response to reflect this
+                boolean success = updateResponse(entity.getName(), Response.DECLINED);
+                if(success){
+                    return Receipt.NO;
+                }
+                else{
+                    throw new IllegalArgumentException("Unable to update response");
+                }
+            }
+        }
+        else if(hostingRequestedDate(meetup, entity)){
+            return Receipt.ACCEPTED;
+        }
+        else {
+            return Receipt.ALREADY_TAKEN;
+        }
+    }
+    
+    private boolean hostingRequestedDate(Meetup meetup, ResponderEntity entity){
+        if(entity instanceof Venue) {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getVenue().equals(entity.getName());
+        } else {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getFood().equals(entity.getName());
+        }
     }
 
     @Override

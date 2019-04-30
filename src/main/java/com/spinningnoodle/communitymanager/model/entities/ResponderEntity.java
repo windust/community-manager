@@ -179,7 +179,7 @@ public abstract class ResponderEntity extends Entity {
 
     }
     
-    protected enum Receipt{
+    public enum Receipt{
         NO,
         NOT_RESPONDED,
         ALREADY_TAKEN,
