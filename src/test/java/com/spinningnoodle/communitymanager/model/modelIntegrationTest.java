@@ -335,33 +335,31 @@ public class modelIntegrationTest {
     The following are Food Sponsor Integration tests.
      */
     @Test
-    void whenIGetAFoodSponsorWithAnInvalidTokenIShouldGetAnError(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            testManager.getFoodByToken("455");
-        });
-    }
-
-    @Test
+    @DisplayName("When I set the food sponsor for a hosted event, the food sponsor is unchanged.")
     void whenISetTheFoodSponsorForAnEventWithAFoodSponosorTheSystemWontChangeIt(){
         assertEquals(false,testManager.setFoodForMeetup("NewName", "01/14/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
+    @DisplayName("When I set the food sponsor for an event, the food sponsor is filled.")
     void whenISetTheFoodSponsorForAnEventWithOutAFoodSponsorTheSystemChangesIt(){
         assertEquals(true,testManager.setFoodForMeetup("Pizza Hut", "01/15/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
+    @DisplayName("Model returns false, when I attempt to set food sponsor to an invalid food sponsor")
     void whenISetTheFoodSponsorForAnEventWithInvalidVenueNameThrowsError(){
         assertFalse(testManager.setFoodForMeetup("NeverExisted", "01/14/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
+    @DisplayName("Model returns false, when I attempt to set food sponsor for invalid event date.")
     void whenISetTheFoodSponsorForAnEventWithInvalidEventDateThrowsError(){
         assertFalse(testManager.setFoodForMeetup("Pizza Hut", "01/24/2029",LocalDate.of(2029,1,14)));
     }
 
     @Test
+    @DisplayName("Model returns true, when I food sponsor declines to provide food.")
     void whenISetTheFoodSponsorForAnEventWithNotHostingDateReturnsTrue(){
         assertTrue(testManager.setFoodForMeetup("Pizza Hut", "notHosting",LocalDate.of(2029,1,14)));
     }
@@ -371,7 +369,7 @@ public class modelIntegrationTest {
     void resetDatastorage(){
         testManager.meetupCollection = testManager.meetupCollection.fetchFromDataStorage();
         testManager.venueCollection = testManager.venueCollection.fetchFromDataStorage();
-//        testManager.foodSponsorCollection = testManager.foodSponsorCollection.fetchFromDataStorage();
+        testManager.foodSponsorCollection = testManager.foodSponsorCollection.fetchFromDataStorage();
 
         testStorage.update("meetups","3","venue","");
         testStorage.update("meetups","2","venue","Excellent");
