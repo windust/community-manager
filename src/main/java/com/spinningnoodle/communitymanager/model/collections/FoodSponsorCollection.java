@@ -79,7 +79,7 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
     public boolean updateResponse(String foodSponsorName, Response response){
         for(FoodSponsor foodSponsor : getAll()){
             if(foodSponsor.getName().equals(foodSponsorName)){
-                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "foodResponse", response.getFriendlyName());
+                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "response", response.getFriendlyName());
             }
         }
 

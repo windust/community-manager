@@ -41,8 +41,8 @@ public class FoodSponsor extends ResponderEntity{
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedDate(convertDate(fields.getOrDefault("requestedFoodDate", null)));
-        this.setResponse(convertResponse(fields.getOrDefault("foodResponse", null)));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedDate", null)));
+        this.setResponse(convertResponse(fields.getOrDefault("response", null)));
         this.setToken(fields.getOrDefault("token", null));
 
         return this;
