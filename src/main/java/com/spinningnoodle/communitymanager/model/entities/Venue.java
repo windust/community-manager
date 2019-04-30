@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class Venue extends ResponderEntity {
+public class Venue extends FoodSponsor {
     private String address;
     private int capacity;
     private String contactPerson;
@@ -179,11 +179,21 @@ public class Venue extends ResponderEntity {
         this.contactAltPhone = contactAltPhone;
     }
 
+    /**
+     *
+     * @return this contacts response to food request
+     */
+    @Override
     public Response getFoodResponse(){
         return foodResponse;
     }
 
-    public void setFoodResponse(Response response){
+    /**
+     *
+     * @param foodResponse this contacts response to request to sponsor food.
+     */
+    @Override
+    public void setFoodResponse(Response foodResponse){
         this.foodResponse = foodResponse;
     }
 

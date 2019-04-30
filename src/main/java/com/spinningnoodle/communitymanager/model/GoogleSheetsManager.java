@@ -51,7 +51,7 @@ public class GoogleSheetsManager implements DataManager {
     VenueCollection venueCollection;
     @Autowired
     @Qualifier("food")
-    FoodSponsorCollection foodSponsorCollection;
+    FoodSponsorCollection<FoodSponsor> foodSponsorCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager() {

@@ -31,7 +31,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	@Autowired
 	DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
-	private final String TABLE_NAME;
+	protected final String TABLE_NAME;
 
 	public EntityCollection(String tableName){
 		this.TABLE_NAME = tableName;

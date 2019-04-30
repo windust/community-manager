@@ -28,8 +28,7 @@ import org.springframework.stereotype.Repository;
  * @version 0.1
  */
 @Repository(value = "venues")
-public class VenueCollection extends ResponderCollection<Venue> {
-
+public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderCollection<Venue> {
 	public VenueCollection(){
 		super("venues");
 	}
@@ -98,13 +97,14 @@ public class VenueCollection extends ResponderCollection<Venue> {
 	}
 
 	/**
-	 * Update a venues response to hosting
+	 * Update a food sponsors response to hosting
 	 *
 	 * @param venueName The name of the venue which responded
 	 * @param foodResponse The venues response
 	 * @return If the dataStorage successfully updated
 	 */
 	//TODO consider refactoring to use ResponderEntity rather then String name
+	@Override
 	public boolean updateFoodResponse(String venueName, Response foodResponse){
 		for(Venue venue : getAll()){
 			if(venue.getName().equals(venueName)){
