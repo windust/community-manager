@@ -32,14 +32,23 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository(value = "food")
-public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
+public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderCollection<T>{
 
     public FoodSponsorCollection(){
         super("foodSponsors");
     }
 
+    public FoodSponsorCollection(String tableName){
+        super(tableName);
+    }
+
+
     public FoodSponsorCollection(DataStorage dataStorage){
         super(dataStorage, "foodSponsors");
+    }
+
+    public FoodSponsorCollection(DataStorage dataStorage, String tableName){
+        super(dataStorage, tableName);
     }
 
 
@@ -77,13 +86,24 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
      * @return if dataStorage successfully updated
      */
     public boolean updateResponse(String foodSponsorName, Response response){
-        for(FoodSponsor foodSponsor : getAll()){
+        for(T foodSponsor : getAll()){
             if(foodSponsor.getName().equals(foodSponsorName)){
                 return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "response", response.getFriendlyName());
             }
         }
 
         return false;
+    }
+
+    /**
+     * Updates food sponsor response to provide food
+     *
+     * @param foodSponsorName the name of food sponsor that responded
+     * @param response the response from the food sponsor
+     * @return if dataStorage successfully updated
+     */
+    public boolean updateFoodResponse(String foodSponsorName, Response response){
+        return updateResponse(foodSponsorName,response);
     }
 
     /**
@@ -110,8 +130,8 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
      * @return a foodSponsor object
      * @throws EntityNotFoundException
      */
-    public FoodSponsor getByPrimaryKey(int key) throws EntityNotFoundException{
-        for(FoodSponsor foodSponsor : getEntitiesValues()){
+    public T getByPrimaryKey(int key) throws EntityNotFoundException{
+        for(T foodSponsor : getEntitiesValues()){
             if(foodSponsor.getPrimaryKey() == key){
                 return foodSponsor;
             }

@@ -51,7 +51,7 @@ public class GoogleSheetsManager implements DataManager {
     VenueCollection venueCollection;
     @Autowired
     @Qualifier("food")
-    FoodSponsorCollection foodSponsorCollection;
+    FoodSponsorCollection<FoodSponsor> foodSponsorCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
     public GoogleSheetsManager() {
@@ -140,41 +140,31 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
         LocalDate dateRequestedByAdmin) {
-        meetupCollection = meetupCollection.fetchFromDataStorage();
-
-        if (!requestedDate.equals("notHosting")) {
-            LocalDate date = Entity.convertDate(requestedDate);
-
-            if (date.equals(dateRequestedByAdmin)) {
-                return meetupCollection.setFoodForMeetup(venueName, date) && venueCollection
-                    .updateFoodResponse(venueName, Response.ACCEPTED);
-            } else {
-                return meetupCollection.setFoodForMeetup(venueName, date);
-            }
-        } else {
-            return venueCollection.updateFoodResponse(venueName, Response.DECLINED);
-        }
-
+        return this.setGenericFoodForMeetup(venueCollection,venueName,requestedDate,dateRequestedByAdmin);
     }
     
     @Override
     public boolean setFoodForMeetup(String foodName, String requestedDate,
         LocalDate dateRequestedByAdmin) {
+        return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
+    }
+
+    private boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin){
         meetupCollection = meetupCollection.fetchFromDataStorage();
-        
+
         if (!requestedDate.equals("notHosting")) {
             LocalDate date = Entity.convertDate(requestedDate);
-            
+
             if (date.equals(dateRequestedByAdmin)) {
-                return meetupCollection.setFoodForMeetup(foodName, date) && foodSponsorCollection
+                return meetupCollection.setFoodForMeetup(foodName, date) && foodCollection
                     .updateResponse(foodName, Response.ACCEPTED);
             } else {
                 return meetupCollection.setFoodForMeetup(foodName, date);
             }
         } else {
-            return foodSponsorCollection.updateResponse(foodName, Response.DECLINED);
+            return foodCollection.updateResponse(foodName, Response.DECLINED);
         }
-        
     }
 
     @Override

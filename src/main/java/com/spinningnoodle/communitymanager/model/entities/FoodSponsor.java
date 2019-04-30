@@ -186,6 +186,22 @@ public class FoodSponsor extends ResponderEntity{
         return messages;
     }
 
+    /**
+     *
+     * @return this contacts response to food request
+     */
+    public Response getFoodResponse(){
+        return super.getResponse();
+    }
+
+    /**
+     *
+     * @param foodResponse this contacts response to request to sponsor food.
+     */
+    public void setFoodResponse(Response foodResponse){
+        super.setResponse(foodResponse);
+    }
+
     @Override
     public String toString() {
         return "FoodSponsor{" +
