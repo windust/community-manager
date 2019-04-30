@@ -11,6 +11,8 @@ package com.spinningnoodle.communitymanager.controller;
  *  END OF LICENSE INFORMATION
  */
 
+import static com.spinningnoodle.communitymanager.model.entities.Entity.dateFormat;
+
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
@@ -19,7 +21,6 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,6 @@ public class SignUpController {
     boolean requestedDateAvailable = true;
     boolean alert = false;
     boolean hostingRequestedDate = false;
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     
     //TODO update javadocs
     /**
