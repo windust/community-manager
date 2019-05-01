@@ -149,7 +149,7 @@ public class GoogleSheetsManager implements DataManager {
         return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
     }
 
-    private boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
+    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
         LocalDate dateRequestedByAdmin){
         meetupCollection = meetupCollection.fetchFromDataStorage();
 
@@ -158,12 +158,12 @@ public class GoogleSheetsManager implements DataManager {
 
             if (date.equals(dateRequestedByAdmin)) {
                 return meetupCollection.setFoodForMeetup(foodName, date) && foodCollection
-                    .updateResponse(foodName, Response.ACCEPTED);
+                    .updateFoodResponse(foodName, Response.ACCEPTED);
             } else {
                 return meetupCollection.setFoodForMeetup(foodName, date);
             }
         } else {
-            return foodCollection.updateResponse(foodName, Response.DECLINED);
+            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
         }
     }
 

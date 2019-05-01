@@ -119,24 +119,28 @@ public class SignUpController {
     //TODO see if possible to abstract sign up process (reflection?)
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) String foodDate){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
+        @RequestParam(name = "food", required = false) String foodDate,
+        @RequestParam(name = "token") String token){
+
         boolean success;
         
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-//        if(!foodDate.equals("notHosting")){
-//            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
-//        }
+        if(!meetupDate.equals("notHosting") && !foodDate.equals("notHosting")){
+            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
+        }
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
 
-        return "redirect:/venue?token=" + this.currentToken;
+//        return "redirect:/venue?token=" + this.currentToken;
+        return "redirect:/venue?token=" + token;
     }
     
     @PostMapping("/foodSignUp")
-    public String foodSignUp(@RequestParam(name = "meetup") String meetupDate){
+    public String foodSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "token") String token){
         boolean success;
 
         success = model.setFoodForMeetup(responderName, meetupDate, requestedDate);
@@ -146,7 +150,8 @@ public class SignUpController {
             alertMessage = getAlertMessage(success, meetupDate);
         }
         
-        return "redirect:/food?token=" + this.currentToken;
+//        return "redirect:/food?token=" + this.currentToken;
+        return "redirect:/food?token=" + token;
     }
     
     //ToDo find way to reuse getAlertMessage methods

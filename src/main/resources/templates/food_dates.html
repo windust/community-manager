@@ -24,6 +24,8 @@
     <h1>Welcome<span th:if="${session.foodSponsor.getName()}">, <span th:text="${session.foodSponsor.getName()}"></span></span></h1>
     <form method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
+        <input id="token" class="hidden" name="token" th:value="${session.foodSponsor.getToken()}">
+
         <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.foodSponsor.getRequestedDate()}">Yes, I can host</button>
         <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
     
@@ -36,7 +38,8 @@
 <article id="more-meetups" class="text-center">
     <h2 class="h3">Register to host additional dates below:</h2>
     <form id="meetup_signup" method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
-        
+        <input class="hidden" name="token" th:value="${session.foodSponsor.getToken()}">
+
         <table>
             <thead>
             <tr>
