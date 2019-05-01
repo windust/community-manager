@@ -93,7 +93,8 @@ public class SignUpController {
     }
     
     private void generateSessionVariables(HttpSession session, ResponderEntity responder, String responderType){
-        List<Meetup> meetups = model.getAllMeetups();
+        List<Meetup> meetups = model.getAllHostedMeetups();
+        if(responder instanceof Venue) meetups = model.getAllMeetups();
         Meetup currentMeetup = new Meetup();
         this.currentToken = responder.getToken();
         //TODO find way to remove these two variables by altering signup routes
