@@ -72,6 +72,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public boolean verifyAdmin(String email) {
+        adminCollection = adminCollection.fetchFromDataStorage();
         List<Admin> admins = this.getAllAdmins();
         for (Admin admin : admins) {
             if (admin.getEmail().equals(email)) {
@@ -95,6 +96,7 @@ public class GoogleSheetsManager implements DataManager {
     
     @Override
     public List<Meetup> getAllHostedMeetups(){
+        meetupCollection = meetupCollection.fetchFromDataStorage();
         List<Meetup> filteredMeetups = new ArrayList<>();
         for(Meetup meetup : meetupCollection.getAll()){
             if (!meetup.getVenue().equals("")){
