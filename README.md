@@ -4,6 +4,9 @@ Add full project description and goals of this project.
 
 ## Table of Contents
 
+1. [Getting Started](#desc)
+
+<a name="desc"></a>
 ## Getting started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -58,12 +61,7 @@ Please read CONTRIBUTING.md for details on our code of conduct, and the process 
 
 ## Authors
 
-* [Freddy Guime](https://github.com/windust) - Project Owner
-* [Quentin Guenther](https://github.com/QuentinGuenther) - Initial work
-* [Tyler Roemer](https://github.com/Troemer16) - Initial work
-* [Melanie Felton](https://github.com/feltonm) - Initial work
-* [Kevan Barter](https://github.com/kcbarter) - Initial Work
-* [Jhakon Pappoe](https://github.com/JPDvlpr) - Initial work
+`aknowlege specific developers and roles they had`
 
 See also the list of [contributors](https://github.com/windust/community-manager/graphs/contributors) who participated in this project.
 
