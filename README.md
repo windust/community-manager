@@ -157,6 +157,16 @@ Please read CONTRIBUTING.md for details on our code of conduct, and the process 
 
 `acknowledge specific developers and roles they had`
 
+**Kevan Barter** - Contributed to the project by helping with front end design, backend design for Food Sponsor, writing tests for Food sponsor and Admin. He also helped to set up Google OAuth sign implemented on the website.
+
+**Quentin Guenther** - Contributed to the project by helping with backend design, front end design writing tests, setting up SCSS, deploying the website to AWS with Docker, and also implemented the observer pattern into the project.
+
+**Melanie Felton** - Contributed to the project by helping with backend design, front end design, writing tests, connecting the website to the Google Sheets, and implementing the modal. She also was able to incorporate a tab were you can enter info to the Google Sheets from the website.
+
+**Tyler Roemer** - Contributed to the project by helping with backend design, front end design, writing tests, deploying the website to AWS with Docker, and implementing google OAuth. Tyler was als was able to set up Spring Beans in the application.
+
+**Jhakon Pappoe** - Contributed to the project by helping with front end design and some backend design. 
+
 See also the list of [contributors](https://github.com/windust/community-manager/graphs/contributors) who participated in this project.
 
 ## License
