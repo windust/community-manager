@@ -203,7 +203,7 @@ public class SignUpControllerTest {
         Venue partialVenue = new Venue();
 
         partialVenue.setName("Excellent");
-        partialVenue.setRequestedHostingDate(LocalDate.of(2019,1,14));
+        partialVenue.setRequestedDate(LocalDate.of(2019,1,14));
         partialVenue.setResponse(response);
 
         return partialVenue;

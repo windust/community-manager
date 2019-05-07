@@ -69,7 +69,7 @@ public class SignUpController {
             
             currentToken = token;
             this.venueName = venue.getName();
-            this.requestedDate = venue.getRequestedHostingDate();
+            this.requestedDate = venue.getRequestedDate();
             response = venue.getResponse();
             
             this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
@@ -144,16 +144,16 @@ public class SignUpController {
     }
     
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
         boolean success;
         
         success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
-        
+
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
-        
+
         return "redirect:/venue?token=" + this.currentToken;
     }
     

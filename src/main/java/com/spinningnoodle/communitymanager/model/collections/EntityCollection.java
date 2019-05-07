@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "entities")
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
 	@Autowired
-	private DataStorage dataStorage;
+	DataStorage dataStorage;
 	private Map<Integer, T> entities = new HashMap<>();
 	private final String TABLE_NAME;
 

@@ -23,18 +23,18 @@ import java.util.Map;
  * @version 0.1
  */
 public class Venue extends ResponderEntity {
-    private String name;
     private String address;
     private int capacity;
     private String contactPerson;
     private String contactEmail;
     private String contactPhone;
     private String contactAltPhone;
-    private LocalDate requestedHostingDate;
-    private String response;
+//    private LocalDate requestedHostingDate;
+//    private String response;
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
+        //TODO find out how many of these fields can be abstracted to reduce redundant code
     	this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -43,7 +43,7 @@ public class Venue extends ResponderEntity {
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedHostingDate(convertDate(fields.getOrDefault("requestedHostingDate", null)));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedHostingDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("response", "")));
         this.setToken(fields.getOrDefault("token", ""));
 
@@ -78,14 +78,14 @@ public class Venue extends ResponderEntity {
         String contactEmail, String contactPhone, String contactAltPhone,
         LocalDate requestedHostingDate) {
         this.setPrimaryKey(primaryKey);
-        this.name = name;
+        setName(name);
         this.address = address;
         this.capacity = capacity;
         this.contactPerson = contactPerson;
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.contactAltPhone = contactAltPhone;
-        this.requestedHostingDate = requestedHostingDate;
+        setRequestedDate(requestedHostingDate);
     }
 
 	/**
@@ -173,32 +173,18 @@ public class Venue extends ResponderEntity {
         this.contactAltPhone = contactAltPhone;
     }
 
-	/**
-	 * @return The date that was this venue was requested to host by Java User Group
-	 */
-    public LocalDate getRequestedHostingDate() {
-        return requestedHostingDate;
-    }
-
-	/**
-	 * @param requestedHostingDate The date this venue was requested to host by Java User Group
-	 */
-    public void setRequestedHostingDate(LocalDate requestedHostingDate) {
-        this.requestedHostingDate = requestedHostingDate;
-    }
-
 	@Override
 	public String toString() {
 		return "Venue{" +
 			", primaryKey=" + this.getPrimaryKey() +
-			", name='" + name + '\'' +
+			", name='" + getName() + '\'' +
 			", address='" + address + '\'' +
 			", capacity=" + capacity +
 			", contactPerson='" + contactPerson + '\'' +
 			", contactEmail='" + contactEmail + '\'' +
 			", contactPhone='" + contactPhone + '\'' +
 			", contactAltPhone='" + contactAltPhone + '\'' +
-			", requestedHostingDate='" + requestedHostingDate + '\'' +
+			", requestedHostingDate='" + getRequestedDate() + '\'' +
             ", token='" + getToken() + '\''+
 			'}';
 	}

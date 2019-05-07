@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -140,7 +139,7 @@ public class modelIntegrationTest {
 
         Venue venueByToken = testManager.getVenueByToken("123N");
         assertEquals(expectedAvailableDatesMeetups.get(0).get("name"),venueByToken.getName());
-        assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"), Entity.dateFormat.format(venueByToken.getRequestedHostingDate()));
+        assertEquals(expectedAvailableDatesMeetups.get(0).get("requestedDate"), Entity.dateFormat.format(venueByToken.getRequestedDate()));
         assertEquals(Response.ACCEPTED,venueByToken.getResponse());
     }
 
@@ -232,7 +231,7 @@ public class modelIntegrationTest {
     void whenIGetAllVenuesIGetTheExpectedListOfVenues(){
         assertNotNull(testManager.getAllVenues().get(0).getPrimaryKey() );
         assertNotNull(testManager.getAllVenues().get(0).getName() );
-        assertNotNull(testManager.getAllVenues().get(0).getRequestedHostingDate() );
+        assertNotNull(testManager.getAllVenues().get(0).getRequestedDate() );
         assertNotNull(testManager.getAllVenues().get(0).getResponse() );
     }
 
@@ -246,7 +245,7 @@ public class modelIntegrationTest {
             expectedDates.add(expectedVenues.get(i).get("requestedDate"));
         }
         for(int i =0; i < actualRequestedDatesMeetups.size(); i++) {
-            actualDates.add(Entity.dateFormat.format(actualRequestedDatesMeetups.get(i).getRequestedHostingDate()));
+            actualDates.add(Entity.dateFormat.format(actualRequestedDatesMeetups.get(i).getRequestedDate()));
         }
         Collections.sort(expectedDates);
         Collections.sort(actualDates);

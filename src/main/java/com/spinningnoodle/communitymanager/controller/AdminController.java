@@ -14,6 +14,7 @@ package com.spinningnoodle.communitymanager.controller;
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.util.List;
@@ -114,15 +115,22 @@ public class AdminController {
 
         //TODO consider having this done in the model somewhere
         List<Meetup> meetups = model.getAllMeetups();
-        for (Meetup meetup: meetups) {
-            if(meetup.getPrimaryKey() == Integer.parseInt(meetupKey)){
+        Meetup meetup = null;
+        for (Meetup mtup: meetups) {
+            if(mtup.getPrimaryKey() == Integer.parseInt(meetupKey)){
+                meetup = mtup;
                 session.setAttribute("meetup", meetup);
+                break;
             }
         }
 
         List<Venue> venues = model.getAllVenues();
         session.setAttribute("venues", venues);
-        
+
+        //ToDo change venue to FoodSponsor
+        List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
+        session.setAttribute("foodsponsors", foodSponsors);
+
         return "meetup";
     }
     
@@ -133,10 +141,9 @@ public class AdminController {
      * @throws InvalidUserException - if user is not
      * logged in.
      */
-    //TODO return token from DB when logged in
-    @RequestMapping(path = "/getToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(path = "/getVenueToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getToken(@RequestBody String params) throws InvalidUserException {
+    public String getVenueToken(@RequestBody String params) throws InvalidUserException {
         if(!loggedIn){
             throw new InvalidUserException();
         }
@@ -146,6 +153,21 @@ public class AdminController {
             String date = args[1].split("=")[1];
 
             return  model.requestHost(venueKey, Entity.convertDate(date));
+        }
+    }
+    
+    @RequestMapping(path = "/getFoodToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String getFoodToken(@RequestBody String params) throws InvalidUserException {
+        if(!loggedIn){
+            throw new InvalidUserException();
+        }
+        else{
+            String[] args = params.split("&");
+            String foodKey = args[0].split("=")[1];
+            String date = args[1].split("=")[1];
+            
+            return  model.requestFood(foodKey, Entity.convertDate(date));
         }
     }
 
