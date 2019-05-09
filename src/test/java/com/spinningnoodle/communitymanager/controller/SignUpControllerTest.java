@@ -76,7 +76,7 @@ public class SignUpControllerTest {
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals(signUpController.hostingMessage, session.getAttribute("hostingMessage"));
+        Assertions.assertEquals(signUpController.model.getMessage(expectedVenue), session.getAttribute("hostingMessage"));
     }
 
     @Test
@@ -143,9 +143,10 @@ public class SignUpControllerTest {
     public void hostingMessageWithDateAvailableAndNoResponse(){
         when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Can you host on 01/14/2019?");
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals("Can you host on 01/14/2019?", signUpController.hostingMessage);
+        Assertions.assertEquals("Can you host on 01/14/2019?", session.getAttribute("hostingMessage"));
     }
 
     @Test
@@ -153,9 +154,10 @@ public class SignUpControllerTest {
     public void hostingMessageWithDateAvailableAndResponseIsNo(){
         when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.DECLINED));
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for your consideration.");
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals("Thank you for your consideration.", signUpController.hostingMessage);
+        Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
     }
 
     @Test
@@ -163,9 +165,10 @@ public class SignUpControllerTest {
     public void hostingMessageWithDateUnavailable(){
         when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
         when(model.getAllMeetups()).thenReturn(createMeetups("Amazing"));
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for volunteering but 01/14/2019 is already being hosted by another venue.");
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals("Thank you for volunteering but 01/14/2019 is already being hosted by another venue.", signUpController.hostingMessage);
+        Assertions.assertEquals("Thank you for volunteering but 01/14/2019 is already being hosted by another venue.", session.getAttribute("hostingMessage"));
     }
 
     @Test
@@ -173,9 +176,10 @@ public class SignUpControllerTest {
     public void hostingMessageWithDateHostedByVenue(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for hosting on 01/14/2019, Contact your SeaJUG contact to cancel.");
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals("Thank you for hosting on 01/14/2019, Contact your SeaJUG contact to cancel.", signUpController.hostingMessage);
+        Assertions.assertEquals("Thank you for hosting on 01/14/2019, Contact your SeaJUG contact to cancel.", session.getAttribute("hostingMessage"));
     }
 
     @Test
@@ -184,9 +188,10 @@ public class SignUpControllerTest {
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
         when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(true);
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for your consideration.");
         signUpController.venue(validToken, session);
 
-        Assertions.assertEquals("Thank you for your consideration.", signUpController.hostingMessage);
+        Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
     }
 
     @Test
