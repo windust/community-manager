@@ -31,6 +31,20 @@ confirmation = function (){
     }
     hiddenInput.name = "confirm";
     hiddenInput.value = date;
+
+    var taken = false;
+    document.getElementsByName("meetup").forEach(function(element) {
+      if(element.value == date && element.getAttribute("data_food")==="taken"){
+        taken = true;
+      }
+    });
+    if(taken || thisButton.getAttribute("data_food") === "taken"){
+      document.getElementById("modalYes").classList.add("hidden");
+      document.getElementById("foodMessage").classList.add("hidden");
+      document.getElementById("foodDecline").classList.add("hidden");
+      document.getElementById("modalJustYes").value="";
+    }
+
     openConfirmModal();
     return false;
   }
@@ -40,14 +54,10 @@ confirmation = function (){
     return false;
   }
 
-  // if(hiddenName == "confirm" && this.Name === "food") {
-  //   hiddenInput.name = "meetup";
-  // }
   return true;
 }
 
 openConfirmModal = function ( ) {
-  // var confirmMessage = "are you sure you want to host on";
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
@@ -55,7 +65,6 @@ openConfirmModal = function ( ) {
   document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
 
-  // document.getElementById("modalMessage").innerHTML = confirmMessage;
 }
 
 resetModal = function () {

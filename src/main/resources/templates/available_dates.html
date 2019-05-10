@@ -26,9 +26,8 @@
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
           <input id="token" class="hidden"
                  name="token" th:value="${session.venue.getToken()}">
-
           <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes, I can host</button>
-        <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
+          <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
       </form>
   </header>
   <aside th:if="${session.alert}" class="primary text-center">
@@ -56,7 +55,10 @@
                   <td th:text="${meetup.getDate()}"></td>
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
-                      <button rel='venueConfirm' type="submit" class="btn_red" name="meetup" th:value="${meetup.getDate()}">
+                      <button th:if="${!(meetup.getFood() == '')}" rel='venueConfirm' type="submit" class="btn_red" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
+                          Available for Hosting
+                      </button>
+                      <button th:if="${meetup.getFood() == ''}" rel='venueConfirm' type="submit" class="btn_red" data_food="" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
                   </td>

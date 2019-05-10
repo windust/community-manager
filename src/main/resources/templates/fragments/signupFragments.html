@@ -27,7 +27,7 @@
             <p>You have offered to host on <span id="modalDate">Error</span>.</p>
             <p>Hosting an event, involves providing a room for about 60 people, unless otherwise
                 specified.</p>
-            <p>Meetups, typically, involve food, such as pizza and soda, as well.</p>
+            <p id="foodMessage">Meetups, typically, involve food, such as pizza and soda, as well.</p>
             <p>Click a button below to confirm/cancel your selection. If you need to cancel after
             confirming, you will need to check with your SeaJug contact.</p>
 
@@ -42,7 +42,7 @@
                 I will provide food.</button>
             <button id="modalJustYes" rel='declineConfirm' type="submit" class="btn_primary"
                    name="food" th:value="false">I confirm, I will provide space.
-                SEAJug will need to find a different food sponsor.</button>
+                <span id="foodDecline">SEAJug will need to find a different food sponsor.</span></button>
             <button id="modalNo" rel='declineConfirm' type="submit" class="btn_primary"
                    name="meetup" value="notHosting">Cancel</button>
 
