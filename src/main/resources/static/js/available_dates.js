@@ -22,10 +22,7 @@ confirmation = function (){
 
   var date = thisButton.value;
   var thisName = thisButton.name;
-  var hiddenValue = hiddenInput.value;
   var hiddenName = hiddenInput.name;
-
-  // alert("This date: " + date + " This name: " + thisName + hiddenName);
 
   if(hiddenInput.name === "unused") {
     if (date === "notHosting") {
@@ -33,57 +30,35 @@ confirmation = function (){
     }
     hiddenInput.name = "confirm";
     hiddenInput.value = date;
-    openVenueConfirmModal();
+    openConfirmModal();
     return false;
   }
 
   if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
     resetModal();
-    alert("notHosting");
     return false;
   }
 
   if(hiddenName == "confirm" && this.Name === "food") {
     hiddenInput.name = "meetup";
-    alert("Hosting Food");
-
   }
-  alert("Hidden name "+hiddenInput.name + " Hidden date " + hiddenInput.value);
   return true;
 }
 
-openConfirmModal = function ( confirmMessage) {
+openConfirmModal = function ( ) {
+  var confirmMessage = "are you sure you want to host on";
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
   var date = document.activeElement.value;
-  // document.getElementById("modalYes").value = date;
   document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
 
   document.getElementById("modalMessage").innerHTML = confirmMessage;
 }
 
-openVenueConfirmModal = function (){
-  openConfirmModal("are you sure you want to host on");
-}
-
-openFoodConfirmModal = function () {
-  openConfirmModal("food", "can you provide food on");
-  modal.classList.add("foodModal");
-}
-
 resetModal = function () {
   var hiddenInput = document.getElementById("hiddenInput");
-  var modalYesButton = document.getElementById("modalYes");
-  var modalNoButton = document.getElementById("modalNo");
-
   hiddenInput.name = "unused";
-  // hiddenInput.value = "unused";
-
-  // modalYesButton.name = "meetup";
-  // modalNoButton.name = "meetup";
-
-  modal.classList.remove("foodModal");
   modal.classList.add("hidden");
 }

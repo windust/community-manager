@@ -134,7 +134,9 @@ public class SignUpController {
         if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
             model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
         }
-
+        if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
+            model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
+        }
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
