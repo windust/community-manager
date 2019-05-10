@@ -24,7 +24,10 @@
       <h1>Welcome<span th:if="${session.venue.getName()}">, <span th:text="${session.venue.getName()}"></span></span></h1>
       <form id="meetup_requested" method="POST" action="/venueSignUp" modelAttribute="venue">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
-        <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes, I can host</button>
+          <input id="token" class="hidden"
+                 name="token" th:value="${session.venue.getToken()}">
+
+          <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes, I can host</button>
         <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
       </form>
   </header>

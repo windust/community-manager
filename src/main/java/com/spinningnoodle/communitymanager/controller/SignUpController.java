@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,9 @@ public class SignUpController {
     LocalDate requestedDate;
     String alertMessage = "";
     boolean alert = false;
+
+//    @Value("${foodDate:false}")
+//    private String foodDate = "false";
     
     //TODO update javadocs
     /**
@@ -121,14 +125,14 @@ public class SignUpController {
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
-        @RequestParam(name = "food", required = false) String foodDate,
+        @RequestParam(name = "food", required = false, defaultValue = "false") String foodDate,
         @RequestParam(name = "token") String token){
 
         boolean success;
-        
+        System.out.println(" meetup " + meetupDate + " requestedDate " + requestedDate + " responderName " + responderName);
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-        if(!meetupDate.equals("notHosting") && !foodDate.equals("notHosting")){
-            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
+        if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
+            model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
         }
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){

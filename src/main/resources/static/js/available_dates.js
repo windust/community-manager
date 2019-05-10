@@ -21,49 +21,51 @@ confirmation = function (){
   var hiddenInput = document.getElementById("hiddenInput");
 
   var date = thisButton.value;
+  var thisName = thisButton.name;
   var hiddenValue = hiddenInput.value;
+  var hiddenName = hiddenInput.name;
+
+  // alert("This date: " + date + " This name: " + thisName + hiddenName);
 
   if(hiddenInput.name === "unused") {
-    if (date === "notHosting" && hiddenValue === "unused") {
+    if (date === "notHosting") {
       return true;
     }
     hiddenInput.name = "confirm";
+    hiddenInput.value = date;
     openVenueConfirmModal();
     return false;
   }
 
-  if(hiddenInput.name == "confirm") {
-    if (date == "notHosting") {
-      resetModal();
-      return false;
-    }
-    openFoodConfirmModal();
-    hiddenInput.name = "meetup";
-    hiddenInput.value = date;
+  if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
+    resetModal();
+    alert("notHosting");
     return false;
   }
 
-  if(hiddenValue == "meetup") {
-      return true;
+  if(hiddenName == "confirm" && this.Name === "food") {
+    hiddenInput.name = "meetup";
+    alert("Hosting Food");
+
   }
+  alert("Hidden name "+hiddenInput.name + " Hidden date " + hiddenInput.value);
+  return true;
 }
 
-openConfirmModal = function (confirmType, confirmMessage) {
+openConfirmModal = function ( confirmMessage) {
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
   var date = document.activeElement.value;
   document.getElementById("modalYes").value = date;
+  document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
-
-  document.getElementById("modalYes").name = confirmType;
-  document.getElementById("modalNo").name = confirmType;
 
   document.getElementById("modalMessage").innerHTML = confirmMessage;
 }
 
 openVenueConfirmModal = function (){
-  openConfirmModal("meetup", "are you sure you want to host on");
+  openConfirmModal("are you sure you want to host on");
 }
 
 openFoodConfirmModal = function () {
@@ -77,10 +79,10 @@ resetModal = function () {
   var modalNoButton = document.getElementById("modalNo");
 
   hiddenInput.name = "unused";
-  hiddenInput.value = "unused";
+  // hiddenInput.value = "unused";
 
-  modalYesButton.name = "meetup";
-  modalNoButton.name = "meetup";
+  // modalYesButton.name = "meetup";
+  // modalNoButton.name = "meetup";
 
   modal.classList.remove("foodModal");
   modal.classList.add("hidden");

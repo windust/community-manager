@@ -21,17 +21,23 @@
   </head>
   <body class="meetup">
 
-
     <div id="modal" class="hidden" th:fragment="responderConfirm" >
         <h2 >
             <span th:text="${session.venue.getName()}">Venue Name</span>,
             <span id="modalMessage">are you sure you want to host on</span>
             <span id="modalDate">Unavailable</span>?</h2>
-            <input id="token" class="hidden" name="token" th:value="${session.venue.getToken()}">
-            <input id="hiddenInput" class="hidden" name="unused" value="unused">
-            <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes</button>
-            <button id="modalNo" rel='declineConfirm' type="submit" class="btn_secondary" name="meetup" value="notHosting">No</button>
-
+            <input id="token" class="hidden"
+                   name="token" th:value="${session.venue.getToken()}">
+            <input id="hiddenInput" class="hidden"
+                   name="unused" th:value="${session.venue.getRequestedDate()}">
+            <input id="meetupDate" class="hidden"
+                   name="meetup" th:value="${session.venue.getRequestedDate()}">
+            <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit"
+                   name="food" value="true">Yes</button>
+            <button id="modalJustYes" rel='declineConfirm' type="submit" class="btn_secondary"
+                   name="food" th:value="false">I agree to host, but cannot provide food.</button>
+            <button id="modalNo" rel='declineConfirm' type="submit" class="btn_secondary"
+                   name="meetup" value="notHosting">No</button>
 
     </div>
     <footer>&copy;2019 SeaJUG and Cream 4 UR Coffee</footer>
