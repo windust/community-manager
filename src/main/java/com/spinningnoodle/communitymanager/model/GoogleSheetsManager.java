@@ -139,6 +139,24 @@ public class GoogleSheetsManager implements DataManager {
 
     }
 
+    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin){
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+
+        if (!requestedDate.equals("notHosting")) {
+            LocalDate date = Entity.convertDate(requestedDate);
+
+            if (date.equals(dateRequestedByAdmin)) {
+                return meetupCollection.setFoodForMeetup(foodName, date) &&
+                    foodCollection.updateFoodResponse(foodName, Response.ACCEPTED);
+            } else {
+                return meetupCollection.setFoodForMeetup(foodName, date);
+            }
+        } else {
+            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
+        }
+    }
+
     @Override
     public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
         LocalDate dateRequestedByAdmin) {
@@ -151,23 +169,7 @@ public class GoogleSheetsManager implements DataManager {
         return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
     }
 
-    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
-        LocalDate dateRequestedByAdmin){
-        meetupCollection = meetupCollection.fetchFromDataStorage();
 
-        if (!requestedDate.equals("notHosting")) {
-            LocalDate date = Entity.convertDate(requestedDate);
-
-            if (date.equals(dateRequestedByAdmin)) {
-                return meetupCollection.setFoodForMeetup(foodName, date) && foodCollection
-                    .updateFoodResponse(foodName, Response.ACCEPTED);
-            } else {
-                return meetupCollection.setFoodForMeetup(foodName, date);
-            }
-        } else {
-            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
-        }
-    }
 
     @Override
     public List<Venue> getAllVenues() {

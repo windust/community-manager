@@ -57,7 +57,7 @@ openConfirmModal = function ( confirmMessage) {
   modal.classList.remove("hidden");
 
   var date = document.activeElement.value;
-  document.getElementById("modalYes").value = date;
+  // document.getElementById("modalYes").value = date;
   document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
 
