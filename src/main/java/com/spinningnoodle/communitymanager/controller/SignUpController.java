@@ -125,11 +125,10 @@ public class SignUpController {
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
-        @RequestParam(name = "food", required = false, defaultValue = "false") String foodDate,
+        @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
 
         boolean success;
-        System.out.println(" meetup " + meetupDate + " requestedDate " + requestedDate + " responderName " + responderName);
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
         if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
             model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
@@ -142,7 +141,6 @@ public class SignUpController {
             alertMessage = getAlertMessage(success, meetupDate);
         }
 
-//        return "redirect:/venue?token=" + this.currentToken;
         return "redirect:/venue?token=" + token;
     }
     
@@ -156,8 +154,7 @@ public class SignUpController {
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
-        
-//        return "redirect:/food?token=" + this.currentToken;
+
         return "redirect:/food?token=" + token;
     }
     

@@ -39,9 +39,9 @@ confirmation = function (){
     return false;
   }
 
-  if(hiddenName == "confirm" && this.Name === "food") {
-    hiddenInput.name = "meetup";
-  }
+  // if(hiddenName == "confirm" && this.Name === "food") {
+  //   hiddenInput.name = "meetup";
+  // }
   return true;
 }
 
