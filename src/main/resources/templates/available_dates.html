@@ -57,7 +57,7 @@
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
                       <button rel='venueConfirm' type="submit" class="btn_red" name="meetup" th:value="${meetup.getDate()}">
-                          Host?
+                          Available for Hosting
                       </button>
                   </td>
                   <td th:if="${meetup.getVenue() == session.venue.getName()}"><span th:text="${session.venue.getName()}" class="accent-text">Reserved</span></td>
