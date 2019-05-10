@@ -26,6 +26,7 @@ confirmation = function (){
 
   if(hiddenInput.name === "unused") {
     if (date === "notHosting") {
+      resetModal();
       return true;
     }
     hiddenInput.name = "confirm";
@@ -46,7 +47,7 @@ confirmation = function (){
 }
 
 openConfirmModal = function ( ) {
-  var confirmMessage = "are you sure you want to host on";
+  // var confirmMessage = "are you sure you want to host on";
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
@@ -54,7 +55,7 @@ openConfirmModal = function ( ) {
   document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
 
-  document.getElementById("modalMessage").innerHTML = confirmMessage;
+  // document.getElementById("modalMessage").innerHTML = confirmMessage;
 }
 
 resetModal = function () {
