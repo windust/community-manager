@@ -123,11 +123,15 @@ public class AdminController {
             }
         }
 
-        List<Venue> venues = model.getAllVenues();
-        session.setAttribute("venues", venues);
+        if(meetup.getVenue().isEmpty()) {
+            List<Venue> venues = model.getAllVenues();
+            session.setAttribute("venues", venues);
+        }
 
-        List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
-        session.setAttribute("foodsponsors", foodSponsors);
+        if(meetup.getFood().isEmpty()) {
+            List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
+            session.setAttribute("foodsponsors", foodSponsors);
+        }
 
         return "meetup";
     }
