@@ -33,6 +33,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public class AdminControllerTest {
     
@@ -41,10 +42,13 @@ public class AdminControllerTest {
     private AdminController adminController;
     private HttpSession session;
     private HttpServletRequest request;
-    
+    private OAuth2AuthenticationToken token;
+
     //data to compare to
     private List<Meetup> expectedMeetups;
     private List<Venue> expectedVenues;
+
+    private Map<String, Object> properties;
     
     @BeforeEach
     public void initializeController(){
@@ -53,6 +57,8 @@ public class AdminControllerTest {
         adminController.model = model;
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
+
+//        properties = token.getPrincipal().getAttributes();
     
         expectedMeetups = createMeetups();
         expectedVenues = createVenues();
@@ -76,7 +82,8 @@ public class AdminControllerTest {
     @Disabled
     public void loginSuccessRedirectsToUpcomingWhenSuccessful() {
         when(model.verifyAdmin("")).thenReturn(true);
-//        Assertions.assertEquals("redirect:/upcoming", adminController.loginSuccess(request));
+        when(properties.get("email")).thenReturn("kevanbarter@gmail.com");
+        Assertions.assertEquals("redirect:/upcoming", adminController.loginSuccess(request, token));
     }
     
     @Test
@@ -84,7 +91,7 @@ public class AdminControllerTest {
     @Disabled
     public void loginSuccessful(){
         when(model.verifyAdmin("")).thenReturn(true);
-//        adminController.loginSuccess(request);
+        adminController.loginSuccess(request, token);
         Assertions.assertTrue(adminController.loggedIn);
     }
     
@@ -93,7 +100,7 @@ public class AdminControllerTest {
     @Disabled
     public void loginAttemptWithBadCredentials(){
         when(model.verifyAdmin("")).thenReturn(false);
-//        adminController.loginSuccess(request);
+        adminController.loginSuccess(request, token);
         Assertions.assertFalse(adminController.loggedIn);
     }
     

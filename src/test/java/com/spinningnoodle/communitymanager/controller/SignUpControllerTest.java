@@ -94,6 +94,7 @@ public class SignUpControllerTest {
     public void venueSetsSessionHostingMessageAttribute(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("");
         signUpController.venue(validToken, session);
 
         Assertions.assertNotNull(session.getAttribute("hostingMessage"));
@@ -133,6 +134,8 @@ public class SignUpControllerTest {
     @DisplayName("venue route sets alert message as an attribute in the session")
     public void venueSetsSessionAlertMessageAttribute(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
+        when(model.getAllMeetups()).thenReturn(expectedMeetups);
+        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("");
         signUpController.venue(validToken, session);
 
         Assertions.assertNotNull(session.getAttribute("alertMessage"));

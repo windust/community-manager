@@ -83,7 +83,7 @@ public class FoodSponsorCollectionTest {
         Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
         when(foodSponsor.getName()).thenReturn("Pizza Hut");
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
-        when(dataStorage.update("foodSponsors", "1","foodResponse" , "yes")).thenReturn(true);
+        when(dataStorage.update("foodSponsors", "1","response" , "yes")).thenReturn(true);
         assertTrue(spyFoodSponsorCollection.updateResponse("Pizza Hut", Response.ACCEPTED));
     }
 
@@ -95,7 +95,7 @@ public class FoodSponsorCollectionTest {
         Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
         when(foodSponsor.getName()).thenReturn("Pizza Hut");
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
-        when(dataStorage.update("foodSponsors", "1", "foodResponse", "yes")).thenReturn(true);
+        when(dataStorage.update("foodSponsors", "1", "response", "yes")).thenReturn(true);
         assertFalse(spyFoodSponsorCollection.updateResponse("Papa Murphy's", Response.ACCEPTED));
     }
 
