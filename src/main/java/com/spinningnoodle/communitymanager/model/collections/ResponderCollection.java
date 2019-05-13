@@ -35,7 +35,12 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
         super(dataStorage, tableName);
     }
 
-    public Entity getEntityByName(String name){
+    public void addToCollection(T entity) throws IllegalArgumentException {
+        nameIdJunction.put(entity.getName(),entity.getPrimaryKey());
+        super.addToCollection(entity);
+    }
+
+    public ResponderEntity getResponderByName(String name){
         return entities.get(nameIdJunction.get(name));
     }
 

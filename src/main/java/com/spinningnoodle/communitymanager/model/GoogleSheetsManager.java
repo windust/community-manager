@@ -91,7 +91,7 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public List<Meetup> getAllMeetups() {
         meetupCollection = meetupCollection.fetchFromDataStorage();
-        return meetupCollection.getAll();
+        return addEntityToMeetups(meetupCollection.getAll());
     }
     
     @Override
@@ -103,7 +103,19 @@ public class GoogleSheetsManager implements DataManager {
                 filteredMeetups.add(meetup);
             }
         }
-        return filteredMeetups;
+        return addEntityToMeetups(filteredMeetups);
+    }
+
+    private List<Meetup> addEntityToMeetups(List<Meetup> meetups){
+        for(Meetup meetup: meetups){
+            if(meetup.getVenueEntity() == null){
+                meetup.setVenueEntity((Venue)venueCollection.getResponderByName(meetup.getVenue()));
+            }
+            if(meetup.getFoodSponsorEntity() == null){
+                meetup.setFoodSponsorEntity((FoodSponsor)foodSponsorCollection.getResponderByName(meetup.getFood()));
+            }
+        }
+        return meetups;
     }
 
     //TODO look into possibility of converting to getResponderByToken method
