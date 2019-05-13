@@ -32,7 +32,7 @@ public class FoodSponsor extends ResponderEntity{
 
 
     @Override
-    public Entity build(Map<String, String> fields) throws AttributeException {
+    public FoodSponsor build(Map<String, String> fields) throws AttributeException {
         //TODO see todo in Venue build method and apply here.
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
