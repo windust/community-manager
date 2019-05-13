@@ -12,9 +12,7 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
-import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
@@ -78,23 +76,6 @@ public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderC
 //
 //		return venueInfo;
 //	}
-
-	/**
-	 * gets a venue based on its primary key
-	 *
-	 * @param key the primary key to search by
-	 * @return a Venue object
-	 * @throws EntityNotFoundException
-	 */
-	public Venue getByPrimaryKey(int key) throws EntityNotFoundException{
-		for(Venue venue : getEntitiesValues()){
-			if(venue.getPrimaryKey() == key){
-				return venue;
-			}
-		}
-		
-		throw new EntityNotFoundException();
-	}
 
 	/**
 	 * Update a food sponsors response to hosting
