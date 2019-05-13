@@ -89,7 +89,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return A <T> who's Entity Id matches the Entity Id passed in
 	 * @throws EntityNotFoundException When <T> with the Id passed cannot be found
 	 */
-	public T getById(int entityId) throws EntityNotFoundException {
+	public T getByPrimaryKey(int entityId) throws EntityNotFoundException {
 		if(!entities.containsKey(entityId)) {
 			throw new EntityNotFoundException();
 		}
