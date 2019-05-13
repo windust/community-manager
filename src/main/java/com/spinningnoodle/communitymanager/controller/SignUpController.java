@@ -110,7 +110,7 @@ public class SignUpController {
                 currentMeetup = meetup;
             }
         }
-        
+        System.out.println(meetups.get(0).getVenueEntity().getAddress());
         session.setAttribute("meetups", meetups);
         session.setAttribute(responderType, responder);
         session.setAttribute("hostingMessage", model.getMessage(responder));

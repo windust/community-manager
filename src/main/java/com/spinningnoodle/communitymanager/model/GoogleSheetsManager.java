@@ -96,6 +96,8 @@ public class GoogleSheetsManager implements DataManager {
     
     @Override
     public List<Meetup> getAllHostedMeetups(){
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
         meetupCollection = meetupCollection.fetchFromDataStorage();
         List<Meetup> filteredMeetups = new ArrayList<>();
         for(Meetup meetup : meetupCollection.getAll()){
@@ -108,10 +110,10 @@ public class GoogleSheetsManager implements DataManager {
 
     private List<Meetup> addEntityToMeetups(List<Meetup> meetups){
         for(Meetup meetup: meetups){
-            if(meetup.getVenueEntity() == null){
+            if(!meetup.getVenue().isBlank() && meetup.getVenueEntity() == null){
                 meetup.setVenueEntity((Venue)venueCollection.getResponderByName(meetup.getVenue()));
             }
-            if(meetup.getFoodSponsorEntity() == null){
+            if(!meetup.getFood().isBlank() && meetup.getFoodSponsorEntity() == null){
                 meetup.setFoodSponsorEntity((FoodSponsor)foodSponsorCollection.getResponderByName(meetup.getFood()));
             }
         }
