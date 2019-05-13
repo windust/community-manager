@@ -19,16 +19,24 @@ import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Receip
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
-    
+
+    protected Map<String,Integer> nameIdJunction = new HashMap<>();
+
     public ResponderCollection(String tableName){
         super(tableName);
     }
     
     public ResponderCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);
+    }
+
+    public Entity getEntityByName(String name){
+        return entities.get(nameIdJunction.get(name));
     }
 
     public T getEntityByToken(String token) {

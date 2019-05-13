@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
 	@Autowired
 	DataStorage dataStorage;
-	private Map<Integer, T> entities = new HashMap<>();
+	protected Map<Integer, T> entities = new HashMap<>();
 	protected final String TABLE_NAME;
 
 	public EntityCollection(String tableName){
