@@ -1,56 +1,44 @@
 package com.spinningnoodle.communitymanager;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.client.ResponseErrorHandler;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = CommunityManagerApplication.class, loader = SpringBootContextLoader.class)
 @WebAppConfiguration
-@SpringBootTest
+@ContextConfiguration(classes = CommunityManagerApplication.class, loader = SpringBootContextLoader.class)
+@SpringBootTest()
 public abstract class AbstractDefs
 {
 //    @Value("8080")
     protected int port = 8080;
 
-    protected static ResponseResults latestResponse = null;
-    protected RestTemplate restTemplate = null;
+    @Autowired
+    protected WebApplicationContext wac;
 
-    protected void executeGet(String url) throws IOException
+
+    protected MockMvc mvc;
+
+    protected MvcResult result;
+
+
+
+    protected void executeGet(String url) throws Exception
     {
-        final Map<String,String> headers = new HashMap<>();
-        headers.put("Accept","application/json");
-        final HeaderSettingRequestCallback requestCallback = new HeaderSettingRequestCallback(headers);
-        final ResponseResultErrorHandler errorHandler = new ResponseResultErrorHandler();
-        if (restTemplate == null)
-        {
-            restTemplate = new RestTemplate();
-        }
-        restTemplate.setErrorHandler(errorHandler);
-        latestResponse = restTemplate.execute(url,
-            HttpMethod.GET,
-            requestCallback,
-            response -> {
-                if (errorHandler.hadError)
-                {
-                    return (errorHandler.getResults());
-                }
-                else
-                {
-                    return (new ResponseResults(response));
-                }
-            });
-
+        result = mvc.perform(get(url)).andDo(print()).andReturn();
     }
 
     private class ResponseResultErrorHandler implements ResponseErrorHandler

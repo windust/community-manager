@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javassist.expr.Instanceof;
 
 /**
  * GoogleSheets implements Data Storage, the interface that all data storage implementations meet.
