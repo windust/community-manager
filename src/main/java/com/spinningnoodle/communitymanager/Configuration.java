@@ -19,7 +19,7 @@ public class Configuration {
     }
     
     @Bean
-    public DataStorage createStorage(@Value("113AbcCLo0ZAJLhoqP0BXaJPRlzslESkkk98D44Ut1Do") String storageID) throws GeneralSecurityException, IOException{
+    public DataStorage createStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
         return new GoogleSheets(storageID);
     }
 }

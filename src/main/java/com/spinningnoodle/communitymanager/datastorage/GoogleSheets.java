@@ -1,15 +1,18 @@
 package com.spinningnoodle.communitymanager.datastorage;
 /**
- *  LICENSE
- *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
- *          http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
- *
- *  END OF LICENSE INFORMATION
+ * LICENSE Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and
+ * Tyler Roemer.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at: http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ * <p>
+ * END OF LICENSE INFORMATION
  */
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -32,13 +35,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javassist.expr.Instanceof;
 
 /**
  * GoogleSheets implements Data Storage, the interface that all data storage implementations meet.
@@ -47,9 +50,9 @@ import javassist.expr.Instanceof;
  * All implementations should include the following constructors:
  *      DataStorage(String storageID) - opens existing DataStorage;
  *
- * @author  Cream 4 UR Coffee
+ * @author Cream 4 UR Coffee
  * @version 0.1
- * @since   2019-02-04
+ * @since 2019-02-04
  */
 public class GoogleSheets implements DataStorage {
 
@@ -106,15 +109,24 @@ public class GoogleSheets implements DataStorage {
     public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
 
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-            .setApplicationName(APPLICATION_NAME)
-            .build();
-        try {
-            spreadsheet = service.spreadsheets().get(storageID).execute();
-        } catch (IOException e) {
-            throw new IOException("Unable to connect to spreadsheet.");
-        }
+        Thread authnenticationThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+                    service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                        .setApplicationName(APPLICATION_NAME)
+                        .build();
+                    spreadsheet = service.spreadsheets().get(storageID).execute();
+                } catch (IOException e) {
+                    System.out.println("Logging exception " + e);
+                    //throw new IOException("Unable to connect to spreadsheet.");
+                } catch (GeneralSecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        authnenticationThread.start();
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
@@ -127,7 +139,9 @@ public class GoogleSheets implements DataStorage {
             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
             .setAccessType("offline")
             .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
+            .setHost(InetAddress.getLocalHost().getHostAddress())
+            .setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
@@ -155,7 +169,7 @@ public class GoogleSheets implements DataStorage {
             HashMap<String, String> row = new HashMap<>();
             List<Object> rawRow = values.get(listNum);
             int rowNum = listNum + 1;
-            row.put("primaryKey",String.valueOf(rowNum));
+            row.put("primaryKey", String.valueOf(rowNum));
             for (int columnNum = 0; columnNum < attributes.size(); columnNum++) {
                 Object value = (columnNum < rawRow.size()) ? rawRow.get(columnNum) : "";
                 if (value.getClass().toString().equals("class java.lang.String")) {
@@ -175,11 +189,12 @@ public class GoogleSheets implements DataStorage {
     private List<String> getAttributesAsStrings(List<List<Object>> values) {
         List<Object> attributesNames = values.get(0);
         List<String> attributes = new ArrayList<>();
-        for(Object attributeName: attributesNames){
+        for (Object attributeName : attributesNames) {
             if (attributeName instanceof String) {
                 attributes.add(attributeName.toString());
             } else {
-                System.out.println("Could not convert attribute name to String: " + attributeName.getClass().toString());
+                System.out.println(
+                    "Could not convert attribute name to String: " + attributeName.getClass().toString());
             }
         }
         return attributes;
@@ -207,9 +222,9 @@ public class GoogleSheets implements DataStorage {
         return update(cell, newValue);
     }
 
-    private boolean update(String cell, String newValue){
+    private boolean update(String cell, String newValue) {
 
-        if(cell.contains("null") || cell.contains("1")) return false;
+        if (cell.contains("null") || cell.contains("1")) { return false; }
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
@@ -258,9 +273,10 @@ public class GoogleSheets implements DataStorage {
     public Map<String, String> getTableNames() {
         List<Sheet> sheets = spreadsheet.getSheets();
 
-        Map<String,String> sheetNames = new HashMap<>();
-        for(Sheet sheet: sheets){
-            sheetNames.put(sheet.getProperties().getTitle(),
+        Map<String, String> sheetNames = new HashMap<>();
+        for (Sheet sheet : sheets) {
+            sheetNames.put(
+                sheet.getProperties().getTitle(),
                 sheet.getProperties().getSheetId().toString());
         }
 
@@ -268,7 +284,7 @@ public class GoogleSheets implements DataStorage {
     }
 
 
-    List<List<Object>> getData(String tableName) throws IOException{
+    List<List<Object>> getData(String tableName) throws IOException {
         String range = tableName;
         try {
             if (!spreadsheet.isEmpty()) {
@@ -277,29 +293,29 @@ public class GoogleSheets implements DataStorage {
                     .execute();
                 return response.getValues();
             }
-        } catch (Exception e){
-            throw new IOException("Unable to access table "+tableName);
+        } catch (Exception e) {
+            throw new IOException("Unable to access table " + tableName);
         }
         return null;
     }
 
-    private int getRowNumber(List<List<Object>> values, String primaryKey){
+    private int getRowNumber(List<List<Object>> values, String primaryKey) {
 
         int rowNumber = 1;
 
-        if(Integer.parseInt(primaryKey) <= values.size()){
+        if (Integer.parseInt(primaryKey) <= values.size()) {
             rowNumber = Integer.parseInt(primaryKey);
         }
         return rowNumber;
     }
 
-    private String getColumnLetter(List<Object> attributes, String attribute){
+    private String getColumnLetter(List<Object> attributes, String attribute) {
 
         int a = 65;
         String columnLetter = null;
-        for(int i = 0; i < attributes.size(); i++){
-            if(attribute.equals(attributes.get(i).toString())){
-                return ""+ (char)(a + i);
+        for (int i = 0; i < attributes.size(); i++) {
+            if (attribute.equals(attributes.get(i).toString())) {
+                return "" + (char) (a + i);
             }
         }
 
