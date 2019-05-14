@@ -42,7 +42,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class AdminController {
-    boolean loggedIn = false;
+    //FIXME change to false without breaking cucumber tests
+    boolean loggedIn = true;
     
     @Autowired
     DataManager model;

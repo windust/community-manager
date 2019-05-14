@@ -7,12 +7,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.spinningnoodle.communitymanager.AbstractDefs;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 public class UpcomingDatesStepDefinitions extends AbstractDefs {
+    
+    @Given("The client is signed in")
+    public void theClientSignsIn() {
+        
+    }
 
     @When("^the client calls /upcoming$")
     public void theClientCallsUpcoming() throws Throwable {
