@@ -1,23 +1,19 @@
 package com.spinningnoodle.communitymanager.stepdefinitions;
 
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.spinningnoodle.communitymanager.AbstractDefs;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
-    @Before
-    public void setup() throws Exception {
-
-    }
-
-    @Test
     @When("^the client calls /upcoming$")
     public void theClientCallsUpcoming() throws Throwable {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
@@ -26,8 +22,9 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
     @Then("^the client receives status code of (\\d+)$")
     public void theClientReceivesStatusCodeOf(int statusCode) throws Throwable {
-        System.out.println(result.getResponse().getStatus());
-        // assertThat(result.getResponse().getStatus()).isEqualTo(statusCode);
+        mvc.perform(get("/upcoming"))
+            .andExpect(status().is(statusCode))
+            .andExpect(content().contentType("application/hal+json"));
     }
 
     @And("^the client receives server version (.+)$")

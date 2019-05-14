@@ -52,7 +52,6 @@ dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-webmvc
-	compile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.7.RELEASE'
 
 
 	//google sheets dependencies
@@ -66,10 +65,9 @@ dependencies {
 	testCompile 'junit:junit:4.12',
 			'info.cukes:cucumber-java:1.2.4',
 			'info.cukes:cucumber-junit:1.2.4',
-			"info.cokes:cucumber-spring:1.2.4"
+			"info.cukes:cucumber-spring:1.2.4"
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
 	// https://mvnrepository.com/artifact/org.springframework/spring-test
-	testCompile group: 'org.springframework', name: 'spring-test', version: '2.5'
 
 	testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.4.RELEASE'
 
