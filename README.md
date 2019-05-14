@@ -170,14 +170,12 @@ Explain what these tests test and why
     2. http: a lot of stuff happens here to get OAuth login working properly.
          1. authorizeRequests():
          2. .antMatchers("/", "/css/main.css", "/js/available_dates.js", "/images/logo_draft_1.png",
-           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll(): Here antMatchers and permitAll defines what routes is permitted before authentication. 
+           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll(): 
+           Here antMatchers and permitAll defines what routes are permitted without authentication. 
          3. .anyRequest().authenticated(): anyRequest and authenticated after antMatchers sends any request next through OAuth login.
-         4. .and(): Just to include what's next.
-         5. .oauth2Login().defaultSuccessUrl("/loginSuccess", true): Sends your login after successful login attempt to a login method you'll create in the Controller.
-         6. .and(): Just to include what's next.
-         7. .logout("/log_out").logoutUrl().logoutSuccessUrl(): logoutUrl is your log out method in controller and logoutSuccessUrl is whats displayed after successful logout of app.
-         8. .and(): Just to include what's next.
-         9. .csrf().disable("/"): You'll need to disable the csrf.
+         4. .oauth2Login().defaultSuccessUrl("/loginSuccess", true): Sends your login after successful login attempt to a route you create in the Controller.
+         5. .logout("/log_out").logoutUrl().logoutSuccessUrl(): logoutUrl is your log out method in controller and logoutSuccessUrl is whats displayed after successful logout of app.
+         6. .csrf().disable("/"): You'll need to disable the csrf to prevent from getting redirect errors when signing in a second time.
 5. Admin Controller to handle login and logout
     1. login method: routes to OAuth login page or your own custom login page.
     2. loginSuccess method with the following parameters: HttpServletRequest request, OAuth2AuthenticationToken authentication
@@ -185,9 +183,10 @@ Explain what these tests test and why
           2. String email = (String) properties.get("email"): Here we get an email to check the user email.
           3. We use the email to check against a list of valid users on the backend before they are granted access.
     3. logOut method
-          1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and ensures if you are logged out of GMail you are logged out of the app.
+          1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and 
+          ensures if you are logged out of GMail you are logged out of the app.
           2. loggedIn = false: resets boolean to false
-          3. return "redirect:/": redirects user to homepage.
+          3. return "redirect:/": redirects user to login page.
 ### Exceptions
 
 ### Resources
@@ -210,6 +209,10 @@ Add additional notes about how to deploy this on a live system
 
 * Spring Boot - The web framework used
 * Gradle - Dependency Management
+* Google Sheets API - API for interacting with Google Sheets, used as database for application
+* Google OAuth2 - Login authentication
+* JUnit 5 - Unit testing
+* Cucumber - Behavioral tests
 
 ## Contributing
 
