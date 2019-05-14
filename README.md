@@ -51,6 +51,68 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Spreadsheet setup
 
+Go to:
+https://docs.google.com/spreadsheets/u/0/
+It will ask you to login - strangely it will take you to docs, but you can use the upper right hamburger to choose Sheets.
+
+You will see a URL like this:
+https://docs.google.com/spreadsheets/d/1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g/edit#gid=0
+
+The highlighted part is the id. Replace the value for storageID in application.properties with this id.
+
+In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
+
+#####1. meetups
+* date
+* venue
+* speaker
+* topic
+* description
+* food
+* after
+
+#####2. venues
+* name
+* address
+* capacity
+* contactPerson
+* contactEmail
+* contactPhone
+* altContactPhone
+* token
+* requestedDate
+* response
+* foodResponse
+
+#####3. foodSponsors
+* name
+* address
+* capacity
+* contactPerson
+* contactEmail
+* contactPhone
+* altContactPhone
+* token
+* requestedDate
+* response
+
+#####4. admins
+* email (Be sure to include your email address, as this is the table used to check authorization for the application.)
+* name
+
+(Below this point the tables are not currently used.)
+#####5. speakers
+* name
+* bio
+
+#####6. lightningTalks
+* name
+* bio
+* topic
+* date
+
+
+
 ### Installing
 
 #### Setup configuration files
