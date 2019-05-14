@@ -374,6 +374,7 @@ public class modelIntegrationTest {
         testStorage.update("meetups","3","venue","");
         testStorage.update("meetups","2","venue","Excellent");
         testStorage.update("venues","2","response","yes");
+        testStorage.update("meetups", "1", "food", "");
 //        testStorage.update("foodSponsors", "2", "response", "yes");
     }
 
