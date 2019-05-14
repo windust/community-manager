@@ -197,16 +197,6 @@ public class SignUpControllerTest {
         Assertions.assertEquals("Thank you for your consideration.", session.getAttribute("hostingMessage"));
     }
 
-    @Test
-    @DisplayName("Hosting Message for when venue response is yes but venue isn't actually hosting throws IllegalArgumentException if unable to update database")
-    public void hostingMessageWhenVenueSaysYesButIsNotHostingThrowsException(){
-        when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
-        when(model.getAllMeetups()).thenReturn(createMeetups(""));
-        when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(false);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> signUpController.venue(validToken, session));
-    }
-
     private Venue createVenue(Response response){
         Venue partialVenue = new Venue();
 
