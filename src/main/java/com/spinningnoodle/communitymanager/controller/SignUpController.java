@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,7 +109,7 @@ public class SignUpController {
                 currentMeetup = meetup;
             }
         }
-        System.out.println(meetups.get(0).getVenueEntity().getAddress());
+        
         session.setAttribute("meetups", meetups);
         session.setAttribute(responderType, responder);
         session.setAttribute("hostingMessage", model.getMessage(responder));
