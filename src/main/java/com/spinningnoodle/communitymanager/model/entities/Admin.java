@@ -54,7 +54,7 @@ public class Admin extends Entity {
      * @throws AttributeException An exception raised by invalid values for the specified key
      */
     @Override
-    public Entity build(Map<String, String> fields) throws AttributeException {
+    public Admin build(Map<String, String> fields) throws AttributeException {
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setEmail(fields.getOrDefault("email", null));
         this.setName(fields.getOrDefault("name", null));

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.model.collections.AdminCollection;
+import com.spinningnoodle.communitymanager.model.collections.FoodSponsorCollection;
 import com.spinningnoodle.communitymanager.model.collections.MeetupCollection;
 import com.spinningnoodle.communitymanager.model.collections.VenueCollection;
 import com.spinningnoodle.communitymanager.model.entities.Admin;
@@ -66,7 +67,7 @@ public class modelIntegrationTest {
         row.put("venue", "Excellent");
         row.put("topic", "100");
         row.put("speaker", "Freddy");
-//        row.put("food", "");
+//        row.put("food", "Pizza Hut");
 //        row.put("after", "");
         row.put("date", "01/14/2029");
         list.add(row);
@@ -104,6 +105,7 @@ public class modelIntegrationTest {
         testManager.meetupCollection = new MeetupCollection(testStorage);
         testManager.venueCollection = new VenueCollection(testStorage);
         testManager.adminCollection = new AdminCollection(testStorage);
+        testManager.foodSponsorCollection = new FoodSponsorCollection(testStorage);
         testManager.spreadsheetIDLocation = fileName;
 
     }
@@ -329,17 +331,50 @@ public class modelIntegrationTest {
         assertTrue(testManager.verifyAdmin("cat@animal.com"));
     }
 
+    /*
+    The following are Food Sponsor Integration tests.
+     */
+    @Test
+    @DisplayName("When I set the food sponsor for a hosted event, the food sponsor is unchanged.")
+    void whenISetTheFoodSponsorForAnEventWithAFoodSponosorTheSystemWontChangeIt(){
+        assertEquals(false,testManager.setFoodForMeetup("NewName", "01/14/2029",LocalDate.of(2029,1,14)));
+    }
+
+    @Test
+    @DisplayName("When I set the food sponsor for an event, the food sponsor is filled.")
+    void whenISetTheFoodSponsorForAnEventWithOutAFoodSponsorTheSystemChangesIt(){
+        assertEquals(true,testManager.setFoodForMeetup("Pizza Hut", "01/15/2029",LocalDate.of(2029,1,14)));
+    }
+
+    @Test
+    @DisplayName("Model returns false, when I attempt to set food sponsor to an invalid food sponsor")
+    void whenISetTheFoodSponsorForAnEventWithInvalidVenueNameThrowsError(){
+        assertFalse(testManager.setFoodForMeetup("NeverExisted", "01/14/2029",LocalDate.of(2029,1,14)));
+    }
+
+    @Test
+    @DisplayName("Model returns false, when I attempt to set food sponsor for invalid event date.")
+    void whenISetTheFoodSponsorForAnEventWithInvalidEventDateThrowsError(){
+        assertFalse(testManager.setFoodForMeetup("Pizza Hut", "01/24/2029",LocalDate.of(2029,1,14)));
+    }
+
+    @Test
+    @DisplayName("Model returns true, when I food sponsor declines to provide food.")
+    void whenISetTheFoodSponsorForAnEventWithNotHostingDateReturnsTrue(){
+        assertTrue(testManager.setFoodForMeetup("Pizza Hut", "notHosting",LocalDate.of(2029,1,14)));
+    }
+
     @BeforeEach
     @AfterEach
     void resetDatastorage(){
         testManager.meetupCollection = testManager.meetupCollection.fetchFromDataStorage();
         testManager.venueCollection = testManager.venueCollection.fetchFromDataStorage();
+        testManager.foodSponsorCollection = testManager.foodSponsorCollection.fetchFromDataStorage();
 
         testStorage.update("meetups","3","venue","");
         testStorage.update("meetups","2","venue","Excellent");
         testStorage.update("venues","2","response","yes");
-
-
+//        testStorage.update("foodSponsors", "2", "response", "yes");
     }
 
 }
