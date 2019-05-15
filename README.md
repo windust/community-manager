@@ -1,6 +1,15 @@
 # community-manager
 
-Add full project description and goals of this project.
+(FIXME: Add full project description and goals of this project.)
+The Community Manager is a open-source tool to facilitate Meetup venue, food, and eventually speaker
+arrangements. It provides a an admin backend that allows admins to generate unique URLs which can be sent to 
+venues and foods sponsors. These url's with embedded tokens allow the Community Manager to generate 
+up-to-date web pages tailored to the individual sponsor. It eliminates the need for emails which may 
+contain outdated requests and for the Meetup admin to have to say Sorry if a vendor responds after they
+ are no longer needed.
+
+It can be cloned from:
+    https://github.com/windust/community-manager
 
 ---
 
