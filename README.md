@@ -279,6 +279,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Built with
 
+- OpenJDK 11
 - Spring Boot - The web framework used
 - Gradle - Dependency Management
 - Google Sheets API - API for interacting with Google Sheets, used as database for application
