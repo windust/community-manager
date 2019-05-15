@@ -67,8 +67,21 @@ Developed in:
 >JRE: 1.8.0_152-release-1343-b26 amd64
 >JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 
-Using SASS:
->
+##### Using SASS
+
+SCSS directory: `src/main/resources/static/scss`
+CSS file path: `src/main/resources/css`
+
+1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
+2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
+3. Install and enable the File Watchers repository plugin on the [Plugins](https://www.jetbrains.com/help/idea/plugins-settings.html) page
+4. In the Settings/Preferences dialog, click File Watchers under Tools. The File Watchers page that opens shows the list of already configured File Watchers.
+5. Click Add button, choose SCSS predefined template from the list.
+6. In the "arguments" command place `$FileName$:../css/$FileNameWithoutExtension$.css` and in "output paths to refresh" `./css/$FileNameWithoutExtension$.css:../css/$FileNameWithoutExtension$.css.map`
+
+IntelliJ will automatically watch for changes in SCSS files and compile the css.
+
+*For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
 
 
 #### Getting credentials
@@ -230,8 +243,8 @@ SignUpController.java and EntityCollection.java files.
     3. logOut method
           1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and 
           ensures if you are logged out of GMail you are logged out of the app.
-          2. loggedIn = false: resets boolean to false
-          3. return "redirect:/": redirects user to login page.
+          1. loggedIn = false: resets boolean to false
+          2. return "redirect:/": redirects user to login page.
 ### Exceptions
 
 ### Resources
