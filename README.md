@@ -49,6 +49,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Getting credentials
 
+#####GoogleSheets Credentials
+Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
+(Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
+
+
 #### Spreadsheet setup
 
 Go to:
@@ -63,6 +68,7 @@ The highlighted part is the id. Replace the value for storageID in application.p
 In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
 
 #####1. meetups
+![Click to view Meetups Tab](Readme_images/googleSheetsMeetups.JPG)
 * date
 * venue
 * speaker
@@ -72,6 +78,7 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * after
 
 #####2. venues
+![Click to view Venues Tab](Readme_images/googleSheetsVenues.JPG)
 * name
 * address
 * capacity
@@ -85,6 +92,7 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * foodResponse
 
 #####3. foodSponsors
+![Click to view FoodSponsors Tab](Readme_images/googleSheetsFoodSponsors.JPG)
 * name
 * address
 * capacity
@@ -97,15 +105,18 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * response
 
 #####4. admins
+![Click to view Admins Tab](Readme_images/googleSheetsAdmin.JPG)
 * email (Be sure to include your email address, as this is the table used to check authorization for the application.)
 * name
 
 (Below this point the tables are not currently used.)
 #####5. speakers
+![Click to view Speakers Tab](Readme_images/googleSheetsSpeakers.JPG)
 * name
 * bio
 
 #####6. lightningTalks
+![Click to view LightningTalks Tab](Readme_images/googleSheetsLightningTalks.JPG)
 * name
 * bio
 * topic
