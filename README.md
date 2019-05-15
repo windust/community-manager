@@ -173,6 +173,10 @@ Explain what these tests test and why
 ---
 
 ## System Architecture
+The system follows the MVC pattern. Standard camel case naming conventions are followed. All Collections
+include the name Collection and the Entity they are a collection of. Entities that are not intended 
+to be used as include Entity in the name. Interfaces are named for their basic functionality and do 
+not allow the IDE to denote them rather than using "i".
 ![Community Manager UML Diagram](Readme_images/communtiy_manager.png)
 
 ### Model
