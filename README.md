@@ -10,6 +10,9 @@ contain outdated requests and for the Meetup admin to have to say Sorry if a ven
 
 It can be cloned from:
     https://github.com/windust/community-manager
+    
+For more information or to contribute to this project, please contact Seattle Area Java Users Group 
+at present@seajug.org.
 
 ---
 
@@ -55,6 +58,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 * JUnit 5
 * ...
+
+#### Development Environment
+Developed in:
+>IntelliJ IDEA 2018.3.3 (Ultimate Edition) 
+>Build #IU-183.5153.38, built on January 9, 2019
+>For educational use only.
+>JRE: 1.8.0_152-release-1343-b26 amd64
+>JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
+
+Using SASS:
+>
+
 
 #### Getting credentials
 
@@ -247,6 +262,7 @@ Please read CONTRIBUTING.md for details on our code of conduct, and the process 
 ## Authors
 
 `acknowledge specific developers and roles they had`
+**Freddy Guime** - Chief Software Engineer, Product Owner, and Everything Else
 
 **Kevan Barter** - Contributed to the project by helping with front end design, backend design for Food Sponsor, writing tests for Food sponsor and Admin. He also helped to set up Google OAuth sign implemented on the website.
 
