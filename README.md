@@ -2,17 +2,15 @@
 
 (FIXME: Add full project description and goals of this project.)
 The Community Manager is a open-source tool to facilitate Meetup venue, food, and eventually speaker
-arrangements. It provides a an admin backend that allows admins to generate unique URLs which can be sent to 
-venues and foods sponsors. These url's with embedded tokens allow the Community Manager to generate 
+arrangements. It provides a an admin backend that allows admins to generate unique URLs which can be sent to venues and foods sponsors. These urls with embedded tokens allow the Community Manager to generate 
 up-to-date web pages tailored to the individual sponsor. It eliminates the need for emails which may 
 contain outdated requests and for the Meetup admin to have to say Sorry if a vendor responds after they
  are no longer needed.
 
 It can be cloned from:
     https://github.com/windust/community-manager
-    
-For more information or to contribute to this project, please contact Seattle Area Java Users Group 
-at present@seajug.org.
+
+For more information or to contribute to this project, please contact Seattle Area Java Users Group at present@seajug.org.
 
 ---
 
@@ -104,8 +102,10 @@ The bolded part is the id. Replace the value for storageID in application.proper
 
 In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
 
-#####1. meetups
+##### 1. meetups
+
 ![Click to view Meetups Tab](Readme_images/googleSheetsMeetups.JPG)
+
 * date
 * venue
 * speaker
@@ -114,8 +114,10 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * food
 * after
 
-#####2. venues
+##### 2. venues
+
 ![Click to view Venues Tab](Readme_images/googleSheetsVenues.JPG)
+
 * name
 * address
 * capacity
@@ -128,8 +130,9 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * response
 * foodResponse
 
-#####3. foodSponsors
+##### 3. foodSponsors
 ![Click to view FoodSponsors Tab](Readme_images/googleSheetsFoodSponsors.JPG)
+
 * name
 * address
 * capacity
@@ -141,25 +144,29 @@ In the spreadsheet, create the following tables by clicking on the plus sign (lo
 * requestedDate
 * response
 
-#####4. admins
+##### 4. admins
+
 ![Click to view Admins Tab](Readme_images/googleSheetsAdmin.JPG)
+
 * email (Be sure to include your email address, as this is the table used to check authorization for the application.)
 * name
 
 (Below this point the tables are not currently used.)
-#####5. speakers
+##### 5. speakers
+
 ![Click to view Speakers Tab](Readme_images/googleSheetsSpeakers.JPG)
+
 * name
 * bio
 
-#####6. lightningTalks
+##### 6. lightningTalks
+
 ![Click to view LightningTalks Tab](Readme_images/googleSheetsLightningTalks.JPG)
+
 * name
 * bio
 * topic
 * date
-
-
 
 ### Installing
 
@@ -186,10 +193,9 @@ Explain what these tests test and why
 ---
 
 ## System Architecture
+
 The system follows the MVC pattern. Standard camel case naming conventions are followed. All Collections
-include the name Collection and the Entity they are a collection of. Entities that are not intended 
-to be used as include Entity in the name. Interfaces are named for their basic functionality and do 
-not allow the IDE to denote them rather than using "i".
+include the name Collection and the Entity they are a collection of. Entities that are not intended  to be used as include Entity in the name. Interfaces are named for their basic functionality and do not allow the IDE to denote them rather than using "i".
 ![Community Manager UML Diagram](Readme_images/communtiy_manager.png)
 
 ### Model
@@ -199,6 +205,7 @@ not allow the IDE to denote them rather than using "i".
 #### Collections
 
 ### DataStorage
+
 The data storage consists of the interface (DataStorage) and the implementation, Google Sheets. 
 To implement an alternate data storage, create an implementation of DataStorage, a different implementation
 of the DataManager if needed. (Google Sheets uses the GoogleSheetsManager) Update the beans in 
@@ -208,12 +215,13 @@ SignUpController.java and EntityCollection.java files.
 ### Controller
 
 ### OAuth
+
 1. Go to website: https://console.developers.google.com
     1. Click Credentials tab at left of page.
     2. Click Create Credentials blue button.
     3. Click OAuth client ID from dropdown on button.
-    4. Click Web Application under Application Type and hit create. 
-    5. Under Authorized redirects URIs have this route: http://localhost:8080/login/oauth2/code/google
+    4. Click Web Application under Application Type and hit create.
+    5. Under Authorized redirects URIs have this route: <http://localhost:8080/login/oauth2/code/google>
     6. Hit Save.
     7. Copy OAuth Client ID and Secret from OAuth Client pop to clipboard or some other location.
 2. Go to application properties 
@@ -228,7 +236,7 @@ SignUpController.java and EntityCollection.java files.
     2. http: a lot of stuff happens here to get OAuth login working properly.
          1. authorizeRequests():
          2. .antMatchers("/", "/css/main.css", "/js/available_dates.js", "/images/logo_draft_1.png",
-           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll(): 
+           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll():
            Here antMatchers and permitAll defines what routes are permitted without authentication. 
          3. .anyRequest().authenticated(): anyRequest and authenticated after antMatchers sends any request next through OAuth login.
          4. .oauth2Login().defaultSuccessUrl("/loginSuccess", true): Sends your login after successful login attempt to a route you create in the Controller.
@@ -241,10 +249,10 @@ SignUpController.java and EntityCollection.java files.
           2. String email = (String) properties.get("email"): Here we get an email to check the user email.
           3. We use the email to check against a list of valid users on the backend before they are granted access.
     3. logOut method
-          1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and 
-          ensures if you are logged out of GMail you are logged out of the app.
-          1. loggedIn = false: resets boolean to false
-          2. return "redirect:/": redirects user to login page.
+         1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and ensures if you are logged out of GMail you are logged out of the app.
+         2. loggedIn = false: resets boolean to false
+         3. return "redirect:/": redirects user to login page.
+
 ### Exceptions
 
 ### Resources
@@ -278,7 +286,6 @@ Please read CONTRIBUTING.md for details on our code of conduct, and the process 
 
 ## Authors
 
-`acknowledge specific developers and roles they had`
 **Freddy Guime** - Chief Software Engineer, Product Owner, and Everything Else
 
 **Kevan Barter** - Contributed to the project by helping with front end design, backend design for Food Sponsor, writing tests for Food sponsor and Admin. He also helped to set up Google OAuth sign implemented on the website.
