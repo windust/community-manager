@@ -149,6 +149,7 @@ Explain what these tests test and why
 ---
 
 ## System Architecture
+![Community Manager UML Diagram](Readme_images/communtiy_manager.png)
 
 ### Model
 
@@ -161,7 +162,7 @@ The data storage consists of the interface (DataStorage) and the implementation,
 To implement an alternate data storage, create an implementation of DataStorage, a different implementation
 of the DataManager if needed. (Google Sheets uses the GoogleSheetsManager) Update the beans in 
 Configuration.java and the related Autowired(s) in the AdminController.java, 
-SignUpController.java and EntityCollection.java files.
+SignUpController.java and EntityCollection.java files. 
 
 ### Controller
 
