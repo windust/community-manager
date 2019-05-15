@@ -20,7 +20,7 @@ For more information or to contribute to this project, please contact Seattle Ar
     - [Prerequisites](#prerequisites)
       - [Libraries which need to be installed](#libraries-which-need-to-be-installed)
       - [Development Environment](#development-environment)
-        - [Using SASS](#using-sass)
+        - [Using SCSS](#using-scss)
       - [Getting credentials](#getting-credentials)
         - [GoogleSheets Credentials](#googlesheets-credentials)
       - [Spreadsheet setup](#spreadsheet-setup)
@@ -74,10 +74,12 @@ Developed in:
 >JRE: 1.8.0_152-release-1343-b26 amd64
 >JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 
-##### Using SASS
+##### Using SCSS
 
 SCSS directory: `src/main/resources/static/scss`
 CSS file path: `src/main/resources/css`
+
+**The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
 
 1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
 2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
