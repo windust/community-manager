@@ -61,9 +61,9 @@ https://docs.google.com/spreadsheets/u/0/
 It will ask you to login - strangely it will take you to docs, but you can use the upper right hamburger to choose Sheets.
 
 You will see a URL like this:
-https://docs.google.com/spreadsheets/d/1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g/edit#gid=0
+https://docs.google.com/spreadsheets/d/**1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g**/edit#gid=0
 
-The highlighted part is the id. Replace the value for storageID in application.properties with this id.
+The bolded part is the id. Replace the value for storageID in application.properties with this id.
 
 In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
 
@@ -157,6 +157,11 @@ Explain what these tests test and why
 #### Collections
 
 ### DataStorage
+The data storage consists of the interface (DataStorage) and the implementation, Google Sheets. 
+To implement an alternate data storage, create an implementation of DataStorage, a different implementation
+of the DataManager if needed. (Google Sheets uses the GoogleSheetsManager) Update the beans in 
+Configuration.java and the related Autowired(s) in the AdminController.java, 
+SignUpController.java and EntityCollection.java files.
 
 ### Controller
 
