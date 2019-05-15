@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 public abstract class EntityCollection<T extends Entity> implements Observer<T> {
 	@Autowired
 	DataStorage dataStorage;
-	private Map<Integer, T> entities = new HashMap<>();
+	protected Map<Integer, T> entities = new HashMap<>();
 	protected final String TABLE_NAME;
 
 	public EntityCollection(String tableName){
@@ -89,7 +89,7 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	 * @return A <T> who's Entity Id matches the Entity Id passed in
 	 * @throws EntityNotFoundException When <T> with the Id passed cannot be found
 	 */
-	public T getById(int entityId) throws EntityNotFoundException {
+	public T getByPrimaryKey(int entityId) throws EntityNotFoundException {
 		if(!entities.containsKey(entityId)) {
 			throw new EntityNotFoundException();
 		}

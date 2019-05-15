@@ -28,7 +28,9 @@ public class Meetup extends Entity {
 	private String topic;
 	private String description;
 	private String venue;
+	private Venue venueEntity;
 	private String food;
+	private FoodSponsor foodSponsorEntity;
 	private String after;
 
 	public Meetup(){}
@@ -57,6 +59,8 @@ public class Meetup extends Entity {
 		this.venue = venue;
 		this.food = food;
 		this.after = after;
+		this.venueEntity = null;
+		this.foodSponsorEntity = null;
 	}
 
 	@Override
@@ -69,6 +73,8 @@ public class Meetup extends Entity {
 		this.setVenue(fields.getOrDefault("venue", null));
 		this.setFood(fields.getOrDefault("food", null));
 		this.setAfter(fields.getOrDefault("after", null));
+		this.venueEntity = null;
+		this.foodSponsorEntity = null;
 
 		return this;
 	}
@@ -141,6 +147,26 @@ public class Meetup extends Entity {
      */
 	public void setVenue(String venue) {
 		this.venue = venue;
+	}
+
+	public Venue getVenueEntity() {
+		return venueEntity;
+	}
+	/**
+	 * @param venueEntity The complete venueEntity which will host the meetup
+	 */
+	public void setVenueEntity(Venue venueEntity) {
+		this.venueEntity = venueEntity;
+	}
+
+	public FoodSponsor getFoodSponsorEntity() {
+		return foodSponsorEntity;
+	}
+	/**
+	 * @param foodSponsorEntity The complete foodSponsorEntity which will host the meetup
+	 */
+	public void setFoodSponsorEntity(FoodSponsor foodSponsorEntity) {
+		this.foodSponsorEntity = foodSponsorEntity;
 	}
 
 	public String getFood() {

@@ -21,67 +21,54 @@ confirmation = function (){
   var hiddenInput = document.getElementById("hiddenInput");
 
   var date = thisButton.value;
-  var hiddenValue = hiddenInput.value;
+  var thisName = thisButton.name;
+  var hiddenName = hiddenInput.name;
 
   if(hiddenInput.name === "unused") {
-    if (date === "notHosting" && hiddenValue === "unused") {
+    if (date === "notHosting") {
+      resetModal();
       return true;
     }
     hiddenInput.name = "confirm";
-    openVenueConfirmModal();
-    return false;
-  }
-
-  if(hiddenInput.name == "confirm") {
-    if (date == "notHosting") {
-      resetModal();
-      return false;
-    }
-    openFoodConfirmModal();
-    hiddenInput.name = "meetup";
     hiddenInput.value = date;
+
+    var taken = false;
+    document.getElementsByName("meetup").forEach(function(element) {
+      if(element.value == date && element.getAttribute("data_food")==="taken"){
+        taken = true;
+      }
+    });
+    if(taken || thisButton.getAttribute("data_food") === "taken"){
+      document.getElementById("modalYes").classList.add("hidden");
+      document.getElementById("foodMessage").classList.add("hidden");
+      document.getElementById("foodDecline").classList.add("hidden");
+      document.getElementById("modalJustYes").value="";
+    }
+
+    openConfirmModal();
     return false;
   }
 
-  if(hiddenValue == "meetup") {
-      return true;
+  if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
+    resetModal();
+    return false;
   }
+
+  return true;
 }
 
-openConfirmModal = function (confirmType, confirmMessage) {
+openConfirmModal = function ( ) {
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
   var date = document.activeElement.value;
-  document.getElementById("modalYes").value = date;
+  document.getElementById("meetupDate").value = date;
   document.getElementById("modalDate").innerHTML = date;
 
-  document.getElementById("modalYes").name = confirmType;
-  document.getElementById("modalNo").name = confirmType;
-
-  document.getElementById("modalMessage").innerHTML = confirmMessage;
-}
-
-openVenueConfirmModal = function (){
-  openConfirmModal("meetup", "are you sure you want to host on");
-}
-
-openFoodConfirmModal = function () {
-  openConfirmModal("food", "can you provide food on");
-  modal.classList.add("foodModal");
 }
 
 resetModal = function () {
   var hiddenInput = document.getElementById("hiddenInput");
-  var modalYesButton = document.getElementById("modalYes");
-  var modalNoButton = document.getElementById("modalNo");
-
   hiddenInput.name = "unused";
-  hiddenInput.value = "unused";
-
-  modalYesButton.name = "meetup";
-  modalNoButton.name = "meetup";
-
-  modal.classList.remove("foodModal");
   modal.classList.add("hidden");
 }

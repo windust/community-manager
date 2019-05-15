@@ -14,7 +14,6 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
@@ -121,22 +120,5 @@ public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderColle
         }
 
         return false;
-    }
-
-    /**
-     * Gets food sponsor based on it's primary key
-     *
-     * @param key the primary key to search by
-     * @return a foodSponsor object
-     * @throws EntityNotFoundException
-     */
-    public T getByPrimaryKey(int key) throws EntityNotFoundException{
-        for(T foodSponsor : getEntitiesValues()){
-            if(foodSponsor.getPrimaryKey() == key){
-                return foodSponsor;
-            }
-        }
-
-        throw new EntityNotFoundException();
     }
 }

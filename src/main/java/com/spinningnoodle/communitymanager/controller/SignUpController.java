@@ -52,6 +52,9 @@ public class SignUpController {
     LocalDate requestedDate;
     String alertMessage = "";
     boolean alert = false;
+
+//    @Value("${foodDate:false}")
+//    private String foodDate = "false";
     
     //TODO update javadocs
     /**
@@ -121,22 +124,22 @@ public class SignUpController {
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
-        @RequestParam(name = "food", required = false) String foodDate,
+        @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
 
         boolean success;
-        
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-        if(!meetupDate.equals("notHosting") && !foodDate.equals("notHosting")){
-            model.setVenueFoodForMeetup(responderName, foodDate, requestedDate);
+        if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
+            model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
         }
-
+        if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
+            model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
+        }
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
 
-//        return "redirect:/venue?token=" + this.currentToken;
         return "redirect:/venue?token=" + token;
     }
     
@@ -150,8 +153,7 @@ public class SignUpController {
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
-        
-//        return "redirect:/food?token=" + this.currentToken;
+
         return "redirect:/food?token=" + token;
     }
     

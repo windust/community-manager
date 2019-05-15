@@ -91,11 +91,13 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public List<Meetup> getAllMeetups() {
         meetupCollection = meetupCollection.fetchFromDataStorage();
-        return meetupCollection.getAll();
+        return addEntityToMeetups(meetupCollection.getAll());
     }
     
     @Override
     public List<Meetup> getAllHostedMeetups(){
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
         meetupCollection = meetupCollection.fetchFromDataStorage();
         List<Meetup> filteredMeetups = new ArrayList<>();
         for(Meetup meetup : meetupCollection.getAll()){
@@ -103,7 +105,19 @@ public class GoogleSheetsManager implements DataManager {
                 filteredMeetups.add(meetup);
             }
         }
-        return filteredMeetups;
+        return addEntityToMeetups(filteredMeetups);
+    }
+
+    private List<Meetup> addEntityToMeetups(List<Meetup> meetups){
+        for(Meetup meetup: meetups){
+            if(!meetup.getVenue().isBlank() && meetup.getVenueEntity() == null){
+                meetup.setVenueEntity((Venue)venueCollection.getResponderByName(meetup.getVenue()));
+            }
+            if(!meetup.getFood().isBlank() && meetup.getFoodSponsorEntity() == null){
+                meetup.setFoodSponsorEntity((FoodSponsor)foodSponsorCollection.getResponderByName(meetup.getFood()));
+            }
+        }
+        return meetups;
     }
 
     //TODO look into possibility of converting to getResponderByToken method
@@ -139,6 +153,24 @@ public class GoogleSheetsManager implements DataManager {
 
     }
 
+    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin){
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+
+        if (!requestedDate.equals("notHosting")) {
+            LocalDate date = Entity.convertDate(requestedDate);
+
+            if (date.equals(dateRequestedByAdmin)) {
+                return meetupCollection.setFoodForMeetup(foodName, date) &&
+                    foodCollection.updateFoodResponse(foodName, Response.ACCEPTED);
+            } else {
+                return meetupCollection.setFoodForMeetup(foodName, date);
+            }
+        } else {
+            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
+        }
+    }
+
     @Override
     public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
         LocalDate dateRequestedByAdmin) {
@@ -151,23 +183,7 @@ public class GoogleSheetsManager implements DataManager {
         return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
     }
 
-    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
-        LocalDate dateRequestedByAdmin){
-        meetupCollection = meetupCollection.fetchFromDataStorage();
 
-        if (!requestedDate.equals("notHosting")) {
-            LocalDate date = Entity.convertDate(requestedDate);
-
-            if (date.equals(dateRequestedByAdmin)) {
-                return meetupCollection.setFoodForMeetup(foodName, date) && foodCollection
-                    .updateFoodResponse(foodName, Response.ACCEPTED);
-            } else {
-                return meetupCollection.setFoodForMeetup(foodName, date);
-            }
-        } else {
-            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
-        }
-    }
 
     @Override
     public List<Venue> getAllVenues() {

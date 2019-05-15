@@ -48,25 +48,48 @@
 </menu>
 
 <article id="Venue" class="tabcontent table" style="display: block;">
-    <section class="tr">
-        <p class="meetup-venue h6"><span>Venue Name</span><span>Response</span></p>
-        <div class="btn_container">
-        </div>
-    </section>
-    <th:block th:each="venue : ${session.venues}">
+    <div th:unless="${session.meetup['venue'].equals('')}">
+        <p>This meetup already has a venue. If this is incorrect, please:</p>
+        <ol>
+            <li>On the <b>Google Sheets page: meetup tab.</b></li>
+            <ul>
+                <li>Remove the incorrect venue.</li>
+                <li>If needed, remove the food sponsor.</li>
+            </ul>
+            <li>Switch to the <b>venue tab.</b></li>
+            <ul>
+                <li>If any of the requested dates are the same as this date,
+                remove value in the response column.</li>
+                <li>If needed, remove the response from the food response column.</li>
+            </ul>
+
+            <li><b>Refresh this page.</b></li>
+        </ol>
+
+    </div>
+    <div th:if="${session.meetup['venue'].equals('')}">
         <section class="tr">
-            <p class="meetup-venue">
-                <span th:text="${venue.getName()}">No Venue Name</span>
-                <span th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
-                      th:text="${venue.getResponse()}">Response</span></p>
+            <p class="meetup-venue h6"><span>Venue Name</span><span>Response</span></p>
             <div class="btn_container">
-                <a th:if="${!session.meetup.getDate().equals(venue.getRequestedDate())}" rel="request-host" class="btn_primary"
-                   th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
-                <a th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}" th:href="@{/venue?token=} + ${venue.getToken()}"
-                   th:inline="text">http://localhost:8080/venue?token=[[${venue.getToken()}]]</a>
             </div>
         </section>
-    </th:block>
+        <th:block th:each="venue : ${session.venues}">
+            <section class="tr">
+                <p class="meetup-venue">
+                    <span th:text="${venue.getName()}">No Venue Name</span>
+                    <span th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
+                          th:text="${venue.getResponse()}">Response</span></p>
+                <div class="btn_container">
+                    <a th:if="${!session.meetup.getDate().equals(venue.getRequestedDate())}"
+                       rel="request-host" class="btn_primary"
+                       th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
+                    <a th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
+                       th:href="@{/venue?token=} + ${venue.getToken()}"
+                       th:inline="text">http://localhost:8080/venue?token=[[${venue.getToken()}]]</a>
+                </div>
+            </section>
+        </th:block>
+    </div>
 </article>
 
 <div id="Speaker" class="tabcontent">
@@ -74,29 +97,55 @@
 </div>
 
 <div id="Food" class="tabcontent">
-    <div th:if="${session.foodsponsors == null}">
-        <button class="btn_primary" onclick="openTab(event, 'Venue')">Venue Needed</button>
+    <div th:unless="${session.meetup['food'].equals('')}">
+        <p>This meetup already has a food sponsor. If this is incorrect, please:</p>
+        <ol>
+            <li>On the <b>Google Sheets page: meetup tab.</b></li>
+            <ul>
+                <li>Remove the incorrect food sponsor.</li>
+            </ul>
+            <li>Switch to the <b>venue tab.</b></li>
+            <ul>
+                <li>If any of the requested dates are the same as this date,
+                    remove value in the food response column.</li>
+            </ul>
+            <li>Switch to the <b>foodSponsor tab.</b></li>
+            <ul>
+                <li>If any of the requested dates are the same as this date,
+                    remove value in the response column.
+                </li>
+            </ul>
+            <li><b>Refresh this page.</b></li>
+        </ol>
     </div>
-    <div th:if="${session.foodsponsors != null}" class="table">
-        <section class="tr">
-            <p class="meetup-venue h6"><span>Food Sponsor Name</span><span>Response</span></p>
-            <div class="btn_container">
-            </div>
-        </section>
-        <th:block th:each="food : ${session.foodsponsors}">
+    <div th:if="${session.meetup['food'].equals('')}">
+
+        <div th:if="${session.foodsponsors == null}">
+            <button class="btn_primary" onclick="openTab(event, 'Venue')">Venue Needed</button>
+        </div>
+        <div th:if="${session.foodsponsors != null}" class="table">
             <section class="tr">
-                <p class="meetup-venue">
-                    <span th:text="${food.getName()}">No Food Sponsor Name</span>
-                    <span
-                        th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
-                        th:text="${food.getResponse()}">Response</span></p>
+                <p class="meetup-venue h6"><span>Food Sponsor Name</span><span>Response</span></p>
                 <div class="btn_container">
-                    <a th:if="${!session.meetup.getDate().equals(food.getRequestedDate())}" rel="request-food" class="btn_primary"
-                       th:data-foodIndentifier="${food.getPrimaryKey()}">Request Food</a>
-                    <a th:if="${session.meetup.getDate().equals(food.getRequestedDate())}" th:href="@{/food?token=} + ${food.getToken()}" th:inline="text">http://localhost:8080/food?token=[[${food.getToken()}]]</a>
                 </div>
             </section>
-        </th:block>
+            <th:block th:each="food : ${session.foodsponsors}">
+                <section class="tr">
+                    <p class="meetup-venue">
+                        <span th:text="${food.getName()}">No Food Sponsor Name</span>
+                        <span
+                            th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
+                            th:text="${food.getResponse()}">Response</span></p>
+                    <div class="btn_container">
+                        <a th:if="${!session.meetup.getDate().equals(food.getRequestedDate())}"
+                           rel="request-food" class="btn_primary"
+                           th:data-foodIndentifier="${food.getPrimaryKey()}">Request Food</a>
+                        <a th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
+                           th:href="@{/food?token=} + ${food.getToken()}" th:inline="text">http://localhost:8080/food?token=[[${food.getToken()}]]</a>
+                    </div>
+                </section>
+            </th:block>
+        </div>
     </div>
 </div>
 
