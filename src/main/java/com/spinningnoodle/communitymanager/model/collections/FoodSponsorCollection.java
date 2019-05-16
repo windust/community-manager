@@ -33,19 +33,38 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "food")
 public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderCollection<T>{
 
+    /**
+     * FoodSponsorCollection constructor with a call to the
+     * super constructor in the ResponderCollection
+     */
     public FoodSponsorCollection(){
         super("foodSponsors");
     }
 
+    /**
+     * FoodSponsorCollection constructor  with a String tableName
+     * parameter passed to the constructor and a call super constructor
+     * in ResponderCollection.
+     * @param tableName String parameter for the tableName
+     */
     public FoodSponsorCollection(String tableName){
         super(tableName);
     }
 
 
+    /**
+     *
+     * @param dataStorage
+     */
     public FoodSponsorCollection(DataStorage dataStorage){
         super(dataStorage, "foodSponsors");
     }
 
+    /**
+     *
+     * @param dataStorage
+     * @param tableName
+     */
     public FoodSponsorCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);
     }

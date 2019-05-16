@@ -33,6 +33,11 @@ public abstract class EntityCollection<T extends Entity> implements Observer<T> 
 	protected Map<Integer, T> entities = new HashMap<>();
 	protected final String TABLE_NAME;
 
+	/**
+	 * EntityCollection constructor that takes in a String parameter of
+	 * tableName.
+	 * @param tableName the name of the table being passed to the EntityCollection.
+	 */
 	public EntityCollection(String tableName){
 		this.TABLE_NAME = tableName;
 	}

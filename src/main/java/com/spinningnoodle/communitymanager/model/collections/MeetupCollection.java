@@ -26,6 +26,10 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "meetups")
 public class MeetupCollection extends EntityCollection<Meetup> {
 
+	/**
+	 * MeetupCollection constructor with a call to the
+	 * super constructor in the ResponderCollection.
+	 */
 	public MeetupCollection(){
 		super("meetups");
 	}
