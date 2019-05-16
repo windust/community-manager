@@ -79,7 +79,18 @@ public class AdminController {
         loggedIn = false;
         return "redirect:/";
     }
-    
+
+    /**
+     * Route to basic admin page - The admin page contains
+     *          information needed to administer the site.
+     * @return admin - name of html page to render
+     */
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
+
+
     /**
      * Route to page for displaying upcoming dates
      * @param session - session to store variables for view to display
