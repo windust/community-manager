@@ -33,7 +33,7 @@ details {
   }
 }
 
-summary, .summary, .card-header {
+.summary, .card-header {
   display: grid;
   grid-template-columns: 5% 25% 25% 25% 20%;
 }
@@ -61,6 +61,9 @@ summary, .summary, .card-header {
     border-bottom: solid theme-color('primary','light') 1px;
     color: theme-color('primary', 'light');
   }
+}
+.last {
+  border-bottom: solid theme-color('primary','dark') 1px;
 }
 
 .card:last-child{

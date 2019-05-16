@@ -16,27 +16,27 @@
     <title>Admin</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-<body class="upcoming">
+<body id="admin" class="upcoming">
 <div th:replace="fragments/adminFragments.html :: navbar(pageName='Admin')"></div>
 
 
 <details class="card">
-    <summary class="summary">
-        Backing Up Your Community Manager Data
+    <summary>
+        <span class="h6">Backing Up Your Community Manager Data</span>
     </summary>
-    <div class="details-grid">
+    <div  class="details-instruct">
         <ul>
             <li>Got to the Google Sheets page</li>
-            <li>Click on Fild -> Download As.</li>
+            <li>Click on File -> Download As</li>
             <li>Choose how you want to download to local machine. (Excel is easiest.)</li>
         </ul>
     </div>
 </details>
-<details class="card">
-    <summary class="summary">
-        Adding New Admins
+<details class="card last">
+    <summary>
+        <span class="h6">Adding New Admins</span>
     </summary>
-    <div class="details-grid">
+    <div class="details-instruct">
         <ul>
             <li>Got to the Google Sheets page: admins tab</li>
             <li>Add an email address that is linked to a google account.</li>
