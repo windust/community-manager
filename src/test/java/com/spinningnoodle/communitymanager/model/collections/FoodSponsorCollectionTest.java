@@ -65,14 +65,14 @@ public class FoodSponsorCollectionTest {
         FoodSponsor testFoodSponsor = new FoodSponsor(1);
         foodSponsorCollection.addToCollection(testFoodSponsor);
 
-        assertEquals(testFoodSponsor, foodSponsorCollection.getById(testFoodSponsor.getPrimaryKey()));
+        assertEquals(testFoodSponsor, foodSponsorCollection.getByPrimaryKey(testFoodSponsor.getPrimaryKey()));
     }
 
     @Test
     void whenFoodSponsorDoesNotExistErrorShouldBeThrownWhenLookedUpByID(){
         FoodSponsor testFoodSponsor = new FoodSponsor(1);
         foodSponsorCollection.addToCollection(testFoodSponsor);
-        assertThrows(EntityNotFoundException.class, () -> foodSponsorCollection.getById(-1));
+        assertThrows(EntityNotFoundException.class, () -> foodSponsorCollection.getByPrimaryKey(-1));
     }
 
     @Test

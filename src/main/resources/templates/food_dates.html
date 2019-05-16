@@ -44,7 +44,8 @@
             <thead>
             <tr>
                 <th>Date</th>
-                <th>Location</th>
+                <th>Venue</th>
+                <th>Address</th>
                 <th>Food Sponsor</th>
             </tr>
             </thead>
@@ -52,6 +53,7 @@
             <th:block th:each="meetup : ${session.meetups}">
                 <tr>
                     <td th:text="${meetup.getDate()}"></td>
+                    <td th:text="${meetup.getVenue()}"></td>
                     <td th:unless="${meetup.getVenue() == ''}" th:text="${meetup.getVenueEntity().getAddress()}"></td>
                     <td th:if="${meetup.getFood() == ''}">
                         <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">

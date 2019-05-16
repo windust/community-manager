@@ -36,13 +36,13 @@ public class AdminCollectionTest {
     void adminCanBeRetrievedById()throws EntityNotFoundException{
         Admin testAdmin = new Admin(1);
         adminCollection.addToCollection(testAdmin);
-        assertEquals(testAdmin, adminCollection.getById(testAdmin.getPrimaryKey()));
+        assertEquals(testAdmin, adminCollection.getByPrimaryKey(testAdmin.getPrimaryKey()));
     }
 
     @Test
     void whenAdminDoesNotExistAnErrorShouldBeThrownWhenLookedUpByID(){
         Admin testAdmin = new Admin(1);
         adminCollection.addToCollection(testAdmin);
-        assertThrows(EntityNotFoundException.class, () -> adminCollection.getById(-1));
+        assertThrows(EntityNotFoundException.class, () -> adminCollection.getByPrimaryKey(-1));
     }
 }
