@@ -21,8 +21,7 @@ $logo-size: 250px;
       "logo host_request";
     grid-template-columns: $logo-size 1fr;
     column-gap: 5em;
-    width: 72em;
-
+    width: 79.7vw;
     padding: 2em 10vw;
 
     img {
@@ -36,7 +35,6 @@ $logo-size: 250px;
     }
 
     form {
-
       p {
         margin-top: 0;
       }
