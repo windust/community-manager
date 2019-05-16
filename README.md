@@ -62,21 +62,31 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 #### Libraries which need to be installed
+* JDK 11
 
-- JUnit 5
-- ...
+#####The following libraries are installed via Gradle:
+* Spring Boot
+  * Security
+  * OAuth2
+  * OAuth2 Client
+  * OAuth2 Resource Server
+  * Web
+* Thymeleaf
+* Google Sheets API
+* Tomcat Embed Jasper
+* JUnit 5
 
 #### Development Environment
 Developed in:
 >IntelliJ IDEA 2018.3.3 (Ultimate Edition) 
 >Build #IU-183.5153.38, built on January 9, 2019
->For educational use only.
 >JRE: 1.8.0_152-release-1343-b26 amd64
 >JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 
 ##### Using SCSS
 
 SCSS directory: `src/main/resources/static/scss`
+
 CSS file path: `src/main/resources/css`
 
 **The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
@@ -212,13 +222,39 @@ include the name Collection and the Entity they are a collection of. Entities th
 ### Model
 
 #### Entities
+Entities are objects that represent a single row in the database. All entities should extend the "Entity" abstract class. Current entities include:
+* Meetup
+* Venue
+* FoodSponsor
+* Admin
+
+Future entities may include Speakers and AfterEvents.
 
 #### Collections
+Collections are objects that store and manage groups of entities. Each entity has a corresponding collection that extends from the "Collection" abstract class. Current collections include:
+* MeetupCollection
+* VenueCollection
+* FoodSponsorCollection
+* AdminCollection
 
-### DataStorage
+Future collections may include a SpeakerCollection and AfterEventsCollection. Future collections will need to be Autowired into the current DataManager object.
 
-The data storage consists of the interface (DataStorage) and the implementation, Google Sheets. To implement an alternate data storage, create an implementation of DataStorage, a different implementation
-of the DataManager if needed. (Google Sheets uses the GoogleSheetsManager) Update the beans in Configuration.java and the related Autowired(s) in the AdminController.java, SignUpController.java and EntityCollection.java files.
+### Database
+
+#### DataManager
+Data managers are objects that contain and manage all existing collections. The data manager tells the collections to refresh their data and passes data to the controller. All data managers should implement the DataManager 
+interface. Current data managers include:
+* GoogleSheetsManager
+
+Future data managers may include SqlManager, CsvManager, MongoManager, etc. Changing the data manager requires a bean in the Configuration.java file utilizing the desired constructor for your DataManager implementation.
+Changes may need to be made to the Autowire statements in the controller classes.
+
+#### DataStorage
+Data storages are objects with CRUD permissions in a place storing persistent data. All data storages should implement the DataStorage interface. Current data storages include:
+* GoogleSheets
+
+Future data storages may include SqlStorage, CsvStorage, MongoStorage, etc. Changing the data storage requires a bean in the Configuration.java file utilizing the desired constructor for your DataStorage implementation.
+Changes may need to be made to the Autowire statements in the DataManager interface and the EntityCollection abstract class.
 
 ### Controller
 
