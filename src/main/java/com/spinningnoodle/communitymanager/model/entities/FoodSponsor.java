@@ -56,6 +56,11 @@ public class FoodSponsor extends ResponderEntity{
         super();
     }
 
+    /**
+     * FoodSponsor constructor with the parameter int
+     * primaryKey and a call to the superConstructor.
+     * @param primaryKey
+     */
     public FoodSponsor(int primaryKey){
         super(primaryKey);
     }
@@ -85,7 +90,7 @@ public class FoodSponsor extends ResponderEntity{
     }
 
     /**
-     *
+     * 
      * @return This food sponsor's address
      */
     public String getAddress(){

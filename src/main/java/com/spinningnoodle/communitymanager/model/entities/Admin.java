@@ -26,8 +26,16 @@ public class Admin extends Entity {
     private String email;
     private String name;
 
+    /**
+     * Admin default constructor.
+     */
     public Admin(){}
 
+    /**
+     * Admin constructor that take in a int parameter
+     * primaryKey with a call to the super constructor.
+     * @param primaryKey
+     */
     public Admin(int primaryKey) {
         super(primaryKey);
     }
@@ -62,18 +70,34 @@ public class Admin extends Entity {
         return this;
     }
 
+    /**
+     * Getter for email.
+     * @return String email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Setter for email
+     * @param email String
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Getter for name.
+     * @return String name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter for name.
+     * @param name String.
+     */
     public void setName(String name) {
         this.name = name;
     }

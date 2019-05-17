@@ -29,8 +29,16 @@ public abstract class Entity extends Observable {
 	
 	public static DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
+	/**
+	 * Entity default constructor
+	 */
 	public Entity() {}
 
+	/**
+	 * Entity constructor that takes in an int parameter
+	 * primaryKey.
+	 * @param primaryKey int
+	 */
 	public Entity(int primaryKey) {
 		this.primaryKey = primaryKey;
 	}
@@ -45,17 +53,32 @@ public abstract class Entity extends Observable {
 	 */
 	public abstract Entity build(Map<String, String> fields) throws AttributeException;
 
+	/**
+	 * Getter for primaryKey.
+	 * @return int primaryKey
+	 */
 	public int getPrimaryKey() {
 		return primaryKey;
 	}
 
+	/**
+	 * Setter for primaryKey.
+	 * @param primaryKey int
+	 */
 	public void setPrimaryKey(int primaryKey) {
 		if(primaryKey < -1 || primaryKey == 0) {
 			throw new UnexpectedPrimaryKeyException();
 		}
 		this.primaryKey = primaryKey;
 	}
-	
+
+	/**
+	 * convertDate method splits the date on / and
+	 * parses the String to an int and returns the correct
+	 * LocalDate format.
+	 * @param date
+	 * @return
+	 */
 	public static LocalDate convertDate(String date){
 		int year, month, day;
 		
