@@ -18,7 +18,6 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body id="available_dates">
-
   <header class="banner">
       <img src="images/logo_draft_1.png" id="logo">
       <h1>Welcome<span th:if="${session.venue.getName()}">, <span th:text="${session.venue.getName()}"></span></span></h1>
@@ -71,7 +70,8 @@
       </table>
       </form>
   </article>
-
+  <div id="mask">
+  </div>
   <script src="js/available_dates.js" async defer></script>
 </body>
 </html>

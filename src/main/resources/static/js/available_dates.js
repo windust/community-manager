@@ -58,6 +58,9 @@ confirmation = function (){
 }
 
 openConfirmModal = function ( ) {
+  mask = document.getElementById("mask");
+  mask.classList.add("mask");
+
   modal = document.getElementById("modal");
   modal.classList.remove("hidden");
 
@@ -71,4 +74,6 @@ resetModal = function () {
   var hiddenInput = document.getElementById("hiddenInput");
   hiddenInput.name = "unused";
   modal.classList.add("hidden");
+  mask = document.getElementById("mask");
+  mask.classList.remove("mask");
 }

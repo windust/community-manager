@@ -19,7 +19,7 @@ $details_border_radius: .5em;
 
 #modal {
   background-color: theme-color('base', 'light');;
-  border: 5vw solid theme-color('primary', 'light');
+  //border: 5px solid theme-color('primary', 'light');
   color: theme-color('base', 'dark');
   position: absolute;
   margin-top: -20vh;
@@ -40,5 +40,15 @@ $details_border_radius: .5em;
   display: none;
 }
 
+.mask {
+  z-index: 400;
+  background-color: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+}
 
 
