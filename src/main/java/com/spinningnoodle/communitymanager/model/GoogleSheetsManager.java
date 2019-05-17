@@ -54,9 +54,22 @@ public class GoogleSheetsManager implements DataManager {
     FoodSponsorCollection<FoodSponsor> foodSponsorCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
+    /**
+     * Default GoogleSheetsManager constructor
+     */
     public GoogleSheetsManager() {
     }
 
+    /**
+     * GoogleSheetsManager constructor that takes in a String
+     * parameter storageID and uses that storageID to
+     * pass to DataStorage and then create a new
+     * AdminCollection, MeetupCollection, and VenueCollection
+     * from that google sheet.
+     * @param storageID String
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
     public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
 //            config.put("storage","google");
