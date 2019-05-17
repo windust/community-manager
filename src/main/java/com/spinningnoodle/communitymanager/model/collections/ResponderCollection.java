@@ -27,10 +27,22 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
 
     protected Map<String,Integer> nameIdJunction = new HashMap<>();
 
+    /**
+     * ResponderCollection constructor that takes in a String
+     * parameter tableName with a call to in super constructor.
+     * @param tableName
+     */
     public ResponderCollection(String tableName){
         super(tableName);
     }
-    
+
+    /**
+     * ResponderCollection constructor that takes in two parameters
+     * DataStorage dataStorage and String tableName and has a call
+     * to a super constructor.
+     * @param dataStorage
+     * @param tableName
+     */
     public ResponderCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);
     }

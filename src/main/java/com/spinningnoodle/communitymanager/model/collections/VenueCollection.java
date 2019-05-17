@@ -27,10 +27,20 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "venues")
 public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderCollection<Venue> {
+
+	/**
+	 * VenueCollection constructor with a call to it is super
+	 * constructor.
+	 */
 	public VenueCollection(){
 		super("venues");
 	}
-	
+
+	/**
+	 * VenueCollection constructor with a parameter DataStorage
+	 * dataStorage and a call to it's super constructor.
+	 * @param dataStorage
+	 */
 	public VenueCollection(DataStorage dataStorage) {
 		super(dataStorage, "venues");
 	}
