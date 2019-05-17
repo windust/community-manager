@@ -59,6 +59,11 @@ public class Venue extends FoodSponsor {
         super();
     }
 
+    /**
+     * Venue constructor with int parameter primaryKey
+     * that's passed to the super constructor.
+     * @param primaryKey int 
+     */
     public Venue(int primaryKey) {
         super(primaryKey);
     }

@@ -32,8 +32,16 @@ public abstract class ResponderEntity extends Entity {
     private LocalDate requestedDate;
     protected Map<Receipt, String> messages;
 
+    /**
+     * Default ResponderEntity constructor.
+     */
     public ResponderEntity() {}
 
+    /**
+     * ResponderEntity constructor that takes in a int parameter
+     * primaryKey and passes it to the super constructor.
+     * @param primaryKey
+     */
     public ResponderEntity(int primaryKey) {
         super(primaryKey);
     }
@@ -111,10 +119,18 @@ public abstract class ResponderEntity extends Entity {
         this.name = name;
     }
 
+    /**
+     * Getter for response.
+     * @return the response from the venue or food sponsor.
+     */
     public Response getResponse(){
         return response;
     }
-    
+
+    /**
+     * Setter for response.
+     * @param response from the venue or food sponsor.
+     */
     public void setResponse(Response response){
         this.response = response;
     }
@@ -143,7 +159,12 @@ public abstract class ResponderEntity extends Entity {
                 return Response.UNDECIDED;
         }
     }
-    
+
+    /**
+     * Getter for message.
+     * @param receipt messages
+     * @return messages.
+     */
     public String getMessage(Receipt receipt){
         return this.messages.get(receipt);
     }
@@ -161,7 +182,7 @@ public abstract class ResponderEntity extends Entity {
             ", token='" + token + '\'' +
             '}';
     }
-    
+
     public enum Response{
         ACCEPTED("yes"),
         DECLINED("no"),

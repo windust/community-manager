@@ -90,7 +90,7 @@ public class FoodSponsor extends ResponderEntity{
     }
 
     /**
-     * 
+     *
      * @return This food sponsor's address
      */
     public String getAddress(){

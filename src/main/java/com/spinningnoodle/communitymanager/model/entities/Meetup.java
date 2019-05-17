@@ -33,8 +33,18 @@ public class Meetup extends Entity {
 	private FoodSponsor foodSponsorEntity;
 	private String after;
 
+	/**
+	 * Default Meetup constructor that a
+	 * new Meetup with a unique ID.
+	 */
 	public Meetup(){}
 
+	/**
+	 * Meetup constructor that takes in a parameter int
+	 * primaryKey and has a call to the super constructor with
+	 * primaryKey passed in.
+	 * @param primaryKey
+	 */
 	public Meetup(int primaryKey) {
 		super(primaryKey);
 	}
@@ -169,18 +179,34 @@ public class Meetup extends Entity {
 		this.foodSponsorEntity = foodSponsorEntity;
 	}
 
+	/**
+	 * Getter for food.
+	 * @return the food sponsor for the event
+	 */
 	public String getFood() {
 		return food;
 	}
 
+	/**
+	 * Setter for food
+	 * @param food sponsor for the event
+	 */
 	public void setFood(String food) {
 		this.food = food;
 	}
 
+	/**
+	 * Getter for After Event.
+	 * @return the After Event host.
+	 */
 	public String getAfter() {
 		return after;
 	}
 
+	/**
+	 * Setter for After Event.
+	 * @param after event host.
+	 */
 	public void setAfter(String after) {
 		this.after = after;
 	}
