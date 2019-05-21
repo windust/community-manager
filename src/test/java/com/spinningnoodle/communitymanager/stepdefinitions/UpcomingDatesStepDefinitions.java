@@ -35,19 +35,20 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
     }
 
     @Then("^the accordion is made of summary tags$")
-    public void theAccordianIsMadeOfSummaryTags() throws UnsupportedEncodingException {
+    public void theAccordionIsMadeOfSummaryTags() throws UnsupportedEncodingException {
         Document doc = Jsoup.parse(result.getResponse().getContentAsString());
 
         assertTrue(doc.getElementsByTag("summary").size() > 0);
     }
 
-    @And("^the data in the acordion is not default$")
+    @And("^the data in the accordion is not default$")
     public void theDataInTheAccordionIsNotDefault() throws UnsupportedEncodingException {
         Document doc = Jsoup.parse(result.getResponse().getContentAsString());
 
         assertAll("", () -> {
-            for(Element fold : doc.getElementsByTag("summary")) {
+            for(Element fold : doc.getElementsByTag("summary:not(:first-of-type)")) {
                 for(Element header : fold.children()) {
+                    System.out.println(header.toString());
                     assertNotEquals("Date", header.text());
                     assertNotEquals("Speaker", header.text());
                     assertNotEquals("Venue", header.text());
