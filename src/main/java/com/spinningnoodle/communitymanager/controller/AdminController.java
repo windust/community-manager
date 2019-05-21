@@ -55,7 +55,15 @@ public class AdminController {
     public String login(){
         return "login";
     }
-    
+
+    /**
+     * loginSuccess route that checks if user is a valid admin
+     * from the database email and if so allows the user access
+     * to the website after logging in via google OAuth.
+     * @param request HttpServletRequest
+     * @param authentication OAuth2AuthenticationToken
+     * @return redirect to another page depending on if they are allowed access
+     */
     @RequestMapping("/loginSuccess")
     public String loginSuccess(HttpServletRequest request, OAuth2AuthenticationToken authentication){
         Map<String, Object> properties = authentication.getPrincipal().getAttributes();
@@ -70,7 +78,13 @@ public class AdminController {
             return "redirect:/";
         }
     }
-    
+
+    /**
+     * Route to log_out the user from the website and route
+     * back to login page.
+     * @param request HttpServeletRequest
+     * @return redirect to login page
+     */
     //Route cannot equal "logout" because that is oauth default
     @RequestMapping("/log_out")
     public String logOut(HttpServletRequest request){
@@ -167,7 +181,14 @@ public class AdminController {
             return  model.requestHost(venueKey, Entity.convertDate(date));
         }
     }
-    
+
+    /**
+     * Route referred to by ajax to get a food's
+     * token from DB and returns it.
+     * @param params
+     * @return token for food required
+     * @throws InvalidUserException
+     */
     @RequestMapping(path = "/getFoodToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getFoodToken(@RequestBody String params) throws InvalidUserException {
