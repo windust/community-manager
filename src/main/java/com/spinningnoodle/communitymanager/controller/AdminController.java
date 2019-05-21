@@ -123,7 +123,6 @@ public class AdminController {
             throw new InvalidUserException();
         }
 
-        //TODO consider having this done in the model somewhere
         List<Meetup> meetups = model.getAllMeetups();
         Meetup meetup = null;
         for (Meetup mtup: meetups) {
@@ -154,7 +153,6 @@ public class AdminController {
      * @throws InvalidUserException - if user is not
      * logged in.
      */
-    //TODO see if token fetching can be abstracted into a single route/method
     @RequestMapping(path = "/getVenueToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String getVenueToken(@RequestBody String params) throws InvalidUserException {

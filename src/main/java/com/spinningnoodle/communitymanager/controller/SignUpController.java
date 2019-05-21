@@ -42,7 +42,6 @@ public class SignUpController {
     DataManager model;
     
     /*
-    TODO look into localizing variables
     because if fields are shared between users then
     multiple users signing up at the same time will
     break application
@@ -52,11 +51,7 @@ public class SignUpController {
     LocalDate requestedDate;
     String alertMessage = "";
     boolean alert = false;
-
-//    @Value("${foodDate:false}")
-//    private String foodDate = "false";
     
-    //TODO update javadocs
     /**
      * Route for venues to sign up to host meetups
      * if they have a valid token
@@ -100,7 +95,6 @@ public class SignUpController {
         if(responder instanceof Venue) meetups = model.getAllMeetups();
         Meetup currentMeetup = new Meetup();
         this.currentToken = responder.getToken();
-        //TODO find way to remove these two variables by altering signup routes
         this.responderName = responder.getName();
         this.requestedDate = responder.getRequestedDate();
 
@@ -120,8 +114,6 @@ public class SignUpController {
         session.setAttribute("alertMessage", alertMessage);
     }
     
-    //TODO see if possible to abstract sign up process (reflection?)
-    //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
         @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
@@ -157,7 +149,6 @@ public class SignUpController {
         return "redirect:/food?token=" + token;
     }
     
-    //ToDo find way to reuse getAlertMessage methods
     private String getAlertMessage(boolean successful, String date){
         if(successful){
             return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";
