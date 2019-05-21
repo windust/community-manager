@@ -79,7 +79,13 @@ public class SignUpController {
         }
         
     }
-    
+
+    /**
+     * Route to the food sponsor sign up page
+     * @param token String
+     * @param session HttpSession
+     * @return food sign up page
+     */
     @GetMapping("/food")
     public String food(@RequestParam(name = "token") String token, HttpSession session) {
         try{
@@ -119,7 +125,14 @@ public class SignUpController {
         session.setAttribute("alert", alert);
         session.setAttribute("alertMessage", alertMessage);
     }
-    
+
+    /**
+     * Venue sign up page post mapping route.
+     * @param meetupDate String
+     * @param foodDate String
+     * @param token String
+     * @return venue sign up page
+     */
     //TODO see if possible to abstract sign up process (reflection?)
     //TODO implement food boolean to sign up venue as food sponsor if true
     @PostMapping("/venueSignUp")
@@ -142,7 +155,13 @@ public class SignUpController {
 
         return "redirect:/venue?token=" + token;
     }
-    
+
+    /**
+     * Food sign up page
+     * @param meetupDate String
+     * @param token String
+     * @return food sign up page.
+     */
     @PostMapping("/foodSignUp")
     public String foodSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "token") String token){
         boolean success;
