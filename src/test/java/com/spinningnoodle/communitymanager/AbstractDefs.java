@@ -1,6 +1,7 @@
 package com.spinningnoodle.communitymanager;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.io.IOException;
@@ -43,6 +44,9 @@ public abstract class AbstractDefs
     protected void executeGet(String url) throws Exception
     {
         result = mvc.perform(get(url)).andDo(print()).andReturn();
+    }
+    protected void executePost(String url, String content) throws Exception {
+        result = mvc.perform(post(url).content(content).param("meetupKey", "2")).andDo(print()).andReturn();
     }
 
     private class ResponseResultErrorHandler implements ResponseErrorHandler

@@ -3,13 +3,11 @@ package com.spinningnoodle.communitymanager.stepdefinitions;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.AbstractDefs;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -29,7 +27,7 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
     }
 
     @Then("^the client receives status code of (\\d+)$")
-    public void theClientReceivesStatusCodeOf(int statusCode) throws Throwable {
+    public void theClientReceivesStatusCodeOf(int statusCode) {
         assertEquals(statusCode, result.getResponse().getStatus());
     }
 
@@ -85,14 +83,14 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
         }
     }
 
-    @Then("^the navegation bar appears on the page$")
+    @Then("^the navigation bar appears on the page$")
     public void theNavigationBarAppearsOnThePage() throws UnsupportedEncodingException {
         Document doc = Jsoup.parse(result.getResponse().getContentAsString());
 
         assertNotNull(doc.getElementsByTag("nav"));
     }
 
-    @And("^the navegation bar has a link to \"([^\"]*)\" with a label of \"([^\"]*)\"$")
+    @And("^the navigation bar has a link to \"([^\"]*)\" with a label of \"([^\"]*)\"$")
     public void theNavigationBarHasALinkToWithALabelOf(String arg0, String arg1) throws Throwable {
         Document doc = Jsoup.parse(result.getResponse().getContentAsString());
         Elements links = doc.select("a:contains(" + arg1 + ")");
@@ -102,5 +100,22 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
         for(Element link : links) {
             assertEquals(arg0, link.attr("href"));
         }
+    }
+
+    @And("^the client goes to the meetup listed as the \"([^\"]*)\"st button$")
+    public void theClientGoesToTheMeetupListedAsTheStButton(String arg0) throws Throwable {
+        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
+        Element button = doc.select("button[name=meetupKey]").get(Integer.parseInt(arg0) - 1);
+        Element parent = button.parents().select("form").get(0);
+
+        assertNotNull(parent);
+        assertEquals("POST", parent.attr("method").toUpperCase());
+
+        executePost(parent.attr("action"), button.val());
+    }
+
+    @Then("^the client is redirected to the meetup page$")
+    public void theClientIsRedirectedToTheMeetupPage() {
+        assertEquals(200, result.getResponse().getStatus());
     }
 }

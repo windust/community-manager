@@ -13,5 +13,9 @@ Feature: The Upcoming Dates page can be accessed
     Then the navigation bar appears on the page
     And the navigation bar has a link to "/upcoming" with a label of "Admin"
     And the navigation bar has a link to "/upcoming" with a label of "Upcoming Dates"
-    And the navigation  bar has a link to "/venue_sheet" with a label of "Google Sheets"
+    And the navigation bar has a link to "/venue_sheet" with a label of "Google Sheets"
     And the navigation bar has a link to "/log_out" with a label of "Logout"
+  Scenario: Client navigates to a meetup page
+    When the client calls /upcoming
+    And the client goes to the meetup listed as the "1"st button
+    Then the client is redirected to the meetup page
