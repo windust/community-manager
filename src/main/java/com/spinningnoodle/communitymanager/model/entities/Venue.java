@@ -34,7 +34,6 @@ public class Venue extends FoodSponsor {
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
-        //TODO find out how many of these fields can be abstracted to reduce redundant code
     	this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -209,10 +208,6 @@ public class Venue extends FoodSponsor {
         Map<Receipt, String> messages = new HashMap<>();
         String date;
         
-        /*
-         *TODO currently used to prevent NullPointerExceptions thrown during
-         * fetchFromDataStorage caused by other entities, find better alternative
-         */
         if(getRequestedDate() == null){
             date = "";
         } else {
