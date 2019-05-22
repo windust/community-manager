@@ -3,10 +3,13 @@ package com.spinningnoodle.communitymanager.stepdefinitions;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.AbstractDefs;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
@@ -48,7 +52,6 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
         assertAll("", () -> {
             for(Element fold : doc.getElementsByTag("summary:not(:first-of-type)")) {
                 for(Element header : fold.children()) {
-                    System.out.println(header.toString());
                     assertNotEquals("Date", header.text());
                     assertNotEquals("Speaker", header.text());
                     assertNotEquals("Venue", header.text());
@@ -56,5 +59,48 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
             }
         });
+    }
+
+    @And("^the accordion headers are \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    public void theAccordionHeadersAre(String arg0, String arg1, String arg2) throws Throwable {
+        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
+        Element header = doc.getElementsByTag("summary").first();
+
+        for(int i = 0; i < header.children().size(); i++) {
+            Element e = header.child(i);
+            switch (i) {
+                case 0:
+                    assertEquals(arg0, e.text());
+                    break;
+                case 1:
+                    assertEquals(arg1, e.text());
+                    break;
+                case 2:
+                    assertEquals(arg2, e.text());
+                    break;
+                default:
+                    assertEquals(3, header.children().size());
+                    break;
+            }
+        }
+    }
+
+    @Then("^the navegation bar appears on the page$")
+    public void theNavigationBarAppearsOnThePage() throws UnsupportedEncodingException {
+        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
+
+        assertNotNull(doc.getElementsByTag("nav"));
+    }
+
+    @And("^the navegation bar has a link to \"([^\"]*)\" with a label of \"([^\"]*)\"$")
+    public void theNavigationBarHasALinkToWithALabelOf(String arg0, String arg1) throws Throwable {
+        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
+        Elements links = doc.select("a:contains(" + arg1 + ")");
+
+        assertTrue(links.size() > 0);
+
+        for(Element link : links) {
+            assertEquals(arg0, link.attr("href"));
+        }
     }
 }
