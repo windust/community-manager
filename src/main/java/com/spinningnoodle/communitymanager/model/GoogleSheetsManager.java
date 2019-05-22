@@ -133,7 +133,6 @@ public class GoogleSheetsManager implements DataManager {
         return meetups;
     }
 
-    //TODO look into possibility of converting to getResponderByToken method
     @Override
     public Venue getVenueByToken(String venueToken) {
         venueCollection = venueCollection.fetchFromDataStorage();
@@ -248,8 +247,6 @@ public class GoogleSheetsManager implements DataManager {
     
     @Override
     public String getMessage(ResponderEntity entity){
-        //TODO find out whether or not we need "fetchFromDataStorage" calls here
-        
         if(entity instanceof Venue) {
             return venueCollection.getReceiptMessage(meetupCollection.getAll(), entity);
         } else {
@@ -257,7 +254,6 @@ public class GoogleSheetsManager implements DataManager {
         }
     }
 
-    //TODO Consider possible ways to remove collection argument as collection are already accessible via fields
     private void setRequestedDate(ResponderEntity responder, LocalDate date, ResponderCollection collection) {
         collection.updateResponse(responder.getName(), Response.UNDECIDED);
         collection.updateRequestedDate(responder.getName(), date);

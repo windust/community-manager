@@ -75,41 +75,12 @@ public class AdminControllerTest {
         Assertions.assertEquals("login", adminController.login());
     }
     
-    //TODO replace with oauth tests once oauth is implemented
-//    @Test
-//    @DisplayName("Logging in with good credentials redirects to upcoming dates page")
-//    @Disabled
-//    public void loginSuccessRedirectsToUpcomingWhenSuccessful() {
-//        when(model.verifyAdmin("")).thenReturn(true);
-//        when(properties.get("email")).thenReturn("kevanbarter@gmail.com");
-//        Assertions.assertEquals("redirect:/upcoming", adminController.loginSuccess(request, token));
-//    }
-//
-//    @Test
-//    @DisplayName("loggedIn changed to true when given correct credentials")
-//    @Disabled
-//    public void loginSuccessful(){
-//        when(model.verifyAdmin("")).thenReturn(true);
-//        adminController.loginSuccess(request, token);
-//        Assertions.assertTrue(adminController.loggedIn);
-//    }
-//
-//    @Test
-//    @DisplayName("loggedIn remains false if attempted to login with bad credentials")
-//    @Disabled
-//    public void loginAttemptWithBadCredentials(){
-//        when(model.verifyAdmin("")).thenReturn(false);
-//        adminController.loginSuccess(request, token);
-//        Assertions.assertFalse(adminController.loggedIn);
-//    }
-    
     @Test
     @DisplayName("Logout button redirects to login page")
     public void logoutRedirectsToLoginPage(){
         Assertions.assertEquals("redirect:/", adminController.logOut(request));
     }
     
-    //TODO replace with oauth tests once oauth is implemented
     @Test
     @DisplayName("Logout button sets loggedIn to false")
     public void logoutSetsLoggedInToFalse() {
