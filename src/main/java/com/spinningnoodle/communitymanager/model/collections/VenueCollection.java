@@ -66,26 +66,8 @@ public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderC
 			e.printStackTrace();
 		}
 		
-		//TODO refactor in order to remove null
 		return null;
 	}
-
-	//TODO review commented out code
-//	/**
-//	 * Get a venue from this collection based on its token as a Map of attributes
-//	 *
-//	 * @param venueToken the token to match
-//	 * @return A venue represented with a map of attributes
-//	 */
-//	public Map<String, String> getVenueFromToken(String venueToken){
-//		Venue venue = this.getEntityByToken(venueToken);
-//		Map<String, String> venueInfo = new HashMap<>();
-//		venueInfo.put("name", venue.getName());
-//		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
-//		venueInfo.put("response", venue.getResponse());
-//
-//		return venueInfo;
-//	}
 
 	/**
 	 * Update a food sponsors response to hosting
@@ -94,7 +76,6 @@ public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderC
 	 * @param foodResponse The venues response
 	 * @return If the dataStorage successfully updated
 	 */
-	//TODO consider refactoring to use ResponderEntity rather then String name
 	@Override
 	public boolean updateFoodResponse(String venueName, Response foodResponse){
 		for(Venue venue : getAll()){
