@@ -10,6 +10,13 @@ package com.spinningnoodle.communitymanager.exceptions;
  *
  *  END OF LICENSE INFORMATION
  */
+/**
+ * Entity not found exception is thrown when the Entity in null
+ * or not being found on the spreadsheet.
+ *
+ * @author Cream 4 UR Coffee
+ * @version 0.1
+ */
 public class EntityNotFoundException extends Exception {
 
 }
