@@ -47,7 +47,6 @@ public class AdminControllerTest {
     private List<Meetup> expectedMeetups;
     private List<Venue> expectedVenues;
 
-    private Map<String, Object> properties;
     
     @BeforeEach
     public void initializeController(){
@@ -56,17 +55,9 @@ public class AdminControllerTest {
         adminController.model = model;
         session = new MockHttpSession();
         request = new MockHttpServletRequest();
-
-//        properties = token.getPrincipal().getAttributes();
     
         expectedMeetups = createMeetups();
         expectedVenues = createVenues();
-    }
-    
-    @Test
-    @DisplayName("loggedIn is false when application starts")
-    public void loggedInStartsAsFalse(){
-        Assertions.assertFalse(adminController.loggedIn);
     }
     
     @Test
@@ -80,98 +71,62 @@ public class AdminControllerTest {
     public void logoutRedirectsToLoginPage(){
         Assertions.assertEquals("redirect:/", adminController.logOut(request));
     }
-    
-    @Test
-    @DisplayName("Logout button sets loggedIn to false")
-    public void logoutSetsLoggedInToFalse() {
-        adminController.loggedIn = true;
-        adminController.logOut(request);
-        Assertions.assertFalse(adminController.loggedIn);
-    }
-    
-    @Test
-    @DisplayName("meetup route throws InvalidUserException if user isn't logged in")
-    public void meetupRouteThrowsInvalidUserExceptionIfNotLoggedIn(){
-        adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.meetup("1", session));
-    }
-    
-    @Test
-    @DisplayName("getVenueToken route throws InvalidUserException is user isn't logged in")
-    public void getTokenThrowsInvalidUserExceptionIfNotLoggedIn(){
-        adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.getVenueToken("1"));
-    }
-    
-    @Test
-    @DisplayName("upcoming dates route throws InvalidUserException is user isn't logged in")
-    public void upcomingThrowsInvalidUserExceptionIfNotLoggedIn(){
-        adminController.loggedIn = false;
-        Assertions.assertThrows(InvalidUserException.class, () -> adminController.upcomingDates(session));
-    }
-    
+
     @Test
     @DisplayName("meetup route renders meetup details page when user is logged in")
     public void meetupRouteReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
-        adminController.loggedIn = true;
         Assertions.assertEquals("meetup", adminController.meetup("1", session));
     }
-    
+
     @Test
     @DisplayName("meetup route finds specified meetup and sends to view")
-    public void meetupGetsSpecificMeetupForView() throws InvalidUserException {
+    public void meetupGetsSpecificMeetupForView() {
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
         Meetup expected = expectedMeetups.get(1);
-        
-        adminController.loggedIn = true;
+
         adminController.meetup("2", session);
-        
+
         Assertions.assertEquals(expected, session.getAttribute("meetup"));
     }
-    
+
     @Test
     @DisplayName("meetup route gets and displays all venues")
-    public void meetupGetsVenues() throws InvalidUserException {
+    public void meetupGetsVenues(){
         when(model.getAllVenues()).thenReturn(expectedVenues);
-        
-        adminController.loggedIn = true;
+
         adminController.meetup("1", session);
-        
+
         Assertions.assertEquals(expectedVenues, session.getAttribute("venues"));
     }
-    
+
     @Test
     @DisplayName("upcoming date route renders upcoming dates page")
     public void upcomingReturnsUpcomingPageIfLoggedIn() throws InvalidUserException {
-        adminController.loggedIn = true;
         Assertions.assertEquals("upcoming_dates", adminController.upcomingDates(session));
     }
-    
+
     @Test
     @DisplayName("upcoming dates displays all meetups")
     public void upcomingGivesViewMeetupsFromModel() throws InvalidUserException {
-        adminController.loggedIn = true;
         Comparator<Meetup> compareMeetups = Comparator.comparing(o -> o.getPrimaryKey());
-        
+
         when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        
+
         adminController.upcomingDates(session);
         List<Meetup> actual = (List<Meetup>) session.getAttribute("meetups");
-        
+
         expectedMeetups.sort(compareMeetups);
         actual.sort(compareMeetups);
-        
+
         Assertions.assertEquals(expectedMeetups, actual);
     }
-    
+
     @Test
     @DisplayName("getVenueToken returns a token for specified venue")
     public void getTokenReturnSpecificToken() throws InvalidUserException {
         when(model.requestHost("1", LocalDate.of(2019,1,14))).thenReturn("123N");
         String expected = model.requestHost("1", LocalDate.of(2019,1,14));
-        
-        adminController.loggedIn = true;
-        
+
         Assertions.assertEquals(expected, adminController.getVenueToken("venueKey=1&date=1/14/2019"));
     }
     

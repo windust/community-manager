@@ -42,7 +42,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class AdminController {
-    boolean loggedIn = false;
     
     @Autowired
     DataManager model;
@@ -70,10 +69,10 @@ public class AdminController {
         String email = (String) properties.get("email");
         
         if(model.verifyAdmin(email) && authentication.isAuthenticated()){
-            loggedIn = true;
             return "redirect:/upcoming";
         }
         else{
+            authentication.setAuthenticated(false);
             new SecurityContextLogoutHandler().logout(request, null, null);
             return "redirect:/";
         }
@@ -90,7 +89,6 @@ public class AdminController {
     public String logOut(HttpServletRequest request){
         new SecurityContextLogoutHandler().logout(request, null, null);
 
-        loggedIn = false;
         return "redirect:/";
     }
 
@@ -111,10 +109,7 @@ public class AdminController {
      * @return upcoming_dates - name of html page to render
      */
     @GetMapping("/upcoming")
-    public String upcomingDates(HttpSession session) throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
+    public String upcomingDates(HttpSession session){
         
         List<Meetup> meetups = model.getAllMeetups();
         
@@ -131,12 +126,7 @@ public class AdminController {
      * logged in.
      */
     @PostMapping("/meetup")
-    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
-        throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
-
+    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session){
         List<Meetup> meetups = model.getAllMeetups();
         Meetup meetup = null;
         for (Meetup mtup: meetups) {
@@ -169,17 +159,12 @@ public class AdminController {
      */
     @RequestMapping(path = "/getVenueToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getVenueToken(@RequestBody String params) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
+    public String getVenueToken(@RequestBody String params) {
             String[] args = params.split("&");
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
 
             return  model.requestHost(venueKey, Entity.convertDate(date));
-        }
     }
 
     /**
@@ -191,17 +176,12 @@ public class AdminController {
      */
     @RequestMapping(path = "/getFoodToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getFoodToken(@RequestBody String params) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
+    public String getFoodToken(@RequestBody String params) {
             String[] args = params.split("&");
             String foodKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
             
             return  model.requestFood(foodKey, Entity.convertDate(date));
-        }
     }
 
     /**
@@ -210,11 +190,7 @@ public class AdminController {
      * @return upcoming_dates - name of html page to render
      */
     @GetMapping("/venue_sheet")
-    public String venueSheet(HttpSession session) throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
-
+    public String venueSheet(HttpSession session) {
         String url = model.getDatabaseAccessPage();
         session.setAttribute("dbaccess", url);
 

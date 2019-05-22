@@ -11,7 +11,6 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 
-import com.spinningnoodle.communitymanager.exceptions.AttributeException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class FoodSponsor extends ResponderEntity{
 
 
     @Override
-    public FoodSponsor build(Map<String, String> fields) throws AttributeException {
+    public FoodSponsor build(Map<String, String> fields) {
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
