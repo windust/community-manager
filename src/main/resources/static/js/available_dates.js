@@ -48,7 +48,7 @@ confirmation = function (){
     openConfirmModal();
     return false;
   }
-
+//can the first two arguments be removed here?
   if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
     resetModal();
     return false;

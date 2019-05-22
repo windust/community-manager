@@ -134,7 +134,7 @@ public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderColle
     public boolean updateRequestedDate(String foodSponsorName, LocalDate date){
         for(FoodSponsor foodSponsor : getAll()){
             if(foodSponsor.getName().equals(foodSponsorName)){
-                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "requestedFoodDate", Entity.dateFormat.format(date));
+                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "requestedDate", Entity.dateFormat.format(date));
             }
         }
 

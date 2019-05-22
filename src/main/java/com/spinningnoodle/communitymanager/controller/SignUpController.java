@@ -46,7 +46,6 @@ public class SignUpController {
     multiple users signing up at the same time will
     break application
     */
-    String currentToken;
     String responderName;
     LocalDate requestedDate;
     String alertMessage = "";
@@ -100,7 +99,6 @@ public class SignUpController {
         List<Meetup> meetups = model.getAllHostedMeetups();
         if(responder instanceof Venue) meetups = model.getAllMeetups();
         Meetup currentMeetup = new Meetup();
-        this.currentToken = responder.getToken();
         this.responderName = responder.getName();
         this.requestedDate = responder.getRequestedDate();
 
@@ -129,9 +127,10 @@ public class SignUpController {
      */
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
+        @RequestParam(name = "venueKey") int venueKey,
         @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
-
+        System.out.println(venueKey);
         boolean success;
         success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
         if(!meetupDate.equals("notHosting") && foodDate.equals("true")){

@@ -10,7 +10,7 @@
  *
  *  END OF LICENSE INFORMATION
 -->
-<html class="no-js">
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
   <head th:fragment="head (title)">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,6 +37,8 @@
                    name="unused" th:value="${session.venue.getRequestedDate()}">
             <input id="meetupDate" class="hidden"
                    name="meetup" th:value="${session.venue.getRequestedDate()}">
+            <input id="venue" class="hidden"
+                   name="venueKey" th:value="${session.venue.getPrimaryKey()}">
             <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit"
                    name="food" value="true">I confirm, I will provide space and
                 I will provide food.</button>

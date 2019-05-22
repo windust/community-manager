@@ -82,7 +82,7 @@ public abstract class Entity extends Observable {
 	public static LocalDate convertDate(String date){
 		int year, month, day;
 		
-		if(date != null && date != ""){
+		if(date != null && !date.equals("")){
 			if(date.contains("/")){
 				String[] dateComponents = date.split("/");
 				
