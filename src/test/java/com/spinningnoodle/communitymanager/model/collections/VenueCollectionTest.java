@@ -70,17 +70,6 @@ class VenueCollectionTest {
 		assertEquals(collectionSize, venueCollection.getAll().size());
 	}
 
-	//TODO review commented out code
-//	@Test
-//    void whenIFetchAVenueByTokenIShouldGetAVenue() {
-//      assertNotNull(venueCollection.getVenueFromToken("123N"));
-//    }
-//
-//    @Test
-//    void whenIAttemptToFetchVenueByInvalidTokenInvalidTokenException() {
-//	  assertThrows(IllegalArgumentException.class, () -> venueCollection.getVenueFromToken("invalid"));
-//    }
-
     @Test
     void whenAVenuesResponseIsSetThenItReturnsTrue() {
 	  assertTrue(venueCollection.updateResponse("Excellent", Response.ACCEPTED));

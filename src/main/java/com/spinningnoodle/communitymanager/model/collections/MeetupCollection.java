@@ -61,7 +61,6 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 			e.printStackTrace();
 		}
 		
-		//TODO refactor in order to remove null
 		return null;
 	}
 

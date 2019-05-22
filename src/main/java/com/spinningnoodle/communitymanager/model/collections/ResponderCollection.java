@@ -77,7 +77,6 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
      * @param response The venues response
      * @return If the dataStorage successfully updated
      */
-    //TODO consider refactoring to use ResponderEntity rather then String name
     public boolean updateResponse(String responderName, Response response){
         for(ResponderEntity responder : getAll()){
             if(responder.getName().equals(responderName)){
@@ -95,7 +94,6 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
      * @param date The date the venue requested
      * @return If the dataStorage was successfully updated
      */
-    //TODO consider refactoring to use ResponderEntity rather then String name
     public boolean updateRequestedDate(String responderName, LocalDate date){
         for(ResponderEntity responder : getAll()){
             if(responder.getName().equals(responderName)){

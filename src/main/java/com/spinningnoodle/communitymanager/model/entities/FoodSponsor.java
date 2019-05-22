@@ -33,7 +33,6 @@ public class FoodSponsor extends ResponderEntity{
 
     @Override
     public FoodSponsor build(Map<String, String> fields) throws AttributeException {
-        //TODO see todo in Venue build method and apply here.
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -174,10 +173,6 @@ public class FoodSponsor extends ResponderEntity{
     protected Map<Receipt, String> generateMessages(){
         Map<Receipt, String> messages = super.generateMessages();
         String date;
-        /*
-         *TODO currently used to prevent NullPointerExceptions thrown during
-         * fetchFromDataStorage caused by other entities, find better alternative
-         */
         if(getRequestedDate() == null){
             date = "";
         } else {

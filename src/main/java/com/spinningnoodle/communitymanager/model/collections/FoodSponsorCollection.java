@@ -92,7 +92,6 @@ public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderColle
             e.printStackTrace();
         }
 
-        //TODO refactor in order to remove null
         return null;
     }
 
