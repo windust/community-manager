@@ -80,8 +80,8 @@ public class Meetup extends Entity {
 		this.setSpeaker(fields.getOrDefault("speaker", null));
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
-		this.setVenue(fields.getOrDefault("venue", null));
-		this.setFood(fields.getOrDefault("food", null));
+		this.setVenue(fields.getOrDefault("venue", ""));
+		this.setFood(fields.getOrDefault("food", ""));
 		this.setAfter(fields.getOrDefault("after", null));
 		this.venueEntity = null;
 		this.foodSponsorEntity = null;

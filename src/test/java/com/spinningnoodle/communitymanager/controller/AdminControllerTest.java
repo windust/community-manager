@@ -16,7 +16,9 @@ import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class AdminControllerTest {
     //data to compare to
     private List<Meetup> expectedMeetups;
     private List<Venue> expectedVenues;
+    private List<FoodSponsor> expectedFood;
 
     
     @BeforeEach
@@ -58,6 +61,7 @@ public class AdminControllerTest {
     
         expectedMeetups = createMeetups();
         expectedVenues = createVenues();
+        expectedFood = createFood();
     }
     
     @Test
@@ -74,7 +78,10 @@ public class AdminControllerTest {
 
     @Test
     @DisplayName("meetup route renders meetup details page when user is logged in")
-    public void meetupRouteReturnsMeetupPageIfLoggedIn() throws InvalidUserException {
+    public void meetupRouteReturnsMeetupPageIfLoggedIn() {
+        when(model.getAllVenues()).thenReturn(expectedVenues);
+        when(model.getAllMeetups()).thenReturn(expectedMeetups);
+        
         Assertions.assertEquals("meetup", adminController.meetup("1", session));
     }
 
@@ -90,11 +97,13 @@ public class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("meetup route gets and displays all venues")
+    @DisplayName("meetup route gets and displays all venues if meetup doesn't have a venue")
     public void meetupGetsVenues(){
         when(model.getAllVenues()).thenReturn(expectedVenues);
+        when(model.getAllMeetups()).thenReturn(expectedMeetups);
+        when(model.getAllFoodSponsors(expectedMeetups.get(0))).thenReturn(expectedFood);
 
-        adminController.meetup("1", session);
+        adminController.meetup("3", session);
 
         Assertions.assertEquals(expectedVenues, session.getAttribute("venues"));
     }
@@ -140,6 +149,7 @@ public class AdminControllerTest {
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
         meetup.setVenue("Excellent");
+        meetup.setFood("Pizza Hut");
         meetupData.add(meetup);
         
         meetup = new Meetup();
@@ -149,6 +159,7 @@ public class AdminControllerTest {
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
         meetup.setVenue("Amazing");
+        meetup.setFood("");
         meetupData.add(meetup);
         
         meetup = new Meetup();
@@ -157,7 +168,8 @@ public class AdminControllerTest {
         meetup.setSpeaker("John Doe");
         meetup.setTopic("How to do Stuff");
         meetup.setDescription("nailing stuff");
-        meetup.setVenue(null);
+        meetup.setVenue("");
+        meetup.setFood("");
         meetupData.add(meetup);
         
         return meetupData;
@@ -197,5 +209,41 @@ public class AdminControllerTest {
         venueData.add(venue);
         
         return venueData;
+    }
+    
+    private List<FoodSponsor> createFood(){
+        List<FoodSponsor> foodData = new ArrayList<>();
+        FoodSponsor food = new FoodSponsor();
+        Map<String, String> setToken = new HashMap<>();
+        
+        setToken.put("token", "123Nf");
+        food = food.build(setToken);
+        food.setPrimaryKey(1);
+        food.setName("Pizza Hot");
+        food.setAddress("125 N Seattle");
+        food.setContactPerson("Bart");
+        food.setContactEmail("simpson@pizahut.com");
+        food.setContactPhone("360-123-4567");
+        food.setContactAltPhone("");
+        food.setRequestedDate(LocalDate.of(2019,1,14));
+        food.setResponse(Response.UNDECIDED);
+        foodData.add(food);
+        
+        food = new FoodSponsor();
+        setToken = new HashMap<>();
+        setToken.put("token", "143N");
+        food = food.build(setToken);
+        food.setPrimaryKey(2);
+        food.setName("Logical");
+        food.setAddress("345 Alaska Way");
+        food.setContactPerson("Jared");
+        food.setContactEmail("jared@logical.com");
+        food.setContactPhone("425-123-4568");
+        food.setContactAltPhone("");
+        food.setRequestedDate(LocalDate.of(2019,1,14));
+        food.setResponse(Response.UNDECIDED);
+        foodData.add(food);
+        
+        return foodData;
     }
 }
