@@ -336,7 +336,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Contributing
 
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
@@ -356,7 +356,7 @@ See also the list of [contributors](https://github.com/windust/community-manager
 
 ## License
 
-This project is listed under the Apache License Version 2.0 - see the LICENSE.md for details
+This project is listed under the Apache License Version 2.0 - see the [LICENSE](LICENSE) for details
 
 ## Acknowledgments
 
