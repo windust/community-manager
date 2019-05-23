@@ -123,10 +123,10 @@ public class GoogleSheetsManager implements DataManager {
 
     private List<Meetup> addEntityToMeetups(List<Meetup> meetups){
         for(Meetup meetup: meetups){
-            if(!meetup.getVenue().isBlank() && meetup.getVenueEntity() == null){
+            if(!(meetup.getVenue() == null || meetup.getVenue().isBlank()) && meetup.getVenueEntity() == null){
                 meetup.setVenueEntity((Venue)venueCollection.getResponderByName(meetup.getVenue()));
             }
-            if(!meetup.getFood().isBlank() && meetup.getFoodSponsorEntity() == null){
+            if(!(meetup.getFood() == null || meetup.getFood().isBlank()) && meetup.getFoodSponsorEntity() == null){
                 meetup.setFoodSponsorEntity((FoodSponsor)foodSponsorCollection.getResponderByName(meetup.getFood()));
             }
         }
