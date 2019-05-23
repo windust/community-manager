@@ -62,19 +62,28 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 #### Libraries which need to be installed
+
 * JDK 11
 
-#####The following libraries are installed via Gradle:
+#### Install via Gradle:
+
 * Spring Boot
   * Security
   * OAuth2
   * OAuth2 Client
   * OAuth2 Resource Server
   * Web
+  * Test
 * Thymeleaf
 * Google Sheets API
 * Tomcat Embed Jasper
+
+##### Testing Libraries
+
 * JUnit 5
+* JSoup
+* JUnit 4
+* Cucumber
 
 #### Development Environment
 Developed in:
