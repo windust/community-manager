@@ -108,7 +108,7 @@ public class FoodSponsorCollectionTest {
         Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getAll();
         when(foodSponsor.getName()).thenReturn("Pizza Hut");
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
-        when(dataStorage.update("foodSponsors", "1", "requestedFoodDate", "04/13/2019")).thenReturn(true);
+        when(dataStorage.update("foodSponsors", "1", "requestedDate", "04/13/2019")).thenReturn(true);
         assertTrue(spyFoodSponsorCollection.updateRequestedDate("Pizza Hut", date));
     }
 
@@ -123,16 +123,6 @@ public class FoodSponsorCollectionTest {
         when(foodSponsor.getPrimaryKey()).thenReturn(1);
         when(dataStorage.update("foodSponsors", "1", "requestedFoodDate", "06/06/2020")).thenReturn(true);
         assertFalse(spyFoodSponsorCollection.updateRequestedDate("Subway", date));
-    }
-
-    @Test
-    void whenFoodSponsorIsLookedUpByPrimaryKey() throws EntityNotFoundException {
-        FoodSponsorCollection spyFoodSponsorCollection = Mockito.spy(foodSponsorCollection);
-        ArrayList<FoodSponsor> mockFoodSponsorList = new ArrayList<>();
-        mockFoodSponsorList.add(foodSponsor);
-        Mockito.doReturn(mockFoodSponsorList).when(spyFoodSponsorCollection).getEntitiesValues();
-        when(foodSponsor.getPrimaryKey()).thenReturn(1);
-        assertEquals(1, spyFoodSponsorCollection.getByPrimaryKey(1).getPrimaryKey());
     }
 
     @Test
