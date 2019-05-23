@@ -150,7 +150,7 @@ public class FoodSponsorTest {
             fields.put("contactEmail", testContactEmail);
             fields.put("contactPhone", testPhone);
             fields.put("contactAltPhone", testAltPhone);
-            fields.put("requestedFoodDate", testReqeustedDate.toString());
+            fields.put("requestedDate", testReqeustedDate.toString());
 
             try{
                 buildtFoodSponsor =  new FoodSponsor().build(fields);
@@ -196,7 +196,7 @@ public class FoodSponsorTest {
 
         @Test
         void whenIBuildAFoodSponsorThenContactRequestedDateIsSet(){
-            assertEquals(fields.get("requestedFoodDate"), buildtFoodSponsor.getRequestedDate().toString());
+            assertEquals(fields.get("requestedDate"), buildtFoodSponsor.getRequestedDate().toString());
         }
 
         @Nested
