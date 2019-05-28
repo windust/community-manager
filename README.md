@@ -308,6 +308,14 @@ Changes may need to be made to the Autowire statements in the DataManager interf
 
 ### Exceptions
 
+AttributeException - This exception is thrown at runtime in the app and occurs if there is a problem with the attribute.
+
+EntityNotFoundException - This exception occurs when the entity isn't being found by the app.
+
+InvalidUserException - This exception occurs when a user attempts to log into the app but they are not a valid admin with access to the website. The list of valid admins is stored in the database in Google Sheets in the admins spreadsheet.
+
+UnexpectedPrimaryKeyException - This exception happens when the wrong primary key is returned. 
+
 ### Resources
 
 ---
