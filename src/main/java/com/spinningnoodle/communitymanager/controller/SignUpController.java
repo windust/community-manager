@@ -48,8 +48,6 @@ public class SignUpController {
     */
     String responderName;
     LocalDate requestedDate;
-    String alertMessage = "";
-    boolean alert = false;
 
     /**
      * Route for venues to sign up to host meetups
@@ -114,8 +112,6 @@ public class SignUpController {
         session.setAttribute("ask",
             ResponderCollection.isRequestedDateAvailable(currentMeetup, responder)
                 && responder.getResponse().equals(Response.UNDECIDED));
-        session.setAttribute("alert", alert);
-        session.setAttribute("alertMessage", alertMessage);
     }
 
     /**
@@ -131,17 +127,13 @@ public class SignUpController {
         @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
         System.out.println(venueKey);
-        boolean success;
-        success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
+        
+        model.setVenueForMeetup(responderName, meetupDate, requestedDate);
         if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
             model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
         }
         if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
             model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
-        }
-        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
-            alert = true;
-            alertMessage = getAlertMessage(success, meetupDate);
         }
 
         return "redirect:/venue?token=" + token;
@@ -155,24 +147,7 @@ public class SignUpController {
      */
     @PostMapping("/foodSignUp")
     public String foodSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "token") String token){
-        boolean success;
-
-        success = model.setFoodForMeetup(responderName, meetupDate, requestedDate);
-
-        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
-            alert = true;
-            alertMessage = getAlertMessage(success, meetupDate);
-        }
-
+        model.setFoodForMeetup(responderName, meetupDate, requestedDate);
         return "redirect:/food?token=" + token;
-    }
-
-    private String getAlertMessage(boolean successful, String date){
-        if(successful){
-            return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";
-        }
-        else{
-            return "Thank you for volunteering but " + date + " is already being hosted by another venue.";
-        }
     }
 }

@@ -121,27 +121,6 @@ public class SignUpControllerTest {
     }
 
     @Test
-    @DisplayName("venue route sets alert as an attribute in the session")
-    public void venueSetsSessionAlertAttribute(){
-        when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
-        when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        signUpController.venue(validToken, session);
-
-        Assertions.assertNotNull(session.getAttribute("alert"));
-    }
-
-    @Test
-    @DisplayName("venue route sets alert message as an attribute in the session")
-    public void venueSetsSessionAlertMessageAttribute(){
-        when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
-        when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("");
-        signUpController.venue(validToken, session);
-
-        Assertions.assertNotNull(session.getAttribute("alertMessage"));
-    }
-
-    @Test
     @DisplayName("Hosting Message for when requested date is available and venue hasn't responded")
     public void hostingMessageWithDateAvailableAndNoResponse(){
         when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
