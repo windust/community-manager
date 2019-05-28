@@ -67,20 +67,20 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### Install via Gradle:
 
-* Spring Boot
+* Spring Boot - version: 2.1.2.RELEASE
   * Security
   * OAuth2
   * OAuth2 Client
   * OAuth2 Resource Server
   * Web
   * Test
-* Thymeleaf
-* Google Sheets API
+* Thymeleaf - version: 3.0.11.RELEASE
+* Google Sheets API - version: 1.23.0
 * Tomcat Embed Jasper
 
 ##### Testing Libraries
 
-* JUnit 5
+* JUnit 5 - version: 5.3.2
 * JSoup
 * JUnit 4
 * Cucumber
@@ -319,6 +319,10 @@ Add additional notes about how to deploy this on a live system
 ---
 
 ## Security considerations
+
+The website is secured via Google OAuth. This sends the user to google to login in order to access the page.
+
+The backend database for the app is also secured via google sheets. The person who creates the original google sheets for the app is able to give access to certain people to access the database. 
 
 ### Data backup and redundancy procedure
 
