@@ -52,10 +52,10 @@
                   <td th:text="${meetup.getDate()}"></td>
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
-                      <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_red" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
+                      <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
-                      <button th:if="${meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_red" data_food="" name="meetup" th:value="${meetup.getDate()}">
+                      <button th:if="${meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
                   </td>

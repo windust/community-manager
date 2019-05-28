@@ -53,7 +53,7 @@
                     <td th:text="${meetup.getVenue()}"></td>
                     <td th:unless="${meetup.getVenue() == ''}" th:text="${meetup.getVenueEntity().getAddress()}"></td>
                     <td th:if="${meetup.getFood() == ''}">
-                        <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
+                        <button class="btn_primary" type="submit" name="meetup" th:value="${meetup.getDate()}">
                             Provide Food?
                         </button>
                     </td>
