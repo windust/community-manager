@@ -371,6 +371,6 @@ This project is listed under the Apache License Version 2.0 - see the [LICENSE](
 
 ## Acknowledgments
 
-- Hat tip to anyone whose code was used
+- We would like to thank everyone who was able to perform a usability review for our website and the Green River faculty for their support on the project. 
 - Inspiration
 - etc
