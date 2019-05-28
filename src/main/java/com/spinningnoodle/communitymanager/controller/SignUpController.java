@@ -127,7 +127,7 @@ public class SignUpController {
      */
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
-        @RequestParam(name = "venueKey") int venueKey,
+        @RequestParam(name = "venueKey", required = false, defaultValue = "-1") int venueKey,
         @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
         System.out.println(venueKey);
