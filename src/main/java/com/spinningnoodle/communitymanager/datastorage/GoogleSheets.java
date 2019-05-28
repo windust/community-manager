@@ -208,7 +208,7 @@ public class GoogleSheets implements DataStorage {
 
     private boolean update(String cell, String newValue){
 
-        if(cell.contains("null") || !isRow1(cell)) return false;
+        if(cell.contains("null") || isRow1(cell)) return false;
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
