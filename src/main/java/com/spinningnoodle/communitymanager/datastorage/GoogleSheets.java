@@ -208,7 +208,7 @@ public class GoogleSheets implements DataStorage {
 
     private boolean update(String cell, String newValue){
 
-        if(cell.contains("null") || cell.contains("1")) return false;
+        if(cell.contains("null") || !isRow1(cell)) return false;
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
@@ -228,6 +228,10 @@ public class GoogleSheets implements DataStorage {
         }
     }
 
+    //FIXME add regex here
+    private boolean isRow1(String cell){
+        return false;
+    }
 
     @Override
     public boolean deleteEntry(String tableName, String primaryKey) {

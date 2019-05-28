@@ -128,11 +128,11 @@ public class SignUpController {
         @RequestParam(name = "token") String token){
         System.out.println(venueKey);
         
-        model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-        if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
+        boolean success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
+        if(success && !meetupDate.equals("notHosting") && foodDate.equals("true")){
             model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
         }
-        if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
+        else if(success && !meetupDate.equals("notHosting") && foodDate.equals("false")){
             model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
         }
 
