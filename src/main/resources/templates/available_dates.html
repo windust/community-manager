@@ -29,9 +29,7 @@
           <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
       </form>
   </header>
-  <aside th:if="${session.alert}" class="primary text-center">
-      <h2 class="h3"><span th:text="${session.alertMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
-  </aside>
+
   <form id="meetup_confirm" method="POST" action="/venueSignUp" modelAttribute="venue">
     <div th:replace="fragments/signupFragments.html :: responderConfirm"></div>
   </form>
