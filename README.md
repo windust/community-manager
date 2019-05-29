@@ -47,6 +47,7 @@ For more information or to contribute to this project, please contact Seattle Ar
   - [Security considerations](#security-considerations)
     - [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
   - [Built with](#built-with)
+  - [Desired Improvements](#improvements)
   - [Contributing](#contributing)
   - [Authors](#authors)
   - [License](#license)
@@ -333,6 +334,13 @@ The backend database for the app is also secured via google sheets. The person w
 
 ### Data backup and redundancy procedure
 
+The data is currently stored in Google Sheets. To back up the data:
+- Go to the Google Sheets page
+- Click on File -> Download As
+- Choose how you want to download to local machine. (Excel is easiest.)
+
+Google Sheets import functionality can be accessed to restore the data from the same page.
+
 ---
 
 ## Built with
@@ -344,6 +352,20 @@ The backend database for the app is also secured via google sheets. The person w
 - Google OAuth2 - Login authentication
 - JUnit 5 - Unit testing
 - Cucumber - Behavioral tests
+
+## Desired Improvements
+The following have not been implemented but are suggestions for future work:
+- Add a confirmation modal to the available food dates.
+- As an admin, when I generate a URL with a token then I would like a copy button to make it easier.
+- As an admin, when I generate a URL with a token then I would like an email button so that I can 
+generate an editable email.
+- As an admin, I want to be able to request speakers in the same way that I request food or venues,
+except that they can see other speakers and soft commit to dates.
+- As an admin, I want to be able to schedule events for after meetups similar to the way I request 
+food or venues.
+- As an admin, setting the application up for the first time, I would like a way to have the program
+automatically set things up for me.
+
 
 ## Contributing
 
