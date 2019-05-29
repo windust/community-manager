@@ -4,8 +4,7 @@ The Community Manager is a open-source tool to facilitate Meetup venue, food, an
 arrangements. It provides an admin backend that allows admins to generate unique URLs which can be sent to venues and foods sponsors. These urls with embedded tokens allow the Community Manager to generate  up-to-date web pages tailored to the individual sponsor. It eliminates the need for emails which may contain outdated requests and for the Meetup admin to have to say Sorry if a vendor responds after they
  are no longer needed.
 
-It can be cloned from:
-    https://github.com/windust/community-manager
+It can be cloned from `https://github.com/windust/community-manager`
 
 For more information or to contribute to this project, please contact Seattle Area Java Users Group at present@seajug.org.
 
@@ -14,44 +13,50 @@ For more information or to contribute to this project, please contact Seattle Ar
 ## Table of Contents
 
 - [community-manager](#community-manager)
-  - [Table of Contents](#table-of-contents)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
+  * [Table of Contents](#table-of-contents)
+  * [Getting started](#getting-started)
+    + [Prerequisites](#prerequisites)
+      - [Hardware constraints](#hardware-constraints)
       - [Libraries which need to be installed](#libraries-which-need-to-be-installed)
+      - [Install via Gradle:](#install-via-gradle-)
+        * [Testing Libraries](#testing-libraries)
       - [Development Environment](#development-environment)
-        - [Using SCSS](#using-scss)
+        * [Using SCSS](#using-scss)
       - [Getting credentials](#getting-credentials)
-        - [GoogleSheets Credentials](#googlesheets-credentials)
+        * [GoogleSheets Credentials](#googlesheets-credentials)
       - [Spreadsheet setup](#spreadsheet-setup)
-        - [1. meetups](#1-meetups)
-        - [2. venues](#2-venues)
-        - [3. foodSponsors](#3-foodsponsors)
-        - [4. admins](#4-admins)
-        - [5. speakers](#5-speakers)
-        - [6. lightningTalks](#6-lightningtalks)
-    - [Installing](#installing)
+        * [1. meetups](#1-meetups)
+        * [2. venues](#2-venues)
+        * [3. foodSponsors](#3-foodsponsors)
+        * [4. admins](#4-admins)
+        * [5. speakers](#5-speakers)
+        * [6. lightningTalks](#6-lightningtalks)
+    + [Installing](#installing)
       - [Setup configuration files](#setup-configuration-files)
-  - [Running the tests](#running-the-tests)
-    - [Breakdown into the end-to-end tests](#breakdown-into-the-end-to-end-tests)
-    - [And coding style tests](#and-coding-style-tests)
-  - [System Architecture](#system-architecture)
-    - [Model](#model)
+  * [Running the tests](#running-the-tests)
+    + [Breakdown into the end-to-end tests](#breakdown-into-the-end-to-end-tests)
+    + [And coding style tests](#and-coding-style-tests)
+  * [System Architecture](#system-architecture)
+    + [Model](#model)
       - [Entities](#entities)
       - [Collections](#collections)
-    - [DataStorage](#datastorage)
-    - [Controller](#controller)
-    - [OAuth](#oauth)
-    - [Exceptions](#exceptions)
-    - [Resources](#resources)
-  - [Deployment](#deployment)
-  - [Security considerations](#security-considerations)
-    - [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
-  - [Built with](#built-with)
-  - [Desired Improvements](#improvements)
-  - [Contributing](#contributing)
-  - [Authors](#authors)
-  - [License](#license)
-  - [Acknowledgments](#acknowledgments)
+    + [Database](#database)
+      - [DataManager](#datamanager)
+      - [DataStorage](#datastorage)
+    + [Controller](#controller)
+    + [OAuth](#oauth)
+    + [Exceptions](#exceptions)
+    + [Resources](#resources)
+  * [Deployment](#deployment)
+    + [Docker](#docker)
+  * [Security considerations](#security-considerations)
+    + [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
+  * [Built with](#built-with)
+  * [Desired Improvements](#desired-improvements)
+  * [Contributing](#contributing)
+  * [Authors](#authors)
+  * [License](#license)
+  * [Acknowledgments](#acknowledgments)
   
 ---
 
@@ -60,6 +65,10 @@ For more information or to contribute to this project, please contact Seattle Ar
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
+
+#### Hardware constraints
+
+There are no hardware constraints for running it. This project is intended to run as a cloud application.
 
 #### Libraries which need to be installed
 
@@ -322,7 +331,19 @@ UnexpectedPrimaryKeyException - This exception happens when the wrong primary ke
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+### Docker
+
+A jar could be built of the project using
+
+`./gradlew build`
+
+A Docker image can then be built using the .jar with the dockerfile provided in this project.
+
+`docker build community-manager`
+
+Then the image could run in a docker container
+
+`docker run community-manager`
 
 ---
 
@@ -393,6 +414,6 @@ This project is listed under the Apache License Version 2.0 - see the [LICENSE](
 
 ## Acknowledgments
 
-- We would like to thank everyone who was able to perform a usability review for our website and the Green River faculty for their support on the project. 
-- Inspiration
-- etc
+- The Seattle Java Users Group community
+- The Green River College faculty
+- Everyone who participated in usability testing / feedback
