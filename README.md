@@ -47,6 +47,9 @@ For more information or to contribute to this project, please contact Seattle Ar
     + [OAuth](#oauth)
     + [Exceptions](#exceptions)
     + [Resources](#resources)
+      - [CSS](#css)
+      - [SCSS](#scss)
+      - [Templates](#templates)
   * [Deployment](#deployment)
     + [Docker](#docker)
   * [Security considerations](#security-considerations)
@@ -326,6 +329,33 @@ InvalidUserException - This exception occurs when a user attempts to log into th
 UnexpectedPrimaryKeyException - This exception happens when the wrong primary key is returned. 
 
 ### Resources
+
+#### CSS
+
+CSS code should be added via SCSS or in a secondary CSS file (not `resources/static/css/main.css`) which will not be written to by the SCSS compiler.
+
+#### SCSS
+
+SCSS directory: `src/main/resources/static/scss`
+
+CSS file path: `src/main/resources/css`
+
+**The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
+
+1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
+2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
+3. Install and enable the File Watchers repository plugin on the [Plugins](https://www.jetbrains.com/help/idea/plugins-settings.html) page
+4. In the Settings/Preferences dialog, click File Watchers under Tools. The File Watchers page that opens shows the list of already configured File Watchers.
+5. Click Add button, choose SCSS predefined template from the list.
+6. In the "arguments" command place `$FileName$:../css/$FileNameWithoutExtension$.css` and in "output paths to refresh" `./css/$FileNameWithoutExtension$.css:../css/$FileNameWithoutExtension$.css.map`
+
+IntelliJ will automatically watch for changes in SCSS files and compile the css.
+
+*For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
+
+#### Templates
+
+The templates are written using Thymeleaf and implement Thymeleaf fragments defined under the fragments folder
 
 ---
 
