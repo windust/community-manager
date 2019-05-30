@@ -228,9 +228,10 @@ public class GoogleSheets implements DataStorage {
         }
     }
 
-    //FIXME add regex here
     private boolean isRow1(String cell){
-        return false;
+        String pattern = "(?i)(.*)[a-z]1";
+
+        return cell.matches(pattern);
     }
 
     @Override

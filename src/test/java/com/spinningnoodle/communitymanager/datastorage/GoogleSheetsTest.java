@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -87,27 +88,32 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("Throws IOException when given bad StorageID")
     public void throwsIOExceptionWhenGivenBadStorageID() {
         assertThrows(IOException.class, () ->
             new GoogleSheets("133"));
     }
 
     @Test
+    @DisplayName("Can get StorageID from open DataStorage")
     public void whenIOpenDataStorageICanGetID() throws ConnectException {
         assertEquals(testID, testStorage.getStorageID());
     }
 
     @Test
+    @DisplayName("Can get Name from open DataStorage")
     public void whenIOpenDataStorageICanGetName() throws ConnectException {
         assertEquals("Test Google Sheets", testStorage.getName());
     }
 
     @Test
+    @DisplayName("Can retrieve rows from Venues Table")
     public void whenIRequestTableOfVenuesIShouldGetTheseTwoRows() throws IOException {
         assertEquals(expected, testStorage.readAll("venues"));
     }
 
     @Test
+    @DisplayName("Get IOException when request non-existant table")
     public void whenIRequestNonExistentTableIGetIOException() {
         assertThrows(IOException.class, () -> {
             testStorage.readAll("sprinklers");
@@ -115,6 +121,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("Get 3 table names when call getTableNames")
     void whenIRequestTableNamesIExpectToGetThreeInAHashMap() {
         HashMap<String,String> tableNames = new HashMap<>();
         tableNames.put("speakers", "1428639487");
@@ -125,6 +132,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("setName sets new name in google sheets")
     void whenISetNameIGetNewName() throws IOException {
         String oldName = testStorage.getName();
         testStorage.setName("NewName");
@@ -133,6 +141,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("Updating venue name changes venue name in google sheets")
     void whenIUpdateVenueNameIGetNewVenueNameBack() {
         String oldName = "Amazing";
         String nameAfterChange = "Amazing";
@@ -148,16 +157,19 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("createEntry returns false (unimplemented method)")
     void whenIAttemptToCreateEntryIGetFalse(){
         assertFalse(testStorage.createEntry());
     }
 
     @Test
+    @DisplayName("deleteEntry returns false (unimplemented method)")
     void whenIAttemptToDeleteRowIGetFalse(){
         assertFalse(testStorage.deleteEntry("venues", "3"));
     }
 
     @Test
+    @DisplayName("ReadAll returns null if no values exist in spreadsheet")
     void whenNoValuesAreReturnedFromSpreadSheetIGetNullFromReadAll()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
@@ -167,6 +179,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("ReadAll return null if given null from spreadsheet")
     void whenNullIsReturnedFromSpreadSheetIGetNullFromReadAll()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
@@ -175,6 +188,7 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("ReadAll return null if given nothing from spreadsheet")
     void whenStringsAreNotReturnedFromSpreadSheetIGetNullFromReadAll()
         throws IOException, GeneralSecurityException {
         List<Map<String,String>> nonStringExpected = new ArrayList<>();
@@ -189,42 +203,52 @@ public class GoogleSheetsTest {
     }
 
     @Test
+    @DisplayName("Update returns false if given invalid primary key")
     void whenIGiveInvalidPrimaryKeyIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
-        assertFalse(testStorage.update("venues","4","requestedHostingDate","01/14/2019"));
+        assertFalse(testStorage.update("venues","4","requestedDate","01/14/2019"));
     }
 
     @Test
+    @DisplayName("Update returns false if given invalid attribute (column name)")
     void whenIGiveInvalidAttributeIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
         assertFalse(testStorage.update("venues","3","invalidAttribute","01/14/2019"));
     }
 
     @Test
+    @DisplayName("Update returns false if not given values from spreadsheet")
     void whenNoValuesAreReturnedFromSpreadSheetIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
         List<List<Object>> rawRow = new ArrayList<>();
         when(testStorage.getData("venues")).thenReturn(rawRow);
-        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+        assertFalse(testStorage.update("venues","2","requestedDate","01/14/2019"));
     }
 
     @Test
+    @DisplayName("Update returns false if given null from spreadsheet")
     void whenNullIsReturnedFromSpreadSheetIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
         List<List<Object>> rawRow = new ArrayList<>();
         when(testStorage.getData("venues")).thenReturn(null);
-        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+        assertFalse(testStorage.update("venues","2","requestedDate","01/14/2019"));
     }
 
     @Test
+    @DisplayName("Update returns false if spreadsheet throws an exception")
     void whenExceptionIsThrownFromSpreadSheetIGetFalseFromUpdate()
         throws IOException, GeneralSecurityException {
         GoogleSheets testStorage = Mockito.spy(new GoogleSheets(testID));
         List<List<Object>> rawRow = new ArrayList<>();
         when(testStorage.getData("venues")).thenThrow(new IOException());
-        assertFalse(testStorage.update("venues","2","requestedHostingDate","01/14/2019"));
+        assertFalse(testStorage.update("venues","2","requestedDate","01/14/2019"));
     }
 
+    @Test
+    @DisplayName("Update returns false if attempting to update first row (column headers)")
+    void whenUpdatingFirstRowThenReturnFalse(){
+        assertFalse(testStorage.update("venues", "1", "requestedDate", "01/14/2019"));
+    }
 }
