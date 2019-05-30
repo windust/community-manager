@@ -35,7 +35,7 @@
   </form>
 
   <article id="more-meetups" class="text-center">
-      <h2 class="h3">Register to host additional dates below:</h2>
+      <h2 class="h2">Register to host <em>additional</em> dates below:</h2>
       <form id="meetup_signup" method="POST" action="/venueSignUp" modelAttribute="venue">
 
       <table>
@@ -52,15 +52,15 @@
                   <td th:text="${meetup.getDate()}"></td>
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
-                      <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_red" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
+                      <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
-                      <button th:if="${meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_red" data_food="" name="meetup" th:value="${meetup.getDate()}">
+                      <button th:if="${meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
                   </td>
-                  <td th:if="${meetup.getVenue() == session.venue.getName()}"><span th:text="${session.venue.getName()}" class="accent-text">Reserved</span></td>
-                  <td th:if="${meetup.getVenue() != '' and meetup.getVenue() != session.venue.getName()}">Reserved</td>
+                  <td th:if="${meetup.getVenue() == session.venue.getName()}"><span th:text="${session.venue.getName()}" class="accent-text btn_pseudo">Reserved</span></td>
+                  <td th:if="${meetup.getVenue() != '' and meetup.getVenue() != session.venue.getName()}" class="btn_pseudo">Reserved</td>
 
               </tr>
           </th:block>
