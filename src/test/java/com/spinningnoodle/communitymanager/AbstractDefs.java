@@ -31,17 +31,27 @@ public abstract class AbstractDefs
     protected WebApplicationContext wac;
 
     protected MockMvc mvc;
-
     protected MvcResult result;
-
     protected Document document;
 
+    /**
+     * Call the url with a GET method and store the MvcResult and Document in state.
+     *
+     * @param url URL Path
+     * @throws Exception If a call is unable to be made
+     */
     protected void executeGet(String url) throws Exception
     {
         result = mvc.perform(get(url)).andDo(print()).andReturn();
         document = Jsoup.parse(result.getResponse().getContentAsString());
     }
 
+    /**
+     * Call the url with a POST method and store the MvcResult and Document in state.
+     *
+     * @param url URL Path
+     * @throws Exception If a call is unable to be made
+     */
     protected void executePost(String url, String content) throws Exception {
         result = mvc.perform(post(url).content(content).param("meetupKey", "2")).andDo(print()).andReturn();
         document = Jsoup.parse(result.getResponse().getContentAsString());

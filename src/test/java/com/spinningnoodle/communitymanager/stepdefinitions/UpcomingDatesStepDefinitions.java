@@ -11,8 +11,6 @@ import com.spinningnoodle.communitymanager.AbstractDefs;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.io.UnsupportedEncodingException;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,12 +34,12 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
     }
 
     @Then("^the accordion is made of summary tags$")
-    public void theAccordionIsMadeOfSummaryTags() throws UnsupportedEncodingException {
+    public void theAccordionIsMadeOfSummaryTags() {
         assertTrue(document.getElementsByTag("summary").size() > 0);
     }
 
     @And("^the data in the accordion is not default$")
-    public void theDataInTheAccordionIsNotDefault() throws UnsupportedEncodingException {
+    public void theDataInTheAccordionIsNotDefault() {
 
         assertAll("", () -> {
             for(Element fold : document.getElementsByTag("summary:not(:first-of-type)")) {
@@ -56,7 +54,7 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
     }
 
     @And("^the accordion headers are \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
-    public void theAccordionHeadersAre(String arg0, String arg1, String arg2) throws Throwable {
+    public void theAccordionHeadersAre(String arg0, String arg1, String arg2) {
         Element header = document.getElementsByTag("summary").first();
 
         for(int i = 0; i < header.children().size(); i++) {
@@ -79,12 +77,12 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
     }
 
     @Then("^the navigation bar appears on the page$")
-    public void theNavigationBarAppearsOnThePage() throws UnsupportedEncodingException {
+    public void theNavigationBarAppearsOnThePage() {
         assertNotNull(document.getElementsByTag("nav"));
     }
 
     @And("^the navigation bar has a link to \"([^\"]*)\" with a label of \"([^\"]*)\"$")
-    public void theNavigationBarHasALinkToWithALabelOf(String arg0, String arg1) throws Throwable {
+    public void theNavigationBarHasALinkToWithALabelOf(String arg0, String arg1) {
         Elements links = document.select("a:contains(" + arg1 + ")");
 
         assertTrue(links.size() > 0);
