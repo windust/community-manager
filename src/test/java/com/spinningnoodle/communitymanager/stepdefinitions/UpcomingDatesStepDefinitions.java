@@ -13,7 +13,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.io.UnsupportedEncodingException;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,17 +37,14 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
     @Then("^the accordion is made of summary tags$")
     public void theAccordionIsMadeOfSummaryTags() throws UnsupportedEncodingException {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
-
-        assertTrue(doc.getElementsByTag("summary").size() > 0);
+        assertTrue(document.getElementsByTag("summary").size() > 0);
     }
 
     @And("^the data in the accordion is not default$")
     public void theDataInTheAccordionIsNotDefault() throws UnsupportedEncodingException {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
 
         assertAll("", () -> {
-            for(Element fold : doc.getElementsByTag("summary:not(:first-of-type)")) {
+            for(Element fold : document.getElementsByTag("summary:not(:first-of-type)")) {
                 for(Element header : fold.children()) {
                     assertNotEquals("Date", header.text());
                     assertNotEquals("Speaker", header.text());
@@ -61,8 +57,7 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
     @And("^the accordion headers are \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void theAccordionHeadersAre(String arg0, String arg1, String arg2) throws Throwable {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
-        Element header = doc.getElementsByTag("summary").first();
+        Element header = document.getElementsByTag("summary").first();
 
         for(int i = 0; i < header.children().size(); i++) {
             Element e = header.child(i);
@@ -85,15 +80,12 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
     @Then("^the navigation bar appears on the page$")
     public void theNavigationBarAppearsOnThePage() throws UnsupportedEncodingException {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
-
-        assertNotNull(doc.getElementsByTag("nav"));
+        assertNotNull(document.getElementsByTag("nav"));
     }
 
     @And("^the navigation bar has a link to \"([^\"]*)\" with a label of \"([^\"]*)\"$")
     public void theNavigationBarHasALinkToWithALabelOf(String arg0, String arg1) throws Throwable {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
-        Elements links = doc.select("a:contains(" + arg1 + ")");
+        Elements links = document.select("a:contains(" + arg1 + ")");
 
         assertTrue(links.size() > 0);
 
@@ -104,8 +96,7 @@ public class UpcomingDatesStepDefinitions extends AbstractDefs {
 
     @And("^the client goes to the meetup listed as the \"([^\"]*)\"st button$")
     public void theClientGoesToTheMeetupListedAsTheStButton(String arg0) throws Throwable {
-        Document doc = Jsoup.parse(result.getResponse().getContentAsString());
-        Element button = doc.select("button[name=meetupKey]").get(Integer.parseInt(arg0) - 1);
+        Element button = document.select("button[name=meetupKey]").get(Integer.parseInt(arg0) - 1);
         Element parent = button.parents().select("form").get(0);
 
         assertNotNull(parent);

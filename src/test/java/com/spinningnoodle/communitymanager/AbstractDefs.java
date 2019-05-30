@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
@@ -25,51 +27,23 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest()
 public abstract class AbstractDefs
 {
-//    @Value("8080")
-    protected int port = 8080;
-
     @Autowired
     protected WebApplicationContext wac;
-
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
-
 
     protected MockMvc mvc;
 
     protected MvcResult result;
 
-
+    protected Document document;
 
     protected void executeGet(String url) throws Exception
     {
         result = mvc.perform(get(url)).andDo(print()).andReturn();
+        document = Jsoup.parse(result.getResponse().getContentAsString());
     }
+
     protected void executePost(String url, String content) throws Exception {
         result = mvc.perform(post(url).content(content).param("meetupKey", "2")).andDo(print()).andReturn();
-    }
-
-    private class ResponseResultErrorHandler implements ResponseErrorHandler
-    {
-        private ResponseResults results = null;
-        private Boolean hadError = false;
-
-        private ResponseResults getResults()
-        {
-            return results;
-        }
-
-        @Override
-        public boolean hasError(ClientHttpResponse response) throws IOException
-        {
-            hadError = response.getRawStatusCode() >= 400;
-            return hadError;
-        }
-
-        @Override
-        public void handleError(ClientHttpResponse response) throws IOException
-        {
-            results =  new ResponseResults(response);
-        }
+        document = Jsoup.parse(result.getResponse().getContentAsString());
     }
 }
