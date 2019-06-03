@@ -13,18 +13,47 @@ package com.spinningnoodle.communitymanager.model.collections;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
+import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Receipt;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
+import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class ResponderCollection<T extends ResponderEntity> extends EntityCollection<T> {
-    
+
+    protected Map<String,Integer> nameIdJunction = new HashMap<>();
+
+    /**
+     * ResponderCollection constructor that takes in a String
+     * parameter tableName with a call to in super constructor.
+     * @param tableName
+     */
     public ResponderCollection(String tableName){
         super(tableName);
     }
-    
+
+    /**
+     * ResponderCollection constructor that takes in two parameters
+     * DataStorage dataStorage and String tableName and has a call
+     * to a super constructor.
+     * @param dataStorage
+     * @param tableName
+     */
     public ResponderCollection(DataStorage dataStorage, String tableName){
         super(dataStorage, tableName);
+    }
+
+    public void addToCollection(T entity) throws IllegalArgumentException {
+        nameIdJunction.put(entity.getName(),entity.getPrimaryKey());
+        super.addToCollection(entity);
+    }
+
+    public ResponderEntity getResponderByName(String name){
+        return entities.get(nameIdJunction.get(name));
     }
 
     public T getEntityByToken(String token) {
@@ -48,7 +77,6 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
      * @param response The venues response
      * @return If the dataStorage successfully updated
      */
-    //TODO consider refactoring to use ResponderEntity rather then String name
     public boolean updateResponse(String responderName, Response response){
         for(ResponderEntity responder : getAll()){
             if(responder.getName().equals(responderName)){
@@ -66,7 +94,6 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
      * @param date The date the venue requested
      * @return If the dataStorage was successfully updated
      */
-    //TODO consider refactoring to use ResponderEntity rather then String name
     public boolean updateRequestedDate(String responderName, LocalDate date){
         for(ResponderEntity responder : getAll()){
             if(responder.getName().equals(responderName)){
@@ -75,6 +102,62 @@ public abstract class ResponderCollection<T extends ResponderEntity> extends Ent
         }
         
         return false;
+    }
+    
+    public String getReceiptMessage(List<Meetup> meetups, ResponderEntity entity){
+        Meetup meetup = new Meetup();
+        
+        for(Meetup mu : meetups){
+            if(mu.getDate().equals(entity.getRequestedDate())){
+                meetup = mu;
+            }
+        }
+        
+        return entity.getMessage(getReceipt(meetup, entity));
+    }
+    
+    public static boolean isRequestedDateAvailable(Meetup meetup, ResponderEntity entity) {
+        if(entity instanceof Venue) {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getVenue().equals("");
+        } else {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getFood().equals("");
+        }
+    }
+    
+    private Receipt getReceipt(Meetup meetup, ResponderEntity entity){
+        if(entity.getResponse().equals(Response.DECLINED)){
+            return Receipt.NO;
+        }
+        else if(isRequestedDateAvailable(meetup, entity)){
+            if(entity.getResponse().equals(Response.UNDECIDED)) {
+                return Receipt.NOT_RESPONDED;
+            } else {
+                //if not hosting requested date and Response == Accepted then
+                //assumes responder cancelled and SeaJUG volunteer removed them
+                //from meetup and then changes responderEntity.response to reflect this
+                boolean success = updateResponse(entity.getName(), Response.DECLINED);
+                if(success){
+                    return Receipt.NO;
+                }
+                else{
+                    throw new IllegalArgumentException("Unable to update response");
+                }
+            }
+        }
+        else if(hostingRequestedDate(meetup, entity)){
+            return Receipt.ACCEPTED;
+        }
+        else {
+            return Receipt.ALREADY_TAKEN;
+        }
+    }
+    
+    private boolean hostingRequestedDate(Meetup meetup, ResponderEntity entity){
+        if(entity instanceof Venue) {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getVenue().equals(entity.getName());
+        } else {
+            return meetup.getDate().equals(entity.getRequestedDate()) && meetup.getFood().equals(entity.getName());
+        }
     }
 
     @Override

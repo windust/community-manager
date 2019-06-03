@@ -18,7 +18,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.datastorage.DummyStorage;
 import com.spinningnoodle.communitymanager.datastorage.GoogleSheets;
 import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
@@ -32,7 +31,6 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
-import org.springframework.web.servlet.handler.HandlerMethodMappingNamingStrategy;
 
 class MeetupCollectionTest {
 
@@ -78,12 +76,12 @@ class MeetupCollectionTest {
         Meetup testMeetup = new Meetup(1);
         meetupCollection.addToCollection(testMeetup);
 
-        assertEquals(testMeetup, meetupCollection.getById(testMeetup.getPrimaryKey()));
+        assertEquals(testMeetup, meetupCollection.getByPrimaryKey(testMeetup.getPrimaryKey()));
     }
 
     @Test
     void whenAIdIsPassedToGetByIdThatDoesNotExistThenEntityNotFoundExceptionShouldBeThrown() {
-        assertThrows(EntityNotFoundException.class, () -> meetupCollection.getById(-1));
+        assertThrows(EntityNotFoundException.class, () -> meetupCollection.getByPrimaryKey(-1));
     }
 
     @Test

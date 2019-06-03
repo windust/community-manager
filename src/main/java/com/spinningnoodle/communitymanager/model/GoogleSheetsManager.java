@@ -33,6 +33,7 @@ import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,12 +51,25 @@ public class GoogleSheetsManager implements DataManager {
     VenueCollection venueCollection;
     @Autowired
     @Qualifier("food")
-    FoodSponsorCollection foodSponsorCollection;
+    FoodSponsorCollection<FoodSponsor> foodSponsorCollection;
     String spreadsheetIDLocation = "config/SpreadSheetID.txt";
 
+    /**
+     * Default GoogleSheetsManager constructor
+     */
     public GoogleSheetsManager() {
     }
 
+    /**
+     * GoogleSheetsManager constructor that takes in a String
+     * parameter storageID and uses that storageID to
+     * pass to DataStorage and then create a new
+     * AdminCollection, MeetupCollection, and VenueCollection
+     * from that google sheet.
+     * @param storageID String
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
     public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
 //            config.put("storage","google");
@@ -71,6 +85,7 @@ public class GoogleSheetsManager implements DataManager {
 
     @Override
     public boolean verifyAdmin(String email) {
+        adminCollection = adminCollection.fetchFromDataStorage();
         List<Admin> admins = this.getAllAdmins();
         for (Admin admin : admins) {
             if (admin.getEmail().equals(email)) {
@@ -89,13 +104,45 @@ public class GoogleSheetsManager implements DataManager {
     @Override
     public List<Meetup> getAllMeetups() {
         meetupCollection = meetupCollection.fetchFromDataStorage();
-        return meetupCollection.getAll();
+        return addEntityToMeetups(meetupCollection.getAll());
+    }
+    
+    @Override
+    public List<Meetup> getAllHostedMeetups(){
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        venueCollection = venueCollection.fetchFromDataStorage();
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+        List<Meetup> filteredMeetups = new ArrayList<>();
+        for(Meetup meetup : meetupCollection.getAll()){
+            if (!meetup.getVenue().equals("")){
+                filteredMeetups.add(meetup);
+            }
+        }
+        return addEntityToMeetups(filteredMeetups);
+    }
+
+    private List<Meetup> addEntityToMeetups(List<Meetup> meetups){
+        for(Meetup meetup: meetups){
+            if(!(meetup.getVenue() == null || meetup.getVenue().isBlank()) && meetup.getVenueEntity() == null){
+                meetup.setVenueEntity((Venue)venueCollection.getResponderByName(meetup.getVenue()));
+            }
+            if(!(meetup.getFood() == null || meetup.getFood().isBlank()) && meetup.getFoodSponsorEntity() == null){
+                meetup.setFoodSponsorEntity((FoodSponsor)foodSponsorCollection.getResponderByName(meetup.getFood()));
+            }
+        }
+        return meetups;
     }
 
     @Override
     public Venue getVenueByToken(String venueToken) {
         venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getEntityByToken(venueToken);
+    }
+    
+    @Override
+    public FoodSponsor getFoodByToken(String venueToken) {
+        foodSponsorCollection = foodSponsorCollection.fetchFromDataStorage();
+        return foodSponsorCollection.getEntityByToken(venueToken);
     }
 
     @Override
@@ -118,13 +165,44 @@ public class GoogleSheetsManager implements DataManager {
 
     }
 
+    public boolean setGenericFoodForMeetup(FoodSponsorCollection foodCollection, String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin){
+        meetupCollection = meetupCollection.fetchFromDataStorage();
+
+        if (!requestedDate.equals("notHosting")) {
+            LocalDate date = Entity.convertDate(requestedDate);
+
+            if (date.equals(dateRequestedByAdmin)) {
+                return meetupCollection.setFoodForMeetup(foodName, date) &&
+                    foodCollection.updateFoodResponse(foodName, Response.ACCEPTED);
+            } else {
+                return meetupCollection.setFoodForMeetup(foodName, date);
+            }
+        } else {
+            return foodCollection.updateFoodResponse(foodName, Response.DECLINED);
+        }
+    }
+
+    @Override
+    public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
+        LocalDate dateRequestedByAdmin) {
+        return this.setGenericFoodForMeetup(venueCollection,venueName,requestedDate,dateRequestedByAdmin);
+    }
+    
+    @Override
+    public boolean setFoodForMeetup(String foodName, String requestedDate,
+        LocalDate dateRequestedByAdmin) {
+        return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
+    }
+
+
+
     @Override
     public List<Venue> getAllVenues() {
         venueCollection = venueCollection.fetchFromDataStorage();
         return venueCollection.getAll();
     }
 
-    //TODO change to using FoodSponsor and FoodSponsorCollection
     @Override
     public List<FoodSponsor> getAllFoodSponsors(Meetup meetup) {
         if (!meetup.getVenue().equals("") && meetup.getFood().equals("")) {
@@ -166,8 +244,16 @@ public class GoogleSheetsManager implements DataManager {
     public String getDatabaseAccessPage() {
         return "https://docs.google.com/spreadsheets/d/113AbcCLo0ZAJLhoqP0BXaJPRlzslESkkk98D44Ut1Do/edit#gid=0";
     }
+    
+    @Override
+    public String getMessage(ResponderEntity entity){
+        if(entity instanceof Venue) {
+            return venueCollection.getReceiptMessage(meetupCollection.getAll(), entity);
+        } else {
+            return foodSponsorCollection.getReceiptMessage(meetupCollection.getAll(), entity);
+        }
+    }
 
-    //TODO Consider possible ways to remove collection argument as collection are already accessible via fields
     private void setRequestedDate(ResponderEntity responder, LocalDate date, ResponderCollection collection) {
         collection.updateResponse(responder.getName(), Response.UNDECIDED);
         collection.updateRequestedDate(responder.getName(), date);

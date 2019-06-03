@@ -159,7 +159,6 @@ class GoogleSheetsManagerTest {
     void getAllVenuesReturnsVenuesWithExpectedValues() {
         Map<String, String> expectedVenueValues = new HashMap<>();
         expectedVenueValues.put("requestedDate", "01/01/1970");
-        //TODO fix to match response as enum
         expectedVenueValues.put("response","yes");
         expectedVenueValues.put("venueName","Purple Inc.");
         expectedVenueValues.put("primaryKey", "1");

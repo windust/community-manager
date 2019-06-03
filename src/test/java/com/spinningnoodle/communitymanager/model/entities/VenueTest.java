@@ -38,7 +38,7 @@ class VenueTest {
     @BeforeEach
     void setUp() {
         venue = new Venue(testPrimaryKey, testName, testAddress, testCapacity, testContactPerson,
-            testContactEmail, testContactPhone, testContactAltPhone, testRequestedHostingDate);
+            testContactEmail, testContactPhone, testContactAltPhone, testRequestedHostingDate,"yes","yes", "");
     }
 
     @Test
@@ -159,7 +159,7 @@ class VenueTest {
             fields.put("contactEmail", testContactEmail);
             fields.put("contactPhone", testContactPhone);
             fields.put("contactAltPhone", testContactAltPhone);
-            fields.put("requestedHostingDate", testRequestedHostingDate.toString());
+            fields.put("requestedDate", testRequestedHostingDate.toString());
 
             try {
                 builtVenue = new Venue().build(fields);
@@ -210,7 +210,7 @@ class VenueTest {
 
         @Test
         void whenIBuildAVenueThenRequestedHostingDateIsSet() {
-            assertEquals(fields.get("requestedHostingDate"), builtVenue.getRequestedDate().toString());
+            assertEquals(fields.get("requestedDate"), builtVenue.getRequestedDate().toString());
         }
 
 

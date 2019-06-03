@@ -56,12 +56,12 @@ class VenueCollectionTest {
 		Venue testVenue = new Venue(1);
 		venueCollection.addToCollection(testVenue);
 
-		assertEquals(testVenue, venueCollection.getById(testVenue.getPrimaryKey()));
+		assertEquals(testVenue, venueCollection.getByPrimaryKey(testVenue.getPrimaryKey()));
 	}
 
 	@Test
 	void whenAIdIsPassedToGetByIdThatDoesNotExistThenEntityNotFoundExceptionShouldBeThrown() {
-		assertThrows(EntityNotFoundException.class, () -> venueCollection.getById(-1));
+		assertThrows(EntityNotFoundException.class, () -> venueCollection.getByPrimaryKey(-1));
 	}
 
 	@Test
@@ -69,17 +69,6 @@ class VenueCollectionTest {
 		int collectionSize = 2;
 		assertEquals(collectionSize, venueCollection.getAll().size());
 	}
-
-	//TODO review commented out code
-//	@Test
-//    void whenIFetchAVenueByTokenIShouldGetAVenue() {
-//      assertNotNull(venueCollection.getVenueFromToken("123N"));
-//    }
-//
-//    @Test
-//    void whenIAttemptToFetchVenueByInvalidTokenInvalidTokenException() {
-//	  assertThrows(IllegalArgumentException.class, () -> venueCollection.getVenueFromToken("invalid"));
-//    }
 
     @Test
     void whenAVenuesResponseIsSetThenItReturnsTrue() {

@@ -9,51 +9,46 @@
  *
  *  END OF LICENSE INFORMATION
  */
-@import '../abstracts/typography';
+@import "../abstracts/typography";
+@import "../abstracts/colors";
+@import "../base/schemes";
 
-$logo-size: 250px;
+$details_margin: .2em;
+$details_padding: .2em;
+$details_border_radius: .5em;
 
-#available_dates {
-  .banner {
-    display: grid;
-    grid-template-areas:
-      "logo welcome_message"
-      "logo host_request";
-    grid-template-columns: $logo-size 1fr;
-    column-gap: 5em;
-    width: 79.7vw;
-    padding: 2em 10vw;
-
-    img {
-      grid-area: logo;
-      width: $logo-size;
-      max-height: $logo-size;
-    }
-
-    h1 {
-      grid-area: welcome_message;
-    }
-
-    form {
-      p {
-        margin-top: 0;
-      }
-
-      button {
-        @include font-size('medium');
-      }
-    }
-  }
-
-  #more-meetups {
-    padding: 2em 10vw;
-    h2 {
-      color: #006600;
-    }
-
-    td,
-    th {
-      padding: 0.25em;
-    }
-  }
+#modal {
+  background-color: theme-color('base', 'light');;
+  //border: 5px solid theme-color('primary', 'light');
+  color: theme-color('base', 'dark');
+  position: absolute;
+  margin-top: -20vh;
+  margin-left: 15vw;
+  padding: 5vw;
+  width: 60vw;
+  z-index: 500;
 }
+
+#modal button {
+  width: 45vw;
+  text-wrap: normal;
+  margin-left: 5vw;
+
+}
+
+.hidden {
+  display: none;
+}
+
+.mask {
+  z-index: 400;
+  background-color: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+}
+
+

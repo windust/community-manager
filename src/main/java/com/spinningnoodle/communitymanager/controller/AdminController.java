@@ -42,7 +42,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class AdminController {
-    boolean loggedIn = false;
     
     @Autowired
     DataManager model;
@@ -51,46 +50,66 @@ public class AdminController {
      * Route to basic login screen
      * @return login - name of html page to render
      */
-    //TODO convert login to auth
     @GetMapping("/")
     public String login(){
         return "login";
     }
-    
+
+    /**
+     * loginSuccess route that checks if user is a valid admin
+     * from the database email and if so allows the user access
+     * to the website after logging in via google OAuth.
+     * @param request HttpServletRequest
+     * @param authentication OAuth2AuthenticationToken
+     * @return redirect to another page depending on if they are allowed access
+     */
     @RequestMapping("/loginSuccess")
     public String loginSuccess(HttpServletRequest request, OAuth2AuthenticationToken authentication){
         Map<String, Object> properties = authentication.getPrincipal().getAttributes();
         String email = (String) properties.get("email");
         
         if(model.verifyAdmin(email) && authentication.isAuthenticated()){
-            loggedIn = true;
             return "redirect:/upcoming";
         }
         else{
+            authentication.setAuthenticated(false);
             new SecurityContextLogoutHandler().logout(request, null, null);
             return "redirect:/";
         }
     }
-    
+
+    /**
+     * Route to log_out the user from the website and route
+     * back to login page.
+     * @param request HttpServeletRequest
+     * @return redirect to login page
+     */
     //Route cannot equal "logout" because that is oauth default
     @RequestMapping("/log_out")
     public String logOut(HttpServletRequest request){
         new SecurityContextLogoutHandler().logout(request, null, null);
 
-        loggedIn = false;
         return "redirect:/";
     }
-    
+
+    /**
+     * Route to basic admin page - The admin page contains
+     *          information needed to administer the site.
+     * @return admin - name of html page to render
+     */
+    @GetMapping("/admin")
+    public String admin(){
+        return "admin";
+    }
+
+
     /**
      * Route to page for displaying upcoming dates
      * @param session - session to store variables for view to display
      * @return upcoming_dates - name of html page to render
      */
     @GetMapping("/upcoming")
-    public String upcomingDates(HttpSession session) throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
+    public String upcomingDates(HttpSession session){
         
         List<Meetup> meetups = model.getAllMeetups();
         
@@ -107,13 +126,7 @@ public class AdminController {
      * logged in.
      */
     @PostMapping("/meetup")
-    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session)
-        throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
-
-        //TODO consider having this done in the model somewhere
+    public String meetup(@RequestParam(name = "meetupKey") String meetupKey, HttpSession session){
         List<Meetup> meetups = model.getAllMeetups();
         Meetup meetup = null;
         for (Meetup mtup: meetups) {
@@ -124,12 +137,15 @@ public class AdminController {
             }
         }
 
-        List<Venue> venues = model.getAllVenues();
-        session.setAttribute("venues", venues);
+        if(meetup.getVenue().isEmpty()) {
+            List<Venue> venues = model.getAllVenues();
+            session.setAttribute("venues", venues);
+        }
 
-        //ToDo change venue to FoodSponsor
-        List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
-        session.setAttribute("foodsponsors", foodSponsors);
+        if(meetup.getFood().isEmpty()) {
+            List<FoodSponsor> foodSponsors = model.getAllFoodSponsors(meetup);
+            session.setAttribute("foodsponsors", foodSponsors);
+        }
 
         return "meetup";
     }
@@ -143,32 +159,29 @@ public class AdminController {
      */
     @RequestMapping(path = "/getVenueToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getVenueToken(@RequestBody String params) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
+    public String getVenueToken(@RequestBody String params) {
             String[] args = params.split("&");
             String venueKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
 
             return  model.requestHost(venueKey, Entity.convertDate(date));
-        }
     }
-    
+
+    /**
+     * Route referred to by ajax to get a food's
+     * token from DB and returns it.
+     * @param params
+     * @return token for food required
+     * @throws InvalidUserException
+     */
     @RequestMapping(path = "/getFoodToken", produces = "application/json; charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String getFoodToken(@RequestBody String params) throws InvalidUserException {
-        if(!loggedIn){
-            throw new InvalidUserException();
-        }
-        else{
+    public String getFoodToken(@RequestBody String params) {
             String[] args = params.split("&");
             String foodKey = args[0].split("=")[1];
             String date = args[1].split("=")[1];
             
             return  model.requestFood(foodKey, Entity.convertDate(date));
-        }
     }
 
     /**
@@ -177,11 +190,7 @@ public class AdminController {
      * @return upcoming_dates - name of html page to render
      */
     @GetMapping("/venue_sheet")
-    public String venueSheet(HttpSession session) throws InvalidUserException {
-        if(!loggedIn) {
-            throw new InvalidUserException();
-        }
-
+    public String venueSheet(HttpSession session) {
         String url = model.getDatabaseAccessPage();
         session.setAttribute("dbaccess", url);
 

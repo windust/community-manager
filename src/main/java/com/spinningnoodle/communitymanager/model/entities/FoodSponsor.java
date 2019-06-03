@@ -11,7 +11,6 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 
-import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -32,8 +31,7 @@ public class FoodSponsor extends ResponderEntity{
 
 
     @Override
-    public FoodSponsor build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
-        //TODO see todo in Venue build method and apply here.
+    public FoodSponsor build(Map<String, String> fields) {
         this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -41,9 +39,10 @@ public class FoodSponsor extends ResponderEntity{
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedDate(convertDate(fields.getOrDefault("requestedFoodDate", null)));
-        this.setResponse(convertResponse(fields.getOrDefault("foodResponse", "")));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedDate", null)));
+        this.setResponse(convertResponse(fields.getOrDefault("response", "")));
         this.setToken(fields.getOrDefault("token", null));
+        this.messages = generateMessages();
 
         return this;
     }
@@ -55,6 +54,11 @@ public class FoodSponsor extends ResponderEntity{
         super();
     }
 
+    /**
+     * FoodSponsor constructor with the parameter int
+     * primaryKey and a call to the superConstructor.
+     * @param primaryKey
+     */
     public FoodSponsor(int primaryKey){
         super(primaryKey);
     }
@@ -162,6 +166,39 @@ public class FoodSponsor extends ResponderEntity{
      */
     public void setContactAltPhone(String contactAltPhone){
         this.contactAltPhone = contactAltPhone;
+    }
+    
+    @Override
+    protected Map<Receipt, String> generateMessages(){
+        Map<Receipt, String> messages = super.generateMessages();
+        String date;
+        if(getRequestedDate() == null){
+            date = "";
+        } else {
+            date = getRequestedDate().format(dateFormat);
+        }
+        
+        messages.put(Receipt.NOT_RESPONDED, "Can you provide food on " + date + "?");
+        messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + date + " is already being provided food by another sponsor.");
+        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + date + ", Contact your SeaJUG contact to cancel.");
+        
+        return messages;
+    }
+
+    /**
+     *
+     * @return this contacts response to food request
+     */
+    public Response getFoodResponse(){
+        return super.getResponse();
+    }
+
+    /**
+     *
+     * @param foodResponse this contacts response to request to sponsor food.
+     */
+    public void setFoodResponse(Response foodResponse){
+        super.setResponse(foodResponse);
     }
 
     @Override

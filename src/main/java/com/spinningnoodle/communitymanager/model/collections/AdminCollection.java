@@ -25,6 +25,9 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "admins")
 public class AdminCollection extends EntityCollection<Admin> {
 
+    /**
+     * AdminCollection constructor with a call to the super constructor in EntityCollection
+     */
     public AdminCollection() {
         super("admins");
     }

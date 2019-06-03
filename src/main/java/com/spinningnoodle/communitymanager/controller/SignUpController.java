@@ -13,11 +13,13 @@ package com.spinningnoodle.communitymanager.controller;
 
 import com.spinningnoodle.communitymanager.exceptions.InvalidUserException;
 import com.spinningnoodle.communitymanager.model.DataManager;
+import com.spinningnoodle.communitymanager.model.collections.ResponderCollection;
+import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity;
 import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +41,16 @@ public class SignUpController {
     @Autowired
     DataManager model;
     
-    String currentToken;
-    String venueName;
+    /*
+    because if fields are shared between users then
+    multiple users signing up at the same time will
+    break application
+    */
+    String responderName;
     LocalDate requestedDate;
-    String hostingMessage = "";
     String alertMessage = "";
-    boolean requestedDateAvailable = true;
     boolean alert = false;
-    boolean hostingRequestedDate = false;
-    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-    
-    //TODO update javadocs
+
     /**
      * Route for venues to sign up to host meetups
      * if they have a valid token
@@ -61,31 +62,9 @@ public class SignUpController {
     @GetMapping("/venue")
     public String venue(@RequestParam(name = "token") String token, HttpSession session) {
         try{
-            Response response;
-            List<Meetup> meetups;
-            Venue venue;
-            meetups = model.getAllMeetups();
-            venue = model.getVenueByToken(token);
+            Venue venue = model.getVenueByToken(token);
             
-            currentToken = token;
-            this.venueName = venue.getName();
-            this.requestedDate = venue.getRequestedDate();
-            response = venue.getResponse();
-            
-            this.requestedDateAvailable = isDateAvailable(meetups, requestedDate);
-            
-            if(!requestedDateAvailable){
-                setHostingRequestedDate(meetups);
-            }
-            
-            this.hostingMessage = getHostingMessage(response);
-            
-            session.setAttribute("meetups", meetups);
-            session.setAttribute("venue", venue);
-            session.setAttribute("hostingMessage", this.hostingMessage);
-            session.setAttribute("ask", this.requestedDateAvailable && response.equals(Response.UNDECIDED));
-            session.setAttribute("alert", alert);
-            session.setAttribute("alertMessage", alertMessage);
+            generateSessionVariables(session, venue, "venue");
             
             return "available_dates";
         }
@@ -94,69 +73,100 @@ public class SignUpController {
         }
         
     }
-    
-    private String getHostingMessage(Response response){
-        if(requestedDateAvailable && response.equals(Response.UNDECIDED)){
-            return "Can you host on " + requestedDate.format(dateFormat) + "?";
+
+    /**
+     * Route to the food sponsor sign up page
+     * @param token String
+     * @param session HttpSession
+     * @return food sign up page
+     */
+    @GetMapping("/food")
+    public String food(@RequestParam(name = "token") String token, HttpSession session) {
+        try{
+            FoodSponsor foodSponsor = model.getFoodByToken(token);
+            
+            generateSessionVariables(session, foodSponsor, "foodSponsor");
+            
+            return "food_dates";
         }
-        else if(response.equals(Response.DECLINED)){
-            return "Thank you for your consideration.";
+        catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(e.getMessage());
         }
-        else if(!requestedDateAvailable && !hostingRequestedDate){
-            return "Thank you for volunteering but " + requestedDate.format(dateFormat) + " is already being hosted by another venue.";
-        }
-        else if(hostingRequestedDate){
-            return "Thank you for hosting on " + requestedDate.format(dateFormat) + ", Contact your SeaJUG contact to cancel.";
-        }
-        else if(!hostingRequestedDate && response.equals(Response.ACCEPTED)){
-            //assumes venue cancelled and SeaJUG volunteer removed them
-            //from meetup and then changes venue.response to reflect this
-            boolean success = model.setVenueForMeetup(venueName, "notHosting", requestedDate);
-            if(success){
-                return getHostingMessage(Response.DECLINED);
-            }
-            else{
-                throw new IllegalArgumentException("Unable to update response");
-            }
-        }
-        else{
-            return "Unable to generate proper response given: "
-                + requestedDate.format(dateFormat) + ", " + requestedDateAvailable + ", " + response;
-        }
+        
     }
     
-    private boolean isDateAvailable(List<Meetup> meetups, LocalDate date) {
-        for(Meetup meetup : meetups){
-            if(meetup.getDate().equals(date) && meetup.getVenue().equals("")){
-                return true;
+    private void generateSessionVariables(HttpSession session, ResponderEntity responder, String responderType){
+        List<Meetup> meetups = model.getAllHostedMeetups();
+        if(responder instanceof Venue) meetups = model.getAllMeetups();
+        Meetup currentMeetup = new Meetup();
+        this.responderName = responder.getName();
+        this.requestedDate = responder.getRequestedDate();
+
+        for (Meetup meetup : meetups){
+            if(meetup.getDate().equals(responder.getRequestedDate())){
+                currentMeetup = meetup;
             }
         }
         
-        return false;
+        session.setAttribute("meetups", meetups);
+        session.setAttribute(responderType, responder);
+        session.setAttribute("hostingMessage", model.getMessage(responder));
+        session.setAttribute("ask",
+            ResponderCollection.isRequestedDateAvailable(currentMeetup, responder)
+                && responder.getResponse().equals(Response.UNDECIDED));
+        session.setAttribute("alert", alert);
+        session.setAttribute("alertMessage", alertMessage);
     }
-    
-    private void setHostingRequestedDate(List<Meetup> meetups){
-        for(Meetup meetup : meetups){
-            if(meetup.getDate().equals(this.requestedDate) && meetup.getVenue().equals(venueName)){
-                hostingRequestedDate = true;
-            }
-        }
-    }
-    
+
+    /**
+     * Venue sign up page post mapping route.
+     * @param meetupDate String
+     * @param foodDate String
+     * @param token String
+     * @return venue sign up page
+     */
     @PostMapping("/venueSignUp")
-    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "food", required = false) boolean food){
+    public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
+        @RequestParam(name = "venueKey") int venueKey,
+        @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
+        @RequestParam(name = "token") String token){
+        System.out.println(venueKey);
         boolean success;
-        
-        success = model.setVenueForMeetup(venueName, meetupDate, requestedDate);
+        success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
+        if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
+            model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
+        }
+        if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
+            model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
+        }
+        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
+            alert = true;
+            alertMessage = getAlertMessage(success, meetupDate);
+        }
+
+        return "redirect:/venue?token=" + token;
+    }
+
+    /**
+     * Food sign up page
+     * @param meetupDate String
+     * @param token String
+     * @return food sign up page.
+     */
+    @PostMapping("/foodSignUp")
+    public String foodSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "token") String token){
+        boolean success;
+
+        success = model.setFoodForMeetup(responderName, meetupDate, requestedDate);
 
         if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
             alert = true;
             alertMessage = getAlertMessage(success, meetupDate);
         }
 
-        return "redirect:/venue?token=" + this.currentToken;
+        return "redirect:/food?token=" + token;
     }
-    
+
     private String getAlertMessage(boolean successful, String date){
         if(successful){
             return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";

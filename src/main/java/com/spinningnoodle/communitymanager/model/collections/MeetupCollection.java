@@ -26,6 +26,10 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "meetups")
 public class MeetupCollection extends EntityCollection<Meetup> {
 
+	/**
+	 * MeetupCollection constructor with a call to the
+	 * super constructor in the ResponderCollection.
+	 */
 	public MeetupCollection(){
 		super("meetups");
 	}
@@ -57,7 +61,6 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 			e.printStackTrace();
 		}
 		
-		//TODO refactor in order to remove null
 		return null;
 	}
 
@@ -77,6 +80,15 @@ public class MeetupCollection extends EntityCollection<Meetup> {
 		for(Meetup meetup : getEntitiesValues()) {
 			if(meetup.getDate().equals(hostingDate) && (meetup.getVenue() == null || meetup.getVenue().isBlank())) {
 				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "venue", venueName);
+			}
+		}
+		return false;
+	}
+	
+	public boolean setFoodForMeetup(String foodName, LocalDate hostingDate) {
+		for(Meetup meetup : getEntitiesValues()) {
+			if(meetup.getDate().equals(hostingDate) && (meetup.getFood() == null || meetup.getFood().isBlank())) {
+				return dataStorageUpdate(getTableName(), Integer.toString(meetup.getPrimaryKey()), "food", foodName);
 			}
 		}
 		return false;

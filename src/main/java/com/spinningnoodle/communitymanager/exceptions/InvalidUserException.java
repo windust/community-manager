@@ -12,9 +12,22 @@ package com.spinningnoodle.communitymanager.exceptions;
  */
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+/**
+ * Invalid user exception is thrown when a user that
+ * isn't allowed access to the website or if they try
+ * to go to the admin page when not logged in.
+ *
+ * @author Cream 4 UR Coffee
+ * @version 0.1
+ */
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Invalid token or not logged in")
 public class InvalidUserException extends Exception {
+
+    /**
+     * Constructor with a call to the super constructor
+     * that passes the a String to super for the reason
+     * why the exception was thrown.
+     */
     public InvalidUserException(){
         super("Please login or provide a valid token");
     }

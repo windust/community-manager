@@ -12,6 +12,7 @@ package com.spinningnoodle.communitymanager.model.entities;
  */
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,19 +23,17 @@ import java.util.Map;
  * @author Cream 4 UR Coffee
  * @version 0.1
  */
-public class Venue extends ResponderEntity {
+public class Venue extends FoodSponsor {
     private String address;
     private int capacity;
     private String contactPerson;
     private String contactEmail;
     private String contactPhone;
     private String contactAltPhone;
-//    private LocalDate requestedHostingDate;
-//    private String response;
+    private Response foodResponse;
 
     @Override
     public Venue build(Map<String, String> fields) throws UnexpectedPrimaryKeyException {
-        //TODO find out how many of these fields can be abstracted to reduce redundant code
     	this.setPrimaryKey(Integer.parseInt(fields.getOrDefault("primaryKey", "-1")));
         this.setName(fields.getOrDefault("name", null));
         this.setAddress(fields.getOrDefault("address", null));
@@ -43,9 +42,11 @@ public class Venue extends ResponderEntity {
         this.setContactEmail(fields.getOrDefault("contactEmail", null));
         this.setContactPhone(fields.getOrDefault("contactPhone", null));
         this.setContactAltPhone(fields.getOrDefault("contactAltPhone", null));
-        this.setRequestedDate(convertDate(fields.getOrDefault("requestedHostingDate", null)));
+        this.setRequestedDate(convertDate(fields.getOrDefault("requestedDate", null)));
         this.setResponse(convertResponse(fields.getOrDefault("response", "")));
+        this.setFoodResponse(convertResponse(fields.getOrDefault("foodResponse", "")));
         this.setToken(fields.getOrDefault("token", ""));
+        this.messages = generateMessages();
 
         return this;
     }
@@ -57,6 +58,11 @@ public class Venue extends ResponderEntity {
         super();
     }
 
+    /**
+     * Venue constructor with int parameter primaryKey
+     * that's passed to the super constructor.
+     * @param primaryKey int
+     */
     public Venue(int primaryKey) {
         super(primaryKey);
     }
@@ -72,11 +78,14 @@ public class Venue extends ResponderEntity {
 	 * @param contactEmail The email the venue can be reached at
 	 * @param contactPhone The phone number the venue can be reached at
 	 * @param contactAltPhone An alternate phone number which could be used to contact the venue
-	 * @param requestedHostingDate The date this venue has requested to host
+	 * @param requestedDate The date this venue has requested to host
+     * @param response This venues response to the requested date
+     * @param foodResponse This venue's response to also providing food
+     * @param token The token of the venue
 	 */
     public Venue(int primaryKey, String name, String address, int capacity, String contactPerson,
         String contactEmail, String contactPhone, String contactAltPhone,
-        LocalDate requestedHostingDate) {
+        LocalDate requestedDate, String response, String foodResponse, String token) {
         this.setPrimaryKey(primaryKey);
         setName(name);
         this.address = address;
@@ -85,7 +94,10 @@ public class Venue extends ResponderEntity {
         this.contactEmail = contactEmail;
         this.contactPhone = contactPhone;
         this.contactAltPhone = contactAltPhone;
-        setRequestedDate(requestedHostingDate);
+        this.setRequestedDate(requestedDate);
+        this.setResponse(convertResponse(response));
+        this.setFoodResponse(convertResponse(foodResponse));
+        this.setToken(token);
     }
 
 	/**
@@ -173,7 +185,45 @@ public class Venue extends ResponderEntity {
         this.contactAltPhone = contactAltPhone;
     }
 
-	@Override
+    /**
+     *
+     * @return this contacts response to food request
+     */
+    @Override
+    public Response getFoodResponse(){
+        return foodResponse;
+    }
+
+    /**
+     *
+     * @param foodResponse this contacts response to request to sponsor food.
+     */
+    @Override
+    public void setFoodResponse(Response foodResponse){
+        this.foodResponse = foodResponse;
+    }
+    
+    @Override
+    protected Map<Receipt, String> generateMessages(){
+        Map<Receipt, String> messages = new HashMap<>();
+        String date;
+        
+        if(getRequestedDate() == null){
+            date = "";
+        } else {
+            date = getRequestedDate().format(dateFormat);
+        }
+        
+        messages.put(Receipt.NO, "Thank you for your consideration.");
+        messages.put(Receipt.NOT_RESPONDED, "Can you host on " + date + "?");
+        messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + date + " is already being hosted by another venue.");
+        messages.put(Receipt.ACCEPTED, "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.");
+        messages.put(Receipt.ACCEPTED_PLUS, "Thank you for hosting and providing food on " + date + ", Contact your SeaJUG contact to cancel.");
+        
+        return messages;
+    }
+
+    @Override
 	public String toString() {
 		return "Venue{" +
 			", primaryKey=" + this.getPrimaryKey() +
@@ -185,6 +235,8 @@ public class Venue extends ResponderEntity {
 			", contactPhone='" + contactPhone + '\'' +
 			", contactAltPhone='" + contactAltPhone + '\'' +
 			", requestedHostingDate='" + getRequestedDate() + '\'' +
+            ", response='" + getResponse() + '\'' +
+            ", foodResponse='" + getFoodResponse() + '\'' +
             ", token='" + getToken() + '\''+
 			'}';
 	}

@@ -9,22 +9,71 @@
  *
  *  END OF LICENSE INFORMATION
  */
-document.forms["meetup_signup"].onsubmit = function (){
-  var date = document.activeElement.value;
-  var confirmed = confirm("Are you sure you'd like to host the meetup on " + date + "?");
 
-  if(confirmed){
-    var food = confirm("Would you like to provide food for the meetup?");
+for(i = 0; i < document.forms.length;i++){
+  document.forms[i].onsubmit = function (){
+    return confirmation();
+  }
+}
 
-    if(food){
-      var hiddenInput = document.createElement("INPUT");
-      hiddenInput.style.visibility = 'hidden';
-      hiddenInput.setAttribute("name", "food");
-      hiddenInput.value = "true";
-      this.appendChild(hiddenInput);
+confirmation = function (){
+  var thisButton = document.activeElement;
+  var hiddenInput = document.getElementById("hiddenInput");
+
+  var date = thisButton.value;
+  var thisName = thisButton.name;
+  var hiddenName = hiddenInput.name;
+
+  if(hiddenInput.name === "unused") {
+    if (date === "notHosting") {
+      resetModal();
+      return true;
     }
+    hiddenInput.name = "confirm";
+    hiddenInput.value = date;
+
+    var taken = false;
+    document.getElementsByName("meetup").forEach(function(element) {
+      if(element.value == date && element.getAttribute("data_food")==="taken"){
+        taken = true;
+      }
+    });
+    if(taken || thisButton.getAttribute("data_food") === "taken"){
+      document.getElementById("modalYes").classList.add("hidden");
+      document.getElementById("foodMessage").classList.add("hidden");
+      document.getElementById("foodDecline").classList.add("hidden");
+      document.getElementById("modalJustYes").value="";
+    }
+
+    openConfirmModal();
+    return false;
+  }
+//can the first two arguments be removed here?
+  if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
+    resetModal();
+    return false;
   }
 
+  return true;
+}
 
-  return confirmed;
-};
+openConfirmModal = function ( ) {
+  mask = document.getElementById("mask");
+  mask.classList.add("mask");
+
+  modal = document.getElementById("modal");
+  modal.classList.remove("hidden");
+
+  var date = document.activeElement.value;
+  document.getElementById("meetupDate").value = date;
+  document.getElementById("modalDate").innerHTML = date;
+
+}
+
+resetModal = function () {
+  var hiddenInput = document.getElementById("hiddenInput");
+  hiddenInput.name = "unused";
+  modal.classList.add("hidden");
+  mask = document.getElementById("mask");
+  mask.classList.remove("mask");
+}

@@ -11,7 +11,6 @@ package com.spinningnoodle.communitymanager.model.entities;
  *  END OF LICENSE INFORMATION
  */
 import com.spinningnoodle.communitymanager.exceptions.AttributeException;
-import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -29,18 +28,27 @@ public class Meetup extends Entity {
 	private String topic;
 	private String description;
 	private String venue;
+	private Venue venueEntity;
 	private String food;
+	private FoodSponsor foodSponsorEntity;
 	private String after;
 
+	/**
+	 * Default Meetup constructor that a
+	 * new Meetup with a unique ID.
+	 */
 	public Meetup(){}
 
+	/**
+	 * Meetup constructor that takes in a parameter int
+	 * primaryKey and has a call to the super constructor with
+	 * primaryKey passed in.
+	 * @param primaryKey
+	 */
 	public Meetup(int primaryKey) {
 		super(primaryKey);
 	}
-
-	/*
-		Todo UPDATE Javadocs
-	 */
+	
     /**
      * Create a new Meetup with all fields and a unique generated ID
      *
@@ -61,6 +69,8 @@ public class Meetup extends Entity {
 		this.venue = venue;
 		this.food = food;
 		this.after = after;
+		this.venueEntity = null;
+		this.foodSponsorEntity = null;
 	}
 
 	@Override
@@ -70,9 +80,11 @@ public class Meetup extends Entity {
 		this.setSpeaker(fields.getOrDefault("speaker", null));
 		this.setTopic(fields.getOrDefault("topic", null));
 		this.setDescription(fields.getOrDefault("description", null));
-		this.setVenue(fields.getOrDefault("venue", null));
-		this.setFood(fields.getOrDefault("food", null));
+		this.setVenue(fields.getOrDefault("venue", ""));
+		this.setFood(fields.getOrDefault("food", ""));
 		this.setAfter(fields.getOrDefault("after", null));
+		this.venueEntity = null;
+		this.foodSponsorEntity = null;
 
 		return this;
 	}
@@ -147,18 +159,54 @@ public class Meetup extends Entity {
 		this.venue = venue;
 	}
 
+	public Venue getVenueEntity() {
+		return venueEntity;
+	}
+	/**
+	 * @param venueEntity The complete venueEntity which will host the meetup
+	 */
+	public void setVenueEntity(Venue venueEntity) {
+		this.venueEntity = venueEntity;
+	}
+
+	public FoodSponsor getFoodSponsorEntity() {
+		return foodSponsorEntity;
+	}
+	/**
+	 * @param foodSponsorEntity The complete foodSponsorEntity which will host the meetup
+	 */
+	public void setFoodSponsorEntity(FoodSponsor foodSponsorEntity) {
+		this.foodSponsorEntity = foodSponsorEntity;
+	}
+
+	/**
+	 * Getter for food.
+	 * @return the food sponsor for the event
+	 */
 	public String getFood() {
 		return food;
 	}
 
+	/**
+	 * Setter for food
+	 * @param food sponsor for the event
+	 */
 	public void setFood(String food) {
 		this.food = food;
 	}
 
+	/**
+	 * Getter for After Event.
+	 * @return the After Event host.
+	 */
 	public String getAfter() {
 		return after;
 	}
 
+	/**
+	 * Setter for After Event.
+	 * @param after event host.
+	 */
 	public void setAfter(String after) {
 		this.after = after;
 	}

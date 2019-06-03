@@ -14,7 +14,6 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
 import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
@@ -32,14 +31,42 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository(value = "food")
-public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
+public class FoodSponsorCollection<T extends FoodSponsor> extends ResponderCollection<T>{
 
+    /**
+     * FoodSponsorCollection constructor with a call to the
+     * super constructor in the ResponderCollection
+     */
     public FoodSponsorCollection(){
         super("foodSponsors");
     }
 
+    /**
+     * FoodSponsorCollection constructor  with a String tableName
+     * parameter passed to the constructor and a call super constructor
+     * in ResponderCollection.
+     * @param tableName String parameter for the tableName
+     */
+    public FoodSponsorCollection(String tableName){
+        super(tableName);
+    }
+
+
+    /**
+     *
+     * @param dataStorage
+     */
     public FoodSponsorCollection(DataStorage dataStorage){
         super(dataStorage, "foodSponsors");
+    }
+
+    /**
+     *
+     * @param dataStorage
+     * @param tableName
+     */
+    public FoodSponsorCollection(DataStorage dataStorage, String tableName){
+        super(dataStorage, tableName);
     }
 
 
@@ -65,7 +92,6 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
             e.printStackTrace();
         }
 
-        //TODO refactor in order to remove null
         return null;
     }
 
@@ -77,13 +103,24 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
      * @return if dataStorage successfully updated
      */
     public boolean updateResponse(String foodSponsorName, Response response){
-        for(FoodSponsor foodSponsor : getAll()){
+        for(T foodSponsor : getAll()){
             if(foodSponsor.getName().equals(foodSponsorName)){
-                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "foodResponse", response.getFriendlyName());
+                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "response", response.getFriendlyName());
             }
         }
 
         return false;
+    }
+
+    /**
+     * Updates food sponsor response to provide food
+     *
+     * @param foodSponsorName the name of food sponsor that responded
+     * @param response the response from the food sponsor
+     * @return if dataStorage successfully updated
+     */
+    public boolean updateFoodResponse(String foodSponsorName, Response response){
+        return updateResponse(foodSponsorName,response);
     }
 
     /**
@@ -96,27 +133,10 @@ public class FoodSponsorCollection extends ResponderCollection<FoodSponsor>{
     public boolean updateRequestedDate(String foodSponsorName, LocalDate date){
         for(FoodSponsor foodSponsor : getAll()){
             if(foodSponsor.getName().equals(foodSponsorName)){
-                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "requestedFoodDate", Entity.dateFormat.format(date));
+                return dataStorageUpdate(getTableName(), Integer.toString(foodSponsor.getPrimaryKey()), "requestedDate", Entity.dateFormat.format(date));
             }
         }
 
         return false;
-    }
-
-    /**
-     * Gets food sponsor based on it's primary key
-     *
-     * @param key the primary key to search by
-     * @return a foodSponsor object
-     * @throws EntityNotFoundException
-     */
-    public FoodSponsor getByPrimaryKey(int key) throws EntityNotFoundException{
-        for(FoodSponsor foodSponsor : getEntitiesValues()){
-            if(foodSponsor.getPrimaryKey() == key){
-                return foodSponsor;
-            }
-        }
-
-        throw new EntityNotFoundException();
     }
 }

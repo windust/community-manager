@@ -15,17 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import com.google.api.services.sheets.v4.model.Spreadsheet;
-import com.spinningnoodle.communitymanager.model.GoogleSheetsManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.ConnectException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -33,13 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 public class GoogleSheetsTest {
 
@@ -77,7 +67,7 @@ public class GoogleSheetsTest {
         row.put("contactPhone", "");
         row.put("altContactPhone", "");
         row.put("token", "123N");
-        row.put("requestedHostingDate", "01/14/2019");
+        row.put("requestedDate", "01/14/2019");
         list.add(row);
 
         row = new HashMap<>();
@@ -90,7 +80,7 @@ public class GoogleSheetsTest {
         row.put("contactPhone", "");
         row.put("altContactPhone", "");
         row.put("token", "143N");
-        row.put("requestedHostingDate", "01/14/2019");
+        row.put("requestedDate", "01/14/2019");
         list.add(row);
 
         expected = list;

@@ -226,8 +226,8 @@ class MeetupTest {
 			}
 
 			@Test
-			void whenIBuildAMeetupWithNoFieldsThenFoodShouldBeNull() {
-				assertNull(builtMeetup.getFood());
+			void whenIBuildAMeetupWithNoFieldsThenFoodShouldBeEmpty() {
+				assertEquals(builtMeetup.getFood(), "");
 			}
 
 			@Test

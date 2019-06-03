@@ -12,8 +12,8 @@ package com.spinningnoodle.communitymanager.model.collections;
  */
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
-import com.spinningnoodle.communitymanager.exceptions.EntityNotFoundException;
 import com.spinningnoodle.communitymanager.exceptions.UnexpectedPrimaryKeyException;
+import com.spinningnoodle.communitymanager.model.entities.ResponderEntity.Response;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
 import java.io.IOException;
 import java.util.Map;
@@ -26,12 +26,21 @@ import org.springframework.stereotype.Repository;
  * @version 0.1
  */
 @Repository(value = "venues")
-public class VenueCollection extends ResponderCollection<Venue> {
+public class VenueCollection extends FoodSponsorCollection<Venue> { //ResponderCollection<Venue> {
 
+	/**
+	 * VenueCollection constructor with a call to it is super
+	 * constructor.
+	 */
 	public VenueCollection(){
 		super("venues");
 	}
-	
+
+	/**
+	 * VenueCollection constructor with a parameter DataStorage
+	 * dataStorage and a call to it's super constructor.
+	 * @param dataStorage
+	 */
 	public VenueCollection(DataStorage dataStorage) {
 		super(dataStorage, "venues");
 	}
@@ -57,41 +66,24 @@ public class VenueCollection extends ResponderCollection<Venue> {
 			e.printStackTrace();
 		}
 		
-		//TODO refactor in order to remove null
 		return null;
 	}
 
-	//TODO review commented out code
-//	/**
-//	 * Get a venue from this collection based on its token as a Map of attributes
-//	 *
-//	 * @param venueToken the token to match
-//	 * @return A venue represented with a map of attributes
-//	 */
-//	public Map<String, String> getVenueFromToken(String venueToken){
-//		Venue venue = this.getEntityByToken(venueToken);
-//		Map<String, String> venueInfo = new HashMap<>();
-//		venueInfo.put("name", venue.getName());
-//		venueInfo.put("requestedDate", venue.getRequestedHostingDate());
-//		venueInfo.put("response", venue.getResponse());
-//
-//		return venueInfo;
-//	}
-
 	/**
-	 * gets a venue based on its primary key
+	 * Update a food sponsors response to hosting
 	 *
-	 * @param key the primary key to search by
-	 * @return a Venue object
-	 * @throws EntityNotFoundException
+	 * @param venueName The name of the venue which responded
+	 * @param foodResponse The venues response
+	 * @return If the dataStorage successfully updated
 	 */
-	public Venue getByPrimaryKey(int key) throws EntityNotFoundException{
-		for(Venue venue : getEntitiesValues()){
-			if(venue.getPrimaryKey() == key){
-				return venue;
+	@Override
+	public boolean updateFoodResponse(String venueName, Response foodResponse){
+		for(Venue venue : getAll()){
+			if(venue.getName().equals(venueName)){
+				return dataStorageUpdate(getTableName(), Integer.toString(venue.getPrimaryKey()), "foodResponse", foodResponse.getFriendlyName());
 			}
 		}
-		
-		throw new EntityNotFoundException();
+
+		return false;
 	}
 }
