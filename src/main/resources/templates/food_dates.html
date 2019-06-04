@@ -32,6 +32,10 @@
     </form>
 </header>
 
+<form id="meetup_confirm" method="post" action="/foodSignUp" modelAttribute="foodSponsor">
+    <div th:replace="fragments/foodSignupFragments.html :: responderConfirm"></div>
+</form>
+
 <article id="more-meetups" class="text-center">
     <h2 class="h2">Register to host <em>additional</em> dates below:</h2>
     <form id="meetup_signup" method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
@@ -66,7 +70,8 @@
         </table>
     </form>
 </article>
-
-<!--<script src="js/available_dates.js" async defer></script>-->
+<div id="mask">
+</div>
+<script src="js/food_dates.js" async defer></script>
 </body>
 </html>

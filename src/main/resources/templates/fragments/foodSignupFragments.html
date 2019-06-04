@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+ *  LICENSE
+ *  Copyright (c) 2019 Cream 4 UR Coffee: Kevan Barter, Melanie Felton, Quentin Guenther, Jhakon Pappoe, and Tyler Roemer.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at:
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ *
+ *  END OF LICENSE INFORMATION
+-->
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Food Sponsor</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="meetup">
+  <div id="modal" class="hidden" th:fragment="responderConfirm">
+    <h2><span th:text="${session.foodSponsor.getName()}">Food Sponsor</span>,</h2>
+    <p>You have offered to provide food on <span id="modalDate">Error</span> and have food delivered by 6:00pm.</p>
+    <p>Click a button below to confirm/cancel your selection. If you need to cancel after
+      confirming, you will need to check with your SeaJug contact.</p>
+    <input id="token" class="hidden"
+           name="token" th:value="${session.foodSponsor.getToken()}">
+    <input id="hiddenInput" class="hidden"
+           name="unused" th:value="${session.foodSponsor.getRequestedDate()}">
+    <input id="meetupDate" class="hidden"
+           name="meetup" th:value="${session.foodSponsor.getRequestedDate()}">
+    <input id="foodSponsor" class="hidden"
+           name="foodSponsorKey" th:value="${session.foodSponsor.getPrimaryKey()}">
+    <button id="modalYes" rel='confirm' class="btn_primary"
+            type="submit" name="food">I confirm I will provide food</button>
+    <button id="modalNo" rel='declineConfirm' type="submit" class="btn_primary"
+            name="food" value="notSponsoring">Cancel</button>
+  </div>
+</body>
+</html>
