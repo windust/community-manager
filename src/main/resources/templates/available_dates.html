@@ -22,6 +22,7 @@
       <img src="images/logo_draft_1.png" id="logo">
       <h1>Welcome<span th:if="${session.venue.getName()}">, <span th:text="${session.venue.getName()}"></span></span></h1>
       <form id="meetup_requested" method="POST" action="/venueSignUp" modelAttribute="venue">
+          <input class="hidden" name="venueKey" th:value="${session.venue.getPrimaryKey()}">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
           <input id="token" class="hidden"
                  name="token" th:value="${session.venue.getToken()}">
@@ -37,6 +38,7 @@
   <article id="more-meetups" class="text-center">
       <h2 class="h2">Register to host <em>additional</em> dates below:</h2>
       <form id="meetup_signup" method="POST" action="/venueSignUp" modelAttribute="venue">
+          <input class="hidden" name="venueKey" th:value="${session.venue.getPrimaryKey()}">
 
       <table>
           <thead>

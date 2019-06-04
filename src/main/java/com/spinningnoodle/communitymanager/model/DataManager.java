@@ -52,31 +52,27 @@ public interface DataManager {
 
     /**
      * Set's venue for meetup.
-     * @param venueName String
+     * @param venueKey int
      * @param requestedDate String
-     * @param dateRequestedByAdmin LocalDate
      * @return boolean for venue being set.
      */
-    boolean setVenueForMeetup(String venueName, String requestedDate, LocalDate dateRequestedByAdmin);
+    boolean setVenueForMeetup(int venueKey, String requestedDate);
 
     /**
      * Set's the venue food for the meetup.
-     * @param venueName String
+     * @param venueKey int
      * @param requestedDate String
-     * @param dateRequestedByAdmin LocalDate
      * @return boolean for food being set
      */
-    boolean setVenueFoodForMeetup(String venueName, String requestedDate,
-        LocalDate dateRequestedByAdmin);
+    boolean setVenueFoodForMeetup(int venueKey, String requestedDate);
 
     /**
      * Set's food for meetup.
-     * @param foodName String
+     * @param token String
      * @param requestedDate String
-     * @param dateRequestedByAdmin LocalDate
      * @return boolean for food being set
      */
-    boolean setFoodForMeetup(String foodName, String requestedDate, LocalDate dateRequestedByAdmin);
+    boolean setFoodForMeetup(String token, String requestedDate);
 
     /**
      * Get's a list of all the venues
