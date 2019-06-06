@@ -15,7 +15,6 @@ package com.spinningnoodle.communitymanager.datastorage;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -35,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,6 +65,7 @@ public class GoogleSheets implements DataStorage {
     private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.SPREADSHEETS);
 
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    
 
     /**
      * DataStorage(String storageID) - opens existing DataStorage;
@@ -139,9 +138,11 @@ public class GoogleSheets implements DataStorage {
             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
             .setAccessType("offline")
             .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
-            .setHost(InetAddress.getLocalHost().getHostAddress())
-            .setPort(8888).build();
+//        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
+//            .setHost(InetAddress.getLocalHost().getHostName())
+//            .setHost(InetAddress.getByAddress(PUBLIC_ADDRESS).getHostAddress())
+//            .setPort(-1).build();
+        CustomVerificationReciever receiver = new CustomVerificationReciever();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 

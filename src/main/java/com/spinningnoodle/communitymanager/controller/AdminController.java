@@ -17,6 +17,10 @@ import com.spinningnoodle.communitymanager.model.entities.Entity;
 import com.spinningnoodle.communitymanager.model.entities.FoodSponsor;
 import com.spinningnoodle.communitymanager.model.entities.Meetup;
 import com.spinningnoodle.communitymanager.model.entities.Venue;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +55,22 @@ public class AdminController {
      * @return login - name of html page to render
      */
     @GetMapping("/")
-    public String login(){
+    public String login(@RequestParam(name = "code", required = false) String code){
+        if(!code.equals("")){
+            try {
+                File token = new File("tokens/StoredCredential");
+                FileWriter writer = new FileWriter(token, true);
+                PrintWriter printer = new PrintWriter(writer);
+                
+                printer.print(code);
+                
+                printer.close();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    
         return "login";
     }
 
