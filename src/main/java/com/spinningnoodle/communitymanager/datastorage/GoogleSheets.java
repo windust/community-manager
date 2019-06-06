@@ -15,6 +15,7 @@ package com.spinningnoodle.communitymanager.datastorage;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -107,25 +108,18 @@ public class GoogleSheets implements DataStorage {
      */
     public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
-
-        Thread authnenticationThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-                    service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                        .setApplicationName(APPLICATION_NAME)
-                        .build();
-                    spreadsheet = service.spreadsheets().get(storageID).execute();
-                } catch (IOException e) {
-                    System.out.println("Logging exception " + e);
-                    //throw new IOException("Unable to connect to spreadsheet.");
-                } catch (GeneralSecurityException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        authnenticationThread.start();
+        try {
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+            spreadsheet = service.spreadsheets().get(storageID).execute();
+        } catch (IOException e) {
+            System.out.println("Logging exception " + e);
+            //throw new IOException("Unable to connect to spreadsheet.");
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
@@ -138,11 +132,9 @@ public class GoogleSheets implements DataStorage {
             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
             .setAccessType("offline")
             .build();
-//        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
-//            .setHost(InetAddress.getLocalHost().getHostName())
-//            .setHost(InetAddress.getByAddress(PUBLIC_ADDRESS).getHostAddress())
-//            .setPort(-1).build();
-        CustomVerificationReciever receiver = new CustomVerificationReciever();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder()
+            .setHost("ec2-52-14-112-68.us-east-2.compute.amazonaws.com")
+            .setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
