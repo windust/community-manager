@@ -18,11 +18,18 @@ for(i = 0; i < document.forms.length;i++){
 
 confirmation = function (){
   var thisButton = document.activeElement;
+  if(thisButton.id == "cancel"){
+    resetModal();
+    return false;
+  }
+
   var hiddenInput = document.getElementById("hiddenInput");
 
   var date = thisButton.value;
   var thisName = thisButton.name;
   var hiddenName = hiddenInput.name;
+
+  var foodSponsor = document.getElementById("food"+date).value;
 
   if(hiddenInput.name === "unused") {
     if (date === "notHosting") {
@@ -42,6 +49,8 @@ confirmation = function (){
       document.getElementById("modalYes").classList.add("hidden");
       document.getElementById("foodMessage").classList.add("hidden");
       document.getElementById("foodDecline").classList.add("hidden");
+      document.getElementById("foodProvided").classList.remove("hidden");
+      document.getElementById("providingFoodSponsor").innerText = foodSponsor;
       document.getElementById("modalJustYes").value="";
     }
 
@@ -49,6 +58,7 @@ confirmation = function (){
     return false;
   }
 //can the first two arguments be removed here?
+  //Nope, need hidden name to determine what the no button does right now.
   if(hiddenName == "confirm" && thisName === "meetup" && date === "notHosting") {
     resetModal();
     return false;
@@ -65,8 +75,11 @@ openConfirmModal = function ( ) {
   modal.classList.remove("hidden");
 
   var date = document.activeElement.value;
+  var splitDate = date.split("-");
+  var formattedDate = splitDate[1] + "-" + splitDate[2] + "-" + splitDate[0];
+
   document.getElementById("meetupDate").value = date;
-  document.getElementById("modalDate").innerHTML = date;
+  document.getElementById("modalDate").innerHTML = formattedDate;
 
 }
 
@@ -74,6 +87,11 @@ resetModal = function () {
   var hiddenInput = document.getElementById("hiddenInput");
   hiddenInput.name = "unused";
   modal.classList.add("hidden");
+  document.getElementById("modalYes").classList.remove("hidden");
+  document.getElementById("foodMessage").classList.remove("hidden");
+  document.getElementById("foodDecline").classList.remove("hidden");
+  document.getElementById("foodProvided").classList.add("hidden");
+  // document.getElementById("modalJustYes").value="";
   mask = document.getElementById("mask");
   mask.classList.remove("mask");
 }

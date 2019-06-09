@@ -20,13 +20,22 @@
 <body id="available_dates">
   <header class="banner">
       <img src="images/logo_draft_1.png" id="logo">
-      <h1>Welcome<span th:if="${session.venue.getName()}">, <span th:text="${session.venue.getName()}"></span></span></h1>
+      <h1>Welcome<span th:if="${session.venue.getName()}">,
+          <span th:text="${session.venue.getName()}"></span></span></h1>
       <form id="meetup_requested" method="POST" action="/venueSignUp" modelAttribute="venue">
-        <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
+          <p class="h4">Meetup hosts provide space and sometimes food.</p>
+        <p class="h3">
+            <span th:text="${session.hostingMessage}">
+                Message Hosting Error: Can you host one of the dates below
+            </span></p>
           <input id="token" class="hidden"
                  name="token" th:value="${session.venue.getToken()}">
-          <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.venue.getRequestedDate()}">Yes, I can host</button>
-          <button th:if="${session.ask}" type="submit" class="btn_secondary" name="meetup" value="notHosting">No, I can't host</button>
+          <button th:if="${session.ask}" type="submit" class="btn_primary"
+                  name="meetup" th:value="${session.venue.getRequestedDate()}">
+              Yes, I can host</button>
+          <button th:if="${session.ask}" type="submit" class="btn_secondary"
+                  name="meetup" value="notHosting">
+              No, I can't host</button>
       </form>
   </header>
 
@@ -52,6 +61,7 @@
                   <td th:text="${meetup.getDate()}"></td>
                   <td th:text="${meetup.getSpeaker()}"></td>
                   <td th:if="${meetup.getVenue() == ''}">
+                      <input class="hidden" th:id="food+${meetup.getDate()}" th:value="${meetup.getFood()}">
                       <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
                           Available for Hosting
                       </button>
