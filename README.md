@@ -1,71 +1,73 @@
-# community-manager
-
-The Community Manager is a open-source tool to facilitate Meetup venue, food, and eventually speaker
-arrangements. It provides an admin backend that allows admins to generate unique URLs which can be sent to venues and foods sponsors. These urls with embedded tokens allow the Community Manager to generate  up-to-date web pages tailored to the individual sponsor. It eliminates the need for emails which may contain outdated requests and for the Meetup admin to have to say Sorry if a vendor responds after they
- are no longer needed.
-
-It can be cloned from `https://github.com/windust/community-manager`
-
-For more information or to contribute to this project, please contact Seattle Area Java Users Group at present@seajug.org.
-
----
-
-## Table of Contents
-
-- [community-manager](#community-manager)
-  * [Table of Contents](#table-of-contents)
-  * [Getting started](#getting-started)
-    + [Prerequisites](#prerequisites)
-      - [Hardware constraints](#hardware-constraints)
-      - [Libraries which need to be installed](#libraries-which-need-to-be-installed)
-      - [Install via Gradle:](#install-via-gradle-)
-        * [Testing Libraries](#testing-libraries)
-      - [Development Environment](#development-environment)
-        * [Using SCSS](#using-scss)
-      - [Getting credentials](#getting-credentials)
-        * [GoogleSheets Credentials](#googlesheets-credentials)
-      - [Spreadsheet setup](#spreadsheet-setup)
-        * [1. meetups](#1-meetups)
-        * [2. venues](#2-venues)
-        * [3. foodSponsors](#3-foodsponsors)
-        * [4. admins](#4-admins)
-        * [5. speakers](#5-speakers)
-        * [6. lightningTalks](#6-lightningtalks)
-    + [Installing](#installing)
-      - [Setup configuration files](#setup-configuration-files)
-  * [Running the tests](#running-the-tests)
-    + [Breakdown into the end-to-end tests](#breakdown-into-the-end-to-end-tests)
-    + [And coding style tests](#and-coding-style-tests)
-  * [System Architecture](#system-architecture)
-    + [Model](#model)
-      - [Entities](#entities)
-      - [Collections](#collections)
-    + [Database](#database)
-      - [DataManager](#datamanager)
-      - [DataStorage](#datastorage)
-    + [Controller](#controller)
-    + [OAuth](#oauth)
-    + [Exceptions](#exceptions)
-    + [Resources](#resources)
-      - [CSS](#css)
-      - [SCSS](#scss)
-      - [Templates](#templates)
-  * [Deployment](#deployment)
-    + [Docker](#docker)
-  * [Security considerations](#security-considerations)
-    + [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
-  * [Built with](#built-with)
-  * [Desired Improvements](#desired-improvements)
-  * [Contributing](#contributing)
-  * [Authors](#authors)
-  * [License](#license)
-  * [Acknowledgments](#acknowledgments)
+# Community Manager
+                   
+ The Community Manager is a open-source tool to facilitate Meetup venue, food, and eventually speaker
+ arrangements. It provides admins the ability to generate unique URLs which can be sent to venues and 
+ foods sponsors. These urls with embedded tokens allow the Community Manager to generate  up-to-date 
+ web pages tailored to the individual sponsor. It eliminates emails that contain outdated requests 
+ and for the Meetup admin to have to apologize if a vendor responds after they are no longer needed.
+ 
+ It can be cloned from `https://github.com/windust/community-manager`
+ 
+ For more information or to contribute to this project, please contact Seattle Area Java Users Group at freddy.guime@seajug.org.
+ 
+ ---
+ 
+ ## Table of Contents
+ 
+ - [Getting started](#getting-started)
+   * [Prerequisites](#prerequisites)
+     + [Hardware constraints](#hardware-constraints)
+     + [Libraries which need to be installed](#libraries-which-need-to-be-installed)
+     + [Install via Gradle:](#install-via-gradle-)
+       - [Testing Libraries](#testing-libraries)
+     + [Development Environment](#development-environment)
+       - [Using SCSS](#using-scss)
+     + [Getting credentials](#getting-credentials)
+       - [GoogleSheets Credentials](#googlesheets-credentials)
+     + [Spreadsheet setup](#spreadsheet-setup)
+       - [1. meetups](#1-meetups)
+       - [2. venues](#2-venues)
+       - [3. foodSponsors](#3-foodsponsors)
+       - [4. admins](#4-admins)
+       - [5. speakers](#5-speakers)
+       - [6. lightningTalks](#6-lightningtalks)
+   * [Installing](#installing)
+     + [Setup configuration files](#setup-configuration-files)
+ - [Running the tests](#running-the-tests)
+   * [Breakdown into the end-to-end tests](#breakdown-into-the-end-to-end-tests)
+   * [And coding style tests](#and-coding-style-tests)
+ - [System Architecture](#system-architecture)
+   * [Model](#model)
+     + [Entities](#entities)
+     + [Collections](#collections)
+   * [Database](#database)
+     + [DataManager](#datamanager)
+     + [DataStorage](#datastorage)
+   * [Controller](#controller)
+   * [OAuth](#oauth)
+   * [Exceptions](#exceptions)
+   * [Resources](#resources)
+     + [CSS](#css)
+     + [SCSS](#scss)
+     + [Templates](#templates)
+ - [Deployment](#deployment)
+   * [Docker](#docker)
+ - [Security considerations](#security-considerations)
+   * [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
+ - [Built with](#built-with)
+ - [Desired Improvements](#desired-improvements)
+ - [Contributing](#contributing)
+ - [Authors](#authors)
+ - [License](#license)
+ - [Acknowledgments](#acknowledgments)
   
 ---
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for 
+development and testing purposes. See deployment for notes on how to deploy the project on a
+live system.
 
 ### Prerequisites
 
@@ -79,6 +81,7 @@ There are no hardware constraints for running it. This project is intended to ru
 
 #### Install via Gradle:
 
+##### Core Dependencies
 * Spring Boot - version: 2.1.2.RELEASE
   * Security
   * OAuth2
@@ -90,19 +93,22 @@ There are no hardware constraints for running it. This project is intended to ru
 * Google Sheets API - version: 1.23.0
 * Tomcat Embed Jasper
 
-##### Testing Libraries
+##### Testing Dependencies
 
 * JUnit 5 - version: 5.3.2
 * JSoup
 * JUnit 4
 * Cucumber
 
-#### Development Environment
+## Development
+These are the directions & descriptions on the software architecture and testing setup. 
+Described below are naming conventions for files, architecture of the model, and how
+to use resources. There is also descriptions of existing tests and how to run them to 
+ensure your new addition don't break existing functionality. If you don't wish to make 
+any changes to the existing software then skip this section and proceed to [Deployment](#deployment)
+
 Developed in:
->IntelliJ IDEA 2018.3.3 (Ultimate Edition) 
->Build #IU-183.5153.38, built on January 9, 2019
->JRE: 1.8.0_152-release-1343-b26 amd64
->JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
+>IntelliJ IDEA 2018.3.3 (Ultimate Edition)
 
 ##### Using SCSS
 
