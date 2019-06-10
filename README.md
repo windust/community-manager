@@ -63,7 +63,7 @@
   
 ---
 
-## Getting started
+## Git Started
 
 These instructions will get you a copy of the project up and running on your local machine for 
 development and testing purposes. See deployment for notes on how to deploy the project on a
@@ -71,7 +71,7 @@ live system.
 
 ### Prerequisites
 
-#### Hardware constraints
+#### Hardware Constraints
 
 There are no hardware constraints for running it. This project is intended to run as a cloud application.
 
@@ -99,6 +99,179 @@ There are no hardware constraints for running it. This project is intended to ru
 * JSoup
 * JUnit 4
 * Cucumber
+
+### Configuration
+This section dives into details regarding how to configure the application. While some sections describe
+how to do some from scratch you may only need to alter bits and pieces as the current application contains
+most if not all the boilerplate code.
+
+#### Google OAuth
+Below describes the procedure to setup Google OAuth for your project
+
+1. Go to [Google Dev Console](https://console.developers.google.com)
+    1. Click Credentials tab at left of page.
+    2. Click Create Credentials blue button.
+    3. Click OAuth client ID from dropdown on button.
+    4. Click Web Application under Application Type and hit create.
+    5. Under Authorized redirects URIs have this route: <http://localhost:8080/login/oauth2/code/google>
+        * If you don't plan on doing any development then replace 'localhost:8080' with your current URI
+    6. Hit Save.
+    7. Copy OAuth Client ID and Secret from OAuth Client popup to clipboard or some other location.
+2. Go to application properties
+    1. Paste client ID after: spring.security.oauth2.client.registration.google.client-id=
+    2. Paste client Secret after: spring.security.oauth2.client.registration.google.client-secret=
+3. Go to build.gradle and under dependencies add (if they aren't already there):
+    1. implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    2. implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    3. implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+4. Create SecurityConfig class that extends WebSecurityConfigurerAdapter
+    1. Create public method configure with parameters HttpSecurity http and throws an Exception.
+    2. http: a lot of stuff happens here to get OAuth login working properly.
+         1. authorizeRequests():
+         2. .antMatchers("/", "/css/main.css", "/js/available_dates.js", "/images/logo_draft_1.png",
+           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll():
+           Here antMatchers and permitAll defines what routes are permitted without authentication.
+         3. .anyRequest().authenticated(): anyRequest and authenticated after antMatchers sends any request next through OAuth login.
+         4. .oauth2Login().defaultSuccessUrl("/loginSuccess", true): Sends your login after successful login attempt to a route you create in the Controller.
+         5. .logout("/log_out").logoutUrl().logoutSuccessUrl(): logoutUrl is your log out method in controller and logoutSuccessUrl is whats displayed after successful logout of app.
+         6. .csrf().disable("/"): You'll need to disable the csrf to prevent from getting redirect errors when signing in a second time.
+5. Admin Controller to handle login and logout
+    1. login method: routes to OAuth login page or your own custom login page.
+    2. loginSuccess method with the following parameters: HttpServletRequest request, OAuth2AuthenticationToken authentication
+          1. Map<String, Object> properties = authentication.getPrincipal().getAttributes(): This puts principal info into a map.
+          2. String email = (String) properties.get("email"): Here we get an email to check the user email.
+          3. We use the email to check against a list of valid users on the backend before they are granted access.
+    3. logOut method
+         1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and ensures if you are logged out of GMail you are logged out of the app.
+         2. loggedIn = false: resets boolean to false
+         3. return "redirect:/": redirects user to login page.
+         
+ #### Google Sheets
+ Below is a description on how to connect a Google Spreadsheet(s) to the application
+ 
+ ##### Initial Setup
+ 
+ ###### GoogleSheets Credentials
+ 
+ Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
+ (Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
+ 
+ ###### StorageID
+ 
+ Open up the spreadsheet you wish to use for this project, if you don't have one then go below to 
+ [Spreadsheet Setup](spreadsheet-setup) below and come back to this step once that's complete. The 
+ URL should look something like this: https://docs.google.com/spreadsheets/d/{storageID}/edit#gid=748055642.
+ The storageID is the long ASCII code after the 'd/' and ends at the next '/'. Copy and paste this
+ storageID in application.properties right after 'storageID='
+ 
+ ##### Spreadsheet Setup
+ 
+ Go to:
+ https://docs.google.com/spreadsheets/u/0/
+ It will ask you to login - strangely it will take you to docs, but you can use the upper right hamburger to choose Sheets.
+ 
+ You will see a URL like this:
+ https://docs.google.com/spreadsheets/d/**1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g**/edit#gid=0
+ 
+ The bolded part is the id. Replace the value for storageID in application.properties with this id.
+ 
+ In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
+ 
+ ###### 1. meetups
+ 
+ ![Click to view Meetups Tab](Readme_images/googleSheetsMeetups.JPG)
+ 
+ - date
+ - venue
+ - speaker
+ - topic
+ - description
+ - food
+ - after
+ 
+ ###### 2. venues
+ 
+ ![Click to view Venues Tab](Readme_images/googleSheetsVenues.JPG)
+ 
+ - name
+ - address
+ - capacity
+ - contactPerson
+ - contactEmail
+ - contactPhone
+ - altContactPhone
+ - token
+ - requestedDate
+ - response
+ - foodResponse
+ 
+ ###### 3. foodSponsors
+ 
+ ![Click to view FoodSponsors Tab](Readme_images/googleSheetsFoodSponsors.JPG)
+ 
+ - name
+ - address
+ - capacity
+ - contactPerson
+ - contactEmail
+ - contactPhone
+ - altContactPhone
+ - token
+ - requestedDate
+ - response
+ 
+ ###### 4. admins
+ 
+ ![Click to view Admins Tab](Readme_images/googleSheetsAdmin.JPG)
+ 
+ - email (Be sure to include your email address, as this is the table used to check authorization for the application.)
+ - name
+ 
+ (Below this point the tables are not currently used.)
+ ###### 5. speakers
+ 
+ ![Click to view Speakers Tab](Readme_images/googleSheetsSpeakers.JPG)
+ 
+ - name
+ - bio
+ 
+ ###### 6. lightningTalks
+ 
+ ![Click to view LightningTalks Tab](Readme_images/googleSheetsLightningTalks.JPG)
+ 
+ - name
+ - bio
+ - topic
+ - date
+
+#### Application Configuration
+This section serves as an overview of everything within the program needs to change to 
+reconfigure it to your qualifications. Some of these changes may have already been covered
+in directions above.
+
+##### Main Configuration File
+The java class called 'Configuration' in the uppermost package contains bean creation.
+Any beans used for '@Autowire' should be defined here. Currently contain 'createManager'
+and 'createStorage' method.
+ 
+###### createManager
+The 'createManager' method creates a GoogleSheetsManager object. If you're not using 
+Google Sheets as your database then you'll need to create a Class that implements 
+DataManager and place it's constructor in this method to replace GoogleSheetsManager.
+
+###### createStorage
+The 'createStorage' method creates a GoogleSheets object. If you're not using 
+Google Sheets as your database then you'll need to create a Class that implements 
+DataStorage and place it's constructor in this method to replace GoogleSheets. If 
+you are using Google Sheets than you may need to place you storageID into the 
+'@Value' argument in the parameters.
+
+##### application.properties
+The properties that will need to be changed in this file as described in the 
+[Google OAuth](#google-oauth) and [Google Sheets](#google-sheets) sections
+  * storageID
+  * client-id
+  * client-secret
 
 ## Development
 These are the directions & descriptions on the software architecture and testing setup. 
@@ -128,93 +301,6 @@ CSS file path: `src/main/resources/css`
 IntelliJ will automatically watch for changes in SCSS files and compile the css.
 
 *For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
-
-#### Getting credentials
-
-##### GoogleSheets Credentials
-
-Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
-(Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
-
-#### Spreadsheet setup
-
-Go to:
-https://docs.google.com/spreadsheets/u/0/
-It will ask you to login - strangely it will take you to docs, but you can use the upper right hamburger to choose Sheets.
-
-You will see a URL like this:
-https://docs.google.com/spreadsheets/d/**1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g**/edit#gid=0
-
-The bolded part is the id. Replace the value for storageID in application.properties with this id.
-
-In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
-
-##### 1. meetups
-
-![Click to view Meetups Tab](Readme_images/googleSheetsMeetups.JPG)
-
-- date
-- venue
-- speaker
-- topic
-- description
-- food
-- after
-
-##### 2. venues
-
-![Click to view Venues Tab](Readme_images/googleSheetsVenues.JPG)
-
-- name
-- address
-- capacity
-- contactPerson
-- contactEmail
-- contactPhone
-- altContactPhone
-- token
-- requestedDate
-- response
-- foodResponse
-
-##### 3. foodSponsors
-
-![Click to view FoodSponsors Tab](Readme_images/googleSheetsFoodSponsors.JPG)
-
-- name
-- address
-- capacity
-- contactPerson
-- contactEmail
-- contactPhone
-- altContactPhone
-- token
-- requestedDate
-- response
-
-##### 4. admins
-
-![Click to view Admins Tab](Readme_images/googleSheetsAdmin.JPG)
-
-- email (Be sure to include your email address, as this is the table used to check authorization for the application.)
-- name
-
-(Below this point the tables are not currently used.)
-##### 5. speakers
-
-![Click to view Speakers Tab](Readme_images/googleSheetsSpeakers.JPG)
-
-- name
-- bio
-
-##### 6. lightningTalks
-
-![Click to view LightningTalks Tab](Readme_images/googleSheetsLightningTalks.JPG)
-
-- name
-- bio
-- topic
-- date
 
 ### Installing
 
@@ -285,44 +371,6 @@ Changes may need to be made to the Autowire statements in the DataManager interf
 
 ### Controller
 
-### OAuth
-
-1. Go to website: https://console.developers.google.com
-    1. Click Credentials tab at left of page.
-    2. Click Create Credentials blue button.
-    3. Click OAuth client ID from dropdown on button.
-    4. Click Web Application under Application Type and hit create.
-    5. Under Authorized redirects URIs have this route: <http://localhost:8080/login/oauth2/code/google>
-    6. Hit Save.
-    7. Copy OAuth Client ID and Secret from OAuth Client pop to clipboard or some other location.
-2. Go to application properties
-    1. Paste client ID after: spring.security.oauth2.client.registration.google.client-id=
-    2. Paste client Secret after: spring.security.oauth2.client.registration.google.client-secret=
-3. Go to build.gradle and under dependencies add:
-    1. implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    2. implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    3. implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
-4. Create SecurityConfig class that extends WebSecurityConfigurerAdapter
-    1. Create public method configure with parameters HttpSecurity http and throws an Exception.
-    2. http: a lot of stuff happens here to get OAuth login working properly.
-         1. authorizeRequests():
-         2. .antMatchers("/", "/css/main.css", "/js/available_dates.js", "/images/logo_draft_1.png",
-           "/venue", "/venueSignUp", "/food", "/foodSignUp").permitAll():
-           Here antMatchers and permitAll defines what routes are permitted without authentication.
-         3. .anyRequest().authenticated(): anyRequest and authenticated after antMatchers sends any request next through OAuth login.
-         4. .oauth2Login().defaultSuccessUrl("/loginSuccess", true): Sends your login after successful login attempt to a route you create in the Controller.
-         5. .logout("/log_out").logoutUrl().logoutSuccessUrl(): logoutUrl is your log out method in controller and logoutSuccessUrl is whats displayed after successful logout of app.
-         6. .csrf().disable("/"): You'll need to disable the csrf to prevent from getting redirect errors when signing in a second time.
-5. Admin Controller to handle login and logout
-    1. login method: routes to OAuth login page or your own custom login page.
-    2. loginSuccess method with the following parameters: HttpServletRequest request, OAuth2AuthenticationToken authentication
-          1. Map<String, Object> properties = authentication.getPrincipal().getAttributes(): This puts principal info into a map.
-          2. String email = (String) properties.get("email"): Here we get an email to check the user email.
-          3. We use the email to check against a list of valid users on the backend before they are granted access.
-    3. logOut method
-         1. new SecurityContextLogoutHandler().logout(request, null, null): This line resets the security upon log out and ensures if you are logged out of GMail you are logged out of the app.
-         2. loggedIn = false: resets boolean to false
-         3. return "redirect:/": redirects user to login page.
 
 ### Exceptions
 
