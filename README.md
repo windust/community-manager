@@ -273,6 +273,8 @@ The properties that will need to be changed in this file as described in the
   * client-id
   * client-secret
 
+### Re-Branding
+
 ## Development
 These are the directions & descriptions on the software architecture and testing setup. 
 Described below are naming conventions for files, architecture of the model, and how
