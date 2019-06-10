@@ -14,52 +14,68 @@
  
  ## Table of Contents
  
- - [Getting started](#getting-started)
-   * [Prerequisites](#prerequisites)
-     + [Hardware constraints](#hardware-constraints)
-     + [Libraries which need to be installed](#libraries-which-need-to-be-installed)
-     + [Install via Gradle:](#install-via-gradle-)
-       - [Testing Libraries](#testing-libraries)
-     + [Development Environment](#development-environment)
-       - [Using SCSS](#using-scss)
-     + [Getting credentials](#getting-credentials)
-       - [GoogleSheets Credentials](#googlesheets-credentials)
-     + [Spreadsheet setup](#spreadsheet-setup)
-       - [1. meetups](#1-meetups)
-       - [2. venues](#2-venues)
-       - [3. foodSponsors](#3-foodsponsors)
-       - [4. admins](#4-admins)
-       - [5. speakers](#5-speakers)
-       - [6. lightningTalks](#6-lightningtalks)
-   * [Installing](#installing)
-     + [Setup configuration files](#setup-configuration-files)
- - [Running the tests](#running-the-tests)
-   * [Breakdown into the end-to-end tests](#breakdown-into-the-end-to-end-tests)
-   * [And coding style tests](#and-coding-style-tests)
- - [System Architecture](#system-architecture)
-   * [Model](#model)
-     + [Entities](#entities)
-     + [Collections](#collections)
-   * [Database](#database)
-     + [DataManager](#datamanager)
-     + [DataStorage](#datastorage)
-   * [Controller](#controller)
-   * [OAuth](#oauth)
-   * [Exceptions](#exceptions)
-   * [Resources](#resources)
-     + [CSS](#css)
-     + [SCSS](#scss)
-     + [Templates](#templates)
- - [Deployment](#deployment)
-   * [Docker](#docker)
- - [Security considerations](#security-considerations)
-   * [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
- - [Built with](#built-with)
- - [Desired Improvements](#desired-improvements)
- - [Contributing](#contributing)
- - [Authors](#authors)
- - [License](#license)
- - [Acknowledgments](#acknowledgments)
+- [Git Started](#git-started)
+  * [Prerequisites](#prerequisites)
+    + [Hardware Constraints](#hardware-constraints)
+    + [Libraries which need to be installed](#libraries-which-need-to-be-installed)
+    + [Install via Gradle:](#install-via-gradle-)
+      - [Core Dependencies](#core-dependencies)
+      - [Testing Dependencies](#testing-dependencies)
+  * [Configuration](#configuration)
+    + [Google OAuth](#google-oauth)
+    + [Google Sheets](#google-sheets)
+      - [Initial Setup](#initial-setup)
+        * [GoogleSheets Credentials](#googlesheets-credentials)
+        * [StorageID](#storageid)
+      - [Spreadsheet Setup](#spreadsheet-setup)
+        * [1. meetups](#1-meetups)
+        * [2. venues](#2-venues)
+        * [3. foodSponsors](#3-foodsponsors)
+        * [4. admins](#4-admins)
+        * [5. speakers](#5-speakers)
+        * [6. lightningTalks](#6-lightningtalks)
+    + [SCSS Setup](#scss-setup)
+    + [Application Configuration](#application-configuration)
+      - [Main Configuration File](#main-configuration-file)
+        * [createManager](#createmanager)
+        * [createStorage](#createstorage)
+      - [application.properties](#applicationproperties)
+  * [Re-Branding](#re-branding)
+- [Development](#development)
+  * [System Architecture](#system-architecture)
+    + [Model](#model)
+      - [Entities](#entities)
+      - [Collections](#collections)
+      - [DataManager](#datamanager)
+    + [Database](#database)
+      - [DataStorage](#datastorage)
+    + [Exceptions](#exceptions)
+    + [Resources](#resources)
+      - [CSS](#css)
+      - [SCSS](#scss)
+    + [Templates](#templates)
+  * [Tests](#tests)
+    + [Unit](#unit)
+    + [Integration](#integration)
+    + [Cucumber](#cucumber)
+- [Deployment](#deployment)
+  * [Docker](#docker)
+  * [Amazon Web Services (AWS)](#amazon-web-services--aws-)
+    + [Security Groups](#security-groups)
+    + [Internet Gateways](#internet-gateways)
+    + [Route Tables](#route-tables)
+    + [Elastic IP](#elastic-ip)
+  * [Internal Changes](#internal-changes)
+    + [Google Sheets - Public IP Address](#google-sheets---public-ip-address)
+    + [Localhost](#localhost)
+- [Security considerations](#security-considerations)
+  * [Data backup and redundancy procedure](#data-backup-and-redundancy-procedure)
+- [Built with](#built-with)
+- [Desired Improvements](#desired-improvements)
+- [Authors](#authors)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
   
 ---
 
@@ -77,7 +93,8 @@ There are no hardware constraints for running it. This project is intended to ru
 
 #### Libraries which need to be installed
 
-* JDK 11
+* [JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
+* [NodeJS](https://nodejs.org/en/#download)
 
 #### Install via Gradle:
 
@@ -94,7 +111,6 @@ There are no hardware constraints for running it. This project is intended to ru
 * Tomcat Embed Jasper
 
 ##### Testing Dependencies
-
 * JUnit 5 - version: 5.3.2
 * JSoup
 * JUnit 4
@@ -244,6 +260,15 @@ Below describes the procedure to setup Google OAuth for your project
  - topic
  - date
 
+#### SCSS Setup
+1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
+2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
+3. Install and enable the File Watchers repository plugin on the [Plugins](https://www.jetbrains.com/help/idea/plugins-settings.html) page
+4. In the Settings/Preferences dialog, click File Watchers under Tools. The File Watchers page that opens shows the list of already configured File Watchers.
+5. Click Add button, choose SCSS predefined template from the list.
+6. In the "arguments" command place `$FileName$:../css/$FileNameWithoutExtension$.css` and in "output paths to refresh" `./css/$FileNameWithoutExtension$.css:../css/$FileNameWithoutExtension$.css.map`
+
+
 #### Application Configuration
 This section serves as an overview of everything within the program needs to change to 
 reconfigure it to your qualifications. Some of these changes may have already been covered
@@ -275,6 +300,10 @@ The properties that will need to be changed in this file as described in the
 
 ### Re-Branding
 
+<!-- stuff -->
+
+---
+
 ## Development
 These are the directions & descriptions on the software architecture and testing setup. 
 Described below are naming conventions for files, architecture of the model, and how
@@ -285,58 +314,13 @@ any changes to the existing software then skip this section and proceed to [Depl
 Developed in:
 >IntelliJ IDEA 2018.3.3 (Ultimate Edition)
 
-##### Using SCSS
-
-SCSS directory: `src/main/resources/static/scss`
-
-CSS file path: `src/main/resources/css`
-
-**The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
-
-1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
-2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
-3. Install and enable the File Watchers repository plugin on the [Plugins](https://www.jetbrains.com/help/idea/plugins-settings.html) page
-4. In the Settings/Preferences dialog, click File Watchers under Tools. The File Watchers page that opens shows the list of already configured File Watchers.
-5. Click Add button, choose SCSS predefined template from the list.
-6. In the "arguments" command place `$FileName$:../css/$FileNameWithoutExtension$.css` and in "output paths to refresh" `./css/$FileNameWithoutExtension$.css:../css/$FileNameWithoutExtension$.css.map`
-
-IntelliJ will automatically watch for changes in SCSS files and compile the css.
-
-*For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
-
-### Installing
-
-#### Setup configuration files
-
----
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Breakdown into the end-to-end tests
-
-Explain what these tests test and why
-
-`Give an example`
-
-### And coding style tests
-
-Explain what these tests test and why
-
-`Give an example`
-
----
-
-## System Architecture
-
+### System Architecture
 The system follows the MVC pattern. Standard camel case naming conventions are followed. All Collections
 include the name Collection and the Entity they are a collection of. Entities that are not intended  to be used as include Entity in the name. Interfaces are named for their basic functionality and do not allow the IDE to denote them rather than using "i".
 ![Community Manager UML Diagram](Readme_images/communtiy_manager.png)
 
-### Model
-
-#### Entities
+#### Model
+##### Entities
 Entities are objects that represent a single row in the database. All entities should extend the "Entity" abstract class. Current entities include:
 * Meetup
 * Venue
@@ -345,7 +329,7 @@ Entities are objects that represent a single row in the database. All entities s
 
 Future entities may include Speakers and AfterEvents.
 
-#### Collections
+##### Collections
 Collections are objects that store and manage groups of entities. Each entity has a corresponding collection that extends from the "Collection" abstract class. Current collections include:
 * MeetupCollection
 * VenueCollection
@@ -354,9 +338,7 @@ Collections are objects that store and manage groups of entities. Each entity ha
 
 Future collections may include a SpeakerCollection and AfterEventsCollection. Future collections will need to be Autowired into the current DataManager object.
 
-### Database
-
-#### DataManager
+##### DataManager
 Data managers are objects that contain and manage all existing collections. The data manager tells the collections to refresh their data and passes data to the controller. All data managers should implement the DataManager 
 interface. Current data managers include:
 * GoogleSheetsManager
@@ -364,83 +346,110 @@ interface. Current data managers include:
 Future data managers may include SqlManager, CsvManager, MongoManager, etc. Changing the data manager requires a bean in the Configuration.java file utilizing the desired constructor for your DataManager implementation.
 Changes may need to be made to the Autowire statements in the controller classes.
 
-#### DataStorage
+#### Database
+##### DataStorage
 Data storages are objects with CRUD permissions in a place storing persistent data. All data storages should implement the DataStorage interface. Current data storages include:
 * GoogleSheets
 
 Future data storages may include SqlStorage, CsvStorage, MongoStorage, etc. Changing the data storage requires a bean in the Configuration.java file utilizing the desired constructor for your DataStorage implementation.
 Changes may need to be made to the Autowire statements in the DataManager interface and the EntityCollection abstract class.
 
-### Controller
+#### Exceptions
+AttributeException - This exception is thrown at runtime in the app and 
+occurs if there is a problem with the attribute.
 
+EntityNotFoundException - This exception occurs when the entity isn't being 
+found by the app.
 
-### Exceptions
+InvalidUserException - This exception occurs when a user attempts to log into 
+the app but they are not a valid admin with access to the website. The list of 
+valid admins is stored in the database in Google Sheets in the admins spreadsheet.
 
-AttributeException - This exception is thrown at runtime in the app and occurs if there is a problem with the attribute.
+UnexpectedPrimaryKeyException - This exception happens when the wrong primary 
+key is returned. 
 
-EntityNotFoundException - This exception occurs when the entity isn't being found by the app.
+#### Resources
+##### CSS
+CSS code should be added via SCSS or in a secondary CSS file 
+(not `resources/static/css/main.css`) which will not be written
+ to by the SCSS compiler.
 
-InvalidUserException - This exception occurs when a user attempts to log into the app but they are not a valid admin with access to the website. The list of valid admins is stored in the database in Google Sheets in the admins spreadsheet.
-
-UnexpectedPrimaryKeyException - This exception happens when the wrong primary key is returned. 
-
-### Resources
-
-#### CSS
-
-CSS code should be added via SCSS or in a secondary CSS file (not `resources/static/css/main.css`) which will not be written to by the SCSS compiler.
-
-#### SCSS
-
+##### SCSS
 SCSS directory: `src/main/resources/static/scss`
 
 CSS file path: `src/main/resources/css`
 
 **The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
 
-1. Install [NodeJS](https://nodejs.org/en/#download) for NPM
-2. Run `npm install -g sass` in your terminal to install SCSS as a global dependency
-3. Install and enable the File Watchers repository plugin on the [Plugins](https://www.jetbrains.com/help/idea/plugins-settings.html) page
-4. In the Settings/Preferences dialog, click File Watchers under Tools. The File Watchers page that opens shows the list of already configured File Watchers.
-5. Click Add button, choose SCSS predefined template from the list.
-6. In the "arguments" command place `$FileName$:../css/$FileNameWithoutExtension$.css` and in "output paths to refresh" `./css/$FileNameWithoutExtension$.css:../css/$FileNameWithoutExtension$.css.map`
-
 IntelliJ will automatically watch for changes in SCSS files and compile the css.
 
 *For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
 
 #### Templates
-
 The templates are written using Thymeleaf and implement Thymeleaf fragments defined under the fragments folder
+
+### Tests
+
+
+#### Unit 
+
+
+#### Integration
+
+
+#### Cucumber
+
 
 ---
 
 ## Deployment
 
 ### Docker
-
 A jar could be built of the project using
-
 `./gradlew build`
 
-A Docker image can then be built using the .jar with the dockerfile provided in this project.
-
+A Docker image can then be built using the .jar with the dockerfile provided
+ in this project.
 `docker build community-manager`
 
-Then the image could run in a docker container
-
+Then the image can be run in a docker container
 `docker run community-manager`
+
+### Amazon Web Services (AWS)
+This section will describe that steps necessary to deploy this application to
+AWS via an EC2 instance on AWS's 'Free Tier'.
+
+#### Security Groups
+
+
+#### Internet Gateways
+
+
+#### Route Tables
+
+
+#### Elastic IP
+
+
+### Internal Changes
+
+
+#### Google Sheets - Public IP Address
+
+
+#### Localhost
 
 ---
 
 ## Security considerations
+The website is secured via Google OAuth. This sends the user to google to login in 
+order to access the page.
 
-The website is secured via Google OAuth. This sends the user to google to login in order to access the page.
-
-The backend database for the app is also secured via google sheets. The person who creates the original google sheets for the app is able to give access to certain people to access the database. 
+The backend database for the app is also secured via google sheets. The person who 
+creates the original google sheets for the app is able to give access to certain 
+people to access the database. 
 
 ### Data backup and redundancy procedure
-
 The data is currently stored in Google Sheets. To back up the data:
 - Go to the Google Sheets page
 - Click on File -> Download As
@@ -451,7 +460,6 @@ Google Sheets import functionality can be accessed to restore the data from the 
 ---
 
 ## Built with
-
 - OpenJDK 11
 - Spring Boot - The web framework used
 - Gradle - Dependency Management
@@ -473,13 +481,7 @@ food or venues.
 - As an admin, setting the application up for the first time, I would like a way to have the program
 automatically set things up for me.
 
-
-## Contributing
-
-Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
 ## Authors
-
 **Freddy Guime** - Chief Software Engineer, Product Owner, and Everything Else
 
 **Kevan Barter** - Contributed to the project by helping with front end design, backend design for Food Sponsor, writing tests for Food sponsor and Admin. He also helped to set up Google OAuth sign implemented on the website.
@@ -494,12 +496,13 @@ Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct, 
 
 See also the list of [contributors](https://github.com/windust/community-manager/graphs/contributors) who participated in this project.
 
-## License
+## Contributing
+Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
+## License
 This project is listed under the Apache License Version 2.0 - see the [LICENSE](LICENSE) for details
 
 ## Acknowledgments
-
 - The Seattle Java Users Group community
 - The Green River College faculty
 - Everyone who participated in usability testing / feedback
