@@ -339,7 +339,7 @@ public class modelIntegrationTest {
     @DisplayName("When I set the food sponsor for a hosted event, the food sponsor is unchanged.")
     void whenISetTheFoodSponsorForAnEventWithAFoodSponosorTheSystemWontChangeIt(){
         //fixme "NewName" doesn't have a token
-        assertEquals(false,testManager.setFoodForMeetup("NewName", "01/14/2029"));
+        assertEquals(false,testManager.setFoodForMeetup("NewName123", "01/14/2029"));
     }
 
     @Test
