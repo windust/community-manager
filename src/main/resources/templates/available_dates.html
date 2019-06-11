@@ -62,10 +62,10 @@
                   <td th:if="${meetup.getVenue() == ''}">
                       <input class="hidden" th:id="food+${meetup.getDate()}" th:value="${meetup.getFood()}">
                       <button th:if="${!meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="taken" name="meetup" th:value="${meetup.getDate()}">
-                          Available for Hosting
+                          Host Event
                       </button>
                       <button th:if="${meetup.getFood().equals('')}" rel='venueConfirm' type="submit" class="btn_primary" data_food="" name="meetup" th:value="${meetup.getDate()}">
-                          Available for Hosting
+                          Host Event
                       </button>
                   </td>
                   <td th:if="${meetup.getVenue() == session.venue.getName()}"><span th:text="${session.venue.getName()}" class="accent-text btn_pseudo">Reserved</span></td>
