@@ -68,25 +68,40 @@ class GoogleSheetsManagerTest {
     }
 
     @Test
-    void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled() {
+    void whenIUpdateVenueHostUpdateMethodInMeetupCollectionIsCalled()
+        throws EntityNotFoundException {
+        Venue testVenue = new Venue();
+        testVenue.setName("NewName");
+        testVenue.setPrimaryKey(1);
+        testVenue.setRequestedDate(LocalDate.of(2019,1,14));
+
         when(meetupCollection.setVenueForMeetup("NewName", LocalDate.of(2019,1,14))).thenReturn(true);
         when(venueCollection.updateResponse("01/14/2019", Response.ACCEPTED)).thenReturn(true);
-        googleSheetsManager.setVenueForMeetup("NewName", "01/14/2019",LocalDate.of(2019,1,14));
-        verify(meetupCollection, atLeastOnce()).setVenueForMeetup("NewName", LocalDate.of(2019,1,14));
+        when(venueCollection.getByPrimaryKey(123)).thenReturn(testVenue);
 
+        googleSheetsManager.setVenueForMeetup(123, "01/14/2019");
+
+        verify(meetupCollection, atLeastOnce()).setVenueForMeetup("NewName", LocalDate.of(2019,1,14));
     }
 
     @Test
-    void whenIUpdateVenueHostMethodIReturnWhatIReceived() {
+    void whenIUpdateVenueHostMethodIReturnWhatIReceived() throws EntityNotFoundException {
+        Venue testVenue = new Venue();
+        testVenue.setName("True Venue");
+        testVenue.setPrimaryKey(1);
+        testVenue.setRequestedDate(LocalDate.of(2019,1,14));
+
         when(meetupCollection.setVenueForMeetup("True Venue", LocalDate.of(2019,1,14))).thenReturn(true);
         when(meetupCollection.setVenueForMeetup("False Venue", LocalDate.of(2019,1,14))).thenReturn(false);
 
+        when(venueCollection.getByPrimaryKey(1)).thenReturn(testVenue);
+        when(venueCollection.getByPrimaryKey(-1)).thenThrow(EntityNotFoundException.class);
         when(venueCollection.updateResponse("True Venue", Response.ACCEPTED)).thenReturn(true);
         when(venueCollection.updateResponse("False Venue", Response.ACCEPTED)).thenReturn(true);
 
         assertAll(() -> {
-            assertTrue(googleSheetsManager.setVenueForMeetup("True Venue", "01/14/2019",LocalDate.of(2019,1,14)));
-            assertFalse(googleSheetsManager.setVenueForMeetup("False Venue", "01/14/2019",LocalDate.of(2019,1,14)));
+            assertTrue(googleSheetsManager.setVenueForMeetup(1, "01/14/2019"));
+            assertFalse(googleSheetsManager.setVenueForMeetup(-1, "01/14/2019"));
         });
     }
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spinningnoodle.communitymanager.datastorage.DataStorage;
@@ -157,31 +158,31 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("When I set the venue for a hosted event, the venue host is unchanged.")
     void whenISetTheVenueForAnEventWithAVenueTheSystemWontChangeIt(){
-       assertEquals(false,testManager.setVenueForMeetup("NewName", "01/14/2029",LocalDate.of(2029,1,14)));
+       assertEquals(false,testManager.setVenueForMeetup(3, "01/14/2029"));
     }
 
     @Test
     @DisplayName("When I set the venue for an unhosted event, the venue host is filled.")
     void whenISetTheVenueForAnEventWithOutAVenueTheSystemChangesIt(){
-        assertEquals(true,testManager.setVenueForMeetup("Amazing", "01/15/2029",LocalDate.of(2029,1,14)));
+        assertEquals(true,testManager.setVenueForMeetup(3, "01/15/2029"));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue to an invalid venue")
     void whenISetTheVenueForAnEventWithInvalidVenueNameThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("NeverExisted", "01/14/2029",LocalDate.of(2029,1,14)));
+        assertFalse(testManager.setVenueForMeetup(666, "01/14/2029"));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set venue for invalid event date.")
     void whenISetTheVenueForAnEventWithInvalidEventDateThrowsError(){
-        assertFalse(testManager.setVenueForMeetup("Excellent", "01/24/2029",LocalDate.of(2029,1,14)));
+        assertFalse(testManager.setVenueForMeetup(2, "01/24/2029"));
     }
 
     @Test
     @DisplayName("Model returns true, when I venue declines to test.")
     void whenISetTheVenueForAnEventWithNotHostingDateReturnsTrue(){
-        assertTrue(testManager.setVenueForMeetup("Excellent", "notHosting",LocalDate.of(2029,1,14)));
+        assertTrue(testManager.setVenueForMeetup(2, "notHosting"));
     }
 
     /*
@@ -337,31 +338,32 @@ public class modelIntegrationTest {
     @Test
     @DisplayName("When I set the food sponsor for a hosted event, the food sponsor is unchanged.")
     void whenISetTheFoodSponsorForAnEventWithAFoodSponosorTheSystemWontChangeIt(){
-        assertEquals(false,testManager.setFoodForMeetup("NewName", "01/14/2029",LocalDate.of(2029,1,14)));
+        //fixme "NewName" doesn't have a token
+        assertEquals(false,testManager.setFoodForMeetup("NewName", "01/14/2029"));
     }
 
     @Test
     @DisplayName("When I set the food sponsor for an event, the food sponsor is filled.")
     void whenISetTheFoodSponsorForAnEventWithOutAFoodSponsorTheSystemChangesIt(){
-        assertEquals(true,testManager.setFoodForMeetup("Pizza Hut", "01/15/2029",LocalDate.of(2029,1,14)));
+        assertEquals(true,testManager.setFoodForMeetup("PizzaHut-7d10d703-34d9-4c23-a5a8-128c304e1b96", "01/15/2029"));
     }
 
     @Test
-    @DisplayName("Model returns false, when I attempt to set food sponsor to an invalid food sponsor")
+    @DisplayName("Model throws IllegalArgumentException, when I attempt to set food sponsor to an invalid food sponsor")
     void whenISetTheFoodSponsorForAnEventWithInvalidVenueNameThrowsError(){
-        assertFalse(testManager.setFoodForMeetup("NeverExisted", "01/14/2029",LocalDate.of(2029,1,14)));
+        assertThrows(IllegalArgumentException.class, () -> testManager.setFoodForMeetup("NeverExisted", "01/14/2029"));
     }
 
     @Test
     @DisplayName("Model returns false, when I attempt to set food sponsor for invalid event date.")
     void whenISetTheFoodSponsorForAnEventWithInvalidEventDateThrowsError(){
-        assertFalse(testManager.setFoodForMeetup("Pizza Hut", "01/24/2029",LocalDate.of(2029,1,14)));
+        assertFalse(testManager.setFoodForMeetup("PizzaHut-7d10d703-34d9-4c23-a5a8-128c304e1b96", "01/24/2029"));
     }
 
     @Test
     @DisplayName("Model returns true, when I food sponsor declines to provide food.")
     void whenISetTheFoodSponsorForAnEventWithNotHostingDateReturnsTrue(){
-        assertTrue(testManager.setFoodForMeetup("Pizza Hut", "notHosting",LocalDate.of(2029,1,14)));
+        assertTrue(testManager.setFoodForMeetup("PizzaHut-7d10d703-34d9-4c23-a5a8-128c304e1b96", "notHosting"));
     }
 
     @BeforeEach

@@ -169,7 +169,7 @@ public class SignUpControllerTest {
     public void hostingMessageWhenVenueSaysYesButIsNotHosting(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
-        when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(true);
+        when(model.setVenueForMeetup(1, "notHosting")).thenReturn(true);
         when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for your consideration.");
         signUpController.venue(validToken, session);
 
@@ -179,6 +179,7 @@ public class SignUpControllerTest {
     private Venue createVenue(Response response){
         Venue partialVenue = new Venue();
 
+        partialVenue.setPrimaryKey(1);
         partialVenue.setName("Excellent");
         partialVenue.setRequestedDate(LocalDate.of(2019,1,14));
         partialVenue.setResponse(response);
