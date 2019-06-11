@@ -169,9 +169,6 @@ The following describes the procedure to setup Google OAuth for your project
  
  ###### GoogleSheets Credentials
  
- (FixMe - Remove these two sentences.)Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
- (Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
- 
  Go to https://console.developers.google.com/apis/credentials and 
   1. Under create credentials, choose Oauth client id.
   2. Pick web application
