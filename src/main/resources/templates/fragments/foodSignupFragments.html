@@ -22,9 +22,14 @@
 <body class="meetup">
   <div id="modal" class="hidden" th:fragment="responderConfirm">
     <h2><span th:text="${session.foodSponsor.getName()}">Food Sponsor</span>,</h2>
-    <p>You have offered to provide food on <span id="modalDate">Error</span> and have food delivered by 6:00pm.</p>
+    <p>You have offered to provide food on <b><span id="modalDate">Error</span></b> and have food delivered by <b>6:00pm.</b></p>
+    <p><b>Food sponsors provide:</b></p>
+      <ul>
+        <li><b>Food</b> for about 60 people unless specified</li>
+        <li>Along with food, <b>beverages</b> are usually provided as well</li>
+      </ul>
     <p>Click a button below to confirm/cancel your selection. If you need to cancel after
-      confirming, you will need to check with your SeaJug contact.</p>
+      confirming, you will need to check with your SeaJug representative.</p>
     <input id="token" class="hidden"
            name="token" th:value="${session.foodSponsor.getToken()}">
     <input id="hiddenInput" class="hidden"
