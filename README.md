@@ -169,9 +169,6 @@ The following describes the procedure to setup Google OAuth for your project
  
  ###### GoogleSheets Credentials
  
- (FixMe - Remove these two sentences.)Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
- (Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
- 
  Go to https://console.developers.google.com/apis/credentials and 
   1. Under create credentials, choose Oauth client id.
   2. Pick web application
@@ -203,6 +200,10 @@ The following describes the procedure to setup Google OAuth for your project
  https://docs.google.com/spreadsheets/d/**1PKlCf3ykPjNqVjlt9IXzx4gw9LYnQflPA3rtEqM8S1g**/edit#gid=0
  
  The bolded part is the id. Replace the value for storageID in application.properties with this id.
+ 
+ As of June 10, 2019, you are also required to replace the url returned by 
+ main/java/com.spinningnoodle.communitymanager/model/GoogleSheetsManager/getDatabaseAccessPage() 
+ with the url of your Google Sheet.
  
  In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
  
@@ -307,14 +308,27 @@ you are using Google Sheets than you may need to place you storageID into the
 ##### application.properties
 The properties that will need to be changed in this file as described in the 
 [Google OAuth](#google-oauth) and [Google Sheets](#google-sheets) sections
-  * storageID
-  * client-id
-  * client-secret
+  * storageID (for Google Sheets)
+  * client-id (for Google OAuth)
+  * client-secret (for Google OAuth)
 
 ### Re-Branding
 
-<!-- stuff -->
-
+This application is created with resources specific to the Seattle Area Java Users Group. 
+To rebrand for your meetup, 
++ Replace the logos in resources/static/images with logos under the same names for your organization
+or find where these images are called and update those references.
++ Update the colors in resources/static/scss/abstracts/_colors.scss with your meetup's color.
+  * primary are your organizations two dominant colors.
+  * accent - light is the button colors
+  * accent - dark is just black
+  * base - are black and white.
++ Search the following files for references to Seattle Area Java Users Group and SeaJUG 
+and replace as appropriate:
+  * /resources/js 
+  * /templates
+  * /src/main/java/com.spinningnoodle.communitymanager/model/entities/FoodSponsor
+   
 ---
 
 ## Development
@@ -394,7 +408,7 @@ CSS file path: `src/main/resources/css`
 
 **The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
 
-IntelliJ will automatically watch for changes in SCSS files and compile the css.
+With [File Watchers](#scss-setup) set up, IntelliJ will automatically watch for changes in SCSS files and compile the css.
 
 *For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
 
@@ -406,9 +420,14 @@ The templates are written using Thymeleaf and implement Thymeleaf fragments defi
 
 #### Unit 
 
-
+Unit tests are written using JUnit5 and Mockito. Only the test of the class GoogleSheets 
+makes a call to it's own database. It is recommended that you create a seperate database for this 
+test and store it's ID in a text file called config/testGSStorageID.txt. 
 #### Integration
 
+Integration tests are written using JUnit5. Currently only the model has integration tests and they 
+are stored in test/java/com.spinningnoodle.communitymanager/model/modelIntegrationTest. It is recommended that you create a seperate database for this 
+test and store it's ID in a text file called config/testModelStorageID.txt. 
 
 #### Behavioral
 
@@ -483,7 +502,8 @@ you are already at the [AWS Dashboard](https://us-east-2.console.aws.amazon.com/
 
 ## Security considerations
 The website is secured via Google OAuth. This sends the user to google to login in 
-order to access the page.
+order to access the page. The application then checks if the user's email address matches
+one of the addresses stored in the admins page of the google sheets database.
 
 The backend database for the app is also secured via google sheets. The person who 
 creates the original google sheets for the app is able to give access to certain 
