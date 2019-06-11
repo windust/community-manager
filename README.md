@@ -408,7 +408,7 @@ CSS file path: `src/main/resources/css`
 
 **The SCSS architecture is built according to the [7-1 Pattern](https://sass-guidelin.es/#the-7-1-pattern).**
 
-IntelliJ will automatically watch for changes in SCSS files and compile the css.
+With [File Watchers](#scss-setup) set up, IntelliJ will automatically watch for changes in SCSS files and compile the css.
 
 *For more information using SCSS and IntelliJ visit the [Official Guide](https://www.jetbrains.com/help/idea/transpiling-sass-less-and-scss-to-css.html).*
 
