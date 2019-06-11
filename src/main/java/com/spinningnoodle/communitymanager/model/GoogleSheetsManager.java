@@ -146,9 +146,18 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public boolean setVenueForMeetup(String venueName, String requestedDate,
-        LocalDate dateRequestedByAdmin) {
+    public boolean setVenueForMeetup(int venueKey, String requestedDate) {
         meetupCollection = meetupCollection.fetchFromDataStorage();
+
+        Venue venue;
+        try {
+            venue = venueCollection.getByPrimaryKey(venueKey);
+        } catch (EntityNotFoundException e) {
+           return false;
+        }
+
+        String venueName = venue.getName();
+        LocalDate dateRequestedByAdmin = venue.getRequestedDate();
 
         if (!requestedDate.equals("notHosting")) {
             LocalDate date = Entity.convertDate(requestedDate);
@@ -184,14 +193,27 @@ public class GoogleSheetsManager implements DataManager {
     }
 
     @Override
-    public boolean setVenueFoodForMeetup(String venueName, String requestedDate,
-        LocalDate dateRequestedByAdmin) {
+    public boolean setVenueFoodForMeetup(int venueKey, String requestedDate) {
+        Venue venue;
+        try {
+            venue = venueCollection.getByPrimaryKey(venueKey);
+        } catch (EntityNotFoundException e) {
+            return false;
+        }
+
+        String venueName = venue.getName();
+        LocalDate dateRequestedByAdmin = venue.getRequestedDate();
         return this.setGenericFoodForMeetup(venueCollection,venueName,requestedDate,dateRequestedByAdmin);
     }
     
     @Override
-    public boolean setFoodForMeetup(String foodName, String requestedDate,
-        LocalDate dateRequestedByAdmin) {
+    public boolean setFoodForMeetup(String token, String requestedDate) {
+        FoodSponsor foodSponsor;
+        foodSponsor = foodSponsorCollection.getEntityByToken(token);
+
+
+        String foodName = foodSponsor.getName();
+        LocalDate dateRequestedByAdmin = foodSponsor.getRequestedDate();
         return this.setGenericFoodForMeetup(foodSponsorCollection,foodName,requestedDate,dateRequestedByAdmin);
     }
 
