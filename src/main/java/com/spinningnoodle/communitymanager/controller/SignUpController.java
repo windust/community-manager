@@ -109,6 +109,7 @@ public class SignUpController {
         session.setAttribute("meetups", meetups);
         session.setAttribute(responderType, responder);
         session.setAttribute("hostingMessage", model.getMessage(responder));
+        session.setAttribute("currentMeetup", currentMeetup);
         session.setAttribute("ask",
             ResponderCollection.isRequestedDateAvailable(currentMeetup, responder)
                 && responder.getResponse().equals(Response.UNDECIDED));
