@@ -423,9 +423,14 @@ The templates are written using Thymeleaf and implement Thymeleaf fragments defi
 
 #### Unit 
 
-
+Unit tests are written using JUnit5 and Mockito. Only the test of the class GoogleSheets 
+makes a call to it's own database. It is recommended that you create a seperate database for this 
+test and store it's ID in a text file called config/testGSStorageID.txt. 
 #### Integration
 
+Integration tests are written using JUnit5. Currently only the model has integration tests and they 
+are stored in test/java/com.spinningnoodle.communitymanager/model/modelIntegrationTest. It is recommended that you create a seperate database for this 
+test and store it's ID in a text file called config/testModelStorageID.txt. 
 
 #### Cucumber
 
