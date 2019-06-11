@@ -85,7 +85,7 @@
                        th:data-venueIndentifier="${venue.getPrimaryKey()}">Request Host</a>
                     <a th:if="${session.meetup.getDate().equals(venue.getRequestedDate())}"
                        th:href="@{/venue?token=} + ${venue.getToken()}"
-                       th:inline="text">http://localhost:8080/venue?token=[[${venue.getToken()}]]</a>
+                       th:inline="text">http://ec2-52-14-112-68.us-east-2.compute.amazonaws.com:8080/venue?token=[[${venue.getToken()}]]</a>
                 </div>
             </section>
         </th:block>
@@ -141,7 +141,7 @@
                            rel="request-food" class="btn_primary"
                            th:data-foodIndentifier="${food.getPrimaryKey()}">Request Food</a>
                         <a th:if="${session.meetup.getDate().equals(food.getRequestedDate())}"
-                           th:href="@{/food?token=} + ${food.getToken()}" th:inline="text">http://localhost:8080/food?token=[[${food.getToken()}]]</a>
+                           th:href="@{/food?token=} + ${food.getToken()}" th:inline="text">http://ec2-52-14-112-68.us-east-2.compute.amazonaws.com:8080/food?token=[[${food.getToken()}]]</a>
                     </div>
                 </section>
             </th:block>
