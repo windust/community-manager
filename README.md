@@ -80,24 +80,19 @@
 ---
 
 ## Git Started
-
 These instructions will get you a copy of the project up and running on your local machine for 
 development and testing purposes. See deployment for notes on how to deploy the project on a
 live system.
 
 ### Prerequisites
-
 #### Hardware Constraints
-
 There are no hardware constraints for running it. This project is intended to run as a cloud application.
 
 #### Libraries which need to be installed
-
 * [JDK 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
 * [NodeJS](https://nodejs.org/en/#download)
 
 #### Install via Gradle:
-
 ##### Core Dependencies
 * Spring Boot - version: 2.1.2.RELEASE
   * Security
@@ -166,9 +161,7 @@ The following describes the procedure to setup Google OAuth for your project
  Below is a description on how to connect a Google Spreadsheet(s) to the application
  
  ##### Initial Setup
- 
  ###### GoogleSheets Credentials
- 
  Go to https://console.developers.google.com/apis/credentials and 
   1. Under create credentials, choose Oauth client id.
   2. Pick web application
@@ -183,7 +176,6 @@ The following describes the procedure to setup Google OAuth for your project
   (Do NOT push this file to this GitHub repository.)
   
  ###### StorageID
- 
  Open up the spreadsheet you wish to use for this project, if you don't have one then go below to 
  [Spreadsheet Setup](spreadsheet-setup) below and come back to this step once that's complete. The 
  URL should look something like this: https://docs.google.com/spreadsheets/d/{storageID}/edit#gid=748055642.
@@ -191,7 +183,6 @@ The following describes the procedure to setup Google OAuth for your project
  storageID in application.properties right after 'storageID='
  
  ##### Spreadsheet Setup
- 
  Go to:
  https://docs.google.com/spreadsheets/u/0/
  It will ask you to login - strangely it will take you to docs, but you can use the upper right hamburger to choose Sheets.
@@ -207,8 +198,7 @@ The following describes the procedure to setup Google OAuth for your project
  
  In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
  
- ###### 1. meetups
- 
+ ###### 1. meetups 
  ![Click to view Meetups Tab](Readme_images/googleSheetsMeetups.JPG)
  
  - date
@@ -220,7 +210,6 @@ The following describes the procedure to setup Google OAuth for your project
  - after
  
  ###### 2. venues
- 
  ![Click to view Venues Tab](Readme_images/googleSheetsVenues.JPG)
  
  - name
@@ -236,7 +225,6 @@ The following describes the procedure to setup Google OAuth for your project
  - foodResponse
  
  ###### 3. foodSponsors
- 
  ![Click to view FoodSponsors Tab](Readme_images/googleSheetsFoodSponsors.JPG)
  
  - name
@@ -251,22 +239,20 @@ The following describes the procedure to setup Google OAuth for your project
  - response
  
  ###### 4. admins
- 
  ![Click to view Admins Tab](Readme_images/googleSheetsAdmin.JPG)
  
  - email (Be sure to include your email address, as this is the table used to check authorization for the application.)
  - name
  
  (Below this point the tables are not currently used.)
- ###### 5. speakers
  
+ ###### 5. speakers
  ![Click to view Speakers Tab](Readme_images/googleSheetsSpeakers.JPG)
  
  - name
  - bio
  
  ###### 6. lightningTalks
- 
  ![Click to view LightningTalks Tab](Readme_images/googleSheetsLightningTalks.JPG)
  
  - name
@@ -313,7 +299,6 @@ The properties that will need to be changed in this file as described in the
   * client-secret (for Google OAuth)
 
 ### Re-Branding
-
 This application is created with resources specific to the Seattle Area Java Users Group. 
 To rebrand for your meetup, 
 + Replace the logos in resources/static/images with logos under the same names for your organization
@@ -416,26 +401,27 @@ With [File Watchers](#scss-setup) set up, IntelliJ will automatically watch for 
 The templates are written using Thymeleaf and implement Thymeleaf fragments defined under the fragments folder
 
 ### Tests
-
-
 #### Unit 
-
 Unit tests are written using JUnit5 and Mockito. Only the test of the class GoogleSheets 
 makes a call to it's own database. It is recommended that you create a seperate database for this 
 test and store it's ID in a text file called config/testGSStorageID.txt. 
-#### Integration
 
+#### Integration
 Integration tests are written using JUnit5. Currently only the model has integration tests and they 
-are stored in test/java/com.spinningnoodle.communitymanager/model/modelIntegrationTest. It is recommended that you create a seperate database for this 
-test and store it's ID in a text file called config/testModelStorageID.txt. 
+are stored in test/java/com.spinningnoodle.communitymanager/model/modelIntegrationTest. It is 
+recommended that you create a seperate database for this test and store it's ID in a text file 
+called config/testModelStorageID.txt. 
 
 #### Behavioral
-
+Behavioral tests are written with Cucumber and JUnit4. Currently tests the functionality 
+of the upcoming dates page with tests for the venue sign up currently in progress. Features
+are located under 'src/test/resources' and step definitions are under 
+'src/test/java/com/spinningnoodle/communitymanager/stepdefinitions'. All step definition 
+classes need to extend the 'AbstractDefs' class.
 
 ---
 
 ## Deployment
-
 ### Docker
 A jar could be built of the project using
 `./gradlew build`
@@ -491,12 +477,15 @@ you are already at the [AWS Dashboard](https://us-east-2.console.aws.amazon.com/
    private IP then click 'Associate'
 
 ### Internal Changes
-
+Changes in the code that need to be made for new host
 
 #### Google Sheets - Public IP Address
-
+Ensure that the '.setHost()' call in the GoogleSheets class on line 136 equals the
+public DNS of your instance
 
 #### Localhost
+Ensure the generate token link in the meetup.js file on line 50 is set to your
+new URI
 
 ---
 
