@@ -13,11 +13,14 @@ import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -42,8 +45,17 @@ public abstract class AbstractDefs
      */
     protected void executeGet(String url) throws Exception
     {
-        result = mvc.perform(get(url)).andDo(print()).andReturn();
+        System.out.println("GETTING: " + url);
+
+        MockHttpServletRequestBuilder requestBuilder = get(url);
+        System.out.println("GOT: " + url);
+        ResultActions perform = mvc.perform(requestBuilder);
+
+        result = perform.andDo(print()).andReturn();
+
         document = Jsoup.parse(result.getResponse().getContentAsString());
+
+
     }
 
     /**
