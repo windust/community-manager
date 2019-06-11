@@ -118,11 +118,11 @@ There are no hardware constraints for running it. This project is intended to ru
 
 ### Configuration
 This section dives into details regarding how to configure the application. While some sections describe
-how to do some from scratch you may only need to alter bits and pieces as the current application contains
+how to do so from scratch you may only need to alter bits and pieces as the current application contains
 most if not all the boilerplate code.
 
 #### Google OAuth
-Below describes the procedure to setup Google OAuth for your project
+The following describes the procedure to setup Google OAuth for your project
 
 1. Go to [Google Dev Console](https://console.developers.google.com)
     1. Click Credentials tab at left of page.
@@ -169,9 +169,22 @@ Below describes the procedure to setup Google OAuth for your project
  
  ###### GoogleSheets Credentials
  
- Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
+ (FixMe - Remove these two sentences.)Go to https://developers.google.com/sheets/api/quickstart/java and follow steps 1 - 2b;
  (Note: To get a different other than quickstart you may be able to go to https://developers.google.com/sheets/api/quickstart/js and follow directions to create credentials.json.)
  
+ Go to https://console.developers.google.com/apis/credentials and 
+  1. Under create credentials, choose Oauth client id.
+  2. Pick web application
+  3. In the name field, enter a string that will help you remember what these credentials are used for.
+  4. If you know your URI you can enter them here. For deployment, you will need the following with 
+  your URI:
+   ![Click to view required URIs](Readme_images/googleSheetsAuthorizedJavascriptAndRedirects.JPG)
+  5. Click Create
+  6. Click on the name of the credentials you just created.
+  7. Click on the Download JSON button.
+  8. Move the JSON file to the resources folder and store it as credentials.json. 
+  (Do NOT push this file to this GitHub repository.)
+  
  ###### StorageID
  
  Open up the spreadsheet you wish to use for this project, if you don't have one then go below to 
