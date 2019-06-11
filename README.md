@@ -204,6 +204,10 @@ The following describes the procedure to setup Google OAuth for your project
  
  The bolded part is the id. Replace the value for storageID in application.properties with this id.
  
+ As of June 10, 2019, you are also required to replace the url returned by 
+ main/java/com.spinningnoodle.communitymanager/model/GoogleSheetsManager/getDatabaseAccessPage() 
+ with the url of your Google Sheet.
+ 
  In the spreadsheet, create the following tables by clicking on the plus sign (lower left) then right click to change the name to the correct table name. In the first row, you need to add the column names. (Each of these needs to be names exactly as shown.) (Or if you have access to a working spreadsheet, copy and paste the columns in.)
  
  ###### 1. meetups
@@ -313,8 +317,21 @@ The properties that will need to be changed in this file as described in the
 
 ### Re-Branding
 
-<!-- stuff -->
-
+This application is created with resources specific to the Seattle Area Java Users Group. 
+To rebrand for your meetup, 
++ Replace the logos in resources/static/images with logos under the same names for your organization
+or find where these images are called and update those references.
++ Update the colors in resources/static/scss/abstracts/_colors.scss with your meetup's color.
+  * primary are your organizations two dominant colors.
+  * accent - light is the button colors
+  * accent - dark is just black
+  * base - are black and white.
++ Search the following files for references to Seattle Area Java Users Group and SeaJUG 
+and replace as appropriate:
+  * /resources/js 
+  * /templates
+  * /src/main/java/com.spinningnoodle.communitymanager/model/entities/FoodSponsor
+   
 ---
 
 ## Development
