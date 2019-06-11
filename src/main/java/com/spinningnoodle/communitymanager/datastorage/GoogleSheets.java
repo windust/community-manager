@@ -123,7 +123,6 @@ public class GoogleSheets implements DataStorage {
     }
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        //TBD working but still claims to be quickstart! Haven't found where or why!
         InputStream in = GoogleSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets
             .load(JSON_FACTORY, new InputStreamReader(in));
