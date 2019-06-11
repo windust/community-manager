@@ -95,6 +95,13 @@ public class Meetup extends Entity {
 	public LocalDate getDate() {
 		return date;
 	}
+	
+	/**
+	 * Returns the meetup date formatted as mm/dd/YYYY
+	 */
+	public String getFormattedDate(){
+		return date.format(Entity.dateFormat);
+	}
 
     /**
      * @param date The date the meetup will take place
