@@ -410,7 +410,7 @@ The templates are written using Thymeleaf and implement Thymeleaf fragments defi
 #### Integration
 
 
-#### Cucumber
+#### Behavioral
 
 
 ---
@@ -430,19 +430,46 @@ Then the image can be run in a docker container
 
 ### Amazon Web Services (AWS)
 This section will describe that steps necessary to deploy this application to
-AWS via an EC2 instance on AWS's 'Free Tier'.
+AWS via an EC2 instance on AWS's 'Free Tier'. All directions start assuming 
+you are already at the [AWS Dashboard](https://us-east-2.console.aws.amazon.com/console/home?region=us-east-2).
 
 #### Security Groups
-
+1. In the 'Compute' group click 'EC2'
+2. In the left menu under 'Network & Security' click on 'Security Groups'.
+3. Click the blue 'Create Security Group' button in upper left.
+4. Under 'Inbound' tab, click 'Add Rule', and in the left drop down under 'Type' select 'SSH'
+5. In the drop down under the 'Source' column, select 'Anywhere'
+6. Repeat steps 3 & 4 except under the 'Type' pick 'HTTP' & 'HTTPS'
+7. Before finishing be sure that the VPC matches the VPC ID of your desired instance
 
 #### Internet Gateways
-
-
+1. In the 'Networking & Content Delivery' click 'VPC'
+2. In the left menu under 'Virtual Private Cloud' click 'Internet Gateways'
+3. Click the blue 'Create Internet Gateway' button in the upper left.
+4. In the table, if the 'State' column say 'detached'
+   1. Click the 'Action' button in the upper left and select 'Attach to VPC'
+   2. Select the VPC that matches your desired EC2 instance and click the 'Attach'
+      button in the bottom right.
+  
 #### Route Tables
-
+1. In the 'Networking & Content Delivery' click 'VPC'
+2. In the left menu under 'Virtual Private Cloud' click 'Route Tables'
+3. Click the blue 'Create Route Table' button in the upper left
+4. Select the VPC of your desired instance and click 'Create'
+5. In the summary below, under the 'Routes' tab, click the 'Edit Routes' button
+6. Under the 'Destination' column put '0.0.0.0/0' which opens to all IPs
+7. Under 'Target' select 'Internet Gateway' and pick the ID of your previously 
+   created internet gateway.
 
 #### Elastic IP
-
+1. In the 'Compute' group click 'EC2'
+2. In the left menu under 'Network & Security' click on 'Elastic IPs'.
+3. Click the blue 'Allocate New Address' button in upper left.
+4. Select 'Amazon Pool' radio button and then click 'Allocate'
+5. Select the newly created Elastic IP
+6. Click 'Actions' in the upper left and pick 'Associate Address'
+7. Select the desired instance in drop down then pick that instances desired
+   private IP then click 'Associate'
 
 ### Internal Changes
 
