@@ -47,7 +47,7 @@ function getVenueTokenURL(element) {
     if(this.status === 200) {
       element.parentElement.innerHTML =
           "<a href=\"/venue?token=" + this.responseText +
-          "\">http://localhost:8080/venue?token=" + this.responseText + "</a>";
+          "\">http://ec2-52-14-112-68.us-east-2.compute.amazonaws.com:8080/venue?token=" + this.responseText + "</a>";
     } else {
       alert('Error fetching token URL. STATUS: ' + this.status);
     }
@@ -67,7 +67,7 @@ function getFoodTokenURL(element) {
     if(this.status === 200) {
       element.parentElement.innerHTML =
           "<a href=\"/food?token=" + this.responseText +
-          "\">http://localhost:8080/food?token=" + this.responseText + "</a>";
+          "\">http://ec2-52-14-112-68.us-east-2.compute.amazonaws.com:8080/food?token=" + this.responseText + "</a>";
     } else {
       alert('Error fetching token URL. STATUS: ' + this.status);
     }
