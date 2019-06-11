@@ -25,7 +25,7 @@
       <form id="meetup_requested" method="POST" action="/venueSignUp" modelAttribute="venue">
           <input class="hidden" name="venueKey" th:value="${session.venue.getPrimaryKey()}">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
-          <p class="h4">Meetup hosts provide space and sometimes food.</p>
+          <p class="h4">Meetup hosts provide space and frequently food.</p>
           <input id="token" class="hidden"
                  name="token" th:value="${session.venue.getToken()}">
           <button th:if="${session.ask}" type="submit" class="btn_primary"
