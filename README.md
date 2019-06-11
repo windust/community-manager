@@ -308,9 +308,9 @@ you are using Google Sheets than you may need to place you storageID into the
 ##### application.properties
 The properties that will need to be changed in this file as described in the 
 [Google OAuth](#google-oauth) and [Google Sheets](#google-sheets) sections
-  * storageID
-  * client-id
-  * client-secret
+  * storageID (for Google Sheets)
+  * client-id (for Google OAuth)
+  * client-secret (for Google OAuth)
 
 ### Re-Branding
 
