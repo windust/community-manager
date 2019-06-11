@@ -51,22 +51,7 @@ public class AdminController {
      * @return login - name of html page to render
      */
     @GetMapping("/")
-    public String login(@RequestParam(name = "code", required = false) String code){
-//        if(!code.equals("")){
-//            try {
-//                File token = new File("tokens/StoredCredential");
-//                FileWriter writer = new FileWriter(token, true);
-//                PrintWriter printer = new PrintWriter(writer);
-//
-//                printer.print(code);
-//
-//                printer.close();
-//                writer.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-    
+    public String login(){
         return "login";
     }
 
