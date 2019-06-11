@@ -475,7 +475,8 @@ AWS via an EC2 instance on AWS's 'Free Tier'.
 
 ## Security considerations
 The website is secured via Google OAuth. This sends the user to google to login in 
-order to access the page.
+order to access the page. The application then checks if the user's email address matches
+one of the addresses stored in the admins page of the google sheets database.
 
 The backend database for the app is also secured via google sheets. The person who 
 creates the original google sheets for the app is able to give access to certain 
