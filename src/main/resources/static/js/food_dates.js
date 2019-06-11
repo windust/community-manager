@@ -18,6 +18,10 @@ for(i = 0; i < document.forms.length; i++){
 
 confirmation = function() {
   var thisButton = document.activeElement;
+  if(thisButton.id == "cancel"){
+    resetModal();
+    return false;
+  }
   var hiddenInput = document.getElementById("hiddenInput");
 
   var date = thisButton.value;
