@@ -46,10 +46,8 @@ public class SignUpController {
     multiple users signing up at the same time will
     break application
     */
-    String responderName;
-    LocalDate requestedDate;
-    String alertMessage = "";
-    boolean alert = false;
+//    String responderName;
+//    LocalDate requestedDate;
 
     /**
      * Route for venues to sign up to host meetups
@@ -99,8 +97,8 @@ public class SignUpController {
         List<Meetup> meetups = model.getAllHostedMeetups();
         if(responder instanceof Venue) meetups = model.getAllMeetups();
         Meetup currentMeetup = new Meetup();
-        this.responderName = responder.getName();
-        this.requestedDate = responder.getRequestedDate();
+        String responderName = responder.getName();
+        LocalDate requestedDate = responder.getRequestedDate();
 
         for (Meetup meetup : meetups){
             if(meetup.getDate().equals(responder.getRequestedDate())){
@@ -111,11 +109,10 @@ public class SignUpController {
         session.setAttribute("meetups", meetups);
         session.setAttribute(responderType, responder);
         session.setAttribute("hostingMessage", model.getMessage(responder));
+        session.setAttribute("currentMeetup", currentMeetup);
         session.setAttribute("ask",
             ResponderCollection.isRequestedDateAvailable(currentMeetup, responder)
                 && responder.getResponse().equals(Response.UNDECIDED));
-        session.setAttribute("alert", alert);
-        session.setAttribute("alertMessage", alertMessage);
     }
 
     /**
@@ -127,21 +124,17 @@ public class SignUpController {
      */
     @PostMapping("/venueSignUp")
     public String venueSignUp(@RequestParam(name = "meetup") String meetupDate,
-        @RequestParam(name = "venueKey") int venueKey,
+        @RequestParam(name = "venueKey", defaultValue = "-1") int venueKey,
         @RequestParam(name = "food", required = false, defaultValue = "empty") String foodDate,
         @RequestParam(name = "token") String token){
         System.out.println(venueKey);
-        boolean success;
-        success = model.setVenueForMeetup(responderName, meetupDate, requestedDate);
-        if(!meetupDate.equals("notHosting") && foodDate.equals("true")){
-            model.setVenueFoodForMeetup(responderName, meetupDate, requestedDate);
+        
+        boolean success = model.setVenueForMeetup(venueKey, meetupDate);
+        if(success && !meetupDate.equals("notHosting") && foodDate.equals("true")){
+            model.setVenueFoodForMeetup(venueKey, meetupDate);
         }
-        if(!meetupDate.equals("notHosting") && foodDate.equals("false")){
-            model.setVenueFoodForMeetup(responderName, "notHosting", requestedDate);
-        }
-        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
-            alert = true;
-            alertMessage = getAlertMessage(success, meetupDate);
+        else if(success && !meetupDate.equals("notHosting") && foodDate.equals("false")){
+            model.setVenueFoodForMeetup(venueKey, "notHosting");
         }
 
         return "redirect:/venue?token=" + token;
@@ -155,24 +148,7 @@ public class SignUpController {
      */
     @PostMapping("/foodSignUp")
     public String foodSignUp(@RequestParam(name = "meetup") String meetupDate, @RequestParam(name = "token") String token){
-        boolean success;
-
-        success = model.setFoodForMeetup(responderName, meetupDate, requestedDate);
-
-        if(!meetupDate.equals(requestedDate) && !meetupDate.equals("notHosting")){
-            alert = true;
-            alertMessage = getAlertMessage(success, meetupDate);
-        }
-
+        model.setFoodForMeetup(token, meetupDate);
         return "redirect:/food?token=" + token;
-    }
-
-    private String getAlertMessage(boolean successful, String date){
-        if(successful){
-            return "Thank you for hosting on " + date + ", Contact your SeaJUG contact to cancel.";
-        }
-        else{
-            return "Thank you for volunteering but " + date + " is already being hosted by another venue.";
-        }
     }
 }

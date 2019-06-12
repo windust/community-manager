@@ -51,9 +51,15 @@ $logo-size: 250px;
       color: #006600;
     }
 
-    td,
     th {
       padding: 0.25em;
+      height: 2em;
+      font-size: 1.25em;
+    }
+
+    td {
+      padding: 0.25em;
+      height: 3em;
     }
   }
 }

@@ -180,7 +180,7 @@ public class FoodSponsor extends ResponderEntity{
         
         messages.put(Receipt.NOT_RESPONDED, "Can you provide food on " + date + "?");
         messages.put(Receipt.ALREADY_TAKEN, "Thank you for volunteering but " + date + " is already being provided food by another sponsor.");
-        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + date + ", Contact your SeaJUG contact to cancel.");
+        messages.put(Receipt.ACCEPTED, "Thank you for providing food on " + date + ", Contact your SeaJUG representative to cancel.");
         
         return messages;
     }

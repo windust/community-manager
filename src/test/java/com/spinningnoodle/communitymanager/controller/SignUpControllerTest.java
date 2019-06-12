@@ -121,27 +121,6 @@ public class SignUpControllerTest {
     }
 
     @Test
-    @DisplayName("venue route sets alert as an attribute in the session")
-    public void venueSetsSessionAlertAttribute(){
-        when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
-        when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        signUpController.venue(validToken, session);
-
-        Assertions.assertNotNull(session.getAttribute("alert"));
-    }
-
-    @Test
-    @DisplayName("venue route sets alert message as an attribute in the session")
-    public void venueSetsSessionAlertMessageAttribute(){
-        when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
-        when(model.getAllMeetups()).thenReturn(expectedMeetups);
-        when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("");
-        signUpController.venue(validToken, session);
-
-        Assertions.assertNotNull(session.getAttribute("alertMessage"));
-    }
-
-    @Test
     @DisplayName("Hosting Message for when requested date is available and venue hasn't responded")
     public void hostingMessageWithDateAvailableAndNoResponse(){
         when(model.getVenueByToken(validToken)).thenReturn(createVenue(Response.UNDECIDED));
@@ -190,7 +169,7 @@ public class SignUpControllerTest {
     public void hostingMessageWhenVenueSaysYesButIsNotHosting(){
         when(model.getVenueByToken(validToken)).thenReturn(expectedVenue);
         when(model.getAllMeetups()).thenReturn(createMeetups(""));
-        when(model.setVenueForMeetup("Excellent", "notHosting", LocalDate.of(2019,1,14))).thenReturn(true);
+        when(model.setVenueForMeetup(1, "notHosting")).thenReturn(true);
         when(model.getMessage(model.getVenueByToken(validToken))).thenReturn("Thank you for your consideration.");
         signUpController.venue(validToken, session);
 
@@ -200,6 +179,7 @@ public class SignUpControllerTest {
     private Venue createVenue(Response response){
         Venue partialVenue = new Venue();
 
+        partialVenue.setPrimaryKey(1);
         partialVenue.setName("Excellent");
         partialVenue.setRequestedDate(LocalDate.of(2019,1,14));
         partialVenue.setResponse(response);

@@ -24,6 +24,7 @@
     <h1>Welcome<span th:if="${session.foodSponsor.getName()}">, <span th:text="${session.foodSponsor.getName()}"></span></span></h1>
     <form method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
         <p class="h3"><span th:text="${session.hostingMessage}">Message Hosting Error: Can you host one of the dates below</span></p>
+        <p th:if="${session.ask}">This meetup is hosted by <span th:text="${session.currentMeetup.getVenueEntity().getName()}">an unknown venue</span> at <span th:text="${session.currentMeetup.getVenueEntity().getAddress()}">a unknown address</span>. We need enough food for 60 people.</p>
         <input id="token" class="hidden" name="token" th:value="${session.foodSponsor.getToken()}">
 
         <button th:if="${session.ask}" type="submit" class="btn_primary" name="meetup" th:value="${session.foodSponsor.getRequestedDate()}">Yes, I can sponsor food</button>
@@ -31,12 +32,13 @@
     
     </form>
 </header>
-<aside th:if="${session.alert}" class="primary text-center">
-    <h2 class="h3"><span th:text="${session.alertMessage}">Message Hosting Error: Can you host one of the dates below</span></h2>
-</aside>
+
+<form id="meetup_confirm" method="post" action="/foodSignUp" modelAttribute="foodSponsor">
+    <div th:replace="fragments/foodSignupFragments.html :: responderConfirm"></div>
+</form>
 
 <article id="more-meetups" class="text-center">
-    <h2 class="h3">Register to host additional dates below:</h2>
+    <h2 class="h2">Register to host <em>additional</em> dates below:</h2>
     <form id="meetup_signup" method="POST" action="/foodSignUp" modelAttribute="foodSponsor">
         <input class="hidden" name="token" th:value="${session.foodSponsor.getToken()}">
 
@@ -52,11 +54,11 @@
             <tbody>
             <th:block th:each="meetup : ${session.meetups}">
                 <tr>
-                    <td th:text="${meetup.getDate()}"></td>
+                    <td th:text="${meetup.getFormattedDate()}"></td>
                     <td th:text="${meetup.getVenue()}"></td>
                     <td th:unless="${meetup.getVenue() == ''}" th:text="${meetup.getVenueEntity().getAddress()}"></td>
                     <td th:if="${meetup.getFood() == ''}">
-                        <button class="btn_red" type="submit" name="meetup" th:value="${meetup.getDate()}">
+                        <button class="btn_primary" type="submit" name="meetup" th:value="${meetup.getDate()}">
                             Provide Food?
                         </button>
                     </td>
@@ -69,7 +71,8 @@
         </table>
     </form>
 </article>
-
-<!--<script src="js/available_dates.js" async defer></script>-->
+<div id="mask">
+</div>
+<script src="js/food_dates.js" async defer></script>
 </body>
 </html>

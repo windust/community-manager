@@ -22,14 +22,17 @@
   <body class="meetup">
 
     <div id="modal" class="hidden" th:fragment="responderConfirm" >
-        <h2 >
-            <span th:text="${session.venue.getName()}">Venue Name</span>,</h2>
-            <p>You have offered to host on <span id="modalDate">Error</span> at 6:00pm.</p>
-            <p>Hosting an event, involves providing a room for about 60 people, unless otherwise
-                specified.</p>
-            <p id="foodMessage">Meetups, typically, involve food, such as pizza and soda, as well.</p>
-            <p>Click a button below to confirm/cancel your selection. If you need to cancel after
-            confirming, you will need to check with your SeaJug contact.</p>
+        <h2 ><span th:text="${session.venue.getName()}">Venue Name</span>,</h2>
+            <p>You have offered to host on <b><span id="modalDate">Error</span></b> from <b>6:00 - 9:00 p.m..</b></p>
+            <p><b>Meetup hosts provide:</b></p>
+                <ul>
+                    <li><b>Space</b> for about 60 people unless otherwise specified.</li>
+                    <li id="foodMessage"><b>Food (often)</b> such as pizza and soda.</li>
+                    <li id="foodProvided" class="hidden">Food is currently provided by
+                        <b id="providingFoodSponsor">another organization</b></li>
+                </ul>
+            <p><b>Click below</b> to confirm/cancel your selection. If you need to cancel after
+            confirming, you will need to check with your SeaJug representative.</p>
 
             <input id="token" class="hidden"
                    name="token" th:value="${session.venue.getToken()}">
@@ -40,12 +43,11 @@
             <input id="venue" class="hidden"
                    name="venueKey" th:value="${session.venue.getPrimaryKey()}">
             <button id="modalYes" rel='foodConfirm' class="btn_primary" type="submit"
-                   name="food" value="true">I confirm, I will provide space and
-                I will provide food.</button>
+                   name="food" value="true">I confirm, I will provide space and food.</button>
             <button id="modalJustYes" rel='declineConfirm' type="submit" class="btn_primary"
                    name="food" th:value="false">I confirm, I will provide space.
-                <span id="foodDecline">SEAJug will need to find a different food sponsor.</span></button>
-            <button id="modalNo" rel='declineConfirm' type="submit" class="btn_primary"
+                <span id="foodDecline">SEAJug will find a different food sponsor.</span></button>
+            <button id="cancel" rel='declineConfirm' type="submit" class="btn_primary"
                    name="meetup" value="notHosting">Cancel</button>
 
     </div>

@@ -66,7 +66,6 @@ public class GoogleSheets implements DataStorage {
     private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.SPREADSHEETS);
 
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-    
 
     /**
      * DataStorage(String storageID) - opens existing DataStorage;
@@ -185,8 +184,7 @@ public class GoogleSheets implements DataStorage {
             if (attributeName instanceof String) {
                 attributes.add(attributeName.toString());
             } else {
-                System.out.println(
-                    "Could not convert attribute name to String: " + attributeName.getClass().toString());
+                System.out.println("Could not convert attribute name to String: " + attributeName.getClass().toString());
             }
         }
         return attributes;
@@ -216,7 +214,7 @@ public class GoogleSheets implements DataStorage {
 
     private boolean update(String cell, String newValue) {
 
-        if (cell.contains("null") || cell.contains("1")) { return false; }
+        if(cell.contains("null") || isRow1(cell)) return false;
 
         List<List<Object>> values = Collections.singletonList(
             Collections.singletonList(
@@ -236,6 +234,11 @@ public class GoogleSheets implements DataStorage {
         }
     }
 
+    private boolean isRow1(String cell){
+        String pattern = "(?i)(.*)[a-z]1";
+
+        return cell.matches(pattern);
+    }
 
     @Override
     public boolean deleteEntry(String tableName, String primaryKey) {
