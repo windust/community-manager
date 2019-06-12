@@ -1,16 +1,16 @@
-Feature The Available Dates page can be accessed
+Feature: The Available Dates page can be accessed
   Background:
     Given the following Venues exist:
-      | name        | token           | requested date |
-      | Disney      | disney-123      | 2029-01-14     |
-      | Smart Sheet | smart-sheet-123 | 2029-02-19     |
-      | Expedia     | expedia-123     | 2011-02-11     |
+      | name        | token           | requestedDate | primaryKey  |
+      | Disney      | disney-123      | 2029-01-14    | 2           |
+      | Smart Sheet | smart-sheet-123 | 2029-02-19    | 3           |
+      | Expedia     | expedia-123     | 2011-02-11    | 4           |
     And the following Meetups exist:
-      | date       | speaker | venue   |
-      | 2029-01-14 | Freddy  |         |
-      | 2029-02-19 | Nimret  |         |
-      | 2029-02-19 | Josh    | Expedia |
-      | 2029-04-16 | Kirk    | Disney  |
+      | date       | speaker | venue   | primaryKey  |
+      | 2029-01-14 | Freddy  |         | 1           |
+      | 2029-02-19 | Nimret  |         | 2           |
+      | 2029-02-19 | Josh    | Expedia | 3           |
+      | 2029-04-16 | Kirk    | Disney  | 4           |
 
   Scenario: Venue makes call to GET /venue
     When a Venue goes to '/venue' with the token of 'disney-123'

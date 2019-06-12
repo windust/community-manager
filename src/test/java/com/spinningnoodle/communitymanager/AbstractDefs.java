@@ -45,17 +45,8 @@ public abstract class AbstractDefs
      */
     protected void executeGet(String url) throws Exception
     {
-        System.out.println("GETTING: " + url);
-
-        MockHttpServletRequestBuilder requestBuilder = get(url);
-        System.out.println("GOT: " + url);
-        ResultActions perform = mvc.perform(requestBuilder);
-
-        result = perform.andDo(print()).andReturn();
-
+        result = mvc.perform(get(url)).andDo(print()).andReturn();
         document = Jsoup.parse(result.getResponse().getContentAsString());
-
-
     }
 
     /**
