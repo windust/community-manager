@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Here in the configuration class we set up a few beans to be
@@ -26,6 +27,7 @@ public class Configuration {
      * @return instance of GoogleSheetsManager class
      */
     @Bean
+    @Profile({"dev","prod"})
     public DataManager createManager() {
         return new GoogleSheetsManager();
     }
@@ -38,6 +40,23 @@ public class Configuration {
      * @throws IOException
      */
     @Bean
+    @Profile({"dev"})
+//    public DataStorage createDevStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
+//        return new GoogleSheets(storageID);
+//    }
+    public DataStorage createDevStorage(@Value("1kmPdjgZ55alsUaSp5basbdtZZAJmG3E2HCc5h7h74WU") String storageID) throws GeneralSecurityException, IOException{
+        return new GoogleSheets(storageID);
+    }
+
+    /**
+     * Creates a new GoogleSheets with storageID when the app is started.
+     * @param storageID string to gain access to the google sheet.
+     * @return instance of GoogleSheets with the storageID passed in.
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
+    @Bean
+    @Profile({"prod"})
     public DataStorage createStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
         return new GoogleSheets(storageID);
     }
