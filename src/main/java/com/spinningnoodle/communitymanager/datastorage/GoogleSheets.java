@@ -73,7 +73,7 @@ public class GoogleSheets implements DataStorage {
      * @throws GeneralSecurityException
      * @throws IOException if Credentials are not found.
      */
-    public GoogleSheets(String hostName, String idFileName, String spreadsheetName) throws GeneralSecurityException, IOException {
+    public GoogleSheets(String idFileName, String spreadsheetName) throws GeneralSecurityException, IOException {
 
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -145,11 +145,12 @@ public class GoogleSheets implements DataStorage {
      * @throws GeneralSecurityException
      * @throws IOException if Credentials are not found.
      */
-    public GoogleSheets(String hostName, String storageID) throws GeneralSecurityException, IOException {
+    public GoogleSheets(String hostName, String credentialsPath, String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(hostName, HTTP_TRANSPORT))
+            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(hostName,
+                credentialsPath, HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
             spreadsheet = service.spreadsheets().get(storageID).execute();
@@ -161,8 +162,8 @@ public class GoogleSheets implements DataStorage {
         }
     }
 
-    private static Credential getCredentials(String hostName, final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        InputStream in = GoogleSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+    private static Credential getCredentials(String hostName, String credentialsPath, final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+        InputStream in = GoogleSheets.class.getResourceAsStream(credentialsPath);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets
             .load(JSON_FACTORY, new InputStreamReader(in));
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
