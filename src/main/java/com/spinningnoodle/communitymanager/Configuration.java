@@ -45,7 +45,7 @@ public class Configuration {
 //        return new GoogleSheets(storageID);
 //    }
     public DataStorage createDevStorage(@Value("1kmPdjgZ55alsUaSp5basbdtZZAJmG3E2HCc5h7h74WU") String storageID) throws GeneralSecurityException, IOException{
-        return new GoogleSheets(storageID);
+        return new GoogleSheets("http://ec2-52-14-112-68.us-east-2.compute.amazonaws.com","/credentials.json",storageID);
     }
 
     /**
