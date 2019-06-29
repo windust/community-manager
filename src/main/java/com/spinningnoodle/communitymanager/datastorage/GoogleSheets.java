@@ -147,6 +147,7 @@ public class GoogleSheets implements DataStorage {
      */
     public GoogleSheets(String hostName, String credentialsPath, String storageID) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
+        System.out.println("Storage: " + storageID);
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(hostName,
@@ -171,9 +172,12 @@ public class GoogleSheets implements DataStorage {
             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
             .setAccessType("offline")
             .build();
+        System.out.println("Host: " + hostName);
         LocalServerReceiver receiver = new LocalServerReceiver.Builder()
             .setHost(hostName)
             .setPort(8888).build();
+        System.out.println("After Compile Host: " + receiver.getHost());
+        System.out.println("Redirect URI: " + receiver.getRedirectUri());
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 

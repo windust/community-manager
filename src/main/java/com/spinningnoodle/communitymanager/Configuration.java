@@ -43,8 +43,10 @@ public class Configuration {
 //    public DataStorage createDevStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
 //        return new GoogleSheets(storageID);
 //    }
-    public DataStorage createDevStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
-        return new GoogleSheets("${hostName}","${credentials}",storageID);
+    public DataStorage createDevStorage(@Value("${storageID}") String storageID, @Value("${purple}") String hostName, @Value("${credentials}") String credentials) throws GeneralSecurityException, IOException{
+        System.out.println("Pre-GS Host: " + hostName);
+        System.out.println("Pre-GS Storage: " + storageID);
+        return new GoogleSheets(hostName,credentials,storageID);
     }
 
 //    /**
