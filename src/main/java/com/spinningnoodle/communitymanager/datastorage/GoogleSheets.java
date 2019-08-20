@@ -65,7 +65,7 @@ public class GoogleSheets implements DataStorage {
 
     private static final List<String> READ_WRITE_SCOPE = Collections.singletonList(SheetsScopes.SPREADSHEETS);
 
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/melsCredentials.json";
 
     /**
      * DataStorage(String storageID) - opens existing DataStorage;
@@ -73,30 +73,30 @@ public class GoogleSheets implements DataStorage {
      * @throws GeneralSecurityException
      * @throws IOException if Credentials are not found.
      */
-    public GoogleSheets(String idFileName, String spreadsheetName) throws GeneralSecurityException, IOException {
-
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-            .setApplicationName(APPLICATION_NAME)
-            .build();
-        try {
-            spreadsheet = new Spreadsheet()
-                .setProperties(new SpreadsheetProperties()
-                    .setTitle(spreadsheetName));
-            spreadsheet = service.spreadsheets().create(spreadsheet)
-                .setFields("spreadsheetId")
-                .execute();
-            storageID = spreadsheet.getSpreadsheetId();
-            System.out.println(storageID);
-            FileWriter fileWriter = new FileWriter(idFileName);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.print(storageID);
-            printWriter.close();
-        } catch (IOException e) {
-            throw new IOException("Unable to connect to spreadsheet.");
-        }
-
-    }
+//    public GoogleSheets(String idFileName, String spreadsheetName) throws GeneralSecurityException, IOException {
+//
+//        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+//        service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+//            .setApplicationName(APPLICATION_NAME)
+//            .build();
+//        try {
+//            spreadsheet = new Spreadsheet()
+//                .setProperties(new SpreadsheetProperties()
+//                    .setTitle(spreadsheetName));
+//            spreadsheet = service.spreadsheets().create(spreadsheet)
+//                .setFields("spreadsheetId")
+//                .execute();
+//            storageID = spreadsheet.getSpreadsheetId();
+//            System.out.println(storageID);
+//            FileWriter fileWriter = new FileWriter(idFileName);
+//            PrintWriter printWriter = new PrintWriter(fileWriter);
+//            printWriter.print(storageID);
+//            printWriter.close();
+//        } catch (IOException e) {
+//            throw new IOException("Unable to connect to spreadsheet.");
+//        }
+//
+//    }
 
     /**
      * DataStorage(String storageID) - opens existing DataStorage;
@@ -105,11 +105,11 @@ public class GoogleSheets implements DataStorage {
      * @throws GeneralSecurityException
      * @throws IOException if Credentials are not found.
      */
-    public GoogleSheets(String storageID) throws GeneralSecurityException, IOException {
+    public GoogleSheets(String storageID, String hostName) throws GeneralSecurityException, IOException {
         this.storageID = storageID;
         try {
             final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+            service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(hostName, HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
             spreadsheet = service.spreadsheets().get(storageID).execute();
@@ -121,7 +121,7 @@ public class GoogleSheets implements DataStorage {
         }
     }
 
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    private static Credential getCredentials(String hostName, final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         InputStream in = GoogleSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets
             .load(JSON_FACTORY, new InputStreamReader(in));
@@ -131,7 +131,7 @@ public class GoogleSheets implements DataStorage {
             .setAccessType("offline")
             .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder()
-            .setHost("ec2-52-14-112-68.us-east-2.compute.amazonaws.com")
+            .setHost(hostName)
             .setPort(8888).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }

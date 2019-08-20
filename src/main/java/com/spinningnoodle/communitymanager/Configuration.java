@@ -38,7 +38,7 @@ public class Configuration {
      * @throws IOException
      */
     @Bean
-    public DataStorage createStorage(@Value("${storageID}") String storageID) throws GeneralSecurityException, IOException{
-        return new GoogleSheets(storageID);
+    public DataStorage createStorage(@Value("${storageID}") String storageID, @Value("${hostDNS}") String hostName) throws GeneralSecurityException, IOException{
+        return new GoogleSheets(storageID, hostName);
     }
 }

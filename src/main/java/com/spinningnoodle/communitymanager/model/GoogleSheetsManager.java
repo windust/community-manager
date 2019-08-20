@@ -70,13 +70,13 @@ public class GoogleSheetsManager implements DataManager {
      * @throws GeneralSecurityException
      * @throws IOException
      */
-    public GoogleSheetsManager(String storageID) throws GeneralSecurityException, IOException {
+    public GoogleSheetsManager(String storageID, String hostName) throws GeneralSecurityException, IOException {
 //            Map<String,String> config = new HashMap<>();
 //            config.put("storage","google");
 //            Scanner testIDFile = new Scanner(new File(spreadsheetIDLocation));
 //            config.put("storageID",testIDFile.next());
 //            if(config.get("storage").equals("google")) {
-        DataStorage dataStorage = new GoogleSheets(storageID);
+        DataStorage dataStorage = new GoogleSheets(storageID, hostName);
 //            }
         adminCollection = new AdminCollection(dataStorage);
         meetupCollection = new MeetupCollection(dataStorage);
